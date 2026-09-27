@@ -1,7 +1,7 @@
 # TASK-003：用 Lambda 与 LINQ 筛选设备读数
 
 - 阶段：第一阶段：C# 基础
-- 状态：⚪ 未开始
+- 状态：🟡 进行中
 - 计划来源：[计划原文](../plan.md)「二、第一阶段：C# 基础」中的 Lambda/LINQ；本任务是据此设计的练习，不是计划原文指定任务。
 - 先修：可复用 TASK-001 的 `Reading` 模型；计划原文未规定强制先修。
 - 难度/预计时间：待补充（计划未给出）。
@@ -13,8 +13,15 @@
 ## 用户实践与产出
 
 - 在现有 .NET 项目中完成独立练习，准备至少两台设备、合计至少四条读数，其中包括符合和不符合筛选条件的样例。
-- 计划专属目录：`Base/Exercises/TASK-003-reading-query/`。尚未开始，目录和代码骨架均未创建；开始时先检查现有源码、入口及学员作品，再安全准备。
-- 运行入口预计复用 `Base/Program.cs` 与 `Base/Base.csproj`；实际连接方式在开始任务时确认并记录。
+- 专属目录：`Base/Exercises/TASK-003-reading-query/`；已创建 [Task003Exercise.cs](../../Base/Exercises/TASK-003-reading-query/Task003Exercise.cs)，复用 TASK-001 的 [Reading 模型](../../Base/Exercises/TASK-001-device-model/Task001Exercise.cs)。
+- 共享入口例外：[Base/Program.cs](../../Base/Program.cs) 已切换为调用 `Task003Exercise.Run()`；复用 [Base/Base.csproj](../../Base/Base.csproj)，未更改项目文件或增加依赖。
+
+## 练习骨架与起步
+
+- TODO 1：在 `readings` 中准备至少两台设备、至少四条读数，包含目标设备的阈值两侧读数 → 实践步骤 1、DoD 1、2。
+- TODO 2：把 `matchingReadings` 的空结果占位替换为 Lambda + LINQ 查询，同时检查设备 ID 和数值阈值 → 实践步骤 2、4，DoD 1、2。
+- TODO 3：在调用 `CountMatching` 时传入相同筛选条件的 Lambda，并在方法内调用 `predicate` 计数 → 实践步骤 3，DoD 3；比较计数与 LINQ 结果也帮助核对 DoD 1。
+- 首个动作：打开 [Task003Exercise.cs](../../Base/Exercises/TASK-003-reading-query/Task003Exercise.cs)，从 TODO 1 添加样例读数开始。于工作区根目录运行 `dotnet run --project .\Base\Base.csproj`，完成后可说“检查 TASK-003”。
 
 ## 建议实践步骤
 
@@ -31,4 +38,5 @@
 
 ## 状态与证据
 
-- 2026-09-27：TASK-002 通关后，按计划顺序生成本任务卡；尚未创建代码，也未运行或验收。请在准备动手时明确说“开始 TASK-003”。
+- 2026-09-27：TASK-002 通关后，按计划顺序生成本任务卡。
+- 2026-09-27：按用户“开启task003”开始；创建独立练习骨架并切换共享入口。实际执行 `dotnet run --project .\Base\Base.csproj`，退出码 0，输出“设备 001 中高于 30 的读数：”和“匹配数量：0”。这是空样例及占位逻辑的骨架运行结果，三个 DoD 均未验收。

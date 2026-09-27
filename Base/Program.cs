@@ -1,1 +1,1 @@
-﻿Base.Exercises.Task002.Task002Exercise.Run();
+Base.Exercises.Task003.Task003Exercise.Run();
