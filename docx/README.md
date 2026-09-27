@@ -6,4 +6,4 @@
 - [问答库](./questions/README.md)（实际答疑后按需建分类）
 - [错题本](./mistakes.md)（已观察到的典型错误）
 
-常驻规则：[工作区 AGENTS.md](../AGENTS.md)。新会话从本工作区启动；无法自动加载时请显式指定该规则文件。进度以 `docx/` 最新记录为准。[TASK-001](./tasks/TASK-001.md)、[TASK-002](./tasks/TASK-002.md) 已通关；[TASK-003](./tasks/TASK-003.md) 进行中。
+常驻规则：[工作区 AGENTS.md](../AGENTS.md)。新会话从本工作区启动；无法自动加载时请显式指定该规则文件。进度以 `docx/` 最新记录为准。[TASK-001](./tasks/TASK-001.md)、[TASK-002](./tasks/TASK-002.md)、[TASK-003](./tasks/TASK-003.md) 已通关；[TASK-004](./tasks/TASK-004.md) 尚未开始。
