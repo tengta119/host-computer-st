@@ -6,5 +6,6 @@
 | :--- | :--- | :---: | :---: |
 | C# 属性与类型组织 | [csharp-properties.md](./csharp-properties.md) | 2 | 0 |
 | C# Dictionary | [csharp-dictionary.md](./csharp-dictionary.md) | 1 | 0 |
+| C# 事件 | [csharp-events.md](./csharp-events.md) | 0 | 4 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
