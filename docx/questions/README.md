@@ -8,5 +8,6 @@
 | C# Dictionary | [csharp-dictionary.md](./csharp-dictionary.md) | 1 | 0 |
 | C# 事件 | [csharp-events.md](./csharp-events.md) | 1 | 4 |
 | C# Lambda 与 LINQ | [csharp-lambda-linq.md](./csharp-lambda-linq.md) | 1 | 1 |
+| C# Task 与 async/await | [csharp-task-async.md](./csharp-task-async.md) | 7 | 0 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。

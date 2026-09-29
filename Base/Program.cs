@@ -1,1 +1,1 @@
-Base.Exercises.Task003.Task003Exercise.Run();
+await Base.Exercises.Task004.Task004Exercise.RunAsync();
