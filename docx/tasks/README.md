@@ -8,6 +8,6 @@
 | [TASK-002：用事件传递设备读数](./TASK-002.md) | 第一阶段：C# 基础 | 「二、第一阶段：C# 基础」；委托/事件重点 | 事件发布、订阅与取消订阅 | ✅ 已通关 |
 | [TASK-003：用 Lambda 与 LINQ 筛选设备读数](./TASK-003.md) | 第一阶段：C# 基础 | 「二、第一阶段：C# 基础」；Lambda/LINQ | 委托回调、Lambda、LINQ 查询 | ✅ 已通关 |
 | [TASK-004：用 Task 与 async/await 模拟设备读取](./TASK-004.md) | 第一阶段：C# 基础 | 「二、第一阶段：C# 基础」；Task/async/await | 异步读取与等待 | ✅ 已通关 |
-| [TASK-005：用 CancellationToken 取消模拟设备读取](./TASK-005.md) | 第一阶段：C# 基础 | 「二、第一阶段：C# 基础」；CancellationToken | 异步读取取消 | ⚪ 未开始 |
+| [TASK-005：用 CancellationToken 取消模拟设备读取](./TASK-005.md) | 第一阶段：C# 基础 | 「二、第一阶段：C# 基础」；CancellationToken | 异步读取取消 | 🟡 进行中 |
 
-TASK-004 已于 2026-09-29 协助完成并通过任务级验收；TASK-005 仅创建任务卡，等待用户明确开始。后续路线见[计划](../plan.md)和[阶段概览](../learning.md)。
+TASK-004 已于 2026-09-29 协助完成并通过任务级验收；TASK-005 于 2026-10-02 经运行通过 DoD 1、2，说明已按用户请求由教练协助修正，DoD 3 的自主理解仍待验证，保持进行中。后续路线见[计划](../plan.md)和[阶段概览](../learning.md)。
