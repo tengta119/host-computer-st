@@ -8,4 +8,4 @@
 
 常驻规则：[工作区 AGENTS.md](../AGENTS.md)。新会话从本工作区启动；无法自动加载时请显式指定该规则文件。进度以 `docx/` 最新记录为准。[TASK-001](./tasks/TASK-001.md)、[TASK-002](./tasks/TASK-002.md)、[TASK-003](./tasks/TASK-003.md)、[TASK-004](./tasks/TASK-004.md)、[TASK-005](./tasks/TASK-005.md) 已通关。
 
-[TASK-006](./tasks/TASK-006.md) 已于 2026-10-05 最终复查通关，三项必需 DoD 均有运行证据；[TASK-007](./tasks/TASK-007.md) 综合巩固任务卡已创建，状态 ⚪ 未开始，待用户明确开始。
+[TASK-006](./tasks/TASK-006.md) 与 [TASK-007](./tasks/TASK-007.md) 均于 2026-10-05 最终复查通关，TASK-007 三项必需 DoD 均有证据。下一张 [TASK-008：用接口统一模拟设备读取](./tasks/TASK-008.md) 状态 ⚪ 未开始，仅创建任务卡，未启动代码。

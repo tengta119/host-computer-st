@@ -75,6 +75,21 @@
 - 追问依据：[Microsoft Learn：async/await 编译错误](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/async-await-errors)、[File.WriteAllTextAsync](https://learn.microsoft.com/en-us/dotnet/api/system.io.file.writealltextasync?view=net-10.0)。
 - 2026-10-05 后续提交：学员自主将 SaveAsync 改为普通 Task 方法，保存 `File.WriteAllTextAsync` 返回的 Task 后直接 return；方法体不再使用 await。实际 `dotnet build Base/Base.csproj --no-restore` 退出码 0，0 警告、0 错误，原两处编译错误已消失。这是合法的任务转交写法：SaveAsync 调用写入 API，再将代表写入完成的任务交给调用方；调用方现有 `await SaveAsync(...)` 仍会等待写入完成。方法名 Async 和返回类型 Task 都不要求必须添加 async；只有在方法体内使用 await 时才需 async。若要在成功完成后输出日志，可在调用方 await 后输出，或在 SaveAsync 内采用 async/await 再输出。类似 Java 方法直接返回另一个操作的 CompletableFuture。当前仅编译与源码证据，未运行文件保存，Q6 保持待复习。
 
+- 2026-10-05 SaveAsync 返回追问：学员贴出 `async Task SaveAsync(...)` 内部 `await File.WriteAllTextAsync(...)`、末尾没有 return，询问为什么不需要返回。合并到本 Q6，不重复建条目，状态仍待复习。
+- 现象与原因：普通返回 Task 的方法需要显式 return 一个 Task；加 async 后，源码中的返回语句规则由异步方法机制处理。这里只完成保存，不提供额外结果值，所以使用 async Task，方法体可自然结束或写裸 `return;`。
+- 机制：编译器生成异步状态机及相应任务管理代码，调用方仍拿到代表整个 SaveAsync 完成的 Task。遇到未完成的写入任务时，方法暂停并将尚未完成的自身任务返回给调用方；写入成功并运行到方法末尾时，自身任务成功完成。若写入已完成，也可能在本次调用返回前就结束。不能把“没有手写 return”理解为没有返回 Task，或理解为到方法末尾才把 Task 交给调用方。内部写入 Task 与 SaveAsync 的整体完成 Task 在概念上职责不同，不保证讨论它们的对象身份。
+- 调用方示意（本轮未运行）：
+
+```csharp
+Task saving = SaveAsync(path, config); // 仍然拿到 Task。
+await saving;                        // 等待保存完成，没有额外结果值。
+Console.WriteLine("保存成功");
+```
+
+- 对照：普通 Task 方法由程序员 `return task;`；async Task 方法可以自然结束或裸 return；async Task<T> 方法在正常完成路径需 `return T类型的值;`。async Task 内部不能写 `return task;`。这与 Java 普通方法手写返回 CompletableFuture 相比，是 C# 编译器提供的异步方法转换。
+- 总结与复查点：Task 是交给调用方的完成凭据，结果值是另外一个概念；SaveAsync 有完成凭据、没有配置或其他结果值。后续自主实践继续区分普通 Task 返回、async Task 无值结束、async Task<T> 返回结果；不新增口试。本轮仅答疑与记录，未修改源码或重新运行，TASK-006 保持已通关，TASK-007 的现有进度不变。
+- 依据：[Microsoft Learn：异步返回类型（Task 与 Task<TResult>）](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/async-return-types)。
+
 ## Q7：TASK-004 的 Task.Delay 和 await 涉及多线程吗？
 
 - 状态：待复习

@@ -112,5 +112,6 @@ dotnet run --project Base -- load
 
 ## 参考
 
+- [问答：async Task 的结束与任务返回（Q6）](../questions/csharp-task-async.md)（2026-10-05 通关后答疑；概念待复习，本轮未运行或修改源码，任务保持 ✅ 已通关）。
 - [问答：WriteIndented 的作用与用法](../questions/csharp-json.md)（2026-10-05 答疑后经自主实现与运行验证，已掌握）。
 - [Microsoft Learn：System.Text.Json 序列化](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/how-to)

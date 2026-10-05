@@ -1,2 +1,9 @@
-await Base.Exercises.Task006.Task006Exercise.RunAsync(args);
+if (args.Length > 0 && args[0].Equals("task007", StringComparison.OrdinalIgnoreCase))
+{
+    await Base.Exercises.Task007.Task007Exercise.RunAsync(args[1..]);
+}
+else
+{
+    await Base.Exercises.Task006.Task006Exercise.RunAsync(args);
+}
 
