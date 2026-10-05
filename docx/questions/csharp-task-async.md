@@ -2,7 +2,7 @@
 
 ## Q1：什么是 Task，Task.Delay 怎么用？
 
-- 状态：待复习
+- 状态：已掌握
 - 关联：[TASK-004](../tasks/TASK-004.md)；[Task004Exercise.cs](../../Base/Exercises/TASK-004-async-reading/Task004Exercise.cs)
 - 现象：学员在 TASK-004 开始后询问 `Task` 的含义和 `Task.Delay` 的用法；骨架中的 `ReadAsync` 仍使用 `Task.CompletedTask` 占位。
 - 原因与机制：`Task` 表示一个异步操作及其完成状态，不等于一个专属线程；`Task<T>` 还携带完成后的 `T` 类型结果。`Task.Delay(500)` 返回约 500 毫秒后完成的 `Task`，单位为毫秒；`await Task.Delay(500)` 会暂停当前异步方法的后续执行，等待期间不阻塞线程。`Task.Delay` 只模拟耗时，不读取设备。`await` 作用于 `Task<Reading>` 时取得 `Reading`。
@@ -10,6 +10,10 @@
 - 易错点：`Task.Delay(500)` 不加 `await` 只得到一个 Task，后续代码不会因此等 500 毫秒；`Task.CompletedTask` 已经完成，不能模拟等待；`Thread.Sleep(500)` 会阻塞当前线程。
 - 复查点：在 TASK-004 自主把占位改为 `await Task.Delay(...)`，返回有效读数，结合运行输出说明 `Task<Reading>` 与 `Reading` 及执行顺序。
 - 依据：[Microsoft Learn：Task 类](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task)、[Task.Delay](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task.delay)、[async 返回类型](https://learn.microsoft.com/dotnet/csharp/programming-guide/concepts/async/async-return-types)。
+
+- 2026-10-05 TASK-006 审查补充（关联 Q1 的 Delay 易错点）：ReadAsync 中调用 Task.Delay(config.ReadDelayMs) 却未等待，实际设置 3500 ms 时整个进程仅 62 ms，50 ms 对照为 60 ms；读取仍立刻构造并返回结果。调用方 await ReadAsync 只跟踪该方法返回的 Task，不会自动收集它内部丢弃的延迟 Task。重新构建报 CS4014；需要在 ReadAsync 内等待延迟，再返回读数。保持待复习，未代改代码。
+
+- 2026-10-05 最终复查：学员自主在 TASK-006 的 ReadAsync 内添加 await Task.Delay(config.ReadDelayMs)，并由调用方 await 取得 Reading；修改配置 3500 ms 时进程 3565 ms，50 ms 对照 120 ms，正常 200 ms 为 265 ms，均输出对应设备 ID 和参数。CS4014 消失，Task/Delay 的自主应用及结果取得已验证，Q1 标为已掌握；线程、状态机等其他问答维持原状态。
 
 ## Q2：返回类型是 Task<Reading>，为什么可以直接 return Reading？
 
@@ -66,6 +70,10 @@
 - 易错点：`Task` 不是 `RunAsync` 内部某一行的任务，也不是读取的值；普通异步方法若写成 `async void`，调用方不能 `await` 它来跟踪完成。`async` 允许 `await`，`Task` 是向调用方公开完成状态的返回类型，两者作用不同。
 - 复查点：能解释 `Program.cs` 的 `await RunAsync()` 等待什么，以及为什么 `RunAsync` 不需要 `Task<Reading>`。
 - 依据：[Microsoft Learn：异步返回类型](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/async-return-types)。
+
+- 2026-10-05 TASK-006 追问：“await File.WriteAllTextAsync(path, configJson) 为什么不能这样写？”读取 [Task006Exercise.cs](../../Base/Exercises/TASK-006-json-config/Task006Exercise.cs) 并实际执行 `dotnet build Base/Base.csproj --no-restore`，退出码 1：CS4032（SaveAsync 未标 async 却使用 await）、CS0103（return writeAllTextAsync 中变量未定义）。调用语句及两个 string 参数本身合法；需要给包含 await 的 SaveAsync 添加 async，保留 Task 返回类型，并移除返回任务对象的语句。async Task 无结果值，方法体可自然结束或使用裸 return；编译器负责向调用方提供代表整个方法完成的 Task，不需改成 Task<Task>。File.WriteAllTextAsync 返回无结果值的 Task，await 等待写入完成后才继续输出。此为 Q6 在文件保存场景的复用，保持待复习；本轮未代改学员源码、未验证修复后的运行。
+- 追问依据：[Microsoft Learn：async/await 编译错误](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/async-await-errors)、[File.WriteAllTextAsync](https://learn.microsoft.com/en-us/dotnet/api/system.io.file.writealltextasync?view=net-10.0)。
+- 2026-10-05 后续提交：学员自主将 SaveAsync 改为普通 Task 方法，保存 `File.WriteAllTextAsync` 返回的 Task 后直接 return；方法体不再使用 await。实际 `dotnet build Base/Base.csproj --no-restore` 退出码 0，0 警告、0 错误，原两处编译错误已消失。这是合法的任务转交写法：SaveAsync 调用写入 API，再将代表写入完成的任务交给调用方；调用方现有 `await SaveAsync(...)` 仍会等待写入完成。方法名 Async 和返回类型 Task 都不要求必须添加 async；只有在方法体内使用 await 时才需 async。若要在成功完成后输出日志，可在调用方 await 后输出，或在 SaveAsync 内采用 async/await 再输出。类似 Java 方法直接返回另一个操作的 CompletableFuture。当前仅编译与源码证据，未运行文件保存，Q6 保持待复习。
 
 ## Q7：TASK-004 的 Task.Delay 和 await 涉及多线程吗？
 
