@@ -12,6 +12,7 @@
 | C# CancellationToken | [csharp-cancellation.md](./csharp-cancellation.md) | 0 | 2 |
 | C# using 与资源释放 | [csharp-resources.md](./csharp-resources.md) | 1 | 0 |
 | C# JSON 与配置文件 | [csharp-json.md](./csharp-json.md) | 0 | 1 |
+| 学习路线 | [learning-route.md](./learning-route.md) | 1 | 0 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
 
