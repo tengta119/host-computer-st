@@ -15,8 +15,7 @@ public static class Task006Exercise
 {
     public static async Task RunAsync(string[] args)
     {
-        string configPath = Path.Combine(
-            AppContext.BaseDirectory, "Exercises", "TASK-006-json-config", "device-config.json");
+        string configPath = Path.Combine(AppContext.BaseDirectory, "Exercises", "TASK-006-json-config", "device-config.json");
         Console.WriteLine($"TASK-006 配置路径：{configPath}");
         string mode = args.Length == 0 ? "load" : args[0].ToLowerInvariant();
 

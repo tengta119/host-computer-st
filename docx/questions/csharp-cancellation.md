@@ -90,3 +90,17 @@ catch (OperationCanceledException)
 - 自主实现将取消调度与配置关联，源的 Token 经循环、读取方法传到可取消等待，调用方 await 并处理 OperationCanceledException，using 覆盖任务生命周期。1000 ms 两次、10 ms 六次、1 ms 六次共 14 次均取消并安全结束，无取消后成功读数；正常三次读取、配置异常处理均通过。
 - Q1 的取消条件、取消源、Token、响应等待及异常传播/处理已有完整自主应用证据，标为已掌握，Q2 保持已掌握。计时精确、真实设备停止、其他未实践 API 细节不在掌握范围内；资源释放其他概念问答维持原状态。
 - 边界补充：CancelAfter(config.ReadDelayMs) 与每次等待时间相等，实际先完成一条（一次先完成两条）再取消当前读取；已完成的读数不因后续取消而撤回。这符合 TASK-007 现有 DoD，不把“必须取消第一轮”追加为门槛。若要固定取消第一轮，宜采用更短延迟并预留调度余量；14 次观察不构成所有调度情形的保证。
+
+## Q3：执行 cts.Cancel 后，什么时候会进入 catch，是到 await pendingReading 后吗？
+
+- 状态：待复习
+- 日期：2026-10-07
+- 关联：[TASK-005](../tasks/TASK-005.md)；[练习代码](../../Base/Exercises/TASK-005-cancel-reading/Task005Exercise.cs)
+- 现象：学员询问执行 cts.Cancel 后，调用方什么时候捕获取消异常。
+- 原因与机制：当前 RunScenarioAsync 的取消 catch 是在 `await pendingReading` 观察到任务取消并抛出取消异常后进入的；cts.Cancel 发出请求，不直接把当前代码跳到这个 catch。ReadAsync 调用时已经开始执行，并已在内部的 await Task.Delay 处等待；内部等待的取消响应不依赖调用方开始 await pendingReading。
+- 两处 await：Task.Delay 响应令牌取消后，其任务被取消；ReadAsync 在内部 await 观察到取消并抛出异常，未捕获异常，返回的 pendingReading 随之取消。调用方在 await pendingReading 处观察到这个取消结果，跳过成功读数输出并进入 OperationCanceledException 分支。
+- 时机边界：调用方到达 await 时，若 pendingReading 已取消，则立即抛出并进入 catch，无须先暂停；若内部取消传播尚未完成，调用方先暂停，待任务取消后恢复并进入 catch。内部 await 的继续代码可能在调用方到达 await 前或后执行，不保证 cts.Cancel 返回瞬间 pendingReading 已取消，也不能把取消请求时间当成 catch 执行时间。
+- 简短类比：Task 保存这次操作的完成结果或取消状态，await 在取得完成结果时把取消表现为异常。
+- 易错点：await pendingReading 不启动读取、不发出取消请求；“异常在 await 被调用方观察到”不等于“读取要等 await 才开始”。本段解释限当前练习的取消异常路径，不作 Cancel 方法本身永远不会抛出任何异常的通用断言。
+- 复查点：在后续自主实践中区分请求发出、内部操作响应、返回任务取消及调用方 await 观察结果；本轮未改动或运行学员代码，不新增口试要求，不改变 Q1/Q2 的已掌握证据。
+- 依据：[Microsoft Learn：await 运算符](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/await)、[CancellationTokenSource.Cancel](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource.cancel)。

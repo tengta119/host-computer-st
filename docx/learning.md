@@ -56,3 +56,4 @@
 - 已验证：[JSON 格式化与 WriteIndented](./questions/csharp-json.md) Q1（2026-10-05）；学员自主配置选项并生成带缩进 JSON，已标为已掌握。Task/await 的完成跟踪仍需结合漏等待问题继续复查。
 - 已补充背景：学员此前未接触 C# Lambda 与 LINQ；2026-09-27 已通过 TASK-003 的实践验收。其他 C#/.NET 基础、可用开发环境、目标设备或仿真条件、学习节奏仍待补充。
 - 2026-10-05 返回机制追问：[Task/async Q6](./questions/csharp-task-async.md) 已补充 SaveAsync 无手写 return 的原因、编译器负责返回完成任务及 Task/结果值的区别，概念保持待复习；本轮未运行或修改源码，不改变 TASK-006 通关或当前任务进度。
+- 2026-10-07 取消时机追问：[CancellationToken Q3](./questions/csharp-cancellation.md) 新增为待复习。区分 Cancel 发出请求、ReadAsync 内部等待响应、pendingReading 取消及调用方 await 观察后进入 catch；已取消任务在 await 处无需暂停即可抛出。保留 Q1/Q2 已验证的掌握范围，本轮未修改或运行源码，不改变任务状态或启动 TASK-009。

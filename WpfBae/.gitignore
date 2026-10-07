@@ -1,0 +1,21 @@
+# 环境变量文件（包含敏感信息）
+.env
+.paicli/
+
+# 编译输出
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+obj
+# 日志
+*.log
+.vs
+.idea
+# 操作系统
+.DS_Store
+Thumbs.db
+bin
