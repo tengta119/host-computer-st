@@ -14,6 +14,7 @@
 | C# JSON 与配置文件 | [csharp-json.md](./csharp-json.md) | 0 | 1 |
 | 学习路线 | [learning-route.md](./learning-route.md) | 1 | 0 |
 | .NET 项目与解决方案 | [dotnet-projects.md](./dotnet-projects.md) | 1 | 0 |
+| WPF 窗口、控件与布局 | [wpf-layout.md](./wpf-layout.md) | 1 | 0 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
 
