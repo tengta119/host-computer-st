@@ -4,7 +4,7 @@
 
 | 分类 | 文件 | 待复习 | 已掌握 |
 | :--- | :--- | :---: | :---: |
-| C# 属性与类型组织 | [csharp-properties.md](./csharp-properties.md) | 2 | 0 |
+| C# 属性与类型组织 | [csharp-properties.md](./csharp-properties.md) | 3 | 0 |
 | C# Dictionary | [csharp-dictionary.md](./csharp-dictionary.md) | 2 | 0 |
 | C# 事件 | [csharp-events.md](./csharp-events.md) | 1 | 4 |
 | C# Lambda 与 LINQ | [csharp-lambda-linq.md](./csharp-lambda-linq.md) | 1 | 1 |
@@ -15,6 +15,7 @@
 | 学习路线 | [learning-route.md](./learning-route.md) | 1 | 0 |
 | .NET 项目与解决方案 | [dotnet-projects.md](./dotnet-projects.md) | 1 | 0 |
 | WPF 窗口、控件与布局 | [wpf-layout.md](./wpf-layout.md) | 1 | 0 |
+| WPF 数据绑定 | [wpf-binding.md](./wpf-binding.md) | 3 | 1 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
 
