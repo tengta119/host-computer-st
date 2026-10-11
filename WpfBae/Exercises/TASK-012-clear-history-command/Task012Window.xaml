@@ -1,0 +1,19 @@
+<Window x:Class="WpfBae.Exercises.Task012.Task012Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TASK-012：清空历史命令" Height="460" Width="560"
+        MinHeight="460" MinWidth="360">
+    <!-- 沿用 TASK-011 的纵向布局、读取按钮与历史列表。 -->
+    <StackPanel Margin="20">
+        <TextBlock Text="设备 ID" />
+        <TextBox x:Name="DeviceIdTextBox" Text="TEMP-001" Margin="0,8,0,12" />
+        <Button x:Name="ReadButton" Content="读取温度" Click="ReadButton_Click" HorizontalAlignment="Left" Padding="12,6" />
+        <TextBlock Text="读取历史" Margin="0,16,0,8" />
+        <ListBox x:Name="HistoryListBox" ItemsSource="{Binding Readings, Mode=OneWay}" Height="170" />
+        <!-- Command 是 WPF 按钮属性，ClearCommand 是数据对象的自定义公开属性。
+             Binding 从 DataContext 取得那个命令对象。连接已由骨架提供。
+             此按钮没有 Click 处理器，WPF 根据命令判断是否可用并调用执行方法。 -->
+        <Button x:Name="ClearButton" Content="清空历史" Command="{Binding ClearCommand, Mode=OneWay}" HorizontalAlignment="Left" Padding="12,6" Margin="0,12,0,0" />
+        <TextBlock x:Name="StatusTextBlock" Text="{Binding StatusText, Mode=OneWay}" Margin="0,12,0,0" TextWrapping="Wrap" />
+    </StackPanel>
+</Window>

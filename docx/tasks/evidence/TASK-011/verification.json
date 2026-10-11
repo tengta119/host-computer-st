@@ -1,0 +1,43 @@
+{
+  "Date": "2026-10-11",
+  "BuildCommand": "dotnet build .\\WpfBae\\WpfBae.csproj --no-restore",
+  "BuildWarnings": 0,
+  "BuildErrors": 0,
+  "OriginalWindowTitle": "TASK-011：温度读取历史",
+  "OriginalExitCode": 0,
+  "RuntimeReview": "临时 WPF 程序引用原 WpfBae.dll，实际打开 Task011Window，触发 Button.Click 路由事件，读取界面项目与显示文本、绑定及集合通知",
+  "ReviewCommand": "dotnet run --project .\\Review.csproj",
+  "ReviewDirectory": "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task011-review-7a663886fb6245a4a7da53adc3a7e5aa",
+  "SourceHashes": [
+    {
+      "Path": "D:\\host-computer-st\\WpfBae\\App.xaml",
+      "Before": "7FA2626B1F5236B6E251A45634B2FCFE2E834751F1283A8177DA07C959447118",
+      "After": "7FA2626B1F5236B6E251A45634B2FCFE2E834751F1283A8177DA07C959447118",
+      "Unchanged": true
+    },
+    {
+      "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-011-reading-history\\ReadingHistoryState.cs",
+      "Before": "6BCA3027C4301510988350E8AF63F956EF99CE52A442E2425DA46665C6AABE62",
+      "After": "6BCA3027C4301510988350E8AF63F956EF99CE52A442E2425DA46665C6AABE62",
+      "Unchanged": true
+    },
+    {
+      "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-011-reading-history\\Task011Window.xaml",
+      "Before": "44B1C4933C2DA49C5A99717B53E56178FB47AC2AC88DBBD8F504D682127E1BD1",
+      "After": "44B1C4933C2DA49C5A99717B53E56178FB47AC2AC88DBBD8F504D682127E1BD1",
+      "Unchanged": true
+    },
+    {
+      "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-011-reading-history\\Task011Window.xaml.cs",
+      "Before": "762E01B61752E98D5D03C0425B7DF0168FC2F235239F46BF8EB0862BDC4B708F",
+      "After": "762E01B61752E98D5D03C0425B7DF0168FC2F235239F46BF8EB0862BDC4B708F",
+      "Unchanged": true
+    },
+    {
+      "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-010-reading-binding\\Task010Window.xaml.cs",
+      "Before": "1B924D24EEFD098F051680AE2236C456C116473DD1B8E16D84C91BABE3370180",
+      "After": "1B924D24EEFD098F051680AE2236C456C116473DD1B8E16D84C91BABE3370180",
+      "Unchanged": true
+    }
+  ]
+}

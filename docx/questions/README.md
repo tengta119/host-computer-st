@@ -16,8 +16,14 @@
 | .NET 项目与解决方案 | [dotnet-projects.md](./dotnet-projects.md) | 1 | 0 |
 | WPF 窗口、控件与布局 | [wpf-layout.md](./wpf-layout.md) | 1 | 0 |
 | WPF 数据绑定 | [wpf-binding.md](./wpf-binding.md) | 3 | 1 |
+| WPF 集合与历史列表 | [wpf-collections.md](./wpf-collections.md) | 0 | 1 |
+| WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 1 | 0 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
+
+2026-10-11 TASK-011 最终复查：[WPF 集合 Q1](./wpf-collections.md) 的 Add/Clear 与已绑定列表自动更新已有学员实现及运行证据，按此范围改为已掌握，统计为待复习 0、已掌握 1。骨架中的数据模型、getter 和绑定不计自主设计，元素内部属性通知不随之升级。
+
+2026-10-11：ObservableCollection 与 List 的区别追问已合并到 [WPF 集合 Q1](./wpf-collections.md)，补充相同的保存操作、集合变化事件、普通 List 初始显示与后续新增的差别、元素属性通知边界；统计保持待复习 1、已掌握 0。
 
 2026-10-05：SaveAsync 的“async Task 为什么无需手写 return”追问已合并到 [Task/async 问答 Q6](./csharp-task-async.md)，保持待复习，统计不变。
 

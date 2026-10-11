@@ -1,0 +1,205 @@
+[
+  {
+    "kind": "initial",
+    "Title": "TASK-011：温度读取历史",
+    "visible": true,
+    "hwnd": 118293382,
+    "correctDataContext": true,
+    "correctBinding": true,
+    "sameCollection": true,
+    "collectionCount": 0,
+    "listCount": 0,
+    "passed": true
+  },
+  {
+    "kind": "first-read",
+    "input": "TEMP-001",
+    "collectionCount": 1,
+    "listCount": 1,
+    "rows": [
+      {
+        "DeviceId": "TEMP-001",
+        "Value": 26.5,
+        "Unit": "°C"
+      }
+    ],
+    "renderedTexts": [
+      "TEMP-001 26.5 °C "
+    ],
+    "statusText": "读取成功",
+    "collectionNotifications": [
+      "Add"
+    ],
+    "sameCollection": true,
+    "bindingRetained": true,
+    "passed": true
+  },
+  {
+    "kind": "second-read",
+    "input": "TEMP-001",
+    "collectionCount": 2,
+    "listCount": 2,
+    "rows": [
+      {
+        "DeviceId": "TEMP-001",
+        "Value": 26.5,
+        "Unit": "°C"
+      },
+      {
+        "DeviceId": "TEMP-001",
+        "Value": 26.5,
+        "Unit": "°C"
+      }
+    ],
+    "renderedTexts": [
+      "TEMP-001 26.5 °C ",
+      "TEMP-001 26.5 °C "
+    ],
+    "statusText": "读取成功",
+    "collectionNotifications": [
+      "Add"
+    ],
+    "sameCollection": true,
+    "bindingRetained": true,
+    "passed": true
+  },
+  {
+    "kind": "changed-id",
+    "input": "TEMP-002",
+    "collectionCount": 3,
+    "listCount": 3,
+    "rows": [
+      {
+        "DeviceId": "TEMP-001",
+        "Value": 26.5,
+        "Unit": "°C"
+      },
+      {
+        "DeviceId": "TEMP-001",
+        "Value": 26.5,
+        "Unit": "°C"
+      },
+      {
+        "DeviceId": "TEMP-002",
+        "Value": 26.5,
+        "Unit": "°C"
+      }
+    ],
+    "renderedTexts": [
+      "TEMP-001 26.5 °C ",
+      "TEMP-001 26.5 °C ",
+      "TEMP-002 26.5 °C "
+    ],
+    "statusText": "读取成功",
+    "collectionNotifications": [
+      "Add"
+    ],
+    "sameCollection": true,
+    "bindingRetained": true,
+    "passed": true
+  },
+  {
+    "kind": "empty-input",
+    "input": "",
+    "collectionCount": 3,
+    "listCount": 3,
+    "rows": [
+      {
+        "DeviceId": "TEMP-001",
+        "Value": 26.5,
+        "Unit": "°C"
+      },
+      {
+        "DeviceId": "TEMP-001",
+        "Value": 26.5,
+        "Unit": "°C"
+      },
+      {
+        "DeviceId": "TEMP-002",
+        "Value": 26.5,
+        "Unit": "°C"
+      }
+    ],
+    "renderedTexts": [
+      "TEMP-001 26.5 °C ",
+      "TEMP-001 26.5 °C ",
+      "TEMP-002 26.5 °C "
+    ],
+    "statusText": "请输入设备 ID；本次没有新增记录。",
+    "collectionNotifications": [],
+    "sameCollection": true,
+    "bindingRetained": true,
+    "passed": true
+  },
+  {
+    "kind": "spaces-input",
+    "input": "   ",
+    "collectionCount": 3,
+    "listCount": 3,
+    "rows": [
+      {
+        "DeviceId": "TEMP-001",
+        "Value": 26.5,
+        "Unit": "°C"
+      },
+      {
+        "DeviceId": "TEMP-001",
+        "Value": 26.5,
+        "Unit": "°C"
+      },
+      {
+        "DeviceId": "TEMP-002",
+        "Value": 26.5,
+        "Unit": "°C"
+      }
+    ],
+    "renderedTexts": [
+      "TEMP-001 26.5 °C ",
+      "TEMP-001 26.5 °C ",
+      "TEMP-002 26.5 °C "
+    ],
+    "statusText": "请输入设备 ID；本次没有新增记录。",
+    "collectionNotifications": [],
+    "sameCollection": true,
+    "bindingRetained": true,
+    "passed": true
+  },
+  {
+    "kind": "clear",
+    "input": null,
+    "collectionCount": 0,
+    "listCount": 0,
+    "rows": [],
+    "renderedTexts": [],
+    "statusText": "已清空",
+    "collectionNotifications": [
+      "Reset"
+    ],
+    "sameCollection": true,
+    "bindingRetained": true,
+    "passed": true
+  },
+  {
+    "kind": "read-after-clear",
+    "input": "  TEMP-003  ",
+    "collectionCount": 1,
+    "listCount": 1,
+    "rows": [
+      {
+        "DeviceId": "TEMP-003",
+        "Value": 26.5,
+        "Unit": "°C"
+      }
+    ],
+    "renderedTexts": [
+      "TEMP-003 26.5 °C "
+    ],
+    "statusText": "读取成功",
+    "collectionNotifications": [
+      "Add"
+    ],
+    "sameCollection": true,
+    "bindingRetained": true,
+    "passed": true
+  }
+]
