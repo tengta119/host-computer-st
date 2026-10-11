@@ -1,7 +1,7 @@
 # TASK-012：用 Command 清空历史并控制按钮是否可用
 
 - 阶段：第二阶段：WPF（起步）
-- 状态：🟡 进行中
+- 状态：✅ 已通关
 - 计划来源：[计划原文](../plan.md)「三、第二阶段：WPF」中 ObservableCollection 后的 Command；具体场景与验收按当前实践设计。
 - 选择依据：TASK-011 已验证同一集合的 Add/Clear、列表自动更新及空白保护。下一步让“清空历史”既描述执行动作，又能说明当前是否允许执行，沿用熟悉场景，只引入必要的命令知识。
 - 难度/预计时间：待补充（计划未给出）。
@@ -68,9 +68,9 @@ Command 在这里是“由按钮使用的命令对象”。框架的 ICommand �
 
 ## 验收标准（DoD）
 
-- [ ] 项目可编译并实际打开任务窗口；清空按钮 Command 通过 Binding 取得 ICommand 对象，与读取动作使用同一历史集合；无旧清空 Click 或直接修改控件项目的替代路径。
-- [ ] 空集合时清空按钮禁用；有效读取产生记录后按钮可用；CanExecute 的条件为历史 Count > 0，集合变化后的通知能使按钮重新检查条件。
-- [ ] 点击已启用的清空按钮执行命令后，集合与列表均为空且按钮禁用；再次读取恢复历史及按钮可用；空字符串/纯空格提示且不新增、不删除已有记录。
+- [x] 项目可编译并实际打开任务窗口；清空按钮 Command 通过 Binding 取得 ICommand 对象，与读取动作使用同一历史集合；无旧清空 Click 或直接修改控件项目的替代路径。
+- [x] 空集合时清空按钮禁用；有效读取产生记录后按钮可用；CanExecute 的条件为历史 Count > 0，集合变化后的通知能使按钮重新检查条件。
+- [x] 点击已启用的清空按钮执行命令后，集合与列表均为空且按钮禁用；再次读取恢复历史及按钮可用；空字符串/纯空格提示且不新增、不删除已有记录。
 
 ## 可选巩固
 
@@ -79,6 +79,23 @@ Command 在这里是“由按钮使用的命令对象”。框架的 ICommand �
 
 ## 状态与证据
 
+- 2026-10-11 最终审查：三个必需 DoD 全部通过，状态 ✅ 已通关。学员完成 CanExecute 的 Count > 0 判断、Execute 中清空原集合及“已清空”提示；审查未修改学员源码，6 个相关文件前后 SHA256 一致。证据：[8 个实际窗口场景](./evidence/TASK-012/results.json)、[构建、原程序启动与源码哈希](./evidence/TASK-012/verification.json)、[审查程序](./evidence/TASK-012/Review.cs)。
+  - DoD 1 **通过**：实际执行 `dotnet build .\WpfBae\WpfBae.csproj --no-restore`，0 警告、0 错误；Start-Process 启动原 WpfBae.exe，标题“TASK-012：清空历史命令”，正常关闭退出码 0。临时 WPF 审查程序引用构建后的原程序集并实际显示 Task012Window；确认窗口和命令持有同一 ReadingCommandState，按钮 Command 的 OneWay Binding 路径为 ClearCommand，列表来源为该对象的同一个 Readings。源码无清空 Click 或直接修改控件项目。
+  - DoD 2 **通过**：初始 0 条，CanExecute=false、清空按钮禁用；TEMP-001、TEMP-002 依次读取后为 1、2 条，CanExecute=true、按钮启用，旧记录保留。每次 Add 收到集合通知及一次 CanExecuteChanged，通知来源为原集合/命令；列表实际生成的文字包含对应 ID、26.5 和 °C。
+  - DoD 3 **通过**：通过 ButtonAutomationPeer/IInvokeProvider.Invoke 调用实际按钮点击路径，由 WPF 执行绑定命令，而非直接调用 Execute。清空后集合/列表均为 0，Reset 通知触发条件重查，按钮禁用，状态“已清空”；带两侧空格的 TEMP-003 再读取后为 1 条并恢复启用，再清空仍正确。空字符串和纯空格各自提示，原 2 条历史保留，没有集合或命令条件通知。
+  - 掌握范围：在已提供的绑定、集合订阅与通知工具上自主补充命令条件和执行动作。事件声明、委托类型、转发工具和框架订阅均由骨架提供；它们的原理不因本次功能通过而认定已掌握，C# 事件 Q6 继续待复习。if/return 写法正确，无需为了简写而改动；原 TODO 注释保留。
+  - 下一步依据：按计划 Command → MVVM，沿用历史场景把读取逻辑从窗口移到自定义界面数据对象，巩固已有命令而非引入通用命令框架。仅创建 [TASK-013](./TASK-013.md)，状态 ⚪ 未开始；本轮不创建其源码、不切换入口、不认定阶段整体完成。
+- 2026-10-11 过程答疑续：解释直接委托调用与 Invoke 等效，handler?.Invoke 对应当前局部变量的 if 非空判断加调用，骨架完整写法是教学选择；记录至 [C# 事件 Q6](../questions/csharp-events.md)。未修改或运行源码，不新增验收证据，任务/DoD 不变。
+- 2026-10-11 过程答疑续：拆分 EventHandler 委托类型与 CanExecuteChanged 事件的身份，补外部订阅/取消、内部发通知的权限区别；后续解释 delegate 定义自定义 MessageHandler、事件使用 .NET 已有 EventHandler，两者同为委托类型而非两套机制。记录至 [C# 事件 Q6](../questions/csharp-events.md)，WPF 命令 Q1 引用。本轮未修改或运行源码，不新增验收证据，任务/DoD 不变。
+- 2026-10-11 过程答疑续：解释通知中传 this 是通过 sender 报告当前命令为事件来源，普通实参/形参对应，接收方可使用或忽略来源参数；已合并至 [WPF 命令 Q1](../questions/wpf-commands.md)。未修改或运行学员源码，不新增验收或掌握证据，任务与 DoD 不变。
+- 2026-10-11 过程答疑续：确认学员复述事件通知会调用 WPF 按钮处理方法的主线正确，补充后续检查 CanExecute、更新可用状态；不触发点击或执行清空。合并至 [WPF 命令 Q1](../questions/wpf-commands.md)，未修改或运行源码，不新增 DoD 验收证据，任务仍进行中。
+- 2026-10-11 过程答疑续：解释 WPF 订阅意味着登记处理方法，示例采用完整普通方法及 += new EventHandler(...)，说明登记时不调用、通知发布后才调用；核对框架内部在 Command 连接时完成登记的实际源码。内容合并至 [WPF 命令 Q1](../questions/wpf-commands.md)，未把示例添加到项目，未修改或运行学员源码，任务/DoD 不变。
+- 2026-10-11 过程答疑续：针对“为何不直接调用、委托是否只能引用一个方法”，在 [C# 事件 Q6](../questions/csharp-events.md) 补充调用者选择读数后续显示/报警的模拟流程，以及 += 组合方法；说明当前命令通知无需知道接收方方法名称。仅更新讲解记录，未修改或运行学员源码，不新增验收或掌握证据，任务仍进行中。
+- 2026-10-11 过程答疑续：学员追问“当前已注册的处理方法是什么”，已在 [WPF 命令 Q1](../questions/wpf-commands.md) 引官方 ButtonBase 与 CanExecuteChangedEventManager 源码，明确直接订阅内部转发方法，再转给按钮检查条件。此次未运行本地订阅枚举、未修改学员源码，不新增验收证据，任务和 DoD 保持原状态。
+- 2026-10-11 过程答疑续：学员追问委托的含义，补充普通方法调用、delegate 类型声明、完整 new 保存方法引用和 handler(...) 调用的最小示例，统一记录于 [C# 事件 Q6](../questions/csharp-events.md) 并从 WPF 命令 Q1 链接。未添加示例到学员项目，未修改或运行源码，不新增验收或掌握证据，任务仍进行中，DoD 未勾选。
+- 2026-10-11 过程答疑续：解释示例 command 来自 ClearCommand 属性，事件调用中的 this 作为 sender 传递发送者；两条路径可引用同一对象。核对 WPF 官方 ButtonBase 与 CommandHelpers 源码，实际按钮从已连接的 Command 属性重查条件；问答已合并至 [WPF 命令 Q1](../questions/wpf-commands.md)。未修改或运行学员源码，不新增 DoD 或掌握证据，任务仍进行中。
+- 2026-10-11 过程答疑续：学员询问 CanExecuteChanged 是否指向 CanExecute、是否类似 Java 反射，已合并至 [WPF 命令 Q1](../questions/wpf-commands.md)，说明事件→WPF 注册的处理方法→ICommand.CanExecute 的调用关系，采用监听器/回调类比。未修改或运行源码，不新增验收或掌握证据，任务仍进行中，DoD 保持未勾选。
+- 2026-10-11 过程答疑：学员追问 CanExecuteChanged 事件声明的用途，已合并至 [WPF 命令 Q1](../questions/wpf-commands.md)，逐行说明 EventHandler、?、局部 handler、null 判断、调用订阅方法和按钮重新检查条件的过程，并澄清查询或修改读数内部属性不会自动触发集合事件。读码已见学员补充 CanExecute 的 Count > 0 判断、Execute.Clear 与完成提示；本轮未修改或运行源码，任务状态仍 🟡 进行中，三项 DoD 均未勾选，未新增掌握证据。
 - 2026-10-11：TASK-011 全部必需 DoD 实际审查通过后，按计划创建下一张递增 ID 任务卡，状态 ⚪ 未开始。未创建 TASK-012 源码、未运行或验收、未切换入口。
 - 2026-10-11 启动：用户明确要求“开启 task012”，已创建上述四个专属文件、切换 App.xaml 并同步状态为 🟡 进行中。实际执行 `dotnet build .\WpfBae\WpfBae.csproj --no-restore`，0 警告、0 错误；通过 PowerShell Start-Process 启动原 WpfBae.exe，确认窗口标题“TASK-012：清空历史命令”，CloseMainWindow 后退出码 0。仅验证骨架编译和原应用启动，CanExecute 为 false 占位，清空动作及完成提示仍留 TODO，尚未验证学员实现的按钮状态切换和清空/恢复，三项 DoD 保持未勾选；不新增已掌握能力。
 - 同轮一致性检查：TASK-010/011 共 6 个原文件创建骨架前后 SHA256 一致，旧作品未修改；相关文档链接全部存在，TASK-012 在任务卡、任务索引、进度与导航中均为进行中，三个必需 DoD 均未勾选。

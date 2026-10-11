@@ -21,6 +21,10 @@ public class ClearHistoryCommand : ICommand
         // object? parameter 是接口规定的可空参数，本任务不传命令参数，不需要使用它。
         // TODO 1（首个动作）：用 _state.Readings.Count > 0 的判断替换下面的 false。
         // Count 是集合的记录数量；> 0 的结果本身就是 bool。
+        if (_state.Readings.Count > 0)
+        {
+            return true;
+        }
         return false;
     }
 
@@ -35,9 +39,10 @@ public class ClearHistoryCommand : ICommand
 
         // TODO 2：调用 _state.Readings.Clear()，清空同一份历史集合。
         // 清空会发出集合变化通知；列表更新和按钮重新检查条件均已连接。
+        _state.Readings.Clear();
 
         // TODO 3：把下面的占位提示改为“已清空”等完成提示。
-        _state.StatusText = "清空动作尚未完成：请继续 TODO 2、3。";
+        _state.StatusText = "已清空";
     }
 
     // ICommand 要求的事件；EventHandler 来自 .NET 的 System。

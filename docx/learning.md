@@ -1,7 +1,7 @@
 # 学习进度：上位机开发
 
 > 计划原文：[plan.md](./plan.md)（复制自 `D:\tmp\上位机.md`）｜已知背景：Java 后端；计划提及 Java、并发、网络、数据库经验，具体熟练度待补充｜总目标：迁移已有能力，逐步具备上位机界面、通信、设备控制、数据采集与稳定性开发能力。
-> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜当前任务：TASK-012（🟡 进行中）
+> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜最近通关：TASK-012｜下一任务：TASK-013（⚪ 未开始）
 
 ## 阶段与路线概览
 
@@ -29,14 +29,16 @@
 | [TASK-009：用 WPF 窗口与按钮事件显示设备读数](./tasks/TASK-009.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-09 审查：构建、原应用启动、按钮自动化调用、不同 ID、空白及恢复、默认与最小尺寸布局均验证通过，三项 DoD 已勾选 |
 | [TASK-010：用 Binding 更新模拟温度读数](./tasks/TASK-010.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-09 审查：编译与原应用启动、同一 DataContext、两个 OneWay Binding、五种输入场景和两项通知均验证通过，三项 DoD 已勾选 |
 | [TASK-011：用 ObservableCollection 显示温度读取历史](./tasks/TASK-011.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-11 实际审查：构建 0 警告/错误，原窗口启动退出正常；列表绑定、连续追加、修改 ID、空白保护、清空与恢复均通过，同集合与通知已验证，三项 DoD 已勾选 |
-| [TASK-012：用 Command 清空历史并控制按钮是否可用](./tasks/TASK-012.md) | 第二阶段：WPF（起步） | 🟡 进行中 | 2026-10-11 按用户要求开始；独立命令/数据/窗口骨架及入口已准备，构建 0 警告/错误、原窗口正常启动退出；判断和清空仍留 TODO |
+| [TASK-012：用 Command 清空历史并控制按钮是否可用](./tasks/TASK-012.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-11 实际审查：构建 0 警告/错误、原窗口启动退出正常；8 个场景验证同对象/集合、绑定、按钮条件切换、点击清空、恢复与空白保护，三项 DoD 通过 |
+| [TASK-013：把读取逻辑从窗口移到 ViewModel](./tasks/TASK-013.md) | 第二阶段：WPF（起步） | ⚪ 未开始 | 按计划 Command → MVVM，只创建任务卡；沿用历史场景巩固命令与输入绑定，未创建源码或切换入口 |
 
 ## 🟡 正在学习
 
-- [TASK-012](./tasks/TASK-012.md) 于 2026-10-11 按用户“开启 task012”开始，状态 🟡 进行中。专属目录 `WpfBae/Exercises/TASK-012-clear-history-command/` 已准备命令类、数据类及窗口两个文件，App.xaml 已启动新窗口；TASK-010/011 学员代码保留。框架 ICommand、按钮 Command、自定义命令/数据对象及三个成员职责已说明，使用完整普通语法。CanExecute 条件、Execute 清空和成功提示留 TODO；第一步只按 Count > 0 返回判断并在读取后观察按钮可用。实际构建 0 警告/错误，原窗口标题正确、退出码 0；仅为骨架验证，三项 DoD 未勾选。TASK-011 通关及既有属性/布局复习范围保留。
+- [TASK-012](./tasks/TASK-012.md) 已于 2026-10-11 最终审查通关，三个必需 DoD 均有实际代码和运行证据。没有进行中的实践任务；[TASK-013](./tasks/TASK-013.md) 仅创建卡片，状态 ⚪ 未开始，等待用户明确开始。App.xaml 仍指向 TASK-012，旧作品未修改。委托、事件工具、属性与布局继续按已有记录复习，不因任务通关推定全部概念掌握。
 
 ## ✅ 已掌握
 
+- TASK-012 中学员自主补充的 CanExecute 历史 Count > 0 判断、Execute 清空原集合和“已清空”提示于 2026-10-11 实际验证。实际按钮通过绑定命令执行，空→读取启用→清空禁用→再次读取启用完整链路正确；两种空白输入保留历史。同一对象、集合和命令引用以及集合/条件通知均已核对，8 个场景全部通过。[WPF 命令 Q1](./questions/wpf-commands.md) 限此应用范围标为已掌握；提供的构造连接、属性、事件声明、通知工具和框架订阅不计自主设计，C# 事件 Q6 继续待复习。
 - TASK-011 中学员补充的原历史集合 Add/Clear 与成功提示已于 2026-10-11 实际验证。在已提供的列表绑定上，TEMP-001 连续读取显示两条，换 TEMP-002 后保留旧记录并追加第三条；空字符串/纯空格提示且维持 3 条；清空后集合与列表均为 0，再读取两侧带空格的 TEMP-003 后均为 1。每次 Add 有新增通知，Clear 有 Reset，数据对象、集合、ItemsSource 与绑定始终保留。[WPF 集合 Q1](./questions/wpf-collections.md) 按此应用范围标为已掌握；数据类、集合初始化、完整 getter、输入校验与绑定由骨架提供，不计自主设计，不扩展到元素内部属性更新或所有事件原理。
 - TASK-010 中自主连接的 DataContext、ResultText/StatusText 两个 OneWay Binding、setter 内对应名称的通知调用，以及按钮修改同一数据对象的结果/状态属性已于 2026-10-09 实际验证。TEMP-001/002 显示当前 ID、26.5 °C；空字符串/纯空格提示并清除结果；带两侧空格的 TEMP-003 恢复成功；每次收到两项 PropertyChanged，绑定始终保留。掌握范围限此基本绑定与通知工具的应用，类结构、get/set 字段保存、事件声明/发布工具由骨架提供，不计自主设计；new()/readonly、nameof、?.Invoke、PropertyChangedEventArgs 和完整属性语法等保持原复习范围。[绑定 Q1](./questions/wpf-binding.md) 按本次范围标已掌握，其他问答不一并升级。
 - TASK-009 中自主实现的当前输入 Text.Trim()、空白判断、提示和清除旧结果、提前返回、Reading 对象构造与 ToString、结果/状态控件 Text 更新，已于 2026-10-09 通过实际 WPF 窗口的按钮自动化调用验证。TEMP-001/002 随输入变化，空字符串及纯空格清除结果，带两侧空格的 TEMP-003 恢复成功。窗口骨架、控件名称及 Click 关联由教练提供，不计自主设计；StackPanel/Grid、Margin 的布局问答仍待复习，不扩大为所有 WPF 概念已掌握。
@@ -51,6 +53,18 @@
 
 ## 待复习与下一步
 
+- 2026-10-11 最终审查更新：TASK-012 已通关；下方同日过程答疑记录中的“未运行/进行中/状态不变”均描述当时情况。委托基础、框架内部订阅与通知工具原理不随功能验收升级，后续继续用完整普通语法和实际对象连接解释，不追加口试。
+- 2026-10-11 委托调用写法追问：[C# 事件 Q6](./questions/csharp-events.md) 补充 handler(...) 与 handler.Invoke(...) 同为委托调用，?. 在局部变量为 null 时跳过，对照当前完整 if 判断；说明骨架完整写法用于先展示步骤，并非简写不可用。?. 不吞掉处理方法异常。本轮未修改或运行源码，问答仍待复习，TASK-012/DoD 不变。
+- 2026-10-11 委托与事件身份追问：学员需要分清 EventHandler 委托类型、event 声明关键字、CanExecuteChanged 事件及 handler 委托变量；已在 [C# 事件 Q6](./questions/csharp-events.md) 拆开解释，并补外部订阅/取消与类内部发通知的区别。后续追问补充 delegate 用来定义委托类型，MessageHandler 自定义、EventHandler 由 .NET 提供，事件声明使用已有类型；两者不是两套机制。不因事件实践通关默认掌握类型关系，不记录为学员错题；本轮未改或运行源码，问答仍待复习，TASK-012/DoD 不变。
+- 2026-10-11 事件来源参数追问：[WPF 命令 Q1](./questions/wpf-commands.md) 补充 handler(this, EventArgs.Empty) 按普通参数传递，把当前命令对象引用交给 sender，报告通知来源；EventHandler 约定两个参数，传 this 是来源约定而非 C# 限制。多个来源可由同一处理方法通过 sender 区分；本任务按钮已持有 Command，可以不使用 sender。仅补必要机制，未运行或改源码，问答和 TASK-012 状态不变。
+- 2026-10-11 理解确认：学员正确复述事件通知会调用 WPF 按钮的处理方法；补充接收通知后重新调用 CanExecute、更新可用状态，不执行清空。记录至 [WPF 命令 Q1](./questions/wpf-commands.md)，属于概念反馈，问答仍待复习；未修改或运行源码，TASK-012 和 DoD 不变。
+- 2026-10-11 WPF 订阅动作追问：[WPF 命令 Q1](./questions/wpf-commands.md) 补充“订阅就是登记之后通知时要调用的方法”，使用完整普通处理方法与 += new EventHandler(...) 区分登记和调用。说明 WPF 控件也是框架 C# 类，Command 连接时框架通过内部工具完成 += 登记，而非事件名称自动寻找方法。学员当前需要看到实际连接动作，不能只重复“自动监听”；保留 TASK-002 已验证应用，不扩展为 WPF 订阅工具全部掌握。本轮未修改或运行源码，TASK-012、DoD 与问答状态不变。
+- 2026-10-11 委托用途追问：学员指出固定委托调用看不出相对直接调用的用途，已在 [C# 事件 Q6](./questions/csharp-events.md) 补充“同一个模拟读取流程，由调用者传入显示/报警处理方法”的完整普通写法及多个方法组合。先承认固定已知方法直接调用足够，前例仅展示语法未展示必要性，属于教学示例需改进，不记为学员错误；不再仅以定义解释用途。概念待复习，既有 TASK-002/003 应用证据保留，本轮未运行或改源码，TASK-012 和 DoD 不变。
+- 2026-10-11 处理方法来源追问：[WPF 命令 Q1](./questions/wpf-commands.md) 已通过官方源码具体指出命令事件直接订阅内部转发方法 HandlerSink.OnCanExecuteChanged，再交给按钮基类 ButtonBase.OnCanExecuteChanged，最后检查学员的 CanExecute。说明注册在 Button.Command 连接时由 WPF 完成，框架方法不在学员文件中；给出完整 new EventHandler 和 += 对应。只解释当前转发路径，不引入弱引用细节。未运行本地订阅枚举或改源码，问答和任务状态不变。
+- 2026-10-11 委托基础反馈：学员明确追问“委托是什么意思”，新增 [C# 事件 Q6](./questions/csharp-events.md)，状态待复习。从完整普通方法、自定义 delegate 类型的参数/返回值要求、完整 new 保存方法引用、通过变量调用依次说明，再对应 EventHandler/handler/event 的角色。引用方法时不执行方法，带括号调用时执行；不以 TASK-002/003 的已验证事件或 Lambda 使用推定该基础全部理解。保留既有掌握范围，本轮未修改或运行源码，TASK-012 与 DoD 不变。
+- 2026-10-11 命令对象来源追问：[WPF 命令 Q1](./questions/wpf-commands.md) 进一步区分示例 `_state.ClearCommand` 属性取得命令与 handler 的 this→sender 参数传递。同一对象有不同引用来源；按钮通过 Binding 已持有命令，事件只请求重查条件。已核对官方 WPF 源码，重查从按钮的 Command 取得对象，不依赖 sender。明确前条两行是接口调用示意而非框架源码，避免把省略的调用路径当成隐藏赋值。未运行或改源码，任务及问答状态不变。
+- 2026-10-11 命令事件/反射追问：[WPF 命令 Q1](./questions/wpf-commands.md) 补充 CanExecuteChanged 与 CanExecute 是不同成员，事件调用 WPF 注册的处理方法，后者通过 ICommand 直接调用条件方法；此路径是事件回调与接口调用，不能把事件理解为 CanExecute 的方法引用或反射查找。结合 Java 监听器说明，Q1 保持待复习。本轮未运行或改源码，TASK-012 与 DoD 不变。
+- 2026-10-11 命令事件追问：[WPF 命令 Q1](./questions/wpf-commands.md) 已补充事件声明供按钮订阅、EventHandler 引用处理方法、? 与无订阅者 null、handler(this, EventArgs.Empty) 调用订阅方法以及 WPF 重新调用 CanExecute 的机制。学员当前知道集合变化到通知工具的连接，但此声明/调用角色仍需解释，Q1 保持待复习，不覆盖 TASK-002 已验证的范围。集合查询和元素内部属性修改不自动触发 CollectionChanged；本轮仅更新记录，未运行或改源码。
 - 2026-10-11 TASK-012 起点：[WPF 命令 Q1](./questions/wpf-commands.md) 记录 ICommand 的来源、Button.Command 与自定义 ClearCommand 属性的连接、this 传递同一数据对象、CanExecute 的 bool/Count 判断、Execute 动作和 CanExecuteChanged 重查通知，状态待复习。属性通知、集合订阅与通知辅助方法由骨架提供，不因新代码存在认定自主掌握；首个动作只补 CanExecute 判断，不要求口试。
 - 2026-10-11 集合区别答疑：[WPF 集合 Q1](./questions/wpf-collections.md) 已增量补充 ObservableCollection 与 List 的共同操作及集合变化通知差别；普通 List 可以显示已有数据，但后续 Add 不会提供列表自动更新所需的集合通知；集合增删与已有读数内部属性改变分开解释。问答保持待复习，本轮未修改或运行源码，TASK-011 仍进行中，DoD 不变。
 - 学习语言偏好（2026-10-05）：讲解、练习代码注释、TODO 说明及运行提示使用中文；保留 C# 关键字、API 和代码标识符的原名。
@@ -60,7 +74,7 @@
 - 2026-10-09 C# 属性基础反馈：学员尚未学过带实现的 get/set、value 和 `get =>` 简写。已新增[属性 Q3](./questions/csharp-properties.md)，状态待复习；后续先用普通方法与完整花括号解释读写，再介绍属性简写和通知，不因使用过自动属性或骨架带有属性就默认理解。本轮未改源码、未运行或验收，任务和必需 DoD 状态不变。
 - 2026-10-09 框架类型来源答疑：[绑定 Q4](./questions/wpf-binding.md)解释 .NET 自带的 System.ComponentModel.PropertyChangedEventArgs、using、构造函数传入属性名称与 PropertyName 的作用，状态待复习。已见两个 setter 的字符串属性名通知调用，尚未运行或验收；不因代码存在认定通知机制已掌握，TASK-010 仍进行中。
 - 2026-10-05 路线答疑：[为上位机学习 C#，TASK-008 后能否进入 WPF](./questions/learning-route.md)。结合计划与任务级验收，当前基础已足够开始 WPF 起步，C# 集中入门可先告一段落；异步、属性、可空类型及资源释放继续随实践巩固。待复习问答不作为进入 WPF 的单独考试，第一阶段整体状态保持原状；当时 TASK-009 未开始，已于 2026-10-09 按用户要求启动。
-- 下一步：继续 [TASK-012](./tasks/TASK-012.md)（🟡 进行中），先完成 ClearHistoryCommand.cs 的 TODO 1，通过读取记录观察清空按钮从禁用变可用，再实现 Execute 清空及提示，最后提交完整状态链路验收。只学习这个具体命令，不引入整套 MVVM 或通用命令工具。第一阶段仍有 Task/线程、属性及 using 待复习，WPF 布局及骨架语法也继续巩固，不认定阶段整体通关。
+- 下一步：[TASK-013](./tasks/TASK-013.md)（⚪ 未开始），按计划进入最小 MVVM 拆分：沿用历史界面，把读取从窗口移到自定义 ViewModel，先解释输入 TwoWay Binding 和对象连接，再做一个可观察改动。仅创建任务卡，未准备源码或切换入口；用户明确开始后再落地。继续巩固委托、事件、完整属性语法、Task/线程、using 与布局，不认定阶段整体通关。
 - 巩固：TASK-005 角色混淆及 TASK-007 重抛/固定取消延迟错题均已有自主修复证据；CancellationToken Q1 标为已掌握。若希望固定取消第一轮，应选择更短延迟并预留调度余量，这是后续实践优化，不追加本任务验收门槛。
 - 待复习：[Task、async/await 与线程关系](./questions/csharp-task-async.md)；TASK-004 的最终结果输出由教练代写，后续实践继续核对这些概念。
 - Task/Delay 用法复查：[Q1](./questions/csharp-task-async.md) 已由 TASK-006 自主等待实现及 3500/50 ms 对照运行验证，标为已掌握；其他 Task 问答维持原状态，不扩大为全部概念掌握。
