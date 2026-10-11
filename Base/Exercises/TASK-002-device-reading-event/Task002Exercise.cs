@@ -1,3 +1,4 @@
+using System;
 using Base.Exercises.Task001;
 
 namespace Base.Exercises.Task002;
@@ -31,6 +32,7 @@ public sealed class SimulatedDevice
         var readingEventArgs = new ReadingReceivedEventArgs(reading);
         
         ReadingReceived?.Invoke(this, readingEventArgs);
+        
     }
 }
 

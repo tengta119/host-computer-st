@@ -1,3 +1,5 @@
+using System;
+
 if (args.Length > 0 && args[0].Equals("task008", StringComparison.OrdinalIgnoreCase))
 {
     await Base.Exercises.Task008.Task008Exercise.RunAsync();
