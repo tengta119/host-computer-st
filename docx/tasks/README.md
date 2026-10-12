@@ -19,7 +19,16 @@
 | [TASK-013：把读取逻辑从窗口移到 ViewModel](./TASK-013.md) | 第二阶段：WPF（起步） | 第二阶段 Command 后的 MVVM | 输入绑定、读取命令、窗口与数据/动作拆分 | ✅ 已通关 |
 | [TASK-014：用 UserControl 封装读取历史区域](./TASK-014.md) | 第二阶段：WPF（起步） | 第二阶段 MVVM 后的 UserControl | 界面区域封装、DataContext 继承、原绑定复用 | ✅ 已通关 |
 | [TASK-015：用 Style 统一读取与清空按钮的外观](./TASK-015.md) | 第二阶段：WPF（起步） | 第二阶段 UserControl 后的 Style / Template，先练 Style | 显式样式、Setter、资源引用与共同按钮外观 | ✅ 已通关 |
-| [TASK-016：用 DataTemplate 展示结构化读取历史](./TASK-016.md) | 第二阶段：WPF（起步） | 第二阶段 Style / Template，练数据行模板 | DataTemplate、ItemTemplate、每条 Reading 字段绑定 | ⚪ 未开始 |
+| [TASK-016：用 DataTemplate 展示结构化读取历史](./TASK-016.md) | 第二阶段：WPF（起步） | 第二阶段 Style / Template，练数据行模板 | DataTemplate、ItemTemplate、每条 Reading 字段绑定 | ✅ 已通关 |
+| [TASK-017：用 ControlTemplate 定义按钮内部外观](./TASK-017.md) | 第二阶段：WPF（起步） | 第二阶段 Style / Template，继续控件模板 | ControlTemplate、ContentPresenter、模板属性连接与禁用外观 | ⚪ 未开始 |
+
+2026-10-12 TASK-016 最终审查：学员自主修正 Value 和 ID 右边距后，构建 0 警告/错误、当前原编译窗口 10 个显示/业务场景全部通过，两段行内间距均为 12，三个 DoD 已勾选，状态 ✅ 已通关。35 个源码哈希不变、原程序集/审查引用哈希一致，未代改源码。只创建下一张 TASK-017（⚪ 未开始），未准备源码或切换入口；下方同日未通过记录为此前历史。
+
+2026-10-12 TASK-016 同轮复查：学员自主改为 Value，重新构建和实际窗口 10 个业务场景通过，三个字段均 Active 且显示正确。DoD 1/3 已通过；2 因 ID 与数值紧贴而未通过。状态 🟡 进行中，首个修复动作是给 ID 控件添加右边距；未代改源码或创建下一任务。当前结果与截图见任务卡；下方数值缺失为修复前历史。
+
+2026-10-12 TASK-016 审查：构建 0 警告/错误，当前原编译任务窗口实际打开并执行 10 个场景，读取/旧记录/空白保护/清空恢复/共用样式均正常；数值路径 FallbackValue 不存在，绑定 PathError、文字为空。DoD 1/2 未通过、3 已通过并勾选，状态 🟡 进行中。35 个源码哈希不变，未代改；证据见任务卡，未生成下一任务。下方启动记录为此前历史。
+
+2026-10-12 TASK-016 启动：用户明确开启，专属目录 `WpfBae/Exercises/TASK-016-reading-datatemplate/` 已创建窗口/历史控件四个骨架文件，App.xaml 切到 Task016Window。复用原读数、ViewModel、命令及完成的样式，旧任务源码未改；字段绑定与间距留作 TODO。实际 `dotnet build WpfBae/WpfBae.csproj --nologo` 退出 0、0 警告/错误，未运行窗口或验收，DoD 均未勾选。首步只绑定每行 DeviceId；状态 🟡 进行中。下方仅规划表述为此前历史。
 
 2026-10-12 TASK-015 最终审查：三个必需 DoD 全部通过，构建 0 警告/错误、原程序正常启动退出 0；原编译窗口 9 个实际场景、同一共享 Style 与独立副本 Padding Setter 布局对比通过，11 个源码哈希不变。状态 ✅ 已通关，证据见任务卡；未新增典型错误，加载时机机制继续复习。按计划只创建 TASK-016 卡片（⚪ 未开始），未准备其源码或切换 App.xaml。下方同日异常/启动记录为此前历史。
 

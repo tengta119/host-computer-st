@@ -4,6 +4,16 @@
 
 <!-- 发生错误后追加：情况与证据、根因、修复线索、复查点及状态。 -->
 
+## TASK-016：行内数值绑定路径与 Reading 属性名不对应
+
+- 状态：✅ 已通关
+- 情况与证据：2026-10-12 审查 [ReadingHistoryControl.xaml](../WpfBae/Exercises/TASK-016-reading-datatemplate/ReadingHistoryControl.xaml) 的第二个 TextBlock 绑定 FallbackValue；当前原编译窗口中每行对应 Reading.Value 为 26.5，但此绑定状态 PathError、显示空字符串。DeviceId/Unit 正常；见 [实际结果](./tasks/evidence/TASK-016/results.json)。
+- 根因（可确认的机制）：Binding 路径在每行 Reading 上按属性名查找，Reading 没有 FallbackValue，导致查找失败。误写来自输入失误还是概念混淆未确定，不推断学员动机或将其已有绑定能力归零。
+- 修复线索：对照 Reading 的公开属性核对数值路径；先让实际数值出现，再检查 ID 与数值间距。源码由学员修正。
+- 复查点：数值控件 Binding 路径为 Value、状态 Active，实际文字为 26.5；三项分别从对应 Reading 读取，换 ID 保留旧行，间距可读，原业务行为保持。编译成功不代替实际行显示验证。
+- 2026-10-12 同轮自主修复：学员改为 Value，重新构建与原编译窗口运行后绑定 Active、实际显示 26.5，各字段数据源均为对应 Reading，10 个业务场景通过。这里只标记数值路径错误已修复；任务仍进行中，DoD 2 的 ID/数值间距尚未通过，未把它算作修复后的可读性证据。修复前结果另存 results-before-value-fix.json，最新结果见原链接。
+- 2026-10-12 最终复查：学员已补 ID 右边距，实际 ID/数值/单位显示正确，两段间距均为 12，10 个场景显示/业务全通过，TASK-016 三个 DoD 全通过。本条保持已修复，未新增认知错误，不将此前局部错误扩大为整体绑定能力不足。
+
 ## TASK-013：空白校验只显示提示，未结束方法
 
 - 状态：✅ 已通关
