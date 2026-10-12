@@ -1,7 +1,7 @@
 # TASK-013：把读取逻辑从窗口移到 ViewModel
 
 - 阶段：第二阶段：WPF（起步）
-- 状态：🟡 进行中
+- 状态：✅ 已通关
 - 计划来源：[计划原文](../plan.md)「三、第二阶段：WPF」中 Command 后的 MVVM；本任务只练习同一历史界面的最小拆分。
 - 选择依据：TASK-012 已实际验证命令条件、执行清空与按钮状态变化；读取仍由窗口 Click 方法处理。下一步复用已有场景，把输入值和读取动作连接到同一个界面数据对象，继续巩固 Binding、属性、集合和 Command。委托基础与通知工具仍需解释，不设额外口试门槛。
 - 难度/预计时间：待补充（计划未给出）。
@@ -71,9 +71,9 @@ _viewModel.StatusText = "命令取得的设备 ID：" + id;
 
 ## 验收标准（DoD）
 
-- [ ] 项目可编译并实际打开任务窗口；DataContext 指向同一 ViewModel，设备 ID 输入通过 TwoWay Binding 更新其属性，两个按钮通过 Command 连接命令；读取业务不留在窗口 Click 中，不直接访问控件完成业务。
-- [ ] 连续有效读取及修改设备 ID 后，新记录使用当前输入且包含温度和单位，旧记录保留；状态和历史经绑定更新，读取/清空使用同一历史集合。
-- [ ] 空字符串/纯空格有提示且不改变历史；初始空历史清空禁用，读取后启用，清空后列表为空并禁用，再次读取恢复；全链路有实际窗口运行证据。
+- [x] 项目可编译并实际打开任务窗口；DataContext 指向同一 ViewModel，设备 ID 输入通过 TwoWay Binding 更新其属性，两个按钮通过 Command 连接命令；读取业务不留在窗口 Click 中，不直接访问控件完成业务。
+- [x] 连续有效读取及修改设备 ID 后，新记录使用当前输入且包含温度和单位，旧记录保留；状态和历史经绑定更新，读取/清空使用同一历史集合。
+- [x] 空字符串/纯空格有提示且不改变历史；初始空历史清空禁用，读取后启用，清空后列表为空并禁用，再次读取恢复；全链路有实际窗口运行证据。
 
 ## 可选巩固
 
@@ -82,5 +82,12 @@ _viewModel.StatusText = "命令取得的设备 ID：" + id;
 
 ## 状态与证据
 
+- 2026-10-12 最终审查：三个必需 DoD 全部通过，状态 ✅ 已通关。证据：[10 个实际窗口场景](./evidence/TASK-013/results.json)、[构建、原程序启动及源码哈希](./evidence/TASK-013/verification.json)、[审查程序](./evidence/TASK-013/Review.cs)与[审查项目](./evidence/TASK-013/Review.csproj)。学员源码未被教练修改，最终构建前与复查后六个源文件 SHA256 一致。
+  - DoD 1 **通过**：实际运行 `dotnet build .\WpfBae\WpfBae.csproj --no-restore`，0 警告、0 错误；Start-Process 启动原 WpfBae.exe，标题“TASK-013：读取逻辑与 ViewModel”，正常关闭退出码 0。审查项目引用该构建程序集并实际显示原 Task013Window，确认窗口及两个命令字段引用同一 ReadingViewModel，历史始终同集合；输入 TwoWay/PropertyChanged、两个按钮 Command 及历史/状态 OneWay 均保持。自动化通过实际 TextBox.SetCurrentValue 保留绑定，点击前已核对 DeviceId 写回；按钮通过 ButtonAutomationPeer/IInvokeProvider.Invoke 执行 WPF 命令路径，不直接调用 Execute。窗口无业务 Click、命令无控件操作。
+  - DoD 2 **通过**：TEMP-001 连续两次读取为 2 条，改 TEMP-002 后为 3 条；实际行文字包含当前 ID、26.5、°C，旧记录与对象保留。StatusText 通过属性通知更新，Add 引发集合通知并更新列表及清空条件。同一原集合始终由读取/清空共享。
+  - DoD 3 **通过**：空字符串/纯空格最终提示“该 Id 不合法”，原 3 条历史保持，未发生集合/清空条件通知。初始清空禁用，读取后启用；实际点击清空后为 0 条并禁用；带两侧空格的 TEMP-003 再读取后追加已 Trim 的 ID，并恢复可用，再清空正确。附加观察：代码设置 DeviceId=TEMP-004 后，实际输入框通过通知显示新值；此项是机制验证，不另扩展必需验收。
+  - 首次审查发现空白分支仅提示、未 return，空输入使 3 条变 4 条，纯空格使 4 条变 5 条，最终提示被成功文字覆盖。学员在审查期间自行补上 return；首次证据保留在 [修正前结果](./evidence/TASK-013/results-before-fix.json)及[修正前核对](./evidence/TASK-013/verification-before-fix.json)。首次核对中该源文件哈希变化对应学员的修正，教练未代改；重新构建后的 10 个场景全通过。记录典型错误与自主修复于 [错题本](../mistakes.md)。
+  - 掌握范围：学员在已提供绑定/命令连接上，自主从 ViewModel.DeviceId 取得输入、Trim/空白提前返回、构造 Reading、追加原集合与更新状态，已实际验证。完整属性、TwoWay 连接、两个命令构造及事件工具由骨架提供；[WPF ViewModel Q1](../questions/wpf-mvvm.md) 的机制仍待复习，不因运行成功认定独立 MVVM 设计或全部属性/通知知识掌握。
+  - 下一步依据：计划 MVVM → UserControl，沿用历史界面练习把历史区封装为一个可嵌入窗口的控件，同时继续观察同一 DataContext。仅创建 [TASK-014](./TASK-014.md)，状态 ⚪ 未开始，不创建其源码或切换入口，不宣称阶段整体完成。
 - 2026-10-12 启动：已创建上述五个专属文件并切换共享入口，状态 🟡 进行中；读取核心 TODO 1～4 尚未由学员实现。实际执行 `dotnet build .\WpfBae\WpfBae.csproj --no-restore`，0 警告、0 错误；通过 PowerShell `Start-Process -WindowStyle Hidden -PassThru` 启动构建后的原 WpfBae.exe，确认主窗口标题“TASK-013：读取逻辑与 ViewModel”，调用 CloseMainWindow 后正常退出，退出码 0。仅验证骨架编译和原应用启动，未验证输入写回、读取追加、空白保护及清空恢复全链路；三个 DoD 保持未勾选，不新增已掌握能力。`git diff --` 核对 TASK-009～012 原目录无改动。
 - 2026-10-11：TASK-012 三项必需 DoD 全部实际审查通过后，按计划与初学者反馈仅创建这一张下一任务卡，状态 ⚪ 未开始。没有准备 TASK-013 源码、切换入口、构建或验收；已有阶段和待复习概念范围不变。

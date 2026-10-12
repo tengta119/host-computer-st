@@ -22,6 +22,14 @@
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
 
+2026-10-12 TASK-013 最终审查：10 个实际窗口场景全通过，学员自主修复空白分支缺少 return；读取逻辑应用记入进度。ViewModel/绑定/属性通知由骨架提供，[WPF ViewModel Q1](./wpf-mvvm.md) 的机制继续待复习，分类统计不变。
+
+2026-10-12：StatusText 的 OneWay 与 DeviceId 的 TwoWay/UpdateSourceTrigger 使用场景合并至 [WPF ViewModel Q1](./wpf-mvvm.md)，区分方向与控件写回时机，补充 OneWay 也能动态显示及 PropertyChanged/LostFocus 的适用场景。统计、任务状态与 DoD 不变。
+
+2026-10-12：TextBox 已改值为何仍调用 OnPropertyChanged 的追问合并至 [WPF ViewModel Q1](./wpf-mvvm.md)，区分输入写回保存、代码修改属性后的界面更新及其他绑定控件同步；此前讲解未展开修改来源，本轮补充边界，不记错题。统计、任务状态与 DoD 不变。
+
+2026-10-12：输入框改值是否自动更新 ViewModel.DeviceId 的追问合并至 [WPF ViewModel Q1](./wpf-mvvm.md)，以属性赋值效果及完整 setter 说明 value 保存、文字变化时写回和对象通知的分工；只读源码，未运行输入验证，统计与任务状态不变。
+
 2026-10-12：TASK-013 启动必要讲解记录至 [WPF ViewModel Q1](./wpf-mvvm.md)，说明自定义类与 WPF 属性身份、同一对象连接、完整属性写回及 TwoWay/UpdateSourceTrigger 的用途。状态待复习；仅验证骨架构建和启动，未新增自主掌握证据。
 
 2026-10-12：TASK-012 的绑定对象与条件检查链复述已合并至 [WPF 命令 Q1](./wpf-commands.md)，确认 ClearCommand getter 返回原 _clearCommand 对象，并串起集合事件、命令通知、WPF 处理方法与 CanExecute；补充初次连接会检查条件、通知不执行清空及不保证 bool 改变。保留已验证应用范围，机制继续待复习；统计、任务状态与 DoD 不变。

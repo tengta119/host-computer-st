@@ -4,6 +4,15 @@
 
 <!-- 发生错误后追加：情况与证据、根因、修复线索、复查点及状态。 -->
 
+## TASK-013：空白校验只显示提示，未结束方法
+
+- 状态：✅ 已通关
+- 情况与证据：2026-10-12 首次审查 [ReadTemperatureCommand.Execute](../WpfBae/Exercises/TASK-013-reading-viewmodel/ReadTemperatureCommand.cs) 的 `if (id.Length == 0)` 仅设置不合法提示，随后仍执行 Add 和成功提示。实际窗口输入空字符串使历史从 3 条变 4 条，纯空格使 4 条变 5 条，新增空 ID 读数，最终状态“读取成功”；见 [首次运行结果](./tasks/evidence/TASK-013/results-before-fix.json)。
+- 根因：条件分支结束后方法仍按顺序执行后面的语句；提示只修改文字，不会阻止读取动作。
+- 修复线索：无效输入分支提示后提前结束 Execute，使它不能继续进入成功路径。
+- 复查点：空字符串及纯空格均保留原历史、最终显示不合法提示，不触发 Add；有效读取和清空恢复不受影响。
+- 自主修复与验证：学员在审查期间补上 `return;`，教练未改源码；重新构建 0 警告/错误，10 个窗口场景全通过，两种空白均保留原 3 条历史，提示“该 Id 不合法”。见 [最终结果](./tasks/evidence/TASK-013/results.json)及[源码哈希核对](./tasks/evidence/TASK-013/verification.json)。本条表示这次错误已修复，不推定全部控制流概念已掌握。
+
 ## TASK-006：返回 Task 的方法未标 async，却直接使用 await
 
 - 状态：✅ 已通关

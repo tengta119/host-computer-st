@@ -1,7 +1,7 @@
 # 学习进度：上位机开发
 
 > 计划原文：[plan.md](./plan.md)（复制自 `D:\tmp\上位机.md`）｜已知背景：Java 后端；计划提及 Java、并发、网络、数据库经验，具体熟练度待补充｜总目标：迁移已有能力，逐步具备上位机界面、通信、设备控制、数据采集与稳定性开发能力。
-> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜最近通关：TASK-012｜当前任务：TASK-013（🟡 进行中）
+> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜最近通关：TASK-013｜下一任务：TASK-014（⚪ 未开始）
 
 ## 阶段与路线概览
 
@@ -30,14 +30,16 @@
 | [TASK-010：用 Binding 更新模拟温度读数](./tasks/TASK-010.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-09 审查：编译与原应用启动、同一 DataContext、两个 OneWay Binding、五种输入场景和两项通知均验证通过，三项 DoD 已勾选 |
 | [TASK-011：用 ObservableCollection 显示温度读取历史](./tasks/TASK-011.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-11 实际审查：构建 0 警告/错误，原窗口启动退出正常；列表绑定、连续追加、修改 ID、空白保护、清空与恢复均通过，同集合与通知已验证，三项 DoD 已勾选 |
 | [TASK-012：用 Command 清空历史并控制按钮是否可用](./tasks/TASK-012.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-11 实际审查：构建 0 警告/错误、原窗口启动退出正常；8 个场景验证同对象/集合、绑定、按钮条件切换、点击清空、恢复与空白保护，三项 DoD 通过 |
-| [TASK-013：把读取逻辑从窗口移到 ViewModel](./tasks/TASK-013.md) | 第二阶段：WPF（起步） | 🟡 进行中 | 2026-10-12 已建五个专属骨架文件并切换入口；构建及原窗口启动通过，核心读取 TODO 1～4 待学员完成，DoD 未勾选 |
+| [TASK-013：把读取逻辑从窗口移到 ViewModel](./tasks/TASK-013.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-12 自主补上空白分支 return 后，重新构建和 10 个实际窗口场景全部通过，三个 DoD 已勾选 |
+| [TASK-014：用 UserControl 封装读取历史区域](./tasks/TASK-014.md) | 第二阶段：WPF（起步） | ⚪ 未开始 | 按计划 MVVM → UserControl，仅创建卡片；复用原场景封装历史区，未创建源码或切换入口 |
 
 ## 🟡 正在学习
 
-- [TASK-012](./tasks/TASK-012.md) 已于 2026-10-11 最终审查通关。[TASK-013](./tasks/TASK-013.md) 于 2026-10-12 按用户要求开始，状态 🟡 进行中，专属目录 `WpfBae/Exercises/TASK-013-reading-viewmodel/` 已准备五个文件；App.xaml 指向 Task013Window，TASK-009～012 原作品未修改。已验证骨架构建 0 警告/错误、原任务窗口正常启动并退出 0；核心读取 TODO 尚未完成，DoD 均未勾选。首个动作只在 ReadTemperatureCommand.Execute 取得 DeviceId 并显示到 StatusText，再实际改变输入观察。委托、事件工具、属性与布局继续按已有记录复习。
+- [TASK-013](./tasks/TASK-013.md) 已于 2026-10-12 最终审查通关，三个必需 DoD 均有实际窗口证据。没有进行中的实践任务；[TASK-014](./tasks/TASK-014.md) 仅创建卡片，状态 ⚪ 未开始。App.xaml 仍指向 Task013Window，学员作品未被教练修改。委托、事件、属性与绑定机制继续按原范围复习，不因任务通关推定全部概念掌握。
 
 ## ✅ 已掌握
 
+- TASK-013 中学员自主在读取命令内取得 ViewModel.DeviceId、Trim、校验空白并提前 return、创建 Reading、Add 原历史集合及设置成功提示于 2026-10-12 最终验证：TEMP-001 连续两次、换 TEMP-002 保留旧记录，两种空白均保留 3 条历史，清空与带空格 TEMP-003 恢复正确。首次遗漏 return 已由学员在审查期间自主修复，最终 10 个场景全通过。限在教练提供的 ViewModel/绑定/命令连接上应用读取逻辑；完整属性、TwoWay 设置、对象构造和通知工具仍不计自主设计，[WPF ViewModel Q1](./questions/wpf-mvvm.md) 的机制保持待复习。
 - TASK-012 中学员自主补充的 CanExecute 历史 Count > 0 判断、Execute 清空原集合和“已清空”提示于 2026-10-11 实际验证。实际按钮通过绑定命令执行，空→读取启用→清空禁用→再次读取启用完整链路正确；两种空白输入保留历史。同一对象、集合和命令引用以及集合/条件通知均已核对，8 个场景全部通过。[WPF 命令 Q1](./questions/wpf-commands.md) 限此应用范围标为已掌握；提供的构造连接、属性、事件声明、通知工具和框架订阅不计自主设计，C# 事件 Q6 继续待复习。
 - TASK-011 中学员补充的原历史集合 Add/Clear 与成功提示已于 2026-10-11 实际验证。在已提供的列表绑定上，TEMP-001 连续读取显示两条，换 TEMP-002 后保留旧记录并追加第三条；空字符串/纯空格提示且维持 3 条；清空后集合与列表均为 0，再读取两侧带空格的 TEMP-003 后均为 1。每次 Add 有新增通知，Clear 有 Reset，数据对象、集合、ItemsSource 与绑定始终保留。[WPF 集合 Q1](./questions/wpf-collections.md) 按此应用范围标为已掌握；数据类、集合初始化、完整 getter、输入校验与绑定由骨架提供，不计自主设计，不扩展到元素内部属性更新或所有事件原理。
 - TASK-010 中自主连接的 DataContext、ResultText/StatusText 两个 OneWay Binding、setter 内对应名称的通知调用，以及按钮修改同一数据对象的结果/状态属性已于 2026-10-09 实际验证。TEMP-001/002 显示当前 ID、26.5 °C；空字符串/纯空格提示并清除结果；带两侧空格的 TEMP-003 恢复成功；每次收到两项 PropertyChanged，绑定始终保留。掌握范围限此基本绑定与通知工具的应用，类结构、get/set 字段保存、事件声明/发布工具由骨架提供，不计自主设计；new()/readonly、nameof、?.Invoke、PropertyChangedEventArgs 和完整属性语法等保持原复习范围。[绑定 Q1](./questions/wpf-binding.md) 按本次范围标已掌握，其他问答不一并升级。
@@ -53,6 +55,10 @@
 
 ## 待复习与下一步
 
+- 2026-10-12 TASK-013 最终审查：首次空白保护失败后学员补上 return，重新构建及 10 个实际窗口场景全通过；三个 DoD 已勾选，任务 ✅ 已通关。问题与修复证据已写 [错题本](./mistakes.md)，教练未修改学员源码。以下同日启动/答疑记录描述当时状态，相关通知机制仍待复习；按计划仅创建 TASK-014，未开始。
+- 2026-10-12 TASK-013 绑定设置答疑：[WPF ViewModel Q1](./questions/wpf-mvvm.md) 按 StatusText 只显示、DeviceId 可编辑对照 OneWay/TwoWay；UpdateSourceTrigger 只控制控件写回对象的时机，OneWay 动态刷新仍依靠对象属性通知。解释文字变化即写回与失焦写回两种场景，未引入新框架或要求额外实践。未改/运行源码，问答与任务状态、DoD 不变。
+- 2026-10-12 TASK-013 属性通知用途答疑：[WPF ViewModel Q1](./questions/wpf-mvvm.md) 补充“TextBox 原样输入写回已能保存”与“代码修改属性需通知绑定刷新”的区别，再以其他绑定控件说明通知用途；补足此前讲解的修改来源，不把追问当认知错误。未改/运行源码，Q1 待复习，任务与 DoD 不变。
+- 2026-10-12 TASK-013 输入写回答疑：[WPF ViewModel Q1](./questions/wpf-mvvm.md) 补充 TextBox 的 TwoWay/PropertyChanged 自动调用 DeviceId setter，value 保存文字，OnPropertyChanged 负责对象通知；使用赋值效果示意而非要求新增代码。仅核对源码，未验证实际输入，Q1 待复习，TASK-013 状态与 DoD 不变。
 - 2026-10-12 TASK-013 启动：先解释 MVVM 三种角色、自定义 ReadingViewModel 实例、DataContext 与两个命令共用同对象，再通过完整 DeviceId getter/setter 说明输入写回；TwoWay/UpdateSourceTrigger 与自定义通知工具的区别记入 [WPF ViewModel Q1](./questions/wpf-mvvm.md)，状态待复习。骨架连接由教练提供，首个实践只显示命令取得的当前 ID；不将骨架或讲解计为学员自主掌握，不追加考试门槛。
 - 2026-10-12 TASK-012 调用链理解确认：学员已正确复述集合变化经命令事件通知 WPF、再调用 CanExecute 的主线；[WPF 命令 Q1](./questions/wpf-commands.md) 补充 Binding 读取 ClearCommand 公开属性、getter 返回 _clearCommand 原对象，及初次检查和重复通知边界。此为概念反馈，不扩展自主应用的已掌握范围；框架订阅与通知机制继续待复习。本轮未修改或运行源码，TASK-012 状态及 DoD 不变，TASK-013 仍未开始。
 
@@ -78,7 +84,7 @@
 - 2026-10-09 C# 属性基础反馈：学员尚未学过带实现的 get/set、value 和 `get =>` 简写。已新增[属性 Q3](./questions/csharp-properties.md)，状态待复习；后续先用普通方法与完整花括号解释读写，再介绍属性简写和通知，不因使用过自动属性或骨架带有属性就默认理解。本轮未改源码、未运行或验收，任务和必需 DoD 状态不变。
 - 2026-10-09 框架类型来源答疑：[绑定 Q4](./questions/wpf-binding.md)解释 .NET 自带的 System.ComponentModel.PropertyChangedEventArgs、using、构造函数传入属性名称与 PropertyName 的作用，状态待复习。已见两个 setter 的字符串属性名通知调用，尚未运行或验收；不因代码存在认定通知机制已掌握，TASK-010 仍进行中。
 - 2026-10-05 路线答疑：[为上位机学习 C#，TASK-008 后能否进入 WPF](./questions/learning-route.md)。结合计划与任务级验收，当前基础已足够开始 WPF 起步，C# 集中入门可先告一段落；异步、属性、可空类型及资源释放继续随实践巩固。待复习问答不作为进入 WPF 的单独考试，第一阶段整体状态保持原状；当时 TASK-009 未开始，已于 2026-10-09 按用户要求启动。
-- 当前下一步：[TASK-013](./tasks/TASK-013.md)（🟡 进行中）在 ReadTemperatureCommand.Execute 完成 TODO 1，显示命令取得的当前 DeviceId，实际改变输入并点击观察；确认后再补空白校验、读数追加和成功提示，最终按本卡 DoD 检查。继续巩固委托、事件、完整属性语法、Task/线程、using 与布局，不认定阶段整体通关。
+- 下一步：[TASK-014](./tasks/TASK-014.md)（⚪ 未开始），按计划 MVVM → UserControl，把历史区域封装为窗口内的控件，继续观察原 ViewModel 和绑定。仅创建卡片，未准备源码或切换入口；用户明确开始后再落地。继续巩固委托、事件、完整属性语法、Task/线程、using 与布局，不认定阶段整体通关。
 - 巩固：TASK-005 角色混淆及 TASK-007 重抛/固定取消延迟错题均已有自主修复证据；CancellationToken Q1 标为已掌握。若希望固定取消第一轮，应选择更短延迟并预留调度余量，这是后续实践优化，不追加本任务验收门槛。
 - 待复习：[Task、async/await 与线程关系](./questions/csharp-task-async.md)；TASK-004 的最终结果输出由教练代写，后续实践继续核对这些概念。
 - Task/Delay 用法复查：[Q1](./questions/csharp-task-async.md) 已由 TASK-006 自主等待实现及 3500/50 ms 对照运行验证，标为已掌握；其他 Task 问答维持原状态，不扩大为全部概念掌握。
