@@ -1,0 +1,182 @@
+{
+  "reviewedTask": "TASK-014",
+  "windowActuallyShown": true,
+  "interaction": "TextBox.SetCurrentValue \u002B ButtonAutomationPeer/IInvokeProvider.Invoke",
+  "scenarios": [
+    {
+      "scenario": "\u521D\u59CB\u7A7A\u5386\u53F2\uFF0C\u6E05\u7A7A\u7981\u7528",
+      "passed": true,
+      "windowTitle": "TASK-014\uFF1A\u7528 UserControl \u5C01\u88C5\u8BFB\u53D6\u5386\u53F2",
+      "input": "TEMP-001",
+      "viewModelDeviceId": "TEMP-001",
+      "count": 0,
+      "ids": [],
+      "displayedRows": [],
+      "status": "TASK-014\uFF1A\u5148\u5B8C\u6210\u63A7\u4EF6\u5185\u7684\u5386\u53F2\u6807\u9898\uFF08TODO 1\uFF09\u3002",
+      "clearEnabled": false,
+      "collectionChanges": 0,
+      "sameViewModel": true,
+      "sameCollection": true
+    },
+    {
+      "scenario": "\u9996\u6B21\u8BFB\u53D6\uFF0C\u6E05\u7A7A\u542F\u7528",
+      "passed": true,
+      "windowTitle": "TASK-014\uFF1A\u7528 UserControl \u5C01\u88C5\u8BFB\u53D6\u5386\u53F2",
+      "input": "TEMP-001",
+      "viewModelDeviceId": "TEMP-001",
+      "count": 1,
+      "ids": [
+        "TEMP-001"
+      ],
+      "displayedRows": [
+        "TEMP-001 26.5 \u00B0C "
+      ],
+      "status": "\u8BFB\u53D6\u6210\u529F",
+      "clearEnabled": true,
+      "collectionChanges": 1,
+      "sameViewModel": true,
+      "sameCollection": true
+    },
+    {
+      "scenario": "\u540C\u4E00 ID \u8FDE\u7EED\u8BFB\u53D6\u4FDD\u7559\u65E7\u8BB0\u5F55",
+      "passed": true,
+      "windowTitle": "TASK-014\uFF1A\u7528 UserControl \u5C01\u88C5\u8BFB\u53D6\u5386\u53F2",
+      "input": "TEMP-001",
+      "viewModelDeviceId": "TEMP-001",
+      "count": 2,
+      "ids": [
+        "TEMP-001",
+        "TEMP-001"
+      ],
+      "displayedRows": [
+        "TEMP-001 26.5 \u00B0C ",
+        "TEMP-001 26.5 \u00B0C "
+      ],
+      "status": "\u8BFB\u53D6\u6210\u529F",
+      "clearEnabled": true,
+      "collectionChanges": 2,
+      "sameViewModel": true,
+      "sameCollection": true
+    },
+    {
+      "scenario": "\u4FEE\u6539 ID \u540E\u8FFD\u52A0\u5F53\u524D\u8BFB\u6570",
+      "passed": true,
+      "windowTitle": "TASK-014\uFF1A\u7528 UserControl \u5C01\u88C5\u8BFB\u53D6\u5386\u53F2",
+      "input": "TEMP-002",
+      "viewModelDeviceId": "TEMP-002",
+      "count": 3,
+      "ids": [
+        "TEMP-001",
+        "TEMP-001",
+        "TEMP-002"
+      ],
+      "displayedRows": [
+        "TEMP-001 26.5 \u00B0C ",
+        "TEMP-001 26.5 \u00B0C ",
+        "TEMP-002 26.5 \u00B0C "
+      ],
+      "status": "\u8BFB\u53D6\u6210\u529F",
+      "clearEnabled": true,
+      "collectionChanges": 3,
+      "sameViewModel": true,
+      "sameCollection": true
+    },
+    {
+      "scenario": "\u7A7A\u5B57\u7B26\u4E32\u63D0\u793A\u4E14\u4FDD\u6301\u5386\u53F2",
+      "passed": true,
+      "windowTitle": "TASK-014\uFF1A\u7528 UserControl \u5C01\u88C5\u8BFB\u53D6\u5386\u53F2",
+      "input": "",
+      "viewModelDeviceId": "",
+      "count": 3,
+      "ids": [
+        "TEMP-001",
+        "TEMP-001",
+        "TEMP-002"
+      ],
+      "displayedRows": [
+        "TEMP-001 26.5 \u00B0C ",
+        "TEMP-001 26.5 \u00B0C ",
+        "TEMP-002 26.5 \u00B0C "
+      ],
+      "status": "\u8BE5 Id \u4E0D\u5408\u6CD5",
+      "clearEnabled": true,
+      "collectionChanges": 3,
+      "sameViewModel": true,
+      "sameCollection": true
+    },
+    {
+      "scenario": "\u7EAF\u7A7A\u683C\u63D0\u793A\u4E14\u4FDD\u6301\u5386\u53F2",
+      "passed": true,
+      "windowTitle": "TASK-014\uFF1A\u7528 UserControl \u5C01\u88C5\u8BFB\u53D6\u5386\u53F2",
+      "input": "   ",
+      "viewModelDeviceId": "   ",
+      "count": 3,
+      "ids": [
+        "TEMP-001",
+        "TEMP-001",
+        "TEMP-002"
+      ],
+      "displayedRows": [
+        "TEMP-001 26.5 \u00B0C ",
+        "TEMP-001 26.5 \u00B0C ",
+        "TEMP-002 26.5 \u00B0C "
+      ],
+      "status": "\u8BE5 Id \u4E0D\u5408\u6CD5",
+      "clearEnabled": true,
+      "collectionChanges": 3,
+      "sameViewModel": true,
+      "sameCollection": true
+    },
+    {
+      "scenario": "\u5B9E\u9645\u70B9\u51FB\u63A7\u4EF6\u5185\u6E05\u7A7A\uFF0C\u5217\u8868\u4E3A\u7A7A\u5E76\u7981\u7528",
+      "passed": true,
+      "windowTitle": "TASK-014\uFF1A\u7528 UserControl \u5C01\u88C5\u8BFB\u53D6\u5386\u53F2",
+      "input": "   ",
+      "viewModelDeviceId": "   ",
+      "count": 0,
+      "ids": [],
+      "displayedRows": [],
+      "status": "\u5DF2\u6E05\u7A7A",
+      "clearEnabled": false,
+      "collectionChanges": 4,
+      "sameViewModel": true,
+      "sameCollection": true
+    },
+    {
+      "scenario": "\u6E05\u7A7A\u540E\u518D\u6B21\u8BFB\u53D6\uFF0CTrim \u540E\u6062\u590D",
+      "passed": true,
+      "windowTitle": "TASK-014\uFF1A\u7528 UserControl \u5C01\u88C5\u8BFB\u53D6\u5386\u53F2",
+      "input": "  TEMP-003  ",
+      "viewModelDeviceId": "  TEMP-003  ",
+      "count": 1,
+      "ids": [
+        "TEMP-003"
+      ],
+      "displayedRows": [
+        "TEMP-003 26.5 \u00B0C "
+      ],
+      "status": "\u8BFB\u53D6\u6210\u529F",
+      "clearEnabled": true,
+      "collectionChanges": 5,
+      "sameViewModel": true,
+      "sameCollection": true
+    },
+    {
+      "scenario": "\u518D\u6B21\u6E05\u7A7A\uFF0C\u6761\u4EF6\u6062\u590D\u7981\u7528",
+      "passed": true,
+      "windowTitle": "TASK-014\uFF1A\u7528 UserControl \u5C01\u88C5\u8BFB\u53D6\u5386\u53F2",
+      "input": "  TEMP-003  ",
+      "viewModelDeviceId": "  TEMP-003  ",
+      "count": 0,
+      "ids": [],
+      "displayedRows": [],
+      "status": "\u5DF2\u6E05\u7A7A",
+      "clearEnabled": false,
+      "collectionChanges": 6,
+      "sameViewModel": true,
+      "sameCollection": true
+    }
+  ],
+  "failures": [],
+  "passed": true
+}

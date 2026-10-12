@@ -17,7 +17,12 @@
 | [TASK-011：用 ObservableCollection 显示温度读取历史](./TASK-011.md) | 第二阶段：WPF（起步） | 第二阶段 Binding 后的 ObservableCollection | 集合变化通知、列表绑定、读取历史 | ✅ 已通关 |
 | [TASK-012：用 Command 清空历史并控制按钮是否可用](./TASK-012.md) | 第二阶段：WPF（起步） | 第二阶段 ObservableCollection 后的 Command | ICommand、按钮命令绑定、可执行条件 | ✅ 已通关 |
 | [TASK-013：把读取逻辑从窗口移到 ViewModel](./TASK-013.md) | 第二阶段：WPF（起步） | 第二阶段 Command 后的 MVVM | 输入绑定、读取命令、窗口与数据/动作拆分 | ✅ 已通关 |
-| [TASK-014：用 UserControl 封装读取历史区域](./TASK-014.md) | 第二阶段：WPF（起步） | 第二阶段 MVVM 后的 UserControl | 界面区域封装、DataContext 继承、原绑定复用 | ⚪ 未开始 |
+| [TASK-014：用 UserControl 封装读取历史区域](./TASK-014.md) | 第二阶段：WPF（起步） | 第二阶段 MVVM 后的 UserControl | 界面区域封装、DataContext 继承、原绑定复用 | ✅ 已通关 |
+| [TASK-015：用 Style 统一读取与清空按钮的外观](./TASK-015.md) | 第二阶段：WPF（起步） | 第二阶段 UserControl 后的 Style / Template，先练 Style | 显式样式、Setter、资源引用与共同按钮外观 | ⚪ 未开始 |
+
+2026-10-12 最终审查更新：TASK-014 三项必需 DoD 全部通过，构建 0 警告/错误、原程序启动退出正常，9 个实际窗口场景验证历史控件封装、同对象/集合绑定、连续读取与换 ID、两种空白保护、清空禁用与恢复；源码哈希一致，教练未代改。证据见任务卡。按计划仅创建 TASK-015 卡片，状态 ⚪ 未开始，未准备源码或切换 App.xaml；下方 TASK-014 启动/仅创建表述均为此前历史记录，机制与阶段整体状态保持原范围。
+
+2026-10-12 启动更新：用户明确开启 TASK-014，已创建专属目录下的窗口与 UserControl 四个骨架文件，App.xaml 切换到 Task014Window；复用 TASK-013 原实现且未改学员源码。构建 0 警告/错误，未运行实际窗口，DoD 均未勾选。首个动作是控件内历史标题，当前状态 🟡 进行中；下方“仅创建卡片”的表述为此前创建时的历史记录。
 
 TASK-004 已于 2026-09-29 协助完成并通过任务级验收；TASK-005 于 2026-10-05 复跑通过，按用户明确通关要求采用协助修正说明完成任务级验收，状态为已通关，取消原理仍待复习。后续路线见[计划](../plan.md)和[阶段概览](../learning.md)。
 

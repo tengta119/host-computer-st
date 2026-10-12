@@ -19,8 +19,13 @@
 | WPF 集合与历史列表 | [wpf-collections.md](./wpf-collections.md) | 1 | 1 |
 | WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 0 | 1 |
 | WPF 窗口与 ViewModel | [wpf-mvvm.md](./wpf-mvvm.md) | 1 | 0 |
+| WPF 界面区域与 UserControl | [wpf-usercontrol.md](./wpf-usercontrol.md) | 1 | 0 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
+
+2026-10-12 TASK-014 最终审查：9 个实际窗口场景和三项 DoD 全通过，控件内界面组合及已有 Binding 应用的自主证据已记入学习进度，并补充至 [WPF 控件 Q1](./wpf-usercontrol.md)。类定义、命名空间及 DataContext 连接由骨架提供，机制仍待复习，本分类统计保持待复习 1、已掌握 0，不扩大为独立控件设计能力。未发现新增典型认知错误。
+
+2026-10-12 TASK-014 启动：新增 [WPF 控件 Q1](./wpf-usercontrol.md)，说明 UserControl 与自定义控件身份、XAML/后台配对、命名空间连接及同一 DataContext 的属性值继承。状态待复习；仅构建骨架，未运行实际窗口，不计自主掌握证据。其他分类统计保持原状。
 
 2026-10-12 TASK-013 最终审查：10 个实际窗口场景全通过，学员自主修复空白分支缺少 return；读取逻辑应用记入进度。ViewModel/绑定/属性通知由骨架提供，[WPF ViewModel Q1](./wpf-mvvm.md) 的机制继续待复习，分类统计不变。
 

@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-12",
+  "task": "TASK-014",
+  "build": {
+    "warnings": 0,
+    "errors": 0,
+    "exitCode": 0,
+    "command": "dotnet build WpfBae/WpfBae.csproj --nologo"
+  },
+  "originalApplication": {
+    "observedTitle": "TASK-014：用 UserControl 封装读取历史",
+    "exitCode": 0,
+    "closeRequested": true,
+    "command": "Start-Process WpfBae.exe -WindowStyle Hidden -PassThru",
+    "expectedWindowFound": true
+  },
+  "runtimeReview": {
+    "scenariosPassed": 9,
+    "failures": 0,
+    "actualWindowShown": true,
+    "exitCode": 0,
+    "command": "Start-Process Review.exe <evidence-directory> -WindowStyle Hidden -PassThru"
+  },
+  "sourceHashesUnchanged": true,
+  "before": [
+    {
+      "path": "WpfBae/App.xaml",
+      "sha256": "F9546CC8C286201923C1772373BA91E9002D01F04B6703F92E15FD1B42A50777"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-014-history-usercontrol/Task014Window.xaml",
+      "sha256": "28C33A57211354762C85C2F9B65C60033439C175187865EEAAB2215535FACC1C"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-014-history-usercontrol/Task014Window.xaml.cs",
+      "sha256": "B7B39C255BC68D1F33A95C6DFEE6FDFF6F8C5077EB2F6BA25EE4CDBBD15B6867"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-014-history-usercontrol/ReadingHistoryControl.xaml",
+      "sha256": "D6D0670505D77929A90B0C6B0BE20598FB8F8160A1F6B019BFE98BE9D776C76A"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-014-history-usercontrol/ReadingHistoryControl.xaml.cs",
+      "sha256": "99348408CE50C4CA1640FDEC3E45201D70DCB41E90614880E5CE4D76B5F63FAD"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-013-reading-viewmodel/ReadingViewModel.cs",
+      "sha256": "D6255D2042C6EA8E801FDE5A074F17E31441D333494D9269A7B018305C494F6C"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-013-reading-viewmodel/ReadTemperatureCommand.cs",
+      "sha256": "DDB4B493829924A6C6ADE3045320AAD6EBCA0EF569D4160555A029F2371EB5DB"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-013-reading-viewmodel/ClearHistoryCommand.cs",
+      "sha256": "7EDDADBA42ACFC3B4974E640C227A37A420AF5EC1048F7D9505A46EB79C3D6B0"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-010-reading-binding/Task010Window.xaml.cs",
+      "sha256": "1B924D24EEFD098F051680AE2236C456C116473DD1B8E16D84C91BABE3370180"
+    }
+  ],
+  "after": [
+    {
+      "path": "WpfBae/App.xaml",
+      "sha256": "F9546CC8C286201923C1772373BA91E9002D01F04B6703F92E15FD1B42A50777"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-014-history-usercontrol/Task014Window.xaml",
+      "sha256": "28C33A57211354762C85C2F9B65C60033439C175187865EEAAB2215535FACC1C"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-014-history-usercontrol/Task014Window.xaml.cs",
+      "sha256": "B7B39C255BC68D1F33A95C6DFEE6FDFF6F8C5077EB2F6BA25EE4CDBBD15B6867"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-014-history-usercontrol/ReadingHistoryControl.xaml",
+      "sha256": "D6D0670505D77929A90B0C6B0BE20598FB8F8160A1F6B019BFE98BE9D776C76A"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-014-history-usercontrol/ReadingHistoryControl.xaml.cs",
+      "sha256": "99348408CE50C4CA1640FDEC3E45201D70DCB41E90614880E5CE4D76B5F63FAD"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-013-reading-viewmodel/ReadingViewModel.cs",
+      "sha256": "D6255D2042C6EA8E801FDE5A074F17E31441D333494D9269A7B018305C494F6C"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-013-reading-viewmodel/ReadTemperatureCommand.cs",
+      "sha256": "DDB4B493829924A6C6ADE3045320AAD6EBCA0EF569D4160555A029F2371EB5DB"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-013-reading-viewmodel/ClearHistoryCommand.cs",
+      "sha256": "7EDDADBA42ACFC3B4974E640C227A37A420AF5EC1048F7D9505A46EB79C3D6B0"
+    },
+    {
+      "path": "WpfBae/Exercises/TASK-010-reading-binding/Task010Window.xaml.cs",
+      "sha256": "1B924D24EEFD098F051680AE2236C456C116473DD1B8E16D84C91BABE3370180"
+    }
+  ]
+}
