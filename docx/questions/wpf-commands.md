@@ -20,6 +20,14 @@
 
 **证据边界**：开始时仅验证未完成 TODO 的骨架。2026-10-11 最终审查已验证学员自主补充的 Count > 0 判断、Execute.Clear 与完成提示：8 个实际窗口场景覆盖初始禁用、读取启用、清空禁用、恢复和空白保护，见 [TASK-012 证据](../tasks/evidence/TASK-012/results.json)。按这些应用范围标为已掌握；后续追问属于历史讲解，骨架提供的事件声明、通知工具与 WPF 订阅不计自主设计，委托基础仍见 [C# 事件 Q6](./csharp-events.md)（待复习）。
 
+### 2026-10-12 理解确认：按钮绑定对象与集合变化后的条件检查链
+
+学员复述“按钮绑定 _clearCommand 对象，_readings 变化 → Readings_CollectionChanged → NotifyCanExecuteChanged → CanExecuteChanged?.Invoke → WPF 处理方法 → CanExecute 检查按钮是否可执行”，主线正确。核对当前源码：窗口 DataContext 为 _state，Binding 按公开属性名 ClearCommand 读取，其 getter 返回字段 _clearCommand 保存的 ClearHistoryCommand 实例；按钮 Command 最终持有同一命令对象，XAML 并不直接读取私有字段。
+
+当前 NotifyCanExecuteChanged 已使用 `CanExecuteChanged?.Invoke(this, EventArgs.Empty)`：有订阅者时调用已登记的事件处理方法，没有时跳过。WPF 在命令连接时完成订阅，通知经过框架处理方法，再调用按钮已持有命令的 CanExecute，根据 Count > 0 返回值更新按钮可用状态。事件本身不执行清空，也不保证条件结果变化；Add 从 1 条变 2 条仍会通知，但结果仍为 true。初次连接命令时框架也会检查条件，因此初始空集合无需先发生变化即可禁用按钮。依据沿用本页 ButtonBase/CommandHelpers 官方源码，本轮再次核对。
+
+本轮是概念复述与源码核对，未修改或运行学员源码；保留 Q1 已验证的条件/动作应用范围，框架订阅和通知机制继续待复习。TASK-012 状态与 DoD 不变，不开始 TASK-013。
+
 ### 2026-10-11 追问：public event EventHandler? CanExecuteChanged 有什么用？
 
 **当前理解与范围**：学员已知道集合变化会沿骨架调用 NotifyCanExecuteChanged，但尚不理解命令事件声明与方法调用的关系。需明确：CollectionChanged 对新增、删除、替换、移动、清空等集合变化发通知；查询、遍历、读取 Count 不触发，修改某条 Reading 内部属性也不会自动触发集合通知。

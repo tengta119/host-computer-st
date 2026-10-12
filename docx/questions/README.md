@@ -16,10 +16,14 @@
 | .NET 项目与解决方案 | [dotnet-projects.md](./dotnet-projects.md) | 1 | 0 |
 | WPF 窗口、控件与布局 | [wpf-layout.md](./wpf-layout.md) | 1 | 0 |
 | WPF 数据绑定 | [wpf-binding.md](./wpf-binding.md) | 3 | 1 |
-| WPF 集合与历史列表 | [wpf-collections.md](./wpf-collections.md) | 0 | 1 |
+| WPF 集合与历史列表 | [wpf-collections.md](./wpf-collections.md) | 1 | 1 |
 | WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 0 | 1 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
+
+2026-10-12：TASK-012 的绑定对象与条件检查链复述已合并至 [WPF 命令 Q1](./wpf-commands.md)，确认 ClearCommand getter 返回原 _clearCommand 对象，并串起集合事件、命令通知、WPF 处理方法与 CanExecute；补充初次连接会检查条件、通知不执行清空及不保证 bool 改变。保留已验证应用范围，机制继续待复习；统计、任务状态与 DoD 不变。
+
+2026-10-12：新增 [WPF 集合 Q2](./wpf-collections.md#q2都有-datacontext--_state为什么-task-010-的数据类实现-inotifypropertychangedtask-011-的不用)，对照 TASK-010 文字属性赋值与 TASK-011 原集合 Add/Clear，区分属性通知和集合通知及通知发送对象；补充更换集合与当前直接更新状态控件的边界。Q2 待复习，集合分类统计为待复习 1、已掌握 1；保留 Q1 已验证范围，两任务通关状态和 DoD 不变。
 
 2026-10-11 TASK-012 最终审查：8 个实际窗口场景全部通过，WPF 命令 Q1 按自主实现的 CanExecute 条件、Execute 清空与提示范围标为已掌握，当前统计为待复习 0、已掌握 1。提供的绑定与事件工具不计自主设计，委托基础和框架订阅原理继续复习；C# 事件 Q6 及分类统计保持原状。下方同日答疑为验收前的历史记录。
 

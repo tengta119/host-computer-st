@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Base.Exercises.Task001;
 
 // TODO 1：根据设备场景完善属性，创建至少两个 Device 和各自的 Reading。

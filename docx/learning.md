@@ -53,6 +53,9 @@
 
 ## 待复习与下一步
 
+- 2026-10-12 TASK-012 调用链理解确认：学员已正确复述集合变化经命令事件通知 WPF、再调用 CanExecute 的主线；[WPF 命令 Q1](./questions/wpf-commands.md) 补充 Binding 读取 ClearCommand 公开属性、getter 返回 _clearCommand 原对象，及初次检查和重复通知边界。此为概念反馈，不扩展自主应用的已掌握范围；框架订阅与通知机制继续待复习。本轮未修改或运行源码，TASK-012 状态及 DoD 不变，TASK-013 仍未开始。
+
+- 2026-10-12 DataContext 与通知差异追问：新增 [WPF 集合 Q2](./questions/wpf-collections.md#q2都有-datacontext--_state为什么-task-010-的数据类实现-inotifypropertychangedtask-011-的不用)，从实际变化位置解释 TASK-010 的 ResultText/StatusText 属性通知与 TASK-011 同一集合 Add/Clear 自带通知；先区分自定义外层数据对象和 .NET 集合，再说明初次取值、后续刷新及集合替换边界。状态待复习，不因任务已通关默认掌握这层机制；本轮未修改或运行源码，不改变 TASK-010/011 状态、DoD 或启动新任务。
 - 2026-10-11 最终审查更新：TASK-012 已通关；下方同日过程答疑记录中的“未运行/进行中/状态不变”均描述当时情况。委托基础、框架内部订阅与通知工具原理不随功能验收升级，后续继续用完整普通语法和实际对象连接解释，不追加口试。
 - 2026-10-11 委托调用写法追问：[C# 事件 Q6](./questions/csharp-events.md) 补充 handler(...) 与 handler.Invoke(...) 同为委托调用，?. 在局部变量为 null 时跳过，对照当前完整 if 判断；说明骨架完整写法用于先展示步骤，并非简写不可用。?. 不吞掉处理方法异常。本轮未修改或运行源码，问答仍待复习，TASK-012/DoD 不变。
 - 2026-10-11 委托与事件身份追问：学员需要分清 EventHandler 委托类型、event 声明关键字、CanExecuteChanged 事件及 handler 委托变量；已在 [C# 事件 Q6](./questions/csharp-events.md) 拆开解释，并补外部订阅/取消与类内部发通知的区别。后续追问补充 delegate 用来定义委托类型，MessageHandler 自定义、EventHandler 由 .NET 提供，事件声明使用已有类型；两者不是两套机制。不因事件实践通关默认掌握类型关系，不记录为学员错题；本轮未改或运行源码，问答仍待复习，TASK-012/DoD 不变。

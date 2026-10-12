@@ -52,11 +52,6 @@ public class ClearHistoryCommand : ICommand
     // 这是教练自己命名的通知工具，不是 ICommand 要求的方法。已提供完整实现。
     public void NotifyCanExecuteChanged()
     {
-        EventHandler? handler = CanExecuteChanged;
-        if (handler != null)
-        {
-            // this 是发通知的命令对象；EventArgs.Empty 是 .NET 提供的空事件参数。
-            handler(this, EventArgs.Empty);
-        }
+        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 }

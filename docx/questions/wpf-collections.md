@@ -55,3 +55,38 @@ history.Add("TEMP-001");
 **证据边界**：2026-10-11 仅验证未完成 TODO 的骨架构建与启动；尚无学员自主新增、清空及恢复的运行证据，本问答保持待复习。
 
 **2026-10-11 最终实践复查**：学员现已补充原集合的 Add/Clear 和成功提示；实际任务窗口按钮事件验证连续追加、修改 ID、空白保护、清空和恢复全部通过。每次 Add 均有集合新增通知并显示完整行，清空发出 Reset，集合与列表数量一致且绑定与来源保持同一引用。Q1 按“使用集合通知驱动已有列表绑定”范围改为已掌握；集合创建、getter、DataContext 和 ItemsSource 连接由骨架提供，不据此认定自主设计，也不扩展到已有元素内部属性通知或事件内部实现。证据见 [TASK-011 运行结果](../tasks/evidence/TASK-011/results.json)。
+
+## Q2：都有 DataContext = _state，为什么 TASK-010 的数据类实现 INotifyPropertyChanged，TASK-011 的不用？
+
+- 日期：2026-10-12
+- 状态：待复习
+- 关联：[TASK-010](../tasks/TASK-010.md)、[TASK-011](../tasks/TASK-011.md)、[绑定 Q1/Q2](./wpf-binding.md)
+- 来源：学员比较 ReadingDisplayState 与 ReadingHistoryState 的通知要求；已读取两个任务的当前 C#、XAML 和学习证据。
+
+**现象与原因**：两处 DataContext 都指向窗口自己的数据对象，但界面后续关注的变化不同：TASK-010 是对象的文字属性值变化；TASK-011 是原集合内部新增或清空。DataContext 是 WPF 提供的属性，只为这里的 Binding 指定默认数据来源，接受普通对象，不要求对象都实现 INotifyPropertyChanged。
+
+**类型身份**：ReadingDisplayState、ReadingHistoryState、Readings 和 OnPropertyChanged 都是练习自行定义的名字；INotifyPropertyChanged 是 .NET 提供的接口，C# 的 `: INotifyPropertyChanged` 在这里表示实现接口。接口规定 PropertyChanged 事件，单独写接口名称不会自动发送通知，仍需声明事件并在变化时发布。
+
+**TASK-010 的变化**：TextBlock.Text 绑定 ResultText。按钮执行 `_state.ResultText = reading.ToString();` 后，setter 保存新文字并调用自行定义的 `OnPropertyChanged("ResultText")`。其发布 PropertyChanged 事件，WPF 得知属性变化后重新读取 ResultText 并更新文字。StatusText 同理。用完整普通写法说明现有 ResultText 属性（仅等价讲解，不修改源码）：
+
+```csharp
+public string ResultText
+{
+    get { return _resultText; }
+    set
+    {
+        _resultText = value;
+        OnPropertyChanged("ResultText");
+    }
+}
+```
+
+赋值右侧得到的字符串进入 setter，成为 value。没有通知时，初次绑定仍能读取初始文字，但当前普通文字属性的后续修改不能依靠这条 DataContext 赋值自动刷新。
+
+**TASK-011 的变化**：ListBox.ItemsSource 绑定 Readings。Readings 的完整 getter 始终返回字段 _readings 保存的同一个 ObservableCollection<Reading> 对象；这个属性当前没有 setter。`_state.Readings.Add(reading)` 先取得集合再向其中新增，`_state.Readings.Clear()` 清空其内容，两者都不替换集合对象。ObservableCollection 是 .NET 自带的集合类，已实现 INotifyCollectionChanged 接口，并在 Add/Clear 时发布 CollectionChanged 事件；已连接的 WPF 列表通过集合通知更新。因此通知由集合承担，外层 ReadingHistoryState 当前无需另外发布 Readings 属性变化。
+
+**边界**：如果以后允许把 Readings 换成另一份集合，需要由外层数据对象通知 Readings 属性变化（通常实现 INotifyPropertyChanged），让绑定取得新集合；新集合自身的增删通知不能替外层报告更换。若给 ReadingHistoryState 增加绑定的 StatusText 并持续修改它，也需要相应的属性通知。当前 TASK-011 的状态文字通过 `StatusTextBlock.Text = ...` 直接修改控件，没有绑定状态属性。已有 Reading 元素的内部属性更新属于第三层变化，不能仅靠集合增删通知保证刷新；本次只解释边界，不追加实现要求。
+
+**类比与记忆**：Readings 如同指向一个清单的引用；向清单添一条记录，清单仍是原来的对象。属性变化问“属性现在是什么值/指向哪个对象”，集合变化问“同一个集合里增加或删除了什么”。通知需求取决于变化发生的位置。
+
+官方依据：[WPF 数据绑定概述](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/data/)、[ObservableCollection<T>](https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-10.0)。本轮仅阅读源码与官方文档并同步答疑记录，未修改或运行学员源码，未进行新验收；两任务仍 ✅ 已通关，DoD 保持原状，新问答不因已有 Add/Clear 实践自动标为已掌握。
