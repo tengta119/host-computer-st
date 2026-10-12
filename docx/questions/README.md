@@ -18,8 +18,11 @@
 | WPF 数据绑定 | [wpf-binding.md](./wpf-binding.md) | 3 | 1 |
 | WPF 集合与历史列表 | [wpf-collections.md](./wpf-collections.md) | 1 | 1 |
 | WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 0 | 1 |
+| WPF 窗口与 ViewModel | [wpf-mvvm.md](./wpf-mvvm.md) | 1 | 0 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
+
+2026-10-12：TASK-013 启动必要讲解记录至 [WPF ViewModel Q1](./wpf-mvvm.md)，说明自定义类与 WPF 属性身份、同一对象连接、完整属性写回及 TwoWay/UpdateSourceTrigger 的用途。状态待复习；仅验证骨架构建和启动，未新增自主掌握证据。
 
 2026-10-12：TASK-012 的绑定对象与条件检查链复述已合并至 [WPF 命令 Q1](./wpf-commands.md)，确认 ClearCommand getter 返回原 _clearCommand 对象，并串起集合事件、命令通知、WPF 处理方法与 CanExecute；补充初次连接会检查条件、通知不执行清空及不保证 bool 改变。保留已验证应用范围，机制继续待复习；统计、任务状态与 DoD 不变。
 
