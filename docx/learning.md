@@ -1,7 +1,7 @@
 # 学习进度：上位机开发
 
 > 计划原文：[plan.md](./plan.md)（复制自 `D:\tmp\上位机.md`）｜已知背景：Java 后端；计划提及 Java、并发、网络、数据库经验，具体熟练度待补充｜总目标：迁移已有能力，逐步具备上位机界面、通信、设备控制、数据采集与稳定性开发能力。
-> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜最近通关：TASK-016｜下一任务：TASK-017（⚪ 未开始）
+> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜最近通关：TASK-017｜下一任务：TASK-018（⚪ 未开始）
 
 ## 阶段与路线概览
 
@@ -34,14 +34,22 @@
 | [TASK-014：用 UserControl 封装读取历史区域](./tasks/TASK-014.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-12 构建 0 警告/错误、原程序启动退出正常；9 个实际窗口场景验证控件封装、同对象/集合绑定、追加、空白保护与清空恢复，三个 DoD 已勾选 |
 | [TASK-015：用 Style 统一读取与清空按钮的外观](./tasks/TASK-015.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-12 构建/原程序启动通过；同一 Style、独立副本共同 Setter 布局变化、9 个实际窗口业务场景通过，三个 DoD 已勾选，源码未代改 |
 | [TASK-016：用 DataTemplate 展示结构化读取历史](./tasks/TASK-016.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-12 自主修正数值路径及 ID 右边距后，构建 0 警告/错误、10 个实际窗口场景显示/业务全通过，三个 DoD 已勾选，源码未代改 |
-| [TASK-017：用 ControlTemplate 定义按钮内部外观](./tasks/TASK-017.md) | 第二阶段：WPF（起步） | ⚪ 未开始 | 继续计划 Style / Template 的控件模板；仅创建卡片，未准备源码或切换入口 |
+| [TASK-017：用 ControlTemplate 定义按钮内部外观](./tasks/TASK-017.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-12 构建 0 警告/错误、原应用启动退出 0；11 个实际窗口场景和 Padding 临时属性诊断通过，三个 DoD 已勾选，源码未代改 |
+| [TASK-018：用 Canvas 与 Polyline 绘制模拟温度折线](./tasks/TASK-018.md) | 第二阶段：WPF（起步） | ⚪ 未开始 | 继续计划数据图表入门；仅创建卡片，未准备源码或切换入口 |
 
 ## 🟡 正在学习
 
-- [TASK-016](./tasks/TASK-016.md) 已于 2026-10-12 最终审查通关，三个必需 DoD 全有证据。当前无进行中的实践任务，App.xaml 仍指向 Task016Window；学员源码未代改。只创建下一张 [TASK-017](./tasks/TASK-017.md)（⚪ 未开始），继续计划 ControlTemplate，未准备源码或切换入口。数据图表及原 C#/WPF 机制复习范围保留，两个阶段整体状态不变。
+- 当前无进行中的实践任务。[TASK-017](./tasks/TASK-017.md) 已于 2026-10-12 审查通关，原 App.xaml 仍指向 Task017Window。只创建下一张 [TASK-018](./tasks/TASK-018.md)（⚪ 未开始），继续计划数据图表：先用固定模拟温度学习坐标与折线，不新增图表框架。C#/WPF 原机制复习范围保留，两个阶段整体状态不变。下方启动/答疑记录均为通关前历史，不表示当前任务状态。
+- 2026-10-12 TODO 4 答疑：已补 [控件模板 Q4](./questions/wpf-controltemplates.md)（待复习），先解释 Trigger 是属性条件生效期间的规则、Opacity 是 0～1 不透明度，再逐项说明 Button.IsEnabled 条件、自定义 ButtonBorder 名称与 Border.Opacity 设置及恢复机制。给出仅添加一条规则的操作和初始/读取/清空/恢复观察步骤，不引入动画。重读代码已见学员 Border.Padding 的 TemplateBinding，尚未见 Trigger；未代改、构建或运行，任务继续进行中，DoD/掌握范围不变。
+- 2026-10-12 TODO 3 答疑：已新增 [控件模板 Q3](./questions/wpf-controltemplates.md)（待复习），先解释 Padding 是文字与边框之间的内部留白，分别指明共同 Setter 设置 Button.Padding、固定值设置 Border.Padding。第一步只把 Border.Padding 改为 TemplateBinding；当前原值相同，预期外观不变，再单独调整 Setter 观察两按钮一起变化。当前仍见固定 Padding，未代改/构建/运行，TASK-017 与 DoD 保持原状。
+- 2026-10-12 TODO 2 默认连接更正：学员报告删除显式 Content TemplateBinding 仍能显示按钮原内容，官方文档确认当前 ContentPresenter 默认连接 Button.Content。原“必写”教学要求不必要，已在任务卡改为可选；验收仍看实际内容显示，其他 DoD 不变。当前代码已见学员显式连接；本轮未代改/构建/运行，不升级掌握或勾选 DoD。[控件模板 Q2](./questions/wpf-controltemplates.md) 已去重补充。后续优先用实际缺少连接的 Padding 说明 TemplateBinding，说明框架默认行为与手动配置的区别，不用冗余修改当功能门槛。
+- 2026-10-12 TODO 2 基础追问：学员仍不理解“内部显示控件要展示的内容”，已增量补充至 [控件模板 Q2](./questions/wpf-controltemplates.md)。用实际“读取温度”四个字解释 Content，用 Border 的背景/边框与 ContentPresenter 的文字显示分工解释内部结构，再说明固定文字和取各按钮文字的区别；后续避免用抽象术语互相解释。此轮只答疑，不追加动手要求，未改或运行源码，状态/DoD/掌握范围不变，不记学员错题。
+- 2026-10-12 TODO 2 答疑：学员明确反馈操作含义不清楚，已补 [控件模板 Q2](./questions/wpf-controltemplates.md)（待复习）。先分别说明 Button.Content 与 ContentPresenter.Content，再逐侧解释 TemplateBinding，并给出唯一改动及实际运行预期；骨架默认显示已存在，显式连接后通常外观不变。后续先解释新语法的属性所属对象，再要求使用，不把注释视为已教会；教学遗漏不记学员错误。当前见 CornerRadius=12，尚未见显式内容连接，未运行或代改，TASK-017 仍进行中，DoD 未勾选。
+- [TASK-017](./tasks/TASK-017.md) 于 2026-10-12 按用户“开启task17”启动，状态 🟡 进行中。专属目录 `WpfBae/Exercises/TASK-017-button-controltemplate/` 四个窗口/历史控件骨架文件已准备，App.xaml 指向 Task017Window。复用 TASK-013 原业务和 TASK-016 已验收三字段历史显示；核心模板属性连接和禁用外观留作 TODO，原作品未修改。实际构建 0 警告/错误；未运行窗口或验收，DoD 均未勾选。首步只把 Border.CornerRadius 从 0 改为 12 并观察两个按钮；数据图表及原机制复习范围保留，两个阶段整体状态不变。
 
 ## ✅ 已掌握
 
+- TASK-017 中学员在教练提供的按钮模板骨架内将圆角设为 12、显式连接 Border.Padding 到 Button.Padding、配置 IsEnabled=False 时 ButtonBorder.Opacity=0.4 的 Trigger，于 2026-10-12 实际审查通过。原应用启动退出 0，原编译窗口 11 个显示/业务场景全部通过；同一 Style/Template、各自按钮内容、禁用变淡/读取恢复/清空再禁用、三字段历史/空白保护/最小尺寸均已验证。临时调 Button.Padding 时 Border 同步更新，诊断由教练执行，不计学员自主修改共同 Setter 的证据。39 个源码哈希不变。掌握限此骨架中的 Padding 连接与禁用外观规则应用，[控件模板 Q3/Q4](./questions/wpf-controltemplates.md) 按此范围标已掌握；外层模板、窗口/资源/业务连接由教练提供，Q1/Q2 默认内容与框架机制仍待复习，不推定独立完整控件设计。证据见 [场景结果](./tasks/evidence/TASK-017/results.json)及[核对](./tasks/evidence/TASK-017/verification.json)。
 - TASK-016 中学员在教练提供的 DataTemplate/横向 StackPanel 骨架中自主配置 DeviceId/Value/Unit 三个 OneWay Binding、增加数值/单位文字控件并调整右侧 Margin；数值路径和 ID 右边距已自主修复。2026-10-12 构建 0 警告/错误，当前原编译窗口 10 个业务/显示场景全部通过，各字段绑定 Active 且数据源为对应 Reading，旧行保留、原集合连接保持，ID→数值/数值→单位间距均为 12，空白保护/清空恢复/共用样式正常。掌握限此模板骨架中的字段绑定、逐条数据源应用及横向间距，不计教练提供的外层模板、类定义或业务连接为自主设计。数据模板 Q1/Q2 按此应用范围标已掌握，绑定引擎/资源等机制不一并升级。证据见 [结果](./tasks/evidence/TASK-016/results.json)和[核对](./tasks/evidence/TASK-016/verification.json)。
 - TASK-015 中学员在教练提供的窗口资源/控件骨架上自主补齐显式 Style 的 Padding/HorizontalAlignment Setter、读取按钮 StaticResource 与内部清空按钮 DynamicResource 引用，并移除两按钮对应直接属性，于 2026-10-12 实际运行验证。两个按钮取得同一窗口 Style；原窗口 `24,10` 时均 `98 × 37.24`，独立编译副本把共同 Setter 改为 `32,14` 后均 `114 × 45.24`，文字/布局/禁用状态正常，9 个读取/清空场景全通过，原集合/对象/命令保持。Style 应用限此任务骨架，不计独立副本由教练设置的变化为学员已自主完成运行时切换；[样式 Q1](./questions/wpf-styles.md) 标已掌握，Q2 资源加载时机机制仍待复习。证据见 [结果](./tasks/evidence/TASK-015/results.json)及[源码/程序集核对](./tasks/evidence/TASK-015/verification.json)。
 - TASK-014 中学员在教练提供的 UserControl/窗口连接上自主补齐历史标题、列表与清空按钮，并将内部 ItemsSource/Command 连接原 Readings/ClearCommand，于 2026-10-12 实际运行验证。9 个场景通过：TEMP-001 连读两次、换 TEMP-002 后为 3 条，两种空白保留历史，实际清空为 0 条并禁用，再读带空格 TEMP-003 恢复，第二次清空正确。窗口、控件与内部元素始终使用同一 ViewModel 和历史集合。掌握范围限在现有骨架中组合历史界面及应用既有绑定；类定义、命名空间和 DataContext 连接由教练提供，不计自主设计，[WPF 控件 Q1](./questions/wpf-usercontrol.md) 的机制仍待复习。证据见 [结果](./tasks/evidence/TASK-014/results.json)和[构建/启动/源码核对](./tasks/evidence/TASK-014/verification.json)。
@@ -99,7 +107,7 @@
 - 2026-10-09 C# 属性基础反馈：学员尚未学过带实现的 get/set、value 和 `get =>` 简写。已新增[属性 Q3](./questions/csharp-properties.md)，状态待复习；后续先用普通方法与完整花括号解释读写，再介绍属性简写和通知，不因使用过自动属性或骨架带有属性就默认理解。本轮未改源码、未运行或验收，任务和必需 DoD 状态不变。
 - 2026-10-09 框架类型来源答疑：[绑定 Q4](./questions/wpf-binding.md)解释 .NET 自带的 System.ComponentModel.PropertyChangedEventArgs、using、构造函数传入属性名称与 PropertyName 的作用，状态待复习。已见两个 setter 的字符串属性名通知调用，尚未运行或验收；不因代码存在认定通知机制已掌握，TASK-010 仍进行中。
 - 2026-10-05 路线答疑：[为上位机学习 C#，TASK-008 后能否进入 WPF](./questions/learning-route.md)。结合计划与任务级验收，当前基础已足够开始 WPF 起步，C# 集中入门可先告一段落；异步、属性、可空类型及资源释放继续随实践巩固。待复习问答不作为进入 WPF 的单独考试，第一阶段整体状态保持原状；当时 TASK-009 未开始，已于 2026-10-09 按用户要求启动。
-- 下一步：[TASK-017](./tasks/TASK-017.md)（⚪ 未开始），继续计划 Style / Template 中的 ControlTemplate，仅创建卡片，用户明确开启后再准备源码。数据图表及委托、事件、完整属性语法、Task/线程、using 与布局机制仍需后续学习，不认定阶段整体通关。
+- 下一步：[TASK-018](./tasks/TASK-018.md)（⚪ 未开始），按计划开始数据图表入门，只有卡片，用户明确开启再准备源码。TASK-017 三个必需 DoD 已全部通过；控件模板 Q3/Q4 限已验证应用范围标已掌握，Q1/Q2 默认规则与完整机制仍复习。数据图表、委托/事件、完整属性语法、Task/线程、using 与布局机制仍需后续学习，不认定阶段整体通关。
 - 巩固：TASK-005 角色混淆及 TASK-007 重抛/固定取消延迟错题均已有自主修复证据；CancellationToken Q1 标为已掌握。若希望固定取消第一轮，应选择更短延迟并预留调度余量，这是后续实践优化，不追加本任务验收门槛。
 - 待复习：[Task、async/await 与线程关系](./questions/csharp-task-async.md)；TASK-004 的最终结果输出由教练代写，后续实践继续核对这些概念。
 - Task/Delay 用法复查：[Q1](./questions/csharp-task-async.md) 已由 TASK-006 自主等待实现及 3500/50 ms 对照运行验证，标为已掌握；其他 Task 问答维持原状态，不扩大为全部概念掌握。

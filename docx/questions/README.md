@@ -22,8 +22,23 @@
 | WPF 界面区域与 UserControl | [wpf-usercontrol.md](./wpf-usercontrol.md) | 1 | 0 |
 | WPF 样式与资源 | [wpf-styles.md](./wpf-styles.md) | 1 | 1 |
 | WPF 数据模板 | [wpf-templates.md](./wpf-templates.md) | 0 | 2 |
+| WPF 控件模板 | [wpf-controltemplates.md](./wpf-controltemplates.md) | 2 | 2 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
+
+2026-10-12 TASK-017 审查通关：三个必需 DoD、11 个实际窗口场景全部通过，Padding 内部取值诊断与禁用/启用 Opacity 链已验证；原源码未代改。控件模板 Q3 按学员模板骨架内 Padding 连接、Q4 按禁用外观规则配置应用标已掌握；Q1/Q2 的外层模板/默认内容与框架机制保持待复习，统计 2/2，不扩大为独立控件设计或完整属性机制。只创建 TASK-018 卡片（⚪ 未开始），下方待复习/进行中描述此前历史。
+
+2026-10-12 TODO 4 答疑：新增 [控件模板 Q4](./wpf-controltemplates.md)，先解释 Trigger 的条件规则、Opacity 的数值与变淡效果，再拆开 Button.IsEnabled 条件和自定义 ButtonBorder.Opacity 设置；说明条件消失会撤销临时设置，原命令仍决定禁用。单处添加与实际运行观察已说明；问答待复习，统计 4/0。当前已见学员 Padding 连接、未见 Trigger，未代改/构建/运行，DoD 未勾选。
+
+2026-10-12 TODO 3 答疑：新增 [控件模板 Q3](./wpf-controltemplates.md)，具体对应 Setter→Button.Padding→Border.Padding 的取值来源。首步只改 Border 为 TemplateBinding，当前数值相同所以预期外观保持；随后单独改共同 Setter 可观察两按钮留白跟随。问答待复习，统计 3/0；未代改/构建/运行，任务与 DoD 状态不变。
+
+2026-10-12 TODO 2 默认行为更正：合并至 [控件模板 Q2](./wpf-controltemplates.md)，核对官方文档解释为何删除显式绑定后仍显示。任务卡已将显式 Content TemplateBinding 改为可选，原功能验收保留；教练练习设计问题不记学员错题。未代改/运行，问答统计仍 2/0，任务继续进行中。
+
+2026-10-12 TODO 2 继续答疑：已合并到 [控件模板 Q2](./wpf-controltemplates.md)，用实际按钮的四个字解释“内容”，说明 Border 画外框、ContentPresenter 显示文字。此前抽象措辞不足，教学反馈已记入学习进度；只答疑，问答状态与统计、任务状态和 DoD 均不变。
+
+2026-10-12 TASK-017 TODO 2 答疑：新增 [控件模板 Q2](./wpf-controltemplates.md)，拆开 Button.Content 与 ContentPresenter.Content 的所属对象及 TemplateBinding 左右两侧含义，给出单行改动与运行预期。默认已显示内容，因此显式连接后通常外观不变，目的为理解和表达来源。此前注释先要求使用新语法的教学不足已记录，非学员错题；状态待复习，分类统计 2/0。未代改或运行源码，TASK-017 与 DoD 保持原状。
+
+2026-10-12 TASK-017 启动：新增 [控件模板 Q1](./wpf-controltemplates.md)，说明 ControlTemplate/Template Setter 的身份、Border/CornerRadius、ContentPresenter 默认显示原按钮内容及后续 TemplateBinding/禁用外观的对象来源。首个动作只改圆角并实际观察两个按钮。问答待复习；骨架构建通过，未运行窗口或验收，不新增自主掌握证据。
 
 2026-10-12 TASK-016 最终审查：学员自主修正数值路径及 ID 右边距，原编译窗口 10 个显示/业务场景全部通过、三个 DoD 已勾选。数据模板 Q1 按提供模板骨架中的字段绑定/逐条数据源应用、Q2 按路径纠正及横向 Margin 应用标为已掌握，统计待复习 0、已掌握 2；外层模板设计/绑定引擎等未验证机制不扩大。只创建 TASK-017 卡片，未开始；下方未通过/待复习为此前历史。
 

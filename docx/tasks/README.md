@@ -20,7 +20,14 @@
 | [TASK-014：用 UserControl 封装读取历史区域](./TASK-014.md) | 第二阶段：WPF（起步） | 第二阶段 MVVM 后的 UserControl | 界面区域封装、DataContext 继承、原绑定复用 | ✅ 已通关 |
 | [TASK-015：用 Style 统一读取与清空按钮的外观](./TASK-015.md) | 第二阶段：WPF（起步） | 第二阶段 UserControl 后的 Style / Template，先练 Style | 显式样式、Setter、资源引用与共同按钮外观 | ✅ 已通关 |
 | [TASK-016：用 DataTemplate 展示结构化读取历史](./TASK-016.md) | 第二阶段：WPF（起步） | 第二阶段 Style / Template，练数据行模板 | DataTemplate、ItemTemplate、每条 Reading 字段绑定 | ✅ 已通关 |
-| [TASK-017：用 ControlTemplate 定义按钮内部外观](./TASK-017.md) | 第二阶段：WPF（起步） | 第二阶段 Style / Template，继续控件模板 | ControlTemplate、ContentPresenter、模板属性连接与禁用外观 | ⚪ 未开始 |
+| [TASK-017：用 ControlTemplate 定义按钮内部外观](./TASK-017.md) | 第二阶段：WPF（起步） | 第二阶段 Style / Template，继续控件模板 | ControlTemplate、ContentPresenter、模板属性连接与禁用外观 | ✅ 已通关 |
+| [TASK-018：用 Canvas 与 Polyline 绘制模拟温度折线](./TASK-018.md) | 第二阶段：WPF（起步） | 第二阶段数据图表入门 | Canvas 坐标、Polyline、温度数值到坐标转换 | ⚪ 未开始 |
+
+2026-10-12 TASK-017 审查：构建 0 警告/错误、原应用启动/关闭退出 0；原编译窗口 11 个显示/业务场景、内部 Padding 连接临时诊断全部通过。两个按钮同 Style/Template，禁用 Opacity=0.4/启用=1，三字段历史、空白保护与最小尺寸正常；39 个源码哈希不变，三个 DoD 全勾选，状态 ✅ 已通关。证据见任务卡。只创建 TASK-018 卡片（⚪ 未开始），继续计划数据图表，未准备源码或切换入口。下方 TASK-017 进行中表述为此前历史。
+
+2026-10-12 TASK-017 启动：专属目录 `WpfBae/Exercises/TASK-017-button-controltemplate/` 四个骨架文件已准备，App.xaml 已切到 Task017Window；原任务源码未改，复用原业务、共用样式和三字段历史模板。实际构建退出 0、0 警告/错误，未运行窗口，三个 DoD 均未勾选。首步仅改 Border.CornerRadius 观察两个按钮；状态 🟡 进行中。下方关于 TASK-017 未开始的描述为此前规划历史。
+
+2026-10-12 TASK-017 TODO 2 更正：官方默认规则确认 ContentPresenter 已自动显示 Button.Content，显式 Content TemplateBinding 改为可选；验收仍要求实际各自内容正确显示，其他 DoD 保留。学员代码未代改，本轮仅答疑与记录更新，状态仍 🟡 进行中。
 
 2026-10-12 TASK-016 最终审查：学员自主修正 Value 和 ID 右边距后，构建 0 警告/错误、当前原编译窗口 10 个显示/业务场景全部通过，两段行内间距均为 12，三个 DoD 已勾选，状态 ✅ 已通关。35 个源码哈希不变、原程序集/审查引用哈希一致，未代改源码。只创建下一张 TASK-017（⚪ 未开始），未准备源码或切换入口；下方同日未通过记录为此前历史。
 

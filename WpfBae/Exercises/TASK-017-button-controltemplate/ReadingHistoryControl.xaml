@@ -1,0 +1,24 @@
+<UserControl x:Class="WpfBae.Exercises.Task017.ReadingHistoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel>
+        <TextBlock Text="读取历史" />
+        <!-- 沿用 TASK-016 已验收的三字段显示与间距，不重复布置字段实现。 -->
+        <ListBox x:Name="HistoryListBox" ItemsSource="{Binding Readings, Mode=OneWay}" Height="170">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding DeviceId, Mode=OneWay}" Margin="0,0,12,0" />
+                        <TextBlock Text="{Binding Value, Mode=OneWay}" Margin="0,0,12,0" />
+                        <TextBlock Text="{Binding Unit, Mode=OneWay}" Margin="0,0,12,0" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!-- 沿用 DynamicResource 延后查找父窗口的同一个 ActionButtonStyle。 -->
+        <Button x:Name="ClearButton" Content="清空历史" Command="{Binding ClearCommand, Mode=OneWay}" Style="{DynamicResource ActionButtonStyle}" />
+        <!-- TODO 5（实践 3 / DoD 2、3）：模板连接完成后再运行验证：
+             初始清空禁用 → 读取启用 → 实际清空为空且禁用 → 再读恢复。
+             连读、换 ID、只改输入不改旧行、空字符串/纯空格保护及三字段历史显示保持。 -->
+    </StackPanel>
+</UserControl>
