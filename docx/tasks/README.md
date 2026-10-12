@@ -18,7 +18,14 @@
 | [TASK-012：用 Command 清空历史并控制按钮是否可用](./TASK-012.md) | 第二阶段：WPF（起步） | 第二阶段 ObservableCollection 后的 Command | ICommand、按钮命令绑定、可执行条件 | ✅ 已通关 |
 | [TASK-013：把读取逻辑从窗口移到 ViewModel](./TASK-013.md) | 第二阶段：WPF（起步） | 第二阶段 Command 后的 MVVM | 输入绑定、读取命令、窗口与数据/动作拆分 | ✅ 已通关 |
 | [TASK-014：用 UserControl 封装读取历史区域](./TASK-014.md) | 第二阶段：WPF（起步） | 第二阶段 MVVM 后的 UserControl | 界面区域封装、DataContext 继承、原绑定复用 | ✅ 已通关 |
-| [TASK-015：用 Style 统一读取与清空按钮的外观](./TASK-015.md) | 第二阶段：WPF（起步） | 第二阶段 UserControl 后的 Style / Template，先练 Style | 显式样式、Setter、资源引用与共同按钮外观 | ⚪ 未开始 |
+| [TASK-015：用 Style 统一读取与清空按钮的外观](./TASK-015.md) | 第二阶段：WPF（起步） | 第二阶段 UserControl 后的 Style / Template，先练 Style | 显式样式、Setter、资源引用与共同按钮外观 | ✅ 已通关 |
+| [TASK-016：用 DataTemplate 展示结构化读取历史](./TASK-016.md) | 第二阶段：WPF（起步） | 第二阶段 Style / Template，练数据行模板 | DataTemplate、ItemTemplate、每条 Reading 字段绑定 | ⚪ 未开始 |
+
+2026-10-12 TASK-015 最终审查：三个必需 DoD 全部通过，构建 0 警告/错误、原程序正常启动退出 0；原编译窗口 9 个实际场景、同一共享 Style 与独立副本 Padding Setter 布局对比通过，11 个源码哈希不变。状态 ✅ 已通关，证据见任务卡；未新增典型错误，加载时机机制继续复习。按计划只创建 TASK-016 卡片（⚪ 未开始），未准备其源码或切换 App.xaml。下方同日异常/启动记录为此前历史。
+
+2026-10-12 TASK-015 答疑更新：原编译窗口已重现内部 StaticResource 找不到窗口资源的异常，指导更正为 ClearButton 使用 DynamicResource 延后查找，保留窗口同一 Style；诊断副本显示后已验证同对象与属性值，学员源码未改，完整原窗口尚未修复验证，任务仍 🟡 进行中，DoD 均未勾选。详情与实际命令见任务卡、WPF 样式 Q2，不将教学遗漏记为学员错误。
+
+2026-10-12 TASK-015 启动更新：用户明确开启，已创建 `WpfBae/Exercises/TASK-015-button-style/` 下的窗口与历史控件四个骨架文件，共享 App.xaml 切到 Task015Window。原 TASK-013/014 源码保留，业务逻辑沿用；Setter 与两个按钮的资源引用留作 TODO。实际构建 0 警告/错误，未运行窗口，三个 DoD 均未勾选。首步只观察读取按钮内边距变化；状态 🟡 进行中。下方“仅创建 TASK-015”描述此前历史情况。
 
 2026-10-12 最终审查更新：TASK-014 三项必需 DoD 全部通过，构建 0 警告/错误、原程序启动退出正常，9 个实际窗口场景验证历史控件封装、同对象/集合绑定、连续读取与换 ID、两种空白保护、清空禁用与恢复；源码哈希一致，教练未代改。证据见任务卡。按计划仅创建 TASK-015 卡片，状态 ⚪ 未开始，未准备源码或切换 App.xaml；下方 TASK-014 启动/仅创建表述均为此前历史记录，机制与阶段整体状态保持原范围。
 

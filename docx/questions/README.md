@@ -20,8 +20,15 @@
 | WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 0 | 1 |
 | WPF 窗口与 ViewModel | [wpf-mvvm.md](./wpf-mvvm.md) | 1 | 0 |
 | WPF 界面区域与 UserControl | [wpf-usercontrol.md](./wpf-usercontrol.md) | 1 | 0 |
+| WPF 样式与资源 | [wpf-styles.md](./wpf-styles.md) | 1 | 1 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
+
+2026-10-12 TASK-015 最终审查：三个 DoD 与 9 个实际窗口场景、独立副本共同 Setter 布局比较全部通过。WPF 样式 Q1 按自主补齐显式样式、Setter、资源引用和移除直接属性的应用范围标为已掌握；Q2 的加载时机机制继续待复习，分类统计为待复习 1、已掌握 1。原源码未代改，未新增典型错误；下方同日异常诊断为此前历史。
+
+2026-10-12 TASK-015 资源异常答疑：新增 [WPF 样式 Q2](./wpf-styles.md)，并纠正 Q1 关于内部 StaticResource 可直接找到窗口资源的表述。说明历史控件独立 InitializeComponent 时尚未连接父窗口，使用 DynamicResource 延后查找；原编译窗口失败已重现，内存诊断副本成功取得同一窗口 Style。学员源码未修改，任务仍进行中、DoD 未勾选，两个问答均待复习。此前教学遗漏不记学员错题。
+
+2026-10-12 TASK-015 启动：新增 [WPF 样式 Q1](./wpf-styles.md)，解释 Style/Setter 的身份、Window.Resources 与自定义资源键、StaticResource 与 Button.Style 的连接、直接 Padding 覆盖 Setter 及样式资源与 DataContext 的区别。状态待复习；仅构建骨架，未运行实际窗口，不计自主掌握证据。
 
 2026-10-12 TASK-014 最终审查：9 个实际窗口场景和三项 DoD 全通过，控件内界面组合及已有 Binding 应用的自主证据已记入学习进度，并补充至 [WPF 控件 Q1](./wpf-usercontrol.md)。类定义、命名空间及 DataContext 连接由骨架提供，机制仍待复习，本分类统计保持待复习 1、已掌握 0，不扩大为独立控件设计能力。未发现新增典型认知错误。
 

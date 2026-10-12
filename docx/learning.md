@@ -1,7 +1,7 @@
 # 学习进度：上位机开发
 
 > 计划原文：[plan.md](./plan.md)（复制自 `D:\tmp\上位机.md`）｜已知背景：Java 后端；计划提及 Java、并发、网络、数据库经验，具体熟练度待补充｜总目标：迁移已有能力，逐步具备上位机界面、通信、设备控制、数据采集与稳定性开发能力。
-> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜最近通关：TASK-014｜下一任务：TASK-015（⚪ 未开始）
+> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜最近通关：TASK-015｜下一任务：TASK-016（⚪ 未开始）
 
 ## 阶段与路线概览
 
@@ -32,14 +32,16 @@
 | [TASK-012：用 Command 清空历史并控制按钮是否可用](./tasks/TASK-012.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-11 实际审查：构建 0 警告/错误、原窗口启动退出正常；8 个场景验证同对象/集合、绑定、按钮条件切换、点击清空、恢复与空白保护，三项 DoD 通过 |
 | [TASK-013：把读取逻辑从窗口移到 ViewModel](./tasks/TASK-013.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-12 自主补上空白分支 return 后，重新构建和 10 个实际窗口场景全部通过，三个 DoD 已勾选 |
 | [TASK-014：用 UserControl 封装读取历史区域](./tasks/TASK-014.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-12 构建 0 警告/错误、原程序启动退出正常；9 个实际窗口场景验证控件封装、同对象/集合绑定、追加、空白保护与清空恢复，三个 DoD 已勾选 |
-| [TASK-015：用 Style 统一读取与清空按钮的外观](./tasks/TASK-015.md) | 第二阶段：WPF（起步） | ⚪ 未开始 | 按计划 UserControl → Style/Template，先练显式 Style 与共享按钮外观；仅创建卡片，未准备源码或切换入口 |
+| [TASK-015：用 Style 统一读取与清空按钮的外观](./tasks/TASK-015.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-12 构建/原程序启动通过；同一 Style、独立副本共同 Setter 布局变化、9 个实际窗口业务场景通过，三个 DoD 已勾选，源码未代改 |
+| [TASK-016：用 DataTemplate 展示结构化读取历史](./tasks/TASK-016.md) | 第二阶段：WPF（起步） | ⚪ 未开始 | 按计划 Style / Template，继续数据行模板、三个字段 Binding；仅创建卡片，未准备源码或切换入口 |
 
 ## 🟡 正在学习
 
-- [TASK-014](./tasks/TASK-014.md) 已于 2026-10-12 审查通关，三个必需 DoD 均有证据；当前无进行中的实践任务。仅创建下一张 [TASK-015](./tasks/TASK-015.md)，状态 ⚪ 未开始，未准备源码或切换入口，App.xaml 仍指向 Task014Window。TASK-014 学员作品及复用源码未被教练修改；委托、事件、属性与绑定机制继续按原范围复习。
+- [TASK-015](./tasks/TASK-015.md) 已于 2026-10-12 最终审查通关，三个必需 DoD 均有证据，当前无进行中的实践任务。App.xaml 仍指向 Task015Window，学员源码未代改；仅创建下一张 [TASK-016](./tasks/TASK-016.md)，状态 ⚪ 未开始，未准备源码或切换入口。继续用 DataTemplate 把历史行的三个字段分开展示；ControlTemplate、数据图表及委托/事件、属性/资源加载机制继续按原范围学习复习。
 
 ## ✅ 已掌握
 
+- TASK-015 中学员在教练提供的窗口资源/控件骨架上自主补齐显式 Style 的 Padding/HorizontalAlignment Setter、读取按钮 StaticResource 与内部清空按钮 DynamicResource 引用，并移除两按钮对应直接属性，于 2026-10-12 实际运行验证。两个按钮取得同一窗口 Style；原窗口 `24,10` 时均 `98 × 37.24`，独立编译副本把共同 Setter 改为 `32,14` 后均 `114 × 45.24`，文字/布局/禁用状态正常，9 个读取/清空场景全通过，原集合/对象/命令保持。Style 应用限此任务骨架，不计独立副本由教练设置的变化为学员已自主完成运行时切换；[样式 Q1](./questions/wpf-styles.md) 标已掌握，Q2 资源加载时机机制仍待复习。证据见 [结果](./tasks/evidence/TASK-015/results.json)及[源码/程序集核对](./tasks/evidence/TASK-015/verification.json)。
 - TASK-014 中学员在教练提供的 UserControl/窗口连接上自主补齐历史标题、列表与清空按钮，并将内部 ItemsSource/Command 连接原 Readings/ClearCommand，于 2026-10-12 实际运行验证。9 个场景通过：TEMP-001 连读两次、换 TEMP-002 后为 3 条，两种空白保留历史，实际清空为 0 条并禁用，再读带空格 TEMP-003 恢复，第二次清空正确。窗口、控件与内部元素始终使用同一 ViewModel 和历史集合。掌握范围限在现有骨架中组合历史界面及应用既有绑定；类定义、命名空间和 DataContext 连接由教练提供，不计自主设计，[WPF 控件 Q1](./questions/wpf-usercontrol.md) 的机制仍待复习。证据见 [结果](./tasks/evidence/TASK-014/results.json)和[构建/启动/源码核对](./tasks/evidence/TASK-014/verification.json)。
 - TASK-013 中学员自主在读取命令内取得 ViewModel.DeviceId、Trim、校验空白并提前 return、创建 Reading、Add 原历史集合及设置成功提示于 2026-10-12 最终验证：TEMP-001 连续两次、换 TEMP-002 保留旧记录，两种空白均保留 3 条历史，清空与带空格 TEMP-003 恢复正确。首次遗漏 return 已由学员在审查期间自主修复，最终 10 个场景全通过。限在教练提供的 ViewModel/绑定/命令连接上应用读取逻辑；完整属性、TwoWay 设置、对象构造和通知工具仍不计自主设计，[WPF ViewModel Q1](./questions/wpf-mvvm.md) 的机制保持待复习。
 - TASK-012 中学员自主补充的 CanExecute 历史 Count > 0 判断、Execute 清空原集合和“已清空”提示于 2026-10-11 实际验证。实际按钮通过绑定命令执行，空→读取启用→清空禁用→再次读取启用完整链路正确；两种空白输入保留历史。同一对象、集合和命令引用以及集合/条件通知均已核对，8 个场景全部通过。[WPF 命令 Q1](./questions/wpf-commands.md) 限此应用范围标为已掌握；提供的构造连接、属性、事件声明、通知工具和框架订阅不计自主设计，C# 事件 Q6 继续待复习。
@@ -57,6 +59,9 @@
 
 ## 待复习与下一步
 
+- 2026-10-12 TASK-015 最终审查：构建 0 警告/错误、原 WpfBae.exe 打开并正常关闭退出 0，原编译 Task015Window 的 9 个真实窗口场景、同一 Style 检查及独立编译副本 Setter 布局对比通过。11 个相关源码哈希前后一致，教练未代改；首次审查工具混入旧程序集已纠正并核对当前程序集哈希，不计学员失败。清空按钮 Margin 为 0 但位置正常、无重叠，不增加固定间距要求；未新增典型错误。只创建 [TASK-016](./tasks/TASK-016.md) 卡片，先覆盖计划 Template 中的数据行展示，不开始下一题；Q1 仅应用范围升级，Q2 及其他复习范围保留，不宣称阶段整体完成。下方同日启动/异常记录为此前历史。
+- 2026-10-12 TASK-015 资源异常答疑：已在 [WPF 样式 Q2](./questions/wpf-styles.md) 展开“构造控件 → 独立 InitializeComponent → 内部 StaticResource 立即查找 → 尚未接到窗口”的顺序，纠正此前指导遗漏，不记为学员错误。DynamicResource 为 WPF 的延后资源引用，内部按钮接入窗口后可取得同一 Style，窗口按钮继续 StaticResource；不泛化为所有引用都需更换。原编译窗口失败已重现，诊断内存副本实际 Show 后同对象/Padding/对齐正确；构建 0 警告/错误、诊断退出 0，学员源码未改，任务/DoD 不变，两条样式问答均待复习。当前读取按钮的直接 Padding/HorizontalAlignment 仍覆盖 Setter，恢复启动后再引导移除；不扩充验收或掌握范围。
+- 2026-10-12 TASK-015 启动：先解释 Padding 的内留白、Style/Setter 是 WPF 类型、ActionButtonStyle 为自定义资源名、Window.Resources 保存外观对象、StaticResource 找资源及直接属性值优先于 Setter。记录至 [WPF 样式 Q1](./questions/wpf-styles.md)（待复习）；使用现有普通对象创建与连接，不把历史任务通关当作样式已掌握。四个任务专属文件和空 Style 由教练提供，核心 Setter/资源引用留给学员；实际 `dotnet build WpfBae/WpfBae.csproj --nologo` 退出 0、0 警告/错误，未运行或验收窗口。下方同日 TASK-014 审查及创建 TASK-015 的表述为此前历史记录。
 - 2026-10-12 TASK-014 最终审查：构建 0 警告/错误，原 WpfBae.exe 启动及正常关闭退出 0；审查项目显示原 Task014Window，通过真实输入控件写回和按钮自动化命令路径验证 9 个场景，三项 DoD 全部通过。9 个源码 SHA256 前后一致，未代改实现，未发现需要新增错题的问题。ListBox 未写建议名称不影响必需行为。仅创建 [TASK-015](./tasks/TASK-015.md)，先练显式 Style 共享按钮外观；不开始下一题，不宣称整个 WPF 阶段完成。以下同日启动记录描述当时情况，UserControl/属性继承机制继续待复习。
 - 2026-10-12 TASK-014 启动：用户明确要求开启，目标目录此前不存在；已创建最小骨架并切换共享 App.xaml 入口，实际 `dotnet build WpfBae/WpfBae.csproj --nologo` 退出 0、0 警告/错误。仅验证构建，未运行或验收实际窗口。先讲 UserControl 与自定义类身份、XAML/后台配对、命名空间前缀及父窗口 DataContext 同对象继承，记录至 [WPF 控件 Q1](./questions/wpf-usercontrol.md)（待复习）。首个实践只显示历史标题；原读取、清空命令及 ReadingViewModel 未修改，骨架和讲解不计自主掌握证据。
 - 2026-10-12 TASK-013 最终审查：首次空白保护失败后学员补上 return，重新构建及 10 个实际窗口场景全通过；三个 DoD 已勾选，任务 ✅ 已通关。问题与修复证据已写 [错题本](./mistakes.md)，教练未修改学员源码。以下同日启动/答疑记录描述当时状态，相关通知机制仍待复习；按计划仅创建 TASK-014，未开始。
@@ -88,7 +93,7 @@
 - 2026-10-09 C# 属性基础反馈：学员尚未学过带实现的 get/set、value 和 `get =>` 简写。已新增[属性 Q3](./questions/csharp-properties.md)，状态待复习；后续先用普通方法与完整花括号解释读写，再介绍属性简写和通知，不因使用过自动属性或骨架带有属性就默认理解。本轮未改源码、未运行或验收，任务和必需 DoD 状态不变。
 - 2026-10-09 框架类型来源答疑：[绑定 Q4](./questions/wpf-binding.md)解释 .NET 自带的 System.ComponentModel.PropertyChangedEventArgs、using、构造函数传入属性名称与 PropertyName 的作用，状态待复习。已见两个 setter 的字符串属性名通知调用，尚未运行或验收；不因代码存在认定通知机制已掌握，TASK-010 仍进行中。
 - 2026-10-05 路线答疑：[为上位机学习 C#，TASK-008 后能否进入 WPF](./questions/learning-route.md)。结合计划与任务级验收，当前基础已足够开始 WPF 起步，C# 集中入门可先告一段落；异步、属性、可空类型及资源释放继续随实践巩固。待复习问答不作为进入 WPF 的单独考试，第一阶段整体状态保持原状；当时 TASK-009 未开始，已于 2026-10-09 按用户要求启动。
-- 下一步：[TASK-015](./tasks/TASK-015.md)（⚪ 未开始），按计划 UserControl → Style/Template，先用显式 Style 统一读取和清空按钮的外观。仅创建卡片，用户明确开始后再准备骨架与切换入口；Template、数据图表及委托、事件、完整属性语法、Task/线程、using 与布局仍需后续学习，不认定阶段整体通关。
+- 下一步：[TASK-016](./tasks/TASK-016.md)（⚪ 未开始），按计划 Style / Template 继续练 DataTemplate 与历史行字段显示，仅创建卡片，用户明确开始后再准备骨架。ControlTemplate、数据图表及委托、事件、完整属性语法、Task/线程、using 与布局仍需后续学习，不认定阶段整体通关。
 - 巩固：TASK-005 角色混淆及 TASK-007 重抛/固定取消延迟错题均已有自主修复证据；CancellationToken Q1 标为已掌握。若希望固定取消第一轮，应选择更短延迟并预留调度余量，这是后续实践优化，不追加本任务验收门槛。
 - 待复习：[Task、async/await 与线程关系](./questions/csharp-task-async.md)；TASK-004 的最终结果输出由教练代写，后续实践继续核对这些概念。
 - Task/Delay 用法复查：[Q1](./questions/csharp-task-async.md) 已由 TASK-006 自主等待实现及 3500/50 ms 对照运行验证，标为已掌握；其他 Task 问答维持原状态，不扩大为全部概念掌握。

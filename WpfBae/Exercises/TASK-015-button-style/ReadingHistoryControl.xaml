@@ -1,0 +1,14 @@
+<UserControl x:Class="WpfBae.Exercises.Task015.ReadingHistoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 沿用 TASK-014 已完成的界面和绑定，独立副本用于本题的外观练习。 -->
+    <StackPanel>
+        <TextBlock Text="读取历史" />
+        <ListBox x:Name="HistoryListBox" ItemsSource="{Binding Readings, Mode=OneWay}" Height="170" />
+        <!-- TODO 3：让 ClearButton 用 StaticResource 引用窗口的 ActionButtonStyle。
+             移除此按钮的 Padding 和 HorizontalAlignment，保留 Margin、Content、Command。
+             资源查找可向上找到父窗口，无需在控件中再定义或复制 Style。
+             运行观察：两按钮内边距一致，清空按钮仍在列表下方且靠左。 -->
+        <Button x:Name="ClearButton" Content="清空历史" Command="{Binding ClearCommand, Mode=OneWay}" Style="{DynamicResource ActionButtonStyle}"/>
+    </StackPanel>
+</UserControl>

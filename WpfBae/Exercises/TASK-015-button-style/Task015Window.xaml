@@ -1,0 +1,34 @@
+<Window x:Class="WpfBae.Exercises.Task015.Task015Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:history="clr-namespace:WpfBae.Exercises.Task015"
+        Title="TASK-015：用 Style 统一按钮外观" Height="460" Width="560"
+        MinHeight="460" MinWidth="360">
+    <!-- Resources 是 WPF 的资源集合；本题把共用的外观对象放在窗口中。 -->
+    <Window.Resources>
+        <!-- Style/Setter 是 WPF 类型；ActionButtonStyle 是本题自行命名的资源键。
+             TargetType 指明此样式用于 Button；空 Style 是可编译的占位。 -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <!-- TODO 1（首个动作）：补一项 Padding Setter，Value 先用 24,10。
+                 然后在下方 ReadButton 加 Style 资源引用，并移除该按钮的 Padding。
+                 运行观察：读取按钮文字周围的留白增大；清空按钮暂时不变。 -->
+            <Setter Property="Padding" Value="24, 10"></Setter>
+            <!-- TODO 2：补 HorizontalAlignment Setter，值为 Left。
+                 移除 ReadButton 的同名属性，运行确认读取按钮仍靠左。 -->
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+        </Style>
+    </Window.Resources>
+    <!-- 输入和业务绑定由教练沿用已验证的实现，本次只练习样式。 -->
+    <StackPanel Margin="20">
+        <TextBlock Text="设备 ID" />
+        <TextBox x:Name="DeviceIdTextBox" Text="{Binding DeviceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,8,0,12" />
+        <!-- TODO 1 的连接位置：添加 Style 资源引用，只移除已转交给样式的 Padding。
+             保留名称、文字和 Command；TODO 2 再转移 HorizontalAlignment。 -->
+        <Button x:Name="ReadButton" Style="{StaticResource ActionButtonStyle}" Content="读取温度" Command="{Binding ReadCommand, Mode=OneWay}"/>
+        <history:ReadingHistoryControl x:Name="HistoryControl" Margin="0,16,0,0" />
+        <TextBlock x:Name="StatusTextBlock" Text="{Binding StatusText, Mode=OneWay}" Margin="0,12,0,0" TextWrapping="Wrap" />
+    </StackPanel>
+    <!-- TODO 4（两个按钮连接后再做）：关闭程序，将共同 Padding 改为 32,14 后重跑。
+         观察两个按钮同步变化，并验证读取、换 ID、两种空白、清空禁用及再次读取恢复。
+         StaticResource 不代表修改 XAML 后正在运行的程序会实时更新。 -->
+</Window>
