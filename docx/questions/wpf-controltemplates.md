@@ -46,6 +46,18 @@ Border 是 WPF 容器，只能直接放一个子元素。Background 是填充颜
 
 依据：[Microsoft 样式与模板说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/styles-templates-overview)、[创建控件模板](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/how-to-create-apply-template)。
 
+### 2026-10-13 补充：两个 TargetType="Button" 到底在说什么？
+
+学员指出知识笔记中的“样式应用对象类型”“模板所应用的控件类型”难以理解。问题来自讲解用抽象名词解释抽象名词，不能记为学员认知错误，也不撤销已有实践应用证据。Q1 继续待复习。
+
+先从真实界面说起：“读取温度”和“清空历史”是两个具体按钮，都是用 WPF 的 Button 类创建的，分别命名为 ReadButton、ClearButton。Button 是类名。
+
+Style 是一组属性设置。`<Style TargetType="Button">` 表达“这组设置给 Button 按钮用”；其中 Padding Setter 提供按钮的内留白。当前两个按钮各自引用这份 Style，才能取得这些设置。
+
+ControlTemplate 描述按钮里面怎样画出来。`<ControlTemplate TargetType="Button">` 表达“这份内部布局给 Button 按钮用”；当前 Border 画背景和圆角边框，ContentPresenter 显示相应按钮的文字。应用到读取按钮就画读取按钮内部，应用到清空按钮就画清空按钮内部。
+
+两个 TargetType 都写 Button，是因为一份给按钮提供属性设置，一份描述按钮内部界面。解释这两个写法时先不追加 TemplateBinding、SourceName 或 Trigger，把实际对象与当前作用说明白后，再分别展开取值和状态规则。已同步重写[知识笔记第 6 点](../notes/TASK-017-wpf-controltemplate.md)。未改源码、运行或调整任务状态。
+
 ## Q2：TODO 2 的“Content 的 TemplateBinding”具体让我做什么？
 
 - 日期：2026-10-12

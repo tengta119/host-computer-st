@@ -2,6 +2,12 @@
 
 > [返回进度](../learning.md) ｜ [计划原文](../plan.md)
 
+2026-10-13 TASK-018 审查：三个必需 DoD 全通过，状态 ✅ 已通关。原项目与独立 28 度副本均构建 0 警告/错误、exe 启动关闭退出 0；实际原窗口和副本坐标/文字可读性验证通过，中间点 y=110→80、两端不变，41 个原源码哈希不变。证据见[任务卡](./TASK-018.md)。只创建下一张 [TASK-019：用 DataGrid 展示设备读数列表](./TASK-019.md)（⚪ 未开始），未准备源码或切换入口；下方进行中/未运行为此前历史。
+
+2026-10-13 TASK-018 启动：状态 🟡 进行中，专属目录 `WpfBae/Exercises/TASK-018-temperature-polyline/` 已创建 XAML/后台两个骨架文件，App.xaml 已切到 Task018Window；温度转坐标与折线更新留 TODO。实际构建退出 0、0 警告/错误，未运行窗口或验收，三个 DoD 均未勾选。首步只将占位中间点 y 从 180 改为 100，重新运行观察上移；详见[任务卡](./TASK-018.md)与[坐标讲解](../questions/wpf-charts.md)。下方仅创建/未开始表述为此前历史。
+
+2026-10-13 笔记重写：按用户要求，已重写[笔记目录](../notes/README.md)中的 TASK-009～017 九篇与索引，采用真实场景、少量代码、具体对象和可观察结果的讲解方式，历史证据集中到文末。文件名与入口保留；旧稿另存备份。本轮未改源码或运行，不改变任务状态、DoD 和掌握范围。下方各篇知识整理记录为重写前的历史。
+
 2026-10-13 知识整理：新增 [TASK-017 详细知识笔记](../notes/TASK-017-wpf-controltemplate.md)，涵盖 Template Setter、Border/圆角、默认内容连接、TemplateBinding/Padding、共享模板与内部名称范围、Trigger/Opacity、原命令/历史绑定及禁用恢复链。已核对历史 JSON/启动/审查源码、六张内容渲染和 39 项源码哈希，全部与当前一致。本轮未重新运行，状态、DoD 与问答掌握范围不变。
 
 2026-10-13 知识整理：新增 [TASK-016 详细知识笔记](../notes/TASK-016-wpf-datatemplate.md)，涵盖 Reading/原集合、ItemsSource/ItemTemplate、逐行数据源、字段路径/OneWay、横向 Margin、两次自主修复、原业务/样式及通知分工。已核对三版历史 JSON、审查源码、四张内容渲染和历史 35 项哈希；除已推进的 App.xaml 外，34 项与当前一致。本轮未重新运行，状态、DoD 与问答掌握范围不变。
@@ -39,7 +45,8 @@
 | [TASK-015：用 Style 统一读取与清空按钮的外观](./TASK-015.md) | 第二阶段：WPF（起步） | 第二阶段 UserControl 后的 Style / Template，先练 Style | 显式样式、Setter、资源引用与共同按钮外观 | ✅ 已通关 |
 | [TASK-016：用 DataTemplate 展示结构化读取历史](./TASK-016.md) | 第二阶段：WPF（起步） | 第二阶段 Style / Template，练数据行模板 | DataTemplate、ItemTemplate、每条 Reading 字段绑定 | ✅ 已通关 |
 | [TASK-017：用 ControlTemplate 定义按钮内部外观](./TASK-017.md) | 第二阶段：WPF（起步） | 第二阶段 Style / Template，继续控件模板 | ControlTemplate、ContentPresenter、模板属性连接与禁用外观 | ✅ 已通关 |
-| [TASK-018：用 Canvas 与 Polyline 绘制模拟温度折线](./TASK-018.md) | 第二阶段：WPF（起步） | 第二阶段数据图表入门 | Canvas 坐标、Polyline、温度数值到坐标转换 | ⚪ 未开始 |
+| [TASK-018：用 Canvas 与 Polyline 绘制模拟温度折线](./TASK-018.md) | 第二阶段：WPF（起步） | 第二阶段数据图表入门 | Canvas 坐标、Polyline、温度数值到坐标转换 | ✅ 已通关 |
+| [TASK-019：用 DataGrid 展示设备读数列表](./TASK-019.md) | 第二阶段：WPF（起步） | 第二阶段基础控件 DataGrid 与原集合/命令巩固 | 三列表格、逐行字段绑定、同集合追加/清空 | ⚪ 未开始 |
 
 2026-10-12 TASK-017 审查：构建 0 警告/错误、原应用启动/关闭退出 0；原编译窗口 11 个显示/业务场景、内部 Padding 连接临时诊断全部通过。两个按钮同 Style/Template，禁用 Opacity=0.4/启用=1，三字段历史、空白保护与最小尺寸正常；39 个源码哈希不变，三个 DoD 全勾选，状态 ✅ 已通关。证据见任务卡。只创建 TASK-018 卡片（⚪ 未开始），继续计划数据图表，未准备源码或切换入口。下方 TASK-017 进行中表述为此前历史。
 

@@ -1,17 +1,59 @@
-# 知识笔记索引
+# 学习笔记：从一个按钮读数，逐步走到模板
 
-> [返回学习导航](../README.md) ｜ [学习进度](../learning.md) ｜ [任务索引](../tasks/README.md)
->
-> 笔记详细解释任务代码与相关知识；状态和验收以任务卡、学习进度为准。阅读笔记不等于新增掌握证据。
+这些笔记按当前项目的真实代码讲解。每篇先从屏幕上的操作说起，再给一小段代码，解释它操作哪个对象、运行时会看到什么。可以按任务顺序读，也可以按下表挑当前困惑的一篇。
 
-| 任务 | 笔记 | 内容 | 整理日期 |
-| :--- | :--- | :--- | :--- |
-| [TASK-009：用 WPF 窗口与按钮事件显示设备读数](../tasks/TASK-009.md) | [WPF 窗口、布局与按钮事件](./TASK-009-wpf-window-events.md) | 项目入口、XAML/后台连接、控件与布局、Click 订阅、输入校验、Reading/属性语法、显示流程与历史验证边界 | 2026-10-13 |
-| [TASK-010：用 Binding 更新模拟温度读数](../tasks/TASK-010.md) | [Binding、DataContext 与属性变化通知](./TASK-010-wpf-binding.md) | 自定义数据对象、完整属性语法、数据上下文、OneWay/Path、接口/事件/参数类、通知时序、真实分支、绑定保留、Rider 提示与证据边界 | 2026-10-13 |
-| [TASK-011：用 ObservableCollection 显示温度读取历史](../tasks/TASK-011.md) | [ObservableCollection 与温度读取历史](./TASK-011-wpf-reading-history.md) | 泛型集合、完整 getter、同一对象与集合、ListBox/ItemsSource、Add/Clear、集合与属性通知、空白保留历史、状态显示及验证边界 | 2026-10-13 |
-| [TASK-012：用 Command 清空历史并控制按钮是否可用](../tasks/TASK-012.md) | [ICommand、按钮可用条件与清空历史](./TASK-012-wpf-commands.md) | 接口与实现、同一状态/集合/命令、完整 getter、Command/OneWay、CanExecute/Execute、委托与事件、订阅/发布、this/sender、WPF 重查链、三种通知及验收边界 | 2026-10-13 |
-| [TASK-013：把读取逻辑从窗口移到 ViewModel](../tasks/TASK-013.md) | [ViewModel、双向输入绑定与读取命令](./TASK-013-wpf-viewmodel.md) | MVVM 角色、同一对象/双命令、DeviceId 完整属性、TwoWay/写回时机、属性通知用途、读取命令、Trim/return、当前输入与历史、通知链及修复/证据边界 | 2026-10-13 |
-| [TASK-014：用 UserControl 封装读取历史区域](../tasks/TASK-014.md) | [UserControl 封装、DataContext 继承与历史区域复用](./TASK-014-wpf-usercontrol.md) | 区域封装、类/实例复用、x:Class/partial/初始化、命名空间前缀、同对象继承、ItemsSource/Command、名称范围、布局、通知链及本地历史证据核对 | 2026-10-13 |
-| [TASK-015：用 Style 统一读取与清空按钮的外观](../tasks/TASK-015.md) | [Style、Setter 与按钮外观资源](./TASK-015-wpf-styles.md) | Padding/对齐、显式样式、资源键与作用域、StaticResource/DynamicResource、控件初始化时机、直接属性优先级、同一 Style、业务绑定及历史布局/验收证据 | 2026-10-13 |
-| [TASK-016：用 DataTemplate 展示结构化读取历史](../tasks/TASK-016.md) | [DataTemplate、逐行数据绑定与文字间距](./TASK-016-wpf-datatemplate.md) | Reading/初始化、原集合、ItemsSource/ItemTemplate、行内数据源、同名 DeviceId、字段路径/OneWay、横向布局、Margin、路径与间距自主修复、通知分工及历史证据 | 2026-10-13 |
-| [TASK-017：用 ControlTemplate 定义按钮内部外观](../tasks/TASK-017.md) | [ControlTemplate、属性连接与禁用外观](./TASK-017-wpf-controltemplate.md) | Template Setter、Border/圆角、ContentPresenter 默认/显式内容连接、TemplateBinding/Padding、模板实例与名称范围、Trigger/Opacity、命令状态链、原数据模板及历史诊断证据 | 2026-10-13 |
+## 先找到你想解决的问题
+
+| 你想弄清什么 | 从哪篇读 |
+| :--- | :--- |
+| 点按钮后，输入框的文字怎么变成温度结果？ | [TASK-009：窗口、布局与按钮点击](./TASK-009-wpf-window-events.md) |
+| 为什么改数据对象的属性，屏幕文字会跟着变？ | [TASK-010：属性、绑定与通知](./TASK-010-wpf-binding.md) |
+| 为什么 Add 一条记录，列表就多一行？ | [TASK-011：历史集合与列表](./TASK-011-wpf-reading-history.md) |
+| 为什么清空按钮会禁用、又会恢复？ | [TASK-012：命令条件与执行](./TASK-012-wpf-commands.md) |
+| 为什么读取命令不用直接访问输入框？ | [TASK-013：输入写回与 ViewModel](./TASK-013-wpf-viewmodel.md) |
+| 把历史区域放进 UserControl 后，数据从哪里来？ | [TASK-014：控件组合与共同数据](./TASK-014-wpf-usercontrol.md) |
+| 为什么两个按钮用一份 Style，有时引用又找不到？ | [TASK-015：共同设置与资源查找](./TASK-015-wpf-styles.md) |
+| 同样写 DeviceId，为什么每行显示自己的历史 ID？ | [TASK-016：逐行字段与间距](./TASK-016-wpf-datatemplate.md) |
+| 按钮的圆角、文字、留白与禁用外观怎么连接？ | [TASK-017：按钮内部模板](./TASK-017-wpf-controltemplate.md) |
+
+## 怎样读一篇
+
+先看开头的实际操作，确认这一题要让窗口做什么。遇到代码时，先认清左侧属于哪个对象，再看右侧的值从哪里来。每节只处理一条关系，后面的机制等走到对应位置再读。
+
+例如“Button.Padding 交给 Border.Padding”，就先对应外部按钮和内部边框两个具体对象；不必先背“模板属性传递”之类抽象表述。
+
+正文的小例子说明代码与结果的联系。注明“说明示例”的代码未写入项目；含省略号的片段不能直接粘贴运行。若想观察，使用文末的一个小步骤，每次只改变一件事，再恢复。
+
+## 运行旧任务前，先看入口
+
+当前 [App.xaml](../../WpfBae/App.xaml) 指向 TASK-017：
+
+```xml
+StartupUri="Exercises/TASK-017-button-controltemplate/Task017Window.xaml"
+```
+
+因此在工作区执行：
+
+```powershell
+dotnet run --project WpfBae/WpfBae.csproj
+```
+
+会按当前入口打开 TASK-017。文件夹里同时有其他任务窗口，不代表这条命令会自动选择你正在读的那篇。
+
+若以后专门复跑旧题，要先明确相应入口，关闭旧窗口、加载新版本，观察后恢复现入口。此次笔记重写没有切换入口或运行程序。
+
+## 文末资料用来查证，不用先背
+
+每篇正文后集中放实际文件、问答、官方查阅和历史验收说明。源码告诉你当前怎样实现；任务卡和验收材料记录曾经怎样验证。
+
+TASK-009～013 的部分原验收附件在当前工作区缺失，笔记明确依据任务卡及相关记录保留历史结论。TASK-014～017 有本地 JSON/审查源码/图片可查，图片是历史窗口内容渲染。
+
+看过笔记不等于自主掌握全部机制。原骨架、学员代码、实际验证和待复习范围分别保留，以[最新学习进度](../learning.md)和[任务索引](../tasks/README.md)为准。
+
+## 本次版本
+
+2026-10-13 按学员反馈与工作区教学规则，完整重写本目录 9 篇任务笔记和本索引：具体对象优先，代码分段解释，避免定义套定义，验收/哈希/掌握边界集中在文末。保留原文件名，原任务卡与问答链接继续使用。
+
+重写前的 10 份旧稿单独保存在 `docx/notes-backups/before-plain-rewrite-2026-10-13/`，供需要时回查；这里展示新版。
+
+[返回学习导航](../README.md) · [学习进度](../learning.md) · [任务索引](../tasks/README.md) · [问答库](../questions/README.md)
