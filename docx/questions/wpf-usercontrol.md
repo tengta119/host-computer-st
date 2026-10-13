@@ -1,38 +1,47 @@
 # WPF 界面区域与 UserControl
 
 > [返回问答索引](./README.md)
+> 2026-10-13 按当前 AGENTS.md 重构。原问题编号与掌握状态保留；历史证据集中到文末。
 
 ## Q1：TASK-014 的历史控件是什么，内部 Binding 从哪里取数据？
 
 - 日期：2026-10-12
 - 来源：TASK-014 开始时的必要讲解。
 - 状态：待复习
-- 证据边界：2026-10-12 学员自主补齐控件内标题、列表和清空按钮及 ItemsSource/Command 绑定，9 个实际窗口场景全部通过；此界面组合和既有绑定应用范围已记入学习进度。控件类定义、命名空间与父窗口 DataContext 连接由教练提供，本问答关于控件构造和属性值继承的机制保持待复习，不据此认定自主设计或全部概念理解。
 
-原 TASK-013 窗口直接放置历史标题、ListBox 和清空按钮。TASK-014 把这三个元素放进一个 UserControl，窗口只需放置这个控件，就能显示它内部的区域。UserControl 是 WPF 提供的基类，ReadingHistoryControl 是本题自定义的类名；后者继承前者，放在窗口内部，不用 Show 打开。
+TASK-014 的窗口里，“读取历史”标题、列表和清空按钮被装进同一个区域。ReadingHistoryControl 是本项目自定义控件类，继承 WPF 的 UserControl；它放进窗口显示，不是又打开一个 Window。
 
-`ReadingHistoryControl.xaml` 描述界面，`ReadingHistoryControl.xaml.cs` 写对应的 C# 类。XAML 的 `x:Class` 对应完整类名；`partial` 是 C# 关键字，让手写后台与 XAML 构建生成部分共同组成同一个类。构造函数中 `InitializeComponent()` 是 WPF 构建生成的方法，负责创建 XAML 里描述的界面。
+`ReadingHistoryControl.xaml` 描述这块区域的元素，后台 .xaml.cs 定义配对的 C# 类。x:Class 指向完整类名，partial 是 C# 关键字，让手写与构建生成部分共同组成这个类。构造中的 InitializeComponent 是 WPF 构建生成的方法，用来创建 XAML 描述的元素。
 
-窗口里的连接由骨架提供：
+窗口起始标签已有：
 
 ```xml
 xmlns:history="clr-namespace:WpfBae.Exercises.Task014"
 ```
 
-这是 Window 起始标签中的命名空间声明，`history` 是自定义前缀，指向控件所在的 C# 命名空间；随后窗口用 `<history:ReadingHistoryControl ... />` 创建并放置一个控件实例。新控件内部已有 StackPanel 容器，它默认把内部元素从上往下排列。
+history 是教练选的前缀，右边指出控件的 C# 命名空间。之后窗口内部 `<history:ReadingHistoryControl />` 创建并放置这个类的一个控件；不是按文件路径读取一段文本。标题、列表、按钮由它自己的 XAML 提供。
 
-窗口后台复用原 ReadingViewModel 类型，但创建的是 TASK-014 自己的一份实例：
+窗口后台创建一份数据对象：
 
 ```csharp
 private ReadingViewModel _viewModel = new ReadingViewModel();
 ```
 
-`new` 是 C# 创建对象的语法；字段 `_viewModel` 保存该对象的引用。窗口调用 `DataContext = _viewModel` 设置 WPF 提供的 DataContext 属性。内部控件没有自行设置这个属性，会从父元素取得同一个对象；列表和按钮再从此对象的公开 Readings/ClearCommand 属性取集合和命令。这里的属性值继承不是复制数据，也不是让控件类继承数据类。
+ReadingViewModel 是已有自定义类，new 创建 TASK-014 窗口使用的对象，字段保存引用。`DataContext = _viewModel` 给窗口指定数据来源。历史控件没另设 DataContext，接到窗口后沿用这个对象；内部列表和清空按钮再取它的 Readings 与 ClearCommand。
 
-若控件后台另建一个 ReadingViewModel 并设置 DataContext，读取按钮操作窗口那份集合，历史控件显示另一个对象的集合，可能出现“读取成功但列表没有新增”的现象。原因是两边的数据来源不同。当前骨架让窗口、历史控件及其内部元素共用一个 ViewModel，控件只负责组合界面，读取和清空继续交给原命令。
+这叫 DataContext 的属性值继承：沿用父元素设置的同一个对象。不是复制历史，也不是 ReadingHistoryControl 类继承 ReadingViewModel 类。若控件自己又 new 一份 ViewModel 并设为来源，就会显示另一份空集合，窗口读取可能成功而内部列表没有行。
 
-首个实践只在控件的 StackPanel 内添加 `<TextBlock Text="读取历史" />`。TextBlock 是 WPF 文字控件，Text 是显示文字的属性；实际运行后，标题应位于窗口的读取按钮与状态提示之间。后续再复用 TASK-013 已有 ListBox.ItemsSource 和 Button.Command 的 Binding 写法；读数追加与清空的完整行为仍须实际运行验证。
+原首个观察是在控件 StackPanel 内放 `<TextBlock Text="读取历史" />`，对应屏幕上这块区域的标题。当前内容已完成，复习直接读 [控件 XAML](../../WpfBae/Exercises/TASK-014-history-usercontrol/ReadingHistoryControl.xaml)，不要求重做。列表没写 x:Name 仍能 Binding 取属性；x:Name 用于命名控件，不是数据绑定必需条件。
 
-依据：[UserControl 官方说明](https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.usercontrol?view=windowsdesktop-10.0)、[DataContext 属性继承说明](https://learn.microsoft.com/en-us/dotnet/api/system.windows.frameworkelement.datacontext?view=windowsdesktop-10.0)。
+## 历史证据与掌握范围
 
-2026-10-12 TASK-014 审查补充：实际窗口、历史控件、内部 ListBox/清空按钮 DataContext 相同，ItemsSource 引用原 Readings，Command 引用原 ClearCommand。连续读取、换 ID、空白保护、清空和恢复均通过，见 [运行结果](../tasks/evidence/TASK-014/results.json)；源码未修改，见 [核对](../tasks/evidence/TASK-014/verification.json)。ListBox 未命名仍能通过 ItemsSource 绑定显示与刷新；x:Name 用于标识控件，不是 Binding 按数据属性取值的前提。本项为提交检查依据，不新增单独口试或必需验收项。
+Q1 保持待复习。2026-10-12 学员在骨架中组合标题/列表/按钮、应用 ItemsSource/Command 已通过 9 个真实窗口场景，窗口与内部控件同一个 DataContext/集合/命令。类定义、命名空间、窗口对象连接和属性继承机制由骨架提供，保留实践范围而不升级综合条目。
+
+相关任务卡与验收来源：[TASK-013](../tasks/TASK-013.md)、[TASK-014](../tasks/TASK-014.md)。
+
+完整原问题、追问、教学更正与逐次复查记录见[重构前原稿](../questions-backups/before-plain-rewrite-2026-10-13/wpf-usercontrol.md)。该快照保留原文，里面的旧路径/当时状态可能已过时；当前任务状态以[学习进度](../learning.md)和对应任务卡为准。
+
+## 官方依据
+
+- [UserControl 官方说明](https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.usercontrol?view=windowsdesktop-10.0)
+- [DataContext 属性继承说明](https://learn.microsoft.com/en-us/dotnet/api/system.windows.frameworkelement.datacontext?view=windowsdesktop-10.0)

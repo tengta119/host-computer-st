@@ -1,0 +1,65 @@
+<Window x:Class="WpfBae.Exercises.Task021.Task021Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TASK-021：用 Grid 组织设备读取窗口" Height="640" Width="640"
+        MinHeight="600" MinWidth="420">
+    <!-- LayoutGrid 是给本窗口主布局容器起的名字；Grid 是 WPF 提供的容器。
+         它直接放在 Window 中，取得窗口内容区的可用高度。 -->
+    <Grid x:Name="LayoutGrid" Margin="20">
+        <Grid.RowDefinitions>
+            <!-- TODO 1（首个动作）：只把这一行 Height 从 160 改为 190。
+                 它改变第 0 行预留高度；选择区下面的空隙增大，清空区向下移动。
+                 固定数值是观察用占位；先不要同时修改其他行或区域位置。 -->
+            <RowDefinition Height="160" />
+            <!-- TODO 2：完成首步后，按讲解配置三行高度：
+                 顶部/底部按内容需要，中间取得剩余高度。 -->
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="SelectionRegion" Grid.Row="0">
+            <TextBlock Text="选择设备" />
+            <ComboBox x:Name="DeviceComboBox" Width="260"
+                      HorizontalAlignment="Left" IsEditable="False"
+                      SelectedItem="{Binding DeviceId}"
+                      Margin="0,8,0,12" />
+            <Button x:Name="ReadButton" Content="读取温度"
+                    Command="{Binding ReadCommand, Mode=OneWay}"
+                    HorizontalAlignment="Left" Padding="12,6" />
+        </StackPanel>
+
+        <!-- TODO 3：HistoryRegion / ActionsRegion 的行号是可运行占位。
+             当前顺序为选择、清空、历史；按目标分别放到顶部、中间、底部。
+             改的是外层 LayoutGrid 的行号，不要改本区域内部的行号。 -->
+        <Grid x:Name="HistoryRegion" Grid.Row="2" Margin="0,16,0,0">
+            <!-- 区域内的两行由教练提供：标题占所需高度，表格取得其余高度。
+                 这里的 Grid.Row=0/1 只属于 HistoryRegion，不属于 LayoutGrid。 -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="读取历史" Margin="0,0,0,8" />
+            <!-- TODO 4：行位置调整完成后，移除表格固定 Height。
+                 否则它仍只要 210 高度，窗口拉高也不会填满自己的区域。
+                 保留已有集合/三列字段连接与只读限制。 -->
+            <DataGrid x:Name="HistoryDataGrid" Grid.Row="1" Height="210"
+                      AutoGenerateColumns="False" IsReadOnly="True"
+                      ItemsSource="{Binding Readings, Mode=OneWay}"
+                      CanUserAddRows="False" CanUserDeleteRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="设备 ID" Binding="{Binding DeviceId}" Width="*" />
+                    <DataGridTextColumn Header="温度" Binding="{Binding Value}" Width="*" />
+                    <DataGridTextColumn Header="单位" Binding="{Binding Unit}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <StackPanel x:Name="ActionsRegion" Grid.Row="1">
+            <Button x:Name="ClearButton" Content="清空历史"
+                    Command="{Binding ClearCommand, Mode=OneWay}"
+                    HorizontalAlignment="Left" Padding="12,6" Margin="0,12,0,0" />
+            <TextBlock x:Name="StatusTextBlock" Text="{Binding StatusText, Mode=OneWay}"
+                       Margin="0,12,0,0" TextWrapping="Wrap" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,2082 @@
+[
+  {
+    "Path": "D:\\host-computer-st\\Base\\Base.csproj",
+    "Hash": "AC95755EE65DF5C09AEC39CC019E83D10F9C9614F0407600B91ACCF5CF1CAC02"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Base.slnx",
+    "Hash": "8FB93D88D18502AF2109BE78C68134C9723CF91F056C34AF11D931ACACFB6CEF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Program.cs",
+    "Hash": "454BBD55DFC7E0E738471255074B573F39CD27A0E082165428567FEC6A7FC6CE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\.vs\\VSWorkspaceState.json",
+    "Hash": "36F953D72ED243AD50E1DDE3A6359226734C6F9D4B60D959C52965D66DB7FDF6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\.vs\\Base.slnx\\v18\\DocumentLayout.backup.json",
+    "Hash": "E7A5F492E5154D0111FA2C8B25BC70F73574DA2AE0C3B8A05A887BF545D2F883"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\.vs\\Base.slnx\\v18\\DocumentLayout.json",
+    "Hash": "E7A5F492E5154D0111FA2C8B25BC70F73574DA2AE0C3B8A05A887BF545D2F883"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Exercises\\TASK-001-device-model\\Task001Exercise.cs",
+    "Hash": "DF4B4F7386DE25A7CEF420C28102AB5D1D7CCCE9FA5F55A0359304574438135B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Exercises\\TASK-002-device-reading-event\\Task002Exercise.cs",
+    "Hash": "C9CBE1DEA0C577542A6CAD8FC7400E82611B1B583382784726AB98A0F030640F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Exercises\\TASK-003-reading-query\\Task003Exercise.cs",
+    "Hash": "2C723EBAF9662B74D2F9CDE4E9626E539413B53E3745B6F872AB00D597B393CB"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Exercises\\TASK-004-async-reading\\Task004Exercise.cs",
+    "Hash": "276E2073F5EAAA3B0E0A82A46D94691CB6A2448D210E32140465C9957136213E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Exercises\\TASK-005-cancel-reading\\Task005Exercise.cs",
+    "Hash": "530C99AD8C0A7621244F0630C3F6D994355D4EBB7592549BCCC8F64A153CFA73"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Exercises\\TASK-006-json-config\\Task006Exercise.cs",
+    "Hash": "3F3928AE2800B8F8490ADBF452BC40ECCDB5B8F5574CAE6CB8201CACC12342EA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Exercises\\TASK-007-config-acquisition\\device-config.json",
+    "Hash": "0EA791C6C0AECF0C1C60E5011A040CA17AC286D35967559D4F4810382267B905"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Exercises\\TASK-007-config-acquisition\\Task007Exercise.cs",
+    "Hash": "F937ECFE1BBA9E093F3E63234DB5C7AD7B93881423BDF882134C9071FB4CCF1E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\Base\\Exercises\\TASK-008-interface-readers\\Task008Exercise.cs",
+    "Hash": "787ABB7FD8DB351DAEF657C907AAD8E8E02DB844C98EC4A63CA0AE33B6473825"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\App.xaml",
+    "Hash": "119929052350D0B50CE555C92325B6CDB2FD3CAD5BB5C6FEB550EAFE1ECC5CAF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\App.xaml.cs",
+    "Hash": "A24CE7C1ED70C96C8A0910BD619CF1B9F508A0F7ECC0854D10957C968DADAF0A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\AssemblyInfo.cs",
+    "Hash": "2B39DD78A11DB48425FC4BD076A02AE6F0B5949CA084F89B618B9FA79260F65C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\MainWindow.xaml",
+    "Hash": "C454DE0B5FCD01A8BE2258252265ACCF605A559A94386393895F9CE241E028CA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\MainWindow.xaml.cs",
+    "Hash": "A7CC9057B34B7607C8B6FC7E960E601C348B9673DA0EDE89FFC270498F22B46C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\WpfBae.csproj",
+    "Hash": "C22547FFB82981F15E3CFC4397ACB064D0513BD7B8B11E8995BC1A6C0B3406C9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\WpfBae.sln",
+    "Hash": "3D0F2738C899842016C612B91043570643276FDC21F89A66FC5070128DDBE160"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-009-window-events\\Task009Window.xaml",
+    "Hash": "DDB1372AABF0455A3A3591454878C92D7D3B50CF91178C912D06B2BB7E5B232C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-009-window-events\\Task009Window.xaml.cs",
+    "Hash": "9F15DF19170979192FF205E208710E7AC812103787B50E3C84DC8A609BFDF3C5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-010-reading-binding\\ReadingDisplayState.cs",
+    "Hash": "021D997C18D06852A3D4BD2D0776B90E3F2CF74261B470053E7C47D4656F53DC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-010-reading-binding\\Task010Window.xaml",
+    "Hash": "D9417073B745D4B5C771AAE332D2F03B833AF1A7186602A11926EB3CB79EDE3F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-010-reading-binding\\Task010Window.xaml.cs",
+    "Hash": "1B924D24EEFD098F051680AE2236C456C116473DD1B8E16D84C91BABE3370180"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-011-reading-history\\ReadingHistoryState.cs",
+    "Hash": "6BCA3027C4301510988350E8AF63F956EF99CE52A442E2425DA46665C6AABE62"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-011-reading-history\\Task011Window.xaml",
+    "Hash": "44B1C4933C2DA49C5A99717B53E56178FB47AC2AC88DBBD8F504D682127E1BD1"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-011-reading-history\\Task011Window.xaml.cs",
+    "Hash": "762E01B61752E98D5D03C0425B7DF0168FC2F235239F46BF8EB0862BDC4B708F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-012-clear-history-command\\ClearHistoryCommand.cs",
+    "Hash": "742E39986AA84DF9CAC86DD00A6703014E329AFB4ACB2649546E4472A775F937"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-012-clear-history-command\\ReadingCommandState.cs",
+    "Hash": "BA057F0647F1F08DBF53DA5371677C9915B919367D003CEF99B255BC00A1E409"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-012-clear-history-command\\Task012Window.xaml",
+    "Hash": "2148EFAAB6FF1D4AC34A03A0B64404AB94B0AFFF96220DD4256FB83BD41B8376"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-012-clear-history-command\\Task012Window.xaml.cs",
+    "Hash": "EDD7566CB39A4E6E3737E36E599A4B8DA92B88DC899764DE82E881842642FCBF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\ClearHistoryCommand.cs",
+    "Hash": "7EDDADBA42ACFC3B4974E640C227A37A420AF5EC1048F7D9505A46EB79C3D6B0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\ReadingViewModel.cs",
+    "Hash": "D6255D2042C6EA8E801FDE5A074F17E31441D333494D9269A7B018305C494F6C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\ReadTemperatureCommand.cs",
+    "Hash": "DDB4B493829924A6C6ADE3045320AAD6EBCA0EF569D4160555A029F2371EB5DB"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\Task013Window.xaml",
+    "Hash": "D3E13116D01F992E95E27DF295AF1B7CC55D3554A74D4ED417727C971896CDC4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\Task013Window.xaml.cs",
+    "Hash": "81143A7547BF80F1180BBFE3937862A42E7011512D5F2197A4DE813E9FCE6AE2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-014-history-usercontrol\\ReadingHistoryControl.xaml",
+    "Hash": "D6D0670505D77929A90B0C6B0BE20598FB8F8160A1F6B019BFE98BE9D776C76A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-014-history-usercontrol\\ReadingHistoryControl.xaml.cs",
+    "Hash": "99348408CE50C4CA1640FDEC3E45201D70DCB41E90614880E5CE4D76B5F63FAD"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-014-history-usercontrol\\Task014Window.xaml",
+    "Hash": "28C33A57211354762C85C2F9B65C60033439C175187865EEAAB2215535FACC1C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-014-history-usercontrol\\Task014Window.xaml.cs",
+    "Hash": "B7B39C255BC68D1F33A95C6DFEE6FDFF6F8C5077EB2F6BA25EE4CDBBD15B6867"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-015-button-style\\ReadingHistoryControl.xaml",
+    "Hash": "D5DDB0FDB2A65764A39729E427390270862D9B6AFE562C2FE13EDDD8333C06A6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-015-button-style\\ReadingHistoryControl.xaml.cs",
+    "Hash": "99710E8B6C35866301D5CF60C997EBB433066EAB5AA4969FD414BADB9602EA04"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-015-button-style\\Task015Window.xaml",
+    "Hash": "CDE07BE4DD30A0D9D337EE99C195B0AA5331AA293C6FEF98A575749902F97742"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-015-button-style\\Task015Window.xaml.cs",
+    "Hash": "6AB5BFC998EBB83E8AB825EBD276BE0AF5D50FC7369720E5524F300C55C810C3"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-016-reading-datatemplate\\ReadingHistoryControl.xaml",
+    "Hash": "0EBC5557A48A33B646F16702D01FBEC80D463E68CBB6635D71B3C98D9DCED084"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-016-reading-datatemplate\\ReadingHistoryControl.xaml.cs",
+    "Hash": "078B353E2F1A4118D36BD0F8C905635C417BF4EC6FAAA625593C2810DDF5C30F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-016-reading-datatemplate\\Task016Window.xaml",
+    "Hash": "D057C5E89A2769F9FDB40F25E9CC24126E323ACEA5A5104B0A92AD3DF0F8CB8A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-016-reading-datatemplate\\Task016Window.xaml.cs",
+    "Hash": "51B0266148729968DD5EE163D2C83C2A67D2EA744F747F5A1F422F82F6B22873"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-017-button-controltemplate\\ReadingHistoryControl.xaml",
+    "Hash": "EBC6D6A5F1876243BDA683809184ABC081CBEA105FB717AD9EFB3900261B2E62"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-017-button-controltemplate\\ReadingHistoryControl.xaml.cs",
+    "Hash": "61784B336A97F111C9EF1E1074597E27328D179CFC939E69092FE1637E7D4BD6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-017-button-controltemplate\\Task017Window.xaml",
+    "Hash": "5352DD54FEE4DF40BEAC17A8D39897674BAFB5E0B2FC10B53D8D8F3F9796E060"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-017-button-controltemplate\\Task017Window.xaml.cs",
+    "Hash": "D6D90A5DC13B1AC0DC41C7318C4EF945F27B6BEB49EF26A06605DE63304B39A7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-018-temperature-polyline\\Task018Window.xaml",
+    "Hash": "0AF4939FA1400BEDD39890806D40FFC35AE0357A1598E0470A8E2BDBB7AF57F3"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-018-temperature-polyline\\Task018Window.xaml.cs",
+    "Hash": "6D0A78429B041FCC2AC96B3D8C3B567F8554BF529C6FD1F86DD11858FBAEE6C8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-019-reading-datagrid\\Task019Window.xaml",
+    "Hash": "85B0DED58219A554C3804D7836C960241EC2F0088B982770D689C5821835A8FD"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-019-reading-datagrid\\Task019Window.xaml.cs",
+    "Hash": "F43F1E30254085F833E1962303E25844E24F660A3570E13BC67FE4FFC2B7BCF8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-020-device-combobox\\Task020Window.xaml",
+    "Hash": "BD415FB50CB306991162477593A50C4FE4F7236B21C7210F663E8FC11673BF48"
+  },
+  {
+    "Path": "D:\\host-computer-st\\WpfBae\\Exercises\\TASK-020-device-combobox\\Task020Window.xaml.cs",
+    "Hash": "5914CEB93486F560B9D8C1426349FB9881B7C5707928F6A5CD9B061CD98322D9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\README.md",
+    "Hash": "38FE93E6B7F0AE298B0E4A2C5DDBBADFB9FB0161458DB0A70DF4F303B7F374CE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-001.md",
+    "Hash": "93CC0CBFA2F19C3346F3E5930B261549EE671912271C34EF8793BE2B0532A37A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-002.md",
+    "Hash": "93D2F807FF8822F590C098FED214C8F358DDB957E3C126B9E2164108114270D6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-003.md",
+    "Hash": "B44DEC8799C4E0F28DE156D14730742D251E53E70444D4D5D8BF2DA77A28F6AC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-004.md",
+    "Hash": "760D8495D38533213E11743C1A93A03994C48A52569E5BE1A9729C1ECE89A242"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-005.md",
+    "Hash": "C89FC4CBD98245017E4CAB6FB57292153EE54C4FC71A2339B1D3853202FC95F5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-006.md",
+    "Hash": "205E8F0D3E3B93D97CFF93095361893646E7DF6815EEFBCD0D18537C3958693A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-007.md",
+    "Hash": "C822EB2669D434E4865F40263F5ABC25FEF0B1BCF9B3FBEF9CB77DA3B26510BD"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-008.md",
+    "Hash": "8BCF8A85EA5E1DDF15BFACD51F78F7FC62F89C7519109446B7D78DA95E045A68"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-009.md",
+    "Hash": "44CB885FB6DF03DBD696BC39921536975F50ABC329177A3E03656FA16619422D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-010.md",
+    "Hash": "C9A0230DA8FE5EA4DE9B1D39A5F6036976BBAB295CDC95229A2E4A59278FF7B1"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-011.md",
+    "Hash": "84C7C18DEA4FB1DEA03B0BD32DE413585F84F0732FF9C21D59B35ACA0C30FA55"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-012.md",
+    "Hash": "62FD2BC2E09F03ED8D18F6628315B662482B24D07F3C1AA7085F230F9BE35FB7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-013.md",
+    "Hash": "735334E352AA76DF081F5B29F267FD88C45689D18ED9F6FB54F568A262BAD532"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-014.md",
+    "Hash": "DCF1C2474AA37E34107C77B5E1A3F868FEEC52E08743612289609CDB4ADCB3B2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-015.md",
+    "Hash": "C046F31A8F79389DD1454B4257E3304902B827668FB7A3B2B996FF29B1863AE5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-016.md",
+    "Hash": "F8BB136406DAB004D9C01D7F6CE0F47C77C8D8E7D854E40934630463FB12DA3F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-017.md",
+    "Hash": "88CC3EF1B20D2058F64BBCEDD1024A001440F5836B89F47F7CB3172D9C4F98B0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-018.md",
+    "Hash": "C4E57AF193DD74F54967FD29884D543DD15171278549CBC2F1301D33D93A205C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-019.md",
+    "Hash": "96E91CE8C986A896C28F01EF7A78D545932F449524870BE1F30AE79371F661AA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\TASK-020.md",
+    "Hash": "799BEF0E35017EFA4501F52869945C39862E3A2A8394E882E735C0C8354BDA3D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\.gitignore",
+    "Hash": "6C5082C7E6DE3E350189C67A1AACF757485ECC26E0A3CF96683528565F3E5F12"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\history-cleared.png",
+    "Hash": "431A162990EA1FEBBA913CD7BE7FAC263624A22B1AFEEF7B7F6B0F399C24918F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\history-three-readings.png",
+    "Hash": "045BB01261A977A2AC3F16ECD2DE00B315C349BE1F5442937DCC51796BAB9D36"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\results.json",
+    "Hash": "F83171C713D3A90DB695F320B74C8342AB7F44707C7C8EC203C6E797D83A7468"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\review-error.txt",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\review-output.txt",
+    "Hash": "F93B6BDF79427E8D690F885331B1DEE3BEB8C4B86505FA45D5E26F7F0B34AECC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\Review.cs",
+    "Hash": "1C6514361D7CCE1C6D43EAE9907B712B3E7C7948E074A599437B3027BC260E83"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\Review.csproj",
+    "Hash": "427571528A4A774697AF32ADFB8BE4BAEE65E3D54B08CF3F679EAF28182DC2D8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\source-hashes-before.json",
+    "Hash": "99DFC648FD03BC1991A5C98E44B1FCFDA14AF9A0917460F459EDFB579B719BFE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\verification.json",
+    "Hash": "179779337FEB95638E23B42DA85D472C83401C736A94EC31D75E64141F286637"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\bin\\Debug\\net10.0-windows\\Review.deps.json",
+    "Hash": "3DC2F34A1EB33C176E94C17270FAA5CCDA167596A9E3F57618D934E02CFFEB30"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\bin\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "1CCBB1A837FA79E3A47F4CFCFB08601910139985158D80A1AB31F574C6317B97"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\bin\\Debug\\net10.0-windows\\Review.exe",
+    "Hash": "737C1AF7F541B7A7FE881AC62C9458BCF632E98446A39CC7224C26BA47C0453C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\bin\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "65EDEABABFD40577F8F12DA09A139B0E190E2E67A38ADA852958789D27C12099"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\bin\\Debug\\net10.0-windows\\Review.runtimeconfig.json",
+    "Hash": "039A0DEFB81019310FA2E8A17EF8D2AD086B1A37656149AA598F1F75893F2A22"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\bin\\Debug\\net10.0-windows\\WpfBae.dll",
+    "Hash": "7FB6182C0E740F1FCFDD079DA868A6A6A022C843DE8C0B5BFF0A72B21996BD41"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\bin\\Debug\\net10.0-windows\\WpfBae.pdb",
+    "Hash": "523AF0A98FC48A7E85CAF4975B4CC6C494B16EA7AF122FAA5BD4FDAC8A2EE127"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\project.assets.json",
+    "Hash": "28966D88B54DB9EF7518770ABD38629A8CDCE845CCEF7A55A09BD6B3A610119D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\project.nuget.cache",
+    "Hash": "C774AB21F5E6059BDFE4C16BCE15EE26F63FFE9B639FFDAACD5C57A517B24005"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Review.csproj.nuget.dgspec.json",
+    "Hash": "EB5B5B8F69CDD6FF3A7C64B14BAB13A35F8DEE90332895A7AECCD3CC4AC5C34B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Review.csproj.nuget.g.props",
+    "Hash": "51254E6C23905CF9D2019466F9A6D59C50C95D1A54F89271512128FD78C0E36B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Review.csproj.nuget.g.targets",
+    "Hash": "971CC9B535384849B5C661D776CD7A80833A416265E32E8968E06C367368B8B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "Hash": "93D67476196EBFC80D1D7D8844B91146CFD678D105F5CE635EB900CA40610C9B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\apphost.exe",
+    "Hash": "737C1AF7F541B7A7FE881AC62C9458BCF632E98446A39CC7224C26BA47C0453C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfo.cs",
+    "Hash": "B00AB3C70CCB46F64755FA1BE2CC8FFF2DDD50BD7BC1516992EC983A6BF3FE58"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfoInputs.cache",
+    "Hash": "4ED085A06C2C3D0B3141064F1E770C8437146743963E45639AE0C9767BCA9B81"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.assets.cache",
+    "Hash": "A6FAF274C760BFAEEA4E6C84DA95492A92C785B63A948E65514E9255C5298FF5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.csproj.AssemblyReference.cache",
+    "Hash": "2411B3F6F6492BA0B0A16C5A7EF20AA886D78B865E420F1DAF0C6D66FBB3C7B8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.csproj.CoreCompileInputs.cache",
+    "Hash": "A8FE640F7217742607809B191E16DF4D370D04191EB8F4CF3C790C491E94C170"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.csproj.FileListAbsolute.txt",
+    "Hash": "3DFE9B278EC577F030E38D72D3D81E52AEC8E6B8D10562C9052D689443C1765B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.csproj.Up2Date",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "1CCBB1A837FA79E3A47F4CFCFB08601910139985158D80A1AB31F574C6317B97"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "38E70D2AD978AAFA8F41405C426C06870255B7B1137F15E6D6321620CBFF4B75"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.genruntimeconfig.cache",
+    "Hash": "E947EAD8DD01065703C8E8A60D1CFFE3646CAF4AB763B404C98D526FA8ACE306"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "65EDEABABFD40577F8F12DA09A139B0E190E2E67A38ADA852958789D27C12099"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\Review.sourcelink.json",
+    "Hash": "A2F4311C990F44BDB188746A7AB3DDD39EF2BAB9D6A0AECFB72DC7D4EC14711D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\ref\\Review.dll",
+    "Hash": "52C3659DD970E93CEC84F2AF330F8B11A5D414CBB4142EC4CF3348CE4594227F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-014\\obj\\Debug\\net10.0-windows\\refint\\Review.dll",
+    "Hash": "52C3659DD970E93CEC84F2AF330F8B11A5D414CBB4142EC4CF3348CE4594227F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\history-cleared.png",
+    "Hash": "8E0FF7723E0F06C6767D2F601D1C816F439C0C35BD9D28B4EB175CAEEEEA8F35"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\history-three-readings.png",
+    "Hash": "AF96174C97C802C86F7D8C2F282D9290F5F1A247CCADA4542917EA5101AEC9A9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\original-error.txt",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\original-output.txt",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\original-startup.json",
+    "Hash": "C24CF981A0617D11B8EA098CA7C6FA4EADA21876262A908AD456D0739C4DEF3F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-24-10.png",
+    "Hash": "BF0E378567B16284F38AEFD630C91A58BCBB1244E5C38159CCC360B3E884D5FA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-32-14.png",
+    "Hash": "52EBC7D3E4A10FB429B9F36EE56B099954346992E4E5703C7B19967EEA4484C1"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\results-harness-stale-assembly.json",
+    "Hash": "CC562CFE02A5BA2283A4CDF92EB3FE653690EE43BFA30463040F50384D87C531"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\results.json",
+    "Hash": "C50BA30668A7056E1E6FCF21325A8F578B54E989766EF3BE0939FEAD5BE482D5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\review-source-hashes-before.json",
+    "Hash": "A9CCCDDB4A8D9C7A01BE882EFADF8E944A8BFBC354338E1F0AB0A69A0BE6AD97"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\Review.cs",
+    "Hash": "AEA2E8C669704D8421E379C536932382CEA682CD86C8171D08618897D0952EFB"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\Review.csproj",
+    "Hash": "309A833DC945041B28D05CECBD777D2FD87140F98E799711C1BFE199FD7175B0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\verification.json",
+    "Hash": "206EF7F8726A41A1C1C949A73981E791DA4B98DAEF528311EEE7B54317B74856"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\bin\\Debug\\net10.0-windows\\PaddingVariant.dll",
+    "Hash": "E3E14AC72DF6FCE4B86DFE07DCF652F43B047C1DA963023AAC66CF5C41C6E8ED"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\bin\\Debug\\net10.0-windows\\PaddingVariant.pdb",
+    "Hash": "AD1D9D5BE15470F2CB74B418269FD328511F0112AB3BFB4FAC2398890693DE91"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\bin\\Debug\\net10.0-windows\\Review.deps.json",
+    "Hash": "CD4224986B83F1C3AFA7A54B14E1B0F7F14229081B79C647F3855F44A4D331E4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\bin\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "B961E8EBEE84EF91507EFBB14929B4416381E0AE0B6FF60BA9D040FE418C2273"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\bin\\Debug\\net10.0-windows\\Review.exe",
+    "Hash": "20521187C1AD023550A9EE98CC8BE62D94EF98EDF7854D112DCE6130A423CC19"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\bin\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "7DDEDBDE3AA931BCD4858009B1847428A7886C087FF19ABB8310F1E1829EDBF7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\bin\\Debug\\net10.0-windows\\Review.runtimeconfig.json",
+    "Hash": "039A0DEFB81019310FA2E8A17EF8D2AD086B1A37656149AA598F1F75893F2A22"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\bin\\Debug\\net10.0-windows\\WpfBae.dll",
+    "Hash": "29A017971111878C4722CDE0B1E4AAD2226CD5510F26ECC96685A065F0D64FFF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\bin\\Debug\\net10.0-windows\\WpfBae.pdb",
+    "Hash": "B71878F38B61AB5062929E518AF36C6219EF6AB6AADAC8E0DF29F4B0AC96A2F9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\project.assets.json",
+    "Hash": "DC3C90C8EF92AC6ACAC9EFB3C750D23A1E2A1723BF1596A7D9D511EDB9A73CD2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\project.nuget.cache",
+    "Hash": "A35AC639072CC1F5C8D75409F8ADC153641B4E269F736BF86B4B7A5F539400FB"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Review.csproj.nuget.dgspec.json",
+    "Hash": "43AD3D9F1B3F4754D3CB4E4ED1E044FB9363F34A02960570C72F1E308033B177"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Review.csproj.nuget.g.props",
+    "Hash": "51254E6C23905CF9D2019466F9A6D59C50C95D1A54F89271512128FD78C0E36B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Review.csproj.nuget.g.targets",
+    "Hash": "971CC9B535384849B5C661D776CD7A80833A416265E32E8968E06C367368B8B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "Hash": "93D67476196EBFC80D1D7D8844B91146CFD678D105F5CE635EB900CA40610C9B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\apphost.exe",
+    "Hash": "20521187C1AD023550A9EE98CC8BE62D94EF98EDF7854D112DCE6130A423CC19"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfo.cs",
+    "Hash": "3E0C83A70BB3862CC994EAEE66E93F135EC5122D29DDC399EB89A392E8DFC849"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfoInputs.cache",
+    "Hash": "5000CC07482E32590E1241C75D22585650CF4AC9A5C6BF0726BD0FADD72F3939"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.assets.cache",
+    "Hash": "E2DBF65CE40529CE9CC2C5E0D3F5FBA755B057D81FC04F55ADB648E3A83C6F86"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.csproj.AssemblyReference.cache",
+    "Hash": "9313DF2B784EA2CB03572A5948650D320158920BDF39B1822861469E6B4802C0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.csproj.CoreCompileInputs.cache",
+    "Hash": "9D7099D84CB83F938CFFA12F3C7EFA1DAA2B67DF0B7B0F52AF778A352CB2056D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.csproj.FileListAbsolute.txt",
+    "Hash": "3EDAACCA56D50A67E722B6CF0A8C3AF6D070EE2C70974A818D4103B64AE8FB39"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.csproj.Up2Date",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "B961E8EBEE84EF91507EFBB14929B4416381E0AE0B6FF60BA9D040FE418C2273"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "0DBA2944A799EC7AE384838152F68A23684772142322B6A698ACAE731A5E1F9E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.genruntimeconfig.cache",
+    "Hash": "BD2DA8079E41F139A5922ACC58729CCA92B94AA502026C8BC4C83FEA3D5021D7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "7DDEDBDE3AA931BCD4858009B1847428A7886C087FF19ABB8310F1E1829EDBF7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\Review.sourcelink.json",
+    "Hash": "472A5AFB5B0179A13B5784464BD633817DDED06053ACE546AF86AAF377F10739"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\ref\\Review.dll",
+    "Hash": "B6BCE813854DADD6631B0389C16CE5FEF034D9F1FD6BB2BC662867632A351A3B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\obj\\Debug\\net10.0-windows\\refint\\Review.dll",
+    "Hash": "B6BCE813854DADD6631B0389C16CE5FEF034D9F1FD6BB2BC662867632A351A3B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\PaddingVariant.csproj",
+    "Hash": "A7C66AB14CAC8CA5DE71363341C44967CFADC17E2411F8BE567E46EBBDEAFDA0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\ReadingHistoryControl.xaml",
+    "Hash": "5258B882C679A0760477EC0D268F4D2B617B326E59A69AB8421E058E4BA8BE8C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\ReadingHistoryControl.xaml.cs",
+    "Hash": "EA1F922AA4F60145F29B68890FB6BD3BF03119E980019ACB19FEF9AA8267EB02"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\Task015Window.xaml",
+    "Hash": "5E7A5E9B6ABB23F00417BB9DB61B5ED1877B835EE24BE29E1F36825C5EDD4FEC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\Task015Window.xaml.cs",
+    "Hash": "0DD5415FFACCFCEB83CC2D3F04BF3BDE1616F6D9E37097A1ABD50D0FCCDB14D8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\bin\\Debug\\net10.0-windows\\PaddingVariant.deps.json",
+    "Hash": "007AE6F02CFAA71883A76DD9100D86673FB1CD59B8FB216EB741CD5FABF618DC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\bin\\Debug\\net10.0-windows\\PaddingVariant.dll",
+    "Hash": "E3E14AC72DF6FCE4B86DFE07DCF652F43B047C1DA963023AAC66CF5C41C6E8ED"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\bin\\Debug\\net10.0-windows\\PaddingVariant.pdb",
+    "Hash": "AD1D9D5BE15470F2CB74B418269FD328511F0112AB3BFB4FAC2398890693DE91"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\bin\\Debug\\net10.0-windows\\WpfBae.dll",
+    "Hash": "29A017971111878C4722CDE0B1E4AAD2226CD5510F26ECC96685A065F0D64FFF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\bin\\Debug\\net10.0-windows\\WpfBae.pdb",
+    "Hash": "B71878F38B61AB5062929E518AF36C6219EF6AB6AADAC8E0DF29F4B0AC96A2F9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\PaddingVariant.csproj.nuget.dgspec.json",
+    "Hash": "60AD9EDF2F5C84F9866951A95C880DAF13CC3290EFA746BB334FD8351411FBFA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\PaddingVariant.csproj.nuget.g.props",
+    "Hash": "51254E6C23905CF9D2019466F9A6D59C50C95D1A54F89271512128FD78C0E36B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\PaddingVariant.csproj.nuget.g.targets",
+    "Hash": "971CC9B535384849B5C661D776CD7A80833A416265E32E8968E06C367368B8B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\project.assets.json",
+    "Hash": "302B52F5DFB57CF22BBFBDD3DEE37409F1469248A9D2CCDD78525803177F53C2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\project.nuget.cache",
+    "Hash": "B90146375BE5C8B21D4E44E4CF0817205252F013771F04F712BC10E807EADDBC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "Hash": "93D67476196EBFC80D1D7D8844B91146CFD678D105F5CE635EB900CA40610C9B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\GeneratedInternalTypeHelper.g.cs",
+    "Hash": "60116575BB1B6772ED22BA93BFA53BEF0A772667DA1812C1C3FC0A46CD93BC3E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingV.CABC638E.Up2Date",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant_jize3oev_wpftmp.AssemblyInfo.cs",
+    "Hash": "9D3228262554F40EC58F8F03BDD7BA9646AAC3BF193D0F8EC7C3430A65953E7D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant_jize3oev_wpftmp.AssemblyInfoInputs.cache",
+    "Hash": "A1505048E02E3FC125071479217D2B8473758674EB0E2CC1D22479D4EF0B1659"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant_jize3oev_wpftmp.assets.cache",
+    "Hash": "42E4CDBCA41A4FCF476E58F9B6F1DB7F146CA6C536BDA9D35C7C5011CC85AA75"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant_jize3oev_wpftmp.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "B9144ADF613EFED60507BAF33CEB5EEBEC8EED6154198468DEDEB1E5B4F046F9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant_jize3oev_wpftmp.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant_jize3oev_wpftmp.sourcelink.json",
+    "Hash": "472A5AFB5B0179A13B5784464BD633817DDED06053ACE546AF86AAF377F10739"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant_MarkupCompile.cache",
+    "Hash": "43CC3AE3B7953C73CD9A4A85403273455F9344EC6C4BA1DDB4C8116B8983F0DB"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant_MarkupCompile.lref",
+    "Hash": "FDA3ECF78711C4CF10A6BB759B5068B08BAA207B4F64A3962ED39CEB3CE5B2D3"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.AssemblyInfo.cs",
+    "Hash": "9D3228262554F40EC58F8F03BDD7BA9646AAC3BF193D0F8EC7C3430A65953E7D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.AssemblyInfoInputs.cache",
+    "Hash": "A1505048E02E3FC125071479217D2B8473758674EB0E2CC1D22479D4EF0B1659"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.assets.cache",
+    "Hash": "68E260D3CFB71495E86E102BD6584E8E541F7DAD8500D0CE83CEA3913DE1D9F6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.csproj.AssemblyReference.cache",
+    "Hash": "3ED429E6510B1E85B7C64355139FDD724E588940F81C7D97168293A6DE0BB9A3"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.csproj.CoreCompileInputs.cache",
+    "Hash": "F2958DCFCA3370FB709055A5F3BDB87581D920CCE5CE0270EF4A9C06104F04F9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.csproj.FileListAbsolute.txt",
+    "Hash": "F3C80797903A4356B161DE57378654855B7688A7265BE4B17754E3FEFF2E2168"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.dll",
+    "Hash": "E3E14AC72DF6FCE4B86DFE07DCF652F43B047C1DA963023AAC66CF5C41C6E8ED"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.g.resources",
+    "Hash": "F1CF5F3AE5A64A3774BA9DEA96F86CEBAB378CAD1147AB68577294CF025B25CC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "B9144ADF613EFED60507BAF33CEB5EEBEC8EED6154198468DEDEB1E5B4F046F9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.pdb",
+    "Hash": "AD1D9D5BE15470F2CB74B418269FD328511F0112AB3BFB4FAC2398890693DE91"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\PaddingVariant.sourcelink.json",
+    "Hash": "472A5AFB5B0179A13B5784464BD633817DDED06053ACE546AF86AAF377F10739"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\ReadingHistoryControl.baml",
+    "Hash": "5275316A986C5591B85599931C29EA137BBB8B42461B25C0DCBA4F91130826D9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\ReadingHistoryControl.g.cs",
+    "Hash": "5666E6DA12BBDD0300D796575169C945553ED92534B0AC6990C2F536C246A430"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\Task015Window.baml",
+    "Hash": "6B3F127EE49DA7890B51CFD7536023EFB1CFACC36247C870F19441D1D53C374A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\Task015Window.g.cs",
+    "Hash": "F2AE102FD060511D3E55A030898A7A12235E1C87FC3114706B13B99A09AA6B3B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\ref\\PaddingVariant.dll",
+    "Hash": "946BB7F95EE520F6836842589F98B5C1FC48C98F5EB32A33FA6C4030F94D4672"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\padding-variant\\obj\\Debug\\net10.0-windows\\refint\\PaddingVariant.dll",
+    "Hash": "946BB7F95EE520F6836842589F98B5C1FC48C98F5EB32A33FA6C4030F94D4672"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\Diagnostic.cs",
+    "Hash": "CC33DB2A2DAAB07134C004C8F7E093BAE86CA2CD179BDE272B2314C896D4955A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\Diagnostic.csproj",
+    "Hash": "FC74682C497F4CC1B989E2B313CD67BEADEA5D7356CBD095480C99BB2F062E53"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\results.json",
+    "Hash": "27C3BC979672CB0D5F5EED83378913DB0EBE7F3E96CDCC97A8DC4438E6F3C763"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\bin\\Debug\\net10.0-windows\\Diagnostic.deps.json",
+    "Hash": "FF916E600702AED8E0C490221D0367CA75BA4E5CF7D1600049F103B4C32C2DD1"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\bin\\Debug\\net10.0-windows\\Diagnostic.dll",
+    "Hash": "438D21DE7CF9861C0676DA09D2DC9A1F8BC71EC8DA0E387556662B11DE2642CA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\bin\\Debug\\net10.0-windows\\Diagnostic.exe",
+    "Hash": "276680D39ABD2A9764898305BEA2FDE784DC3E3FCDF1122484D86C2FED1D9C71"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\bin\\Debug\\net10.0-windows\\Diagnostic.pdb",
+    "Hash": "577BC30BCD4F6B59057FB5843981925687E3171247444792CE6B564F29D8578F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\bin\\Debug\\net10.0-windows\\Diagnostic.runtimeconfig.json",
+    "Hash": "039A0DEFB81019310FA2E8A17EF8D2AD086B1A37656149AA598F1F75893F2A22"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\bin\\Debug\\net10.0-windows\\WpfBae.dll",
+    "Hash": "32BF73DAF83FC6D982288F1DEB387C4F90EEB912BFB1787A3FB3D7BBBB7DE441"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\bin\\Debug\\net10.0-windows\\WpfBae.pdb",
+    "Hash": "D746529C5FC8AFE37856297315B1841FE1D8CC11CFC59C82A1F9A14708134199"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Diagnostic.csproj.nuget.dgspec.json",
+    "Hash": "44A07EE3FAA4AF9E7A370C49D25F0243178ACBF21C2E7B59F59EFC2D695C550D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Diagnostic.csproj.nuget.g.props",
+    "Hash": "51254E6C23905CF9D2019466F9A6D59C50C95D1A54F89271512128FD78C0E36B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Diagnostic.csproj.nuget.g.targets",
+    "Hash": "971CC9B535384849B5C661D776CD7A80833A416265E32E8968E06C367368B8B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\project.assets.json",
+    "Hash": "7ACA26D28046BE6221FF3F72029B08B3ACDE2B46794A8F46C669C9C6AA651421"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\project.nuget.cache",
+    "Hash": "FC0873AAED81936029A8FF36C9B60FA6505B7815582BA737FFF60CDCA3A7727A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "Hash": "93D67476196EBFC80D1D7D8844B91146CFD678D105F5CE635EB900CA40610C9B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\apphost.exe",
+    "Hash": "276680D39ABD2A9764898305BEA2FDE784DC3E3FCDF1122484D86C2FED1D9C71"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.AssemblyInfo.cs",
+    "Hash": "851419B91A33A5F412CE0D7DCF7727502BAF9F7EA9032C5A3561F9B1B05C6374"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.AssemblyInfoInputs.cache",
+    "Hash": "B3D4F6CE9BF5143C89110415327B84A9EFB85BF61E91E11F580882F6D3E0EAFE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.assets.cache",
+    "Hash": "1EDD0F36F48BD47BE351F50B874AE59182EA7721FFD0DE5706138D867606CC18"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.csproj.AssemblyReference.cache",
+    "Hash": "1559CDC1AEAFA0AF68673E9BDC6A7CB86E69AF3CBEDE6FB0969ABDF6A29BF14C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.csproj.CoreCompileInputs.cache",
+    "Hash": "F0C6B2B6AE0305035C34446B61CA0A64AAFD09E322830A611E4D07C19205F8CE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.csproj.FileListAbsolute.txt",
+    "Hash": "C57A98AEB0C2977A1E272ED4F0C32045F655FEB0672F8B7A3CA33C607FF9935E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.csproj.Up2Date",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.dll",
+    "Hash": "438D21DE7CF9861C0676DA09D2DC9A1F8BC71EC8DA0E387556662B11DE2642CA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "782745AAB3AD4A37CBD8E81CA15BA6E5799CCDF69F05D3888DB6E601F715377C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.genruntimeconfig.cache",
+    "Hash": "EFFE58D1A1A397932BD7D8B28741BE83E095C6E96AD047ADEA749A1A4FAE9433"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.pdb",
+    "Hash": "577BC30BCD4F6B59057FB5843981925687E3171247444792CE6B564F29D8578F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\Diagnostic.sourcelink.json",
+    "Hash": "472A5AFB5B0179A13B5784464BD633817DDED06053ACE546AF86AAF377F10739"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\ref\\Diagnostic.dll",
+    "Hash": "0D7D03073715270864C6E12A688B469795E8A6F6F5887A4D42D82CA872D838BF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-015\\resource-lookup-diagnostic\\obj\\Debug\\net10.0-windows\\refint\\Diagnostic.dll",
+    "Hash": "0D7D03073715270864C6E12A688B469795E8A6F6F5887A4D42D82CA872D838BF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\history-cleared-before-spacing-fix.png",
+    "Hash": "8E0FF7723E0F06C6767D2F601D1C816F439C0C35BD9D28B4EB175CAEEEEA8F35"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\history-cleared-before-value-fix.png",
+    "Hash": "8E0FF7723E0F06C6767D2F601D1C816F439C0C35BD9D28B4EB175CAEEEEA8F35"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\history-cleared.png",
+    "Hash": "8E0FF7723E0F06C6767D2F601D1C816F439C0C35BD9D28B4EB175CAEEEEA8F35"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\history-three-readings-before-spacing-fix.png",
+    "Hash": "D69F0015C8AD3FC2BF30C9B5BA6E551E7D9987E93BB7F1993CDBC50D2607C9A8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\history-three-readings-before-value-fix.png",
+    "Hash": "84594F2D67E8B04E8966A512CF1FA5E042AC45A2F50A858DFA6340CF8E46A7A7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\history-three-readings.png",
+    "Hash": "AB50EBEB778BF08F58AA8F8FA8363CF0C8AF3A047E466C8C7034DED8B641B6C6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\results-before-spacing-fix.json",
+    "Hash": "36C3754BB5A5EA82F2E53CB67FDC2D3F146B1708DF551D2E06527673C8CADBC4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\results-before-value-fix.json",
+    "Hash": "6CF1C2AAA162DA38DF5EFB7C07274A6DFC48675705498DD2832DEE89B4DC749A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\results.json",
+    "Hash": "42B7E1D64B1219987F9377A9052A6B163199C6F832EDD6F632031A31268BE613"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\Review.cs",
+    "Hash": "A6F7D4029931CCA43DB476D146041CF30586DCEB2BAA518D15C562D54055E318"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\Review.csproj",
+    "Hash": "4CB11369E4FA82E5696A44B6BF1140537FCADF5260471DDFF419E8A7BF247FDF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\source-hashes-before-before-spacing-fix.json",
+    "Hash": "70E23B9EF101633F9B7F221629229A83EB6F8EB3C8CE89EEC55391E0B537D017"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\source-hashes-before-before-value-fix.json",
+    "Hash": "B51987D152C9E3F6A32C77CA909ECC0DB7F59B3840485198EACFEE23B5815951"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\source-hashes-before.json",
+    "Hash": "11C3F06E5A3AF3BD7B8D0337BFF9E149E5A9624EA7FA493136DA6CCA50CCEA91"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\verification-before-spacing-fix.json",
+    "Hash": "099739ED5D34087D9253A99A7D224DDD5FFB67F8A4A31EE5CAF8404090561E41"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\verification-before-value-fix.json",
+    "Hash": "676C2356537F2DF2EA90875F23282994FE03D9CA3D8737F03D8A2ECFEE732291"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\verification.json",
+    "Hash": "263041DC19CD942BE6FEA4EDA8CAFCF39182E5E737B295DC69F4FDF7AD2C42B9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\bin\\Debug\\net10.0-windows\\Review.deps.json",
+    "Hash": "3DC2F34A1EB33C176E94C17270FAA5CCDA167596A9E3F57618D934E02CFFEB30"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\bin\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "575C49DCD16CFC0F8D7AFB75A315980BD33B48DA328D307AB40D509243BC35A7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\bin\\Debug\\net10.0-windows\\Review.exe",
+    "Hash": "B8C9D7CB61A356807F7480330F2ADF168C46443B89BDDCA5ACA0974B6A2ABF64"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\bin\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "ECFCF90E2799E8263AB3513E41FC1FFF6408B7F96F3763DF58363FFEC70649E8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\bin\\Debug\\net10.0-windows\\Review.runtimeconfig.json",
+    "Hash": "039A0DEFB81019310FA2E8A17EF8D2AD086B1A37656149AA598F1F75893F2A22"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\bin\\Debug\\net10.0-windows\\WpfBae.dll",
+    "Hash": "C9A3E3A8E9003692E8A75FF5B601FAA1FA32D6686138A57824997F485DAA91A1"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\bin\\Debug\\net10.0-windows\\WpfBae.pdb",
+    "Hash": "E99957E84264DB3B952FF62E5759DA5623994544FFCE225A72E46FD915BBF995"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\project.assets.json",
+    "Hash": "625552C4D2D23BDEAD46A8E7C1FB658DD8A5F7FB6CF88238F26F9ECB1568350B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\project.nuget.cache",
+    "Hash": "B82801D05A568B23BBBB48509FAF17467A5E61B9AD33444C8EFCAAB84C867D53"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Review.csproj.nuget.dgspec.json",
+    "Hash": "B581BA997358B2F08028BD93B2161095E0035C5F74B9AEAA212657BBE4756DDE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Review.csproj.nuget.g.props",
+    "Hash": "51254E6C23905CF9D2019466F9A6D59C50C95D1A54F89271512128FD78C0E36B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Review.csproj.nuget.g.targets",
+    "Hash": "971CC9B535384849B5C661D776CD7A80833A416265E32E8968E06C367368B8B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "Hash": "93D67476196EBFC80D1D7D8844B91146CFD678D105F5CE635EB900CA40610C9B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\apphost.exe",
+    "Hash": "B8C9D7CB61A356807F7480330F2ADF168C46443B89BDDCA5ACA0974B6A2ABF64"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfo.cs",
+    "Hash": "EC4B58ECF869EAFC5E192580105B7A5EDDE6521CC187781916D21DEFBE9A5481"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfoInputs.cache",
+    "Hash": "3D223EB0BD7BE2241A3C59045F81542D3E7EF422492AB65D5E695D995295BC19"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.assets.cache",
+    "Hash": "5EF5ABCF11C7D51FBDC6CB1179B9BEB46043375C263131C7B09B9FF270A12F05"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.csproj.AssemblyReference.cache",
+    "Hash": "C8606D6F5AC0A833DA6AE3D6CF8070A385E5C531FB531ACB78305498D597940F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.csproj.CoreCompileInputs.cache",
+    "Hash": "A8FE640F7217742607809B191E16DF4D370D04191EB8F4CF3C790C491E94C170"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.csproj.FileListAbsolute.txt",
+    "Hash": "53C73DF642736448873DAD28A5748139388459EA4B5D2903D51F27FC85E5C9BF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.csproj.Up2Date",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "575C49DCD16CFC0F8D7AFB75A315980BD33B48DA328D307AB40D509243BC35A7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "E090CF42F4B338C5C83DD10A56B3C50E9CD5C5D5E654BFDDDDA70CDE3FF40B89"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.genruntimeconfig.cache",
+    "Hash": "48A712F9AFC4026DA75422F96AA32D1B78DF6D6E99DCB6E2C2C7ECA86C1782BC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "ECFCF90E2799E8263AB3513E41FC1FFF6408B7F96F3763DF58363FFEC70649E8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\Review.sourcelink.json",
+    "Hash": "64CAD492DF68DCED462CDAA48AEE6091BA159F27631F447398C4BCA4CB635079"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\ref\\Review.dll",
+    "Hash": "4797DDA2DC76BD75BA1E80CB1BA4CFE5FE8579D7FC9094E63E77DDA60F99F077"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-016\\obj\\Debug\\net10.0-windows\\refint\\Review.dll",
+    "Hash": "4797DDA2DC76BD75BA1E80CB1BA4CFE5FE8579D7FC9094E63E77DDA60F99F077"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\history-cleared.png",
+    "Hash": "082C570928A96F02EF4939DAEBFD45F01596D026FB96BF2190AA6BE93A88265F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\history-three-readings.png",
+    "Hash": "0B2522EFE663A499EFCC56E352389725257F482221EA445D69860E964D57341A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\initial-disabled.png",
+    "Hash": "BD432DA0E65EE5998FCFEFA70A6179D00522F621698F11B471C651DE4A4BF692"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\launch.json",
+    "Hash": "E1BCEFA68A915C97243A784142A15B30BA0F5CFF77CC6AD6E1F411F2A0CB0804"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\minimum-size.png",
+    "Hash": "80471954484B9DE58BD81E02EA6E4C1F6BF33A6F2BB7E7EB1E39E03E03A907F4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\padding-diagnostic.png",
+    "Hash": "382D222FBEA795660B8758E3F9FC8CF82BBFD63FA7E6BF70ADADB873047A32C7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\reading-restored.png",
+    "Hash": "56226135BA7589BAEA322F0E05C713196D42B40EAD39D06DB9AE776D8C7A4430"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\results.json",
+    "Hash": "77CB599A45AB604BDBB0C427BBED36EAB01F6E6EEEE0689874405C7515467AFA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\Review.cs",
+    "Hash": "6E257688DEFBD064C185C80B2E0C15CB50FDCC9441C662FE67B3382180340DD8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\Review.csproj",
+    "Hash": "4CB11369E4FA82E5696A44B6BF1140537FCADF5260471DDFF419E8A7BF247FDF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\source-hashes-before.json",
+    "Hash": "251ADC6B511A1A207A8846485EB96034CC54DCA561B7185C71498AD067E22BFF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\verification.json",
+    "Hash": "2608C4952A564F005DF6AAA8D8D621C53147C13245714665787BC8C38F1F1CD5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\bin\\Debug\\net10.0-windows\\Review.deps.json",
+    "Hash": "3DC2F34A1EB33C176E94C17270FAA5CCDA167596A9E3F57618D934E02CFFEB30"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\bin\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "4668026235D44A66B48A518B5725DEEFE6E8E331043EEFDF0A2A5283B5939350"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\bin\\Debug\\net10.0-windows\\Review.exe",
+    "Hash": "B973120FEC236272248B0BBA945DE76D9241AB87EEC92BCA09AEC0FECE9E2DBD"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\bin\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "599D2191250E4C957ECAEC7652C0D06D9DAB2E458B82DD10767A428CE2E29DE9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\bin\\Debug\\net10.0-windows\\Review.runtimeconfig.json",
+    "Hash": "039A0DEFB81019310FA2E8A17EF8D2AD086B1A37656149AA598F1F75893F2A22"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\bin\\Debug\\net10.0-windows\\WpfBae.dll",
+    "Hash": "1E11D4D8705AC3C233145BB9D59F06A3AD751E9EE3DFA8D414992D07A2F46AEF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\bin\\Debug\\net10.0-windows\\WpfBae.pdb",
+    "Hash": "DF80BECC6E659D625EDD700182C31F3C6CEA80854DFA45AFEB96499BCEC16E53"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\project.assets.json",
+    "Hash": "D99390B9BD3220E6F787C1BBFD5CCCF78D915211EAFD22E6BCDEEFA8D6584330"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\project.nuget.cache",
+    "Hash": "65906ADF63A694E1C8B336F74371CB976F2AC34058CA5BBD8D4CD6088D976804"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Review.csproj.nuget.dgspec.json",
+    "Hash": "26642AFFE733A79AE5352B2FFB43CCB3B3B91C4478C094378A79E9172CD309E3"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Review.csproj.nuget.g.props",
+    "Hash": "51254E6C23905CF9D2019466F9A6D59C50C95D1A54F89271512128FD78C0E36B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Review.csproj.nuget.g.targets",
+    "Hash": "971CC9B535384849B5C661D776CD7A80833A416265E32E8968E06C367368B8B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "Hash": "93D67476196EBFC80D1D7D8844B91146CFD678D105F5CE635EB900CA40610C9B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\apphost.exe",
+    "Hash": "B973120FEC236272248B0BBA945DE76D9241AB87EEC92BCA09AEC0FECE9E2DBD"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfo.cs",
+    "Hash": "584D78F7EFD8284CF4A3C389945D2C2D9D0C13A86FA75BD06D1DEAA3733A516B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfoInputs.cache",
+    "Hash": "DA6BFAC6897232F6551BEF330BBA84D1A2846C1E239E7422728A5E7AC6C8F651"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.assets.cache",
+    "Hash": "0E533FC4D1814939B8570FE75D12BB974D5A53A2595E638183F65EC8DC3C3B8A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.csproj.AssemblyReference.cache",
+    "Hash": "13446E2F67A9C113B15F54219B352FA839048408AF927FD280FB503A8D748F05"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.csproj.CoreCompileInputs.cache",
+    "Hash": "A8FE640F7217742607809B191E16DF4D370D04191EB8F4CF3C790C491E94C170"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.csproj.FileListAbsolute.txt",
+    "Hash": "A289541B8C500FAE786BD7954BE8E55500698BF78ACEECA587896A550378061C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.csproj.Up2Date",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "4668026235D44A66B48A518B5725DEEFE6E8E331043EEFDF0A2A5283B5939350"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "A73A974BF959274F28DC68FB8AC6F96B7655BB58C72017B46D885412E9D77E7B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.genruntimeconfig.cache",
+    "Hash": "5D2B2895EE3CC511627D4268FC9ABB2E68B4A4CCFD4614ABA18DF6DFBF718696"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "599D2191250E4C957ECAEC7652C0D06D9DAB2E458B82DD10767A428CE2E29DE9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\Review.sourcelink.json",
+    "Hash": "44608CF56609B04743EEF2B2D6A3D96273E18F03B67FC5B3BAC3018B545A78E8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\ref\\Review.dll",
+    "Hash": "4D30CF81A6D0139A089A3587410DB6D89B82E7C565338F13E6B91C27B6A3CAD2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-017\\obj\\Debug\\net10.0-windows\\refint\\Review.dll",
+    "Hash": "4D30CF81A6D0139A089A3587410DB6D89B82E7C565338F13E6B91C27B6A3CAD2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\launch-original.json",
+    "Hash": "18F4C73C577D7344358CBD92FC13D43D3E94AB90F081324866521CC14200BE6C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\launch-variant.json",
+    "Hash": "465CB5E940353DFCAADB1B4D8B12DB3778ED45F19DEC3CC26390D6938082A840"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\launch.ps1",
+    "Hash": "23FE6CC0ACD571465D13F28BEF33293E1E2DBC27C3876ADFCB572CF1D2356803"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\original-26_5.json",
+    "Hash": "D371D90BC175424AFB6ACC812BB230A0A2ADEC6335D248F0BF1DEAE8316550B8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\original-26_5.png",
+    "Hash": "B32CB8A525BD7B66EC4CCA7F0C6195D2950511E4640B3707BD85B8DB313CB569"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\prepare-variant.ps1",
+    "Hash": "50BE9F27C7EB50B3169D12437CC15A9630010C2D510E58936F14C54911BB86A5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\review-tool-before-tolerance-fix.json",
+    "Hash": "6C68500D80AFFC2D7CC8064A7F8111956654CCD8A521186A92154B34694359E0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\Review.cs",
+    "Hash": "1B9072EA8DE586A2BCD035942F9A0DFEEA8F3289DD9E455F515AE02235E9EA95"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\Review.csproj",
+    "Hash": "9E17BEC9E0B96B5531916591EC13CB8AA3F110FFBC3FB6606DF65861051A9D82"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\source-hashes-before.json",
+    "Hash": "489CC5988F6F5025E33719AB04FE698F8DD3E3506533C9B4C592FE55BB023BCD"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28.json",
+    "Hash": "D36B5BA53490C569003A2FCDCF7DE5BC212E58E640F75ABA4EB6A0A06CB8E387"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28.png",
+    "Hash": "5A206A5263808941193662B00EE56BBE5F4F951FCE6EC0B7A73C6694E3E320E2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-change.json",
+    "Hash": "025FA16CB1541915E0013008AE386573E40451DD783A572655CA57AEA6722074"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\verification.json",
+    "Hash": "4BF315505665218F7077E4AFA143EEE53A58BA42DC3EE90D5CB6A6A21D32D2E1"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\verify.ps1",
+    "Hash": "5D5D0C202256B1F11291DA615C7216F94FDD5CAF3077DF9200BD126E877576A5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\bin\\Debug\\net10.0-windows\\Review.deps.json",
+    "Hash": "8B33470F32CEE528191C3B09C6E0F83EA982662A3D1E71B4ECC51E9EE5B2D23C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\bin\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "EAA533F0D53D03947C3CB3045DD0FEF9842835FFFA242FBDA50266B417D2DE80"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\bin\\Debug\\net10.0-windows\\Review.exe",
+    "Hash": "321AC5A816E4E49B197ECC34CD261CF9BAB25AE54C7D104D5F019D3E848408C7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\bin\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "4DE7A154F1D894C3BBFBCF82722D9FF39037F334D9F54D28E06B551C11FE490C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\bin\\Debug\\net10.0-windows\\Review.runtimeconfig.json",
+    "Hash": "039A0DEFB81019310FA2E8A17EF8D2AD086B1A37656149AA598F1F75893F2A22"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\project.assets.json",
+    "Hash": "56039507935B02CEFC93728B327363C950DC142C149006F6DEB75D0B0AA6E072"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\project.nuget.cache",
+    "Hash": "E28B039A5E711A21AED57811060D63242A1C550BFE68804A3615D571A907ED2E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Review.csproj.nuget.dgspec.json",
+    "Hash": "1251EEBEBDE689C99837CFF77BB83B3504D22D2263FFEDAB79EDA285F8B8E3E4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Review.csproj.nuget.g.props",
+    "Hash": "51254E6C23905CF9D2019466F9A6D59C50C95D1A54F89271512128FD78C0E36B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Review.csproj.nuget.g.targets",
+    "Hash": "971CC9B535384849B5C661D776CD7A80833A416265E32E8968E06C367368B8B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "Hash": "93D67476196EBFC80D1D7D8844B91146CFD678D105F5CE635EB900CA40610C9B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\apphost.exe",
+    "Hash": "321AC5A816E4E49B197ECC34CD261CF9BAB25AE54C7D104D5F019D3E848408C7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfo.cs",
+    "Hash": "79E901BFC67DB3BE69FFC63E44A74F5D97836078DCE21F66D6E569962245507A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfoInputs.cache",
+    "Hash": "2E53BDC420B855097BA2704988FFFFBB32EFADAAA799545B0A44183C8648570C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.assets.cache",
+    "Hash": "FCC6B75D555AFB12BCBBDACF1C36509220F0B5BA5A07C0680ABCAE9C21952BB9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.csproj.CoreCompileInputs.cache",
+    "Hash": "7B11A5E3BF01F849FE0095747F24553EEA840BC4718569D8A1E174C166FC44BD"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.csproj.FileListAbsolute.txt",
+    "Hash": "128670FDB3A36EDDDDE4291A1A9317070EE89F862F81B65696A427474469B0AF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "EAA533F0D53D03947C3CB3045DD0FEF9842835FFFA242FBDA50266B417D2DE80"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "79C8035EB813BF9A6433126FE2C73CE9812529048F99B2B32E7C6BAD234E74B7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.genruntimeconfig.cache",
+    "Hash": "1D89B372DB5E851119F86A1DF702B0CB63213AF5F810E99F78CD8FFA8C27FC14"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "4DE7A154F1D894C3BBFBCF82722D9FF39037F334D9F54D28E06B551C11FE490C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\Review.sourcelink.json",
+    "Hash": "A4887D0D050C12D4AF1FF978458DCF9E9465D34FF8BDC420816D5C0C0B2E240C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\ref\\Review.dll",
+    "Hash": "A087822176445C4353891B0D2F09087DA1DA00FB4CFB094CB73C8AEB13236B7B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\obj\\Debug\\net10.0-windows\\refint\\Review.dll",
+    "Hash": "A087822176445C4353891B0D2F09087DA1DA00FB4CFB094CB73C8AEB13236B7B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\App.xaml",
+    "Hash": "B2DB16AC04FF41617292332A07307FD470ABDB5C39DF8967D3A58EF8307AC560"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\App.xaml.cs",
+    "Hash": "A24CE7C1ED70C96C8A0910BD619CF1B9F508A0F7ECC0854D10957C968DADAF0A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\AssemblyInfo.cs",
+    "Hash": "2B39DD78A11DB48425FC4BD076A02AE6F0B5949CA084F89B618B9FA79260F65C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\MainWindow.xaml",
+    "Hash": "C454DE0B5FCD01A8BE2258252265ACCF605A559A94386393895F9CE241E028CA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\MainWindow.xaml.cs",
+    "Hash": "A7CC9057B34B7607C8B6FC7E960E601C348B9673DA0EDE89FFC270498F22B46C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\WpfBae.csproj",
+    "Hash": "C22547FFB82981F15E3CFC4397ACB064D0513BD7B8B11E8995BC1A6C0B3406C9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\bin\\Debug\\net10.0-windows\\WpfBae.deps.json",
+    "Hash": "50D0BAF02E76E1F409AA50071EA2FD2D7919E4D93A68EB8AF4C35A027B5573A9"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\bin\\Debug\\net10.0-windows\\WpfBae.dll",
+    "Hash": "4ECBDFEE8130C829E0AAE02B6F672C3F7E9871DCE7AEA402F17DC98D8B97C735"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\bin\\Debug\\net10.0-windows\\WpfBae.exe",
+    "Hash": "77CBD1C52B6266EEBEE4D89ED1F0753D15792969840D473A6CE4E98F7BFED07B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\bin\\Debug\\net10.0-windows\\WpfBae.pdb",
+    "Hash": "DFC2A63522D39ECF65FA976F99419EA3A2738F517DFDA728927F70E0D102E0D4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\bin\\Debug\\net10.0-windows\\WpfBae.runtimeconfig.json",
+    "Hash": "039A0DEFB81019310FA2E8A17EF8D2AD086B1A37656149AA598F1F75893F2A22"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-009-window-events\\Task009Window.xaml",
+    "Hash": "DDB1372AABF0455A3A3591454878C92D7D3B50CF91178C912D06B2BB7E5B232C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-009-window-events\\Task009Window.xaml.cs",
+    "Hash": "9F15DF19170979192FF205E208710E7AC812103787B50E3C84DC8A609BFDF3C5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-010-reading-binding\\ReadingDisplayState.cs",
+    "Hash": "021D997C18D06852A3D4BD2D0776B90E3F2CF74261B470053E7C47D4656F53DC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-010-reading-binding\\Task010Window.xaml",
+    "Hash": "D9417073B745D4B5C771AAE332D2F03B833AF1A7186602A11926EB3CB79EDE3F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-010-reading-binding\\Task010Window.xaml.cs",
+    "Hash": "1B924D24EEFD098F051680AE2236C456C116473DD1B8E16D84C91BABE3370180"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-011-reading-history\\ReadingHistoryState.cs",
+    "Hash": "6BCA3027C4301510988350E8AF63F956EF99CE52A442E2425DA46665C6AABE62"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-011-reading-history\\Task011Window.xaml",
+    "Hash": "44B1C4933C2DA49C5A99717B53E56178FB47AC2AC88DBBD8F504D682127E1BD1"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-011-reading-history\\Task011Window.xaml.cs",
+    "Hash": "762E01B61752E98D5D03C0425B7DF0168FC2F235239F46BF8EB0862BDC4B708F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-012-clear-history-command\\ClearHistoryCommand.cs",
+    "Hash": "742E39986AA84DF9CAC86DD00A6703014E329AFB4ACB2649546E4472A775F937"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-012-clear-history-command\\ReadingCommandState.cs",
+    "Hash": "BA057F0647F1F08DBF53DA5371677C9915B919367D003CEF99B255BC00A1E409"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-012-clear-history-command\\Task012Window.xaml",
+    "Hash": "2148EFAAB6FF1D4AC34A03A0B64404AB94B0AFFF96220DD4256FB83BD41B8376"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-012-clear-history-command\\Task012Window.xaml.cs",
+    "Hash": "EDD7566CB39A4E6E3737E36E599A4B8DA92B88DC899764DE82E881842642FCBF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\ClearHistoryCommand.cs",
+    "Hash": "7EDDADBA42ACFC3B4974E640C227A37A420AF5EC1048F7D9505A46EB79C3D6B0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\ReadingViewModel.cs",
+    "Hash": "D6255D2042C6EA8E801FDE5A074F17E31441D333494D9269A7B018305C494F6C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\ReadTemperatureCommand.cs",
+    "Hash": "DDB4B493829924A6C6ADE3045320AAD6EBCA0EF569D4160555A029F2371EB5DB"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\Task013Window.xaml",
+    "Hash": "D3E13116D01F992E95E27DF295AF1B7CC55D3554A74D4ED417727C971896CDC4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-013-reading-viewmodel\\Task013Window.xaml.cs",
+    "Hash": "81143A7547BF80F1180BBFE3937862A42E7011512D5F2197A4DE813E9FCE6AE2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-014-history-usercontrol\\ReadingHistoryControl.xaml",
+    "Hash": "D6D0670505D77929A90B0C6B0BE20598FB8F8160A1F6B019BFE98BE9D776C76A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-014-history-usercontrol\\ReadingHistoryControl.xaml.cs",
+    "Hash": "99348408CE50C4CA1640FDEC3E45201D70DCB41E90614880E5CE4D76B5F63FAD"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-014-history-usercontrol\\Task014Window.xaml",
+    "Hash": "28C33A57211354762C85C2F9B65C60033439C175187865EEAAB2215535FACC1C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-014-history-usercontrol\\Task014Window.xaml.cs",
+    "Hash": "B7B39C255BC68D1F33A95C6DFEE6FDFF6F8C5077EB2F6BA25EE4CDBBD15B6867"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-015-button-style\\ReadingHistoryControl.xaml",
+    "Hash": "D5DDB0FDB2A65764A39729E427390270862D9B6AFE562C2FE13EDDD8333C06A6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-015-button-style\\ReadingHistoryControl.xaml.cs",
+    "Hash": "99710E8B6C35866301D5CF60C997EBB433066EAB5AA4969FD414BADB9602EA04"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-015-button-style\\Task015Window.xaml",
+    "Hash": "CDE07BE4DD30A0D9D337EE99C195B0AA5331AA293C6FEF98A575749902F97742"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-015-button-style\\Task015Window.xaml.cs",
+    "Hash": "6AB5BFC998EBB83E8AB825EBD276BE0AF5D50FC7369720E5524F300C55C810C3"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-016-reading-datatemplate\\ReadingHistoryControl.xaml",
+    "Hash": "0EBC5557A48A33B646F16702D01FBEC80D463E68CBB6635D71B3C98D9DCED084"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-016-reading-datatemplate\\ReadingHistoryControl.xaml.cs",
+    "Hash": "078B353E2F1A4118D36BD0F8C905635C417BF4EC6FAAA625593C2810DDF5C30F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-016-reading-datatemplate\\Task016Window.xaml",
+    "Hash": "D057C5E89A2769F9FDB40F25E9CC24126E323ACEA5A5104B0A92AD3DF0F8CB8A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-016-reading-datatemplate\\Task016Window.xaml.cs",
+    "Hash": "51B0266148729968DD5EE163D2C83C2A67D2EA744F747F5A1F422F82F6B22873"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-017-button-controltemplate\\ReadingHistoryControl.xaml",
+    "Hash": "EBC6D6A5F1876243BDA683809184ABC081CBEA105FB717AD9EFB3900261B2E62"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-017-button-controltemplate\\ReadingHistoryControl.xaml.cs",
+    "Hash": "61784B336A97F111C9EF1E1074597E27328D179CFC939E69092FE1637E7D4BD6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-017-button-controltemplate\\Task017Window.xaml",
+    "Hash": "5352DD54FEE4DF40BEAC17A8D39897674BAFB5E0B2FC10B53D8D8F3F9796E060"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-017-button-controltemplate\\Task017Window.xaml.cs",
+    "Hash": "D6D90A5DC13B1AC0DC41C7318C4EF945F27B6BEB49EF26A06605DE63304B39A7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-018-temperature-polyline\\Task018Window.xaml",
+    "Hash": "0AF4939FA1400BEDD39890806D40FFC35AE0357A1598E0470A8E2BDBB7AF57F3"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\Exercises\\TASK-018-temperature-polyline\\Task018Window.xaml.cs",
+    "Hash": "AD0E153B09083AD6B6EDECDC6F68245B7E14EA422D699E5C7FE9F76624A77812"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\project.assets.json",
+    "Hash": "C41D780472CFB7CACA6481CC1F24085B7F9CA884A4CCFA7C4EEC1E90A063049A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\project.nuget.cache",
+    "Hash": "BFF2137A60A3A5CC7FA4D10B014A362E55DDFB53035807A6C11E7353A24DDD27"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\WpfBae.csproj.nuget.dgspec.json",
+    "Hash": "7C612A8515C53A2C74F03DE0FCD004614AFBCBA4A80DBA63CB2170E6F988A979"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\WpfBae.csproj.nuget.g.props",
+    "Hash": "51254E6C23905CF9D2019466F9A6D59C50C95D1A54F89271512128FD78C0E36B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\WpfBae.csproj.nuget.g.targets",
+    "Hash": "971CC9B535384849B5C661D776CD7A80833A416265E32E8968E06C367368B8B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "Hash": "93D67476196EBFC80D1D7D8844B91146CFD678D105F5CE635EB900CA40610C9B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\App.g.cs",
+    "Hash": "FBEF4C9A4E19EC88807B11EF7B02E97B5A600CDD136B7CDA2FABB4F92A188CEA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\apphost.exe",
+    "Hash": "77CBD1C52B6266EEBEE4D89ED1F0753D15792969840D473A6CE4E98F7BFED07B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\GeneratedInternalTypeHelper.g.cs",
+    "Hash": "60116575BB1B6772ED22BA93BFA53BEF0A772667DA1812C1C3FC0A46CD93BC3E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\MainWindow.baml",
+    "Hash": "5E774F118BC8E6FF4D70FE9B113E1DBB42A86275B9DD85610BD21216CEBABA74"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\MainWindow.g.cs",
+    "Hash": "7B89134B75189B913A814C3A8B99BB26178AF1C904353B1C6FC68E0F657345D6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae_MarkupCompile.cache",
+    "Hash": "6CD6366F902BE3B050932DC0A3550BD9B9F866DB1E6849719B11DC25AD1C2396"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae_MarkupCompile.lref",
+    "Hash": "5D632B946C0FCD13128D55725CD16037488E631A17A472D468B32B70020F0634"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae_nqcbnsde_wpftmp.AssemblyInfo.cs",
+    "Hash": "5E6BF9274A8026BA245B5D87514A67B638B655B7747F53A8F4493166B7133AE2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae_nqcbnsde_wpftmp.AssemblyInfoInputs.cache",
+    "Hash": "7C0EF9F14A1FFD8D0DDFC92F4F4CA13BF5A6791E6860AA860377C7E93FD35999"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae_nqcbnsde_wpftmp.assets.cache",
+    "Hash": "604EA49910DE9A8BC65A67ED045AE6B5CD67FE7D828FEB3B65F9923FFC353F57"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae_nqcbnsde_wpftmp.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "D33ABAA061E7BA9F092AB864F3175D1989D5AE8CF55439D511A64D8E5C9757CE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae_nqcbnsde_wpftmp.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae_nqcbnsde_wpftmp.sourcelink.json",
+    "Hash": "A4887D0D050C12D4AF1FF978458DCF9E9465D34FF8BDC420816D5C0C0B2E240C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.AssemblyInfo.cs",
+    "Hash": "5E6BF9274A8026BA245B5D87514A67B638B655B7747F53A8F4493166B7133AE2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.AssemblyInfoInputs.cache",
+    "Hash": "7C0EF9F14A1FFD8D0DDFC92F4F4CA13BF5A6791E6860AA860377C7E93FD35999"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.assets.cache",
+    "Hash": "F4CB59F325F0134F9C46E4B7092D7A71DA4365BFF5E9C61DEE872954E1CD16FE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.csproj.CoreCompileInputs.cache",
+    "Hash": "563ADE14C083676C05BF44F5E02D76C302D5FB2211E73C5DDDB6276A5C1A055A"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.csproj.FileListAbsolute.txt",
+    "Hash": "0812E9390298E19240910832A56CE49D082374FF674A73C05BAAB1CDA52C8270"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.dll",
+    "Hash": "4ECBDFEE8130C829E0AAE02B6F672C3F7E9871DCE7AEA402F17DC98D8B97C735"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.g.resources",
+    "Hash": "39B773E983FC7C763FC89C2E4FDDE9870878AC072111E792DA8EE517005CA4FF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "D33ABAA061E7BA9F092AB864F3175D1989D5AE8CF55439D511A64D8E5C9757CE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.genruntimeconfig.cache",
+    "Hash": "004839AD1E239FEC4E3586C41A34D43EE889B78BA452BF2D71F53E7A37C045CE"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.pdb",
+    "Hash": "DFC2A63522D39ECF65FA976F99419EA3A2738F517DFDA728927F70E0D102E0D4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\WpfBae.sourcelink.json",
+    "Hash": "A4887D0D050C12D4AF1FF978458DCF9E9465D34FF8BDC420816D5C0C0B2E240C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-009-window-events\\Task009Window.baml",
+    "Hash": "EE4F3069F62F67AC83F505A7F4315F0F5464A34C02E7E7DF176D1A3A23BAF503"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-009-window-events\\Task009Window.g.cs",
+    "Hash": "3BBF546FC6E261A677872E4C35C632584AEAE9113D77BCF04CA98C4C7DED530B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-010-reading-binding\\Task010Window.baml",
+    "Hash": "C0C25AA74950BC98CE963D142F261C73451B737F3B34C09CFD496CBAFCDF8AAC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-010-reading-binding\\Task010Window.g.cs",
+    "Hash": "88FC471F3AAC17AE270A86DA4F424335B280544B48992B9034FCA3C45A944AC6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-011-reading-history\\Task011Window.baml",
+    "Hash": "0CC2B7152443D46170BD27746ECF11FE713C0E444AD2A76B78E945030ADBA0A6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-011-reading-history\\Task011Window.g.cs",
+    "Hash": "08EA1E5E5E48699053388D227082CCFB946307C9D09A9E2EBCE3A388018FD0D5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-012-clear-history-command\\Task012Window.baml",
+    "Hash": "6BC878BAB197B04BA39129573B5D40531C790174FA14B44ACDA8A7B2E797CC90"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-012-clear-history-command\\Task012Window.g.cs",
+    "Hash": "91ADCFDFC0181B4ABEE762E90C8A78238297A3E9899FC5C30F49EFF0691A015F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-013-reading-viewmodel\\Task013Window.baml",
+    "Hash": "66CFAF41F7076314659DFDF5AE327BB8BD5E21752BC3676E0BE96E7944A7050D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-013-reading-viewmodel\\Task013Window.g.cs",
+    "Hash": "99B7FD0B6073DEAA057E6AFEACA995BFD3B3A67C197A1B9548378926BCC6D601"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-014-history-usercontrol\\ReadingHistoryControl.baml",
+    "Hash": "EAA0CC5EDFE212E34B520E11C74C89F2796943AFD7A6E54D5A631DE6FD3C6F74"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-014-history-usercontrol\\ReadingHistoryControl.g.cs",
+    "Hash": "5A7297C87ABA90492202BF0A8706AEC9B1BCB17091408968F6F81BA54D2CF34E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-014-history-usercontrol\\Task014Window.baml",
+    "Hash": "E5BCA4F7AE5E12C9BF399444F86E8908685222448E27C306F614E23FC77DFB3E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-014-history-usercontrol\\Task014Window.g.cs",
+    "Hash": "035582C1B59D60123C6B6F6E891621CC19C6B638667FB749A32B7AB6EB900545"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-015-button-style\\ReadingHistoryControl.baml",
+    "Hash": "CB2C61A76767BE317823E6F324977D59FF0B9127A56904ABF08C73C3628F07F4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-015-button-style\\ReadingHistoryControl.g.cs",
+    "Hash": "66D7A0DF25DFB3BBDF118DB7A2B4D7020A18230204B2DEE0D58CCDD1CF10DE6D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-015-button-style\\Task015Window.baml",
+    "Hash": "CD459813A410DEB057195854A4D233777DC6D4C2DA885DAEFAC1C06A7521AED2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-015-button-style\\Task015Window.g.cs",
+    "Hash": "739069123D7E4160010F7599C9B15AA5BC1179E4BCB278ABBB6C2C509C480BD6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-016-reading-datatemplate\\ReadingHistoryControl.baml",
+    "Hash": "1C90FDF83EE3A9B7592189063E7A65738063E12A81CBA4B94D8AFF2D6584C6D6"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-016-reading-datatemplate\\ReadingHistoryControl.g.cs",
+    "Hash": "B58B02E2CF5254087E0A4EF9908227AE445A9955FFBE4738A14A35ADD0C116B3"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-016-reading-datatemplate\\Task016Window.baml",
+    "Hash": "F1DFDECB4A0D741B84EFFEB8F3F1A9DACD4B21D1FAE7054ADE1CEE36FF6210A8"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-016-reading-datatemplate\\Task016Window.g.cs",
+    "Hash": "3E4EAB6D72E17F2FC36EB18D4FF3BD3D12C6DD91AF6F224D34230E9D283C5358"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-017-button-controltemplate\\ReadingHistoryControl.baml",
+    "Hash": "E4F10C3468A6635EC65C7CE1904023FC2C306BD0066DABD6E4E581DA2DC592FA"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-017-button-controltemplate\\ReadingHistoryControl.g.cs",
+    "Hash": "D705DA0FF8F79B849EFEF908561939C41F1DE8FC99FAA9E8F33BF8105086C91B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-017-button-controltemplate\\Task017Window.baml",
+    "Hash": "6BD9C2A912EBCEBACF8C6CD69F0AA8FAC13D94366639549AD287ED0C7545644E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-017-button-controltemplate\\Task017Window.g.cs",
+    "Hash": "2536F3C1DC133EDF27F26474FF8D2A73AEECEDF4B8D9F22F3C5AE0F183389483"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-018-temperature-polyline\\Task018Window.baml",
+    "Hash": "678AB809DCC8A84B7C54B0C0A460633E769F06B737229A94A1BE63C09C8BB427"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\Exercises\\TASK-018-temperature-polyline\\Task018Window.g.cs",
+    "Hash": "14D5FC4397E8BBFEB01E7CD6E4FFFECF07C33AFF05F61E4951D6D75F3A860A58"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\ref\\WpfBae.dll",
+    "Hash": "8D39BF37C7BF5023F23530B502E925C94ED4A20AEC61339B322A47CE55BF9C3C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-018\\variant-28\\WpfBae\\obj\\Debug\\net10.0-windows\\refint\\WpfBae.dll",
+    "Hash": "8D39BF37C7BF5023F23530B502E925C94ED4A20AEC61339B322A47CE55BF9C3C"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\history-cleared.png",
+    "Hash": "C5E0C477345A60E67265B4EA7E0A2F9B8635900BE311B053CF56AA0E911A7E92"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\history-three-readings.png",
+    "Hash": "B9B3B8972B0124A6C110CC69D3FF103959372CEFCB62F302BB0EBB163531C9E0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\initial.png",
+    "Hash": "8FA98CCDCC6BCEEA0048D4A6F4CE5CD6AEFCC2A59CD3C6A0817612FB62D41501"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\launch.json",
+    "Hash": "48E88EBA9854F38C7E7C0C9C968645C7EEC39922025EC8B2C8395B0570E731B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\launch.ps1",
+    "Hash": "B790700D776CCBA3CDE320534C5E853BAA9437D21D0B5D21B58ADA876497FB90"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\minimum-size.png",
+    "Hash": "0E0591423F2809D3415B3A2D1A768C4BF169C8E8D44F93C625BC833AF9DCCC0E"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\reading-restored.png",
+    "Hash": "659639103F2F05181D8D4DA806BE9E8C2C5D2FCA973B1DD67875EB0C5EA76137"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\results.json",
+    "Hash": "19438D68E45ADEA478578333B37243BA5C4B636CD0A0994E78012E78B9A07447"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\Review.cs",
+    "Hash": "C31128A5C402C0D30ADCCAFF63DFCDADA974567D552744E71A7BA8AB1D41DB90"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\Review.csproj",
+    "Hash": "4CB11369E4FA82E5696A44B6BF1140537FCADF5260471DDFF419E8A7BF247FDF"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\source-hashes-before.json",
+    "Hash": "04781C0A792ABF3A65673FE9E18AEA8D24FBDD21B4A1A657EBACD0D75540DF6B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\verification.json",
+    "Hash": "A32BEEDF3771BEDECB998CD884F3DD13226648D0A291AA317C5D3DD02DE5EFF4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\verify.ps1",
+    "Hash": "994C453C28DD5BB5AFD8D1D6A98680C678B7EC2126F4D41D59887F1299DC264F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\bin\\Debug\\net10.0-windows\\Review.deps.json",
+    "Hash": "3DC2F34A1EB33C176E94C17270FAA5CCDA167596A9E3F57618D934E02CFFEB30"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\bin\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "7EA72491C68C08D471352E269BAA6D508F5BFBF7C684504BC21BAB2815C8E4A7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\bin\\Debug\\net10.0-windows\\Review.exe",
+    "Hash": "27D5E6A0ECCF92BE5D217E3B8196A8F0ECAF78BA62FDDD328EB0BC5CC491A453"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\bin\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "121D4F26C31257993CBF346734EEC7593E58DC4CC8CBF9B97EF8BE89C3FAF1E2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\bin\\Debug\\net10.0-windows\\Review.runtimeconfig.json",
+    "Hash": "039A0DEFB81019310FA2E8A17EF8D2AD086B1A37656149AA598F1F75893F2A22"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\bin\\Debug\\net10.0-windows\\WpfBae.dll",
+    "Hash": "21B99022D2D4F96E0379AAE6605D4FCD65EE8AE86568C97A2429AF26292417F7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\bin\\Debug\\net10.0-windows\\WpfBae.pdb",
+    "Hash": "D55BF42D2DB804DEC6DF5AEEFDB27DB8083099FBD1DA6364E71524E10EFAE539"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\project.assets.json",
+    "Hash": "4341F61CEC70825DAA9618C522E1967CDA6DD7C26304C31B3F8884EC7FD8EB30"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\project.nuget.cache",
+    "Hash": "E496E629C6E0692FB44486A148DEE83956B9D100E349B15D9650635102EE9C71"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Review.csproj.nuget.dgspec.json",
+    "Hash": "3659920146BB4187978DBC49145B8604AFBC20840AD8C6A3AF11162B6896690D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Review.csproj.nuget.g.props",
+    "Hash": "51254E6C23905CF9D2019466F9A6D59C50C95D1A54F89271512128FD78C0E36B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Review.csproj.nuget.g.targets",
+    "Hash": "971CC9B535384849B5C661D776CD7A80833A416265E32E8968E06C367368B8B5"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "Hash": "93D67476196EBFC80D1D7D8844B91146CFD678D105F5CE635EB900CA40610C9B"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\apphost.exe",
+    "Hash": "27D5E6A0ECCF92BE5D217E3B8196A8F0ECAF78BA62FDDD328EB0BC5CC491A453"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfo.cs",
+    "Hash": "9A1D9AC9EEC8EEF8BEBA850E8372C9EB4A97CA0296E3D6F8682FD593B8F98617"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.AssemblyInfoInputs.cache",
+    "Hash": "BFD5141C22DC1A1EBB28D459BE72639A02889B22BAACEFEB39FD1C8A8B2EFA4F"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.assets.cache",
+    "Hash": "85AF88C734AF4F203FB380C2C003A2A90C949F43467FDF099D7DD04DB1722883"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.csproj.AssemblyReference.cache",
+    "Hash": "A9C9FDF14FE155E43E38FC01D8BE901222289735EE283D65E230640D9AA1DEE3"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.csproj.CoreCompileInputs.cache",
+    "Hash": "A8FE640F7217742607809B191E16DF4D370D04191EB8F4CF3C790C491E94C170"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.csproj.FileListAbsolute.txt",
+    "Hash": "CB5031F347C17E58E2FB76D972A84BC38D58447E2A7EF8FD697623051D83AB7D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.csproj.Up2Date",
+    "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.dll",
+    "Hash": "7EA72491C68C08D471352E269BAA6D508F5BFBF7C684504BC21BAB2815C8E4A7"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.GeneratedMSBuildEditorConfig.editorconfig",
+    "Hash": "7FAA62DF006796D41ED607B96985486ED02672DAFB4CD9BDAE82005BCCAFA7BC"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.genruntimeconfig.cache",
+    "Hash": "E348A995C53D1BC52EA47B0DA450F35F4E0C13F9FC4D00EE2A5B05246D5E6D0D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.GlobalUsings.g.cs",
+    "Hash": "FE45EA572AADFD1A9B54CF7251405CFA11B748CA88B034F06A724D49758CED2D"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.pdb",
+    "Hash": "121D4F26C31257993CBF346734EEC7593E58DC4CC8CBF9B97EF8BE89C3FAF1E2"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\Review.sourcelink.json",
+    "Hash": "4B7F637C488E5F798B35C3E4211D94104E98C813C3864DA1291AAFCC893B6B65"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\ref\\Review.dll",
+    "Hash": "9C37430A7E1926A05BA8B8AD8CD4413256AE6EC3A2D3FFF570F3429E162A47C0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\tasks\\evidence\\TASK-019\\obj\\Debug\\net10.0-windows\\refint\\Review.dll",
+    "Hash": "9C37430A7E1926A05BA8B8AD8CD4413256AE6EC3A2D3FFF570F3429E162A47C0"
+  },
+  {
+    "Path": "D:\\host-computer-st\\AGENTS.md",
+    "Hash": "75F40F8101504B9B3FB2E77FD62E8849CFE43E3D01D431E53D931E6AC0E616FD"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\plan.md",
+    "Hash": "5A0AF21785C6655F74E8A278B393F021E861340A7970640CF4D9A7894BB6CAF4"
+  },
+  {
+    "Path": "D:\\host-computer-st\\docx\\mistakes.md",
+    "Hash": "DF9106188E9B872088C16519B772173679C672AD2CE3A51A5956BC925AAF69FB"
+  }
+]

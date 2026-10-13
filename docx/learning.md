@@ -1,7 +1,7 @@
 # 学习进度：上位机开发
 
 > 计划原文：[plan.md](./plan.md)（复制自 `D:\tmp\上位机.md`）｜已知背景：Java 后端；计划提及 Java、并发、网络、数据库经验，具体熟练度待补充｜总目标：迁移已有能力，逐步具备上位机界面、通信、设备控制、数据采集与稳定性开发能力。
-> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜最近通关：TASK-019｜下一任务：TASK-020（⚪ 未开始）
+> 当前阶段：第二阶段 WPF（起步）；第一阶段概念继续复习｜最近通关：TASK-020｜当前任务：TASK-021（🟡 进行中）
 
 ## 阶段与路线概览
 
@@ -37,9 +37,17 @@
 | [TASK-017：用 ControlTemplate 定义按钮内部外观](./tasks/TASK-017.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-12 构建 0 警告/错误、原应用启动退出 0；11 个实际窗口场景和 Padding 临时属性诊断通过，三个 DoD 已勾选，源码未代改 |
 | [TASK-018：用 Canvas 与 Polyline 绘制模拟温度折线](./tasks/TASK-018.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-13 原窗口与独立 28 度副本实际验证三项 DoD；中间点 y=110→80、端点不变，标签可读，41 个原源码哈希不变 |
 | [TASK-019：用 DataGrid 展示设备读数列表](./tasks/TASK-019.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-13 构建 0 警告/错误，原程序启动关闭正常，11 个实际窗口场景全通过，43 个源码哈希不变 |
-| [TASK-020：用 ComboBox 选择设备并读取温度](./tasks/TASK-020.md) | 第二阶段：WPF（起步） | ⚪ 未开始 | 继续计划明确列出的 ComboBox；只创建任务卡，未准备源码或切换入口 |
+| [TASK-020：用 ComboBox 选择设备并读取温度](./tasks/TASK-020.md) | 第二阶段：WPF（起步） | ✅ 已通关 | 2026-10-13构建0警告/错误，原exe正常启动关闭，13个实际窗口场景通过，SelectedItem默认双向写回有效，45个源码哈希不变 |
+| [TASK-021：用 Grid 组织设备读取窗口](./tasks/TASK-021.md) | 第二阶段：WPF（起步） | 🟡 进行中 | 独立窗口骨架与入口已准备；三行高度/区域位置/表格固定高度留 TODO；构建 0 警告/错误，未运行或验收 |
 
 ## 🟡 正在学习
+
+- 2026-10-13 TASK-021 启动：用户明确开启，目标目录此前不存在；已创建 `WpfBae/Exercises/TASK-021-grid-layout/` 的 XAML/后台两个文件，App.xaml 切到 Task021Window。复用原设备选择、ReadingViewModel、读取/清空命令与三列表格，原作品未改。主 Grid 三个区域先用安全占位，核心行高/区域位置/移除固定表格高度留 TODO；历史区内标题/表格小 Grid 由教练提供，不计自主设计。首步只改第 0 行 Height 160→190，观察选择区下方空隙和清空区位置；Auto、星号行、行号、固定表格高度与内外两个 Grid 的关系增量写入[布局 Q1](./questions/wpf-layout.md)，仍待复习。实际 `dotnet build WpfBae/WpfBae.csproj --nologo` 退出 0、0 警告/错误；未运行窗口或验收，三个 DoD 未勾选。状态 🟡 进行中，不新增自主掌握或错题。下方无进行中/仅创建 TASK-021/旧入口描述为此前历史。
+
+- 2026-10-13 TASK-020审查通关：三个必需DoD和13个实际窗口场景通过，构建0警告/错误；原exe实际打开TASK-020、正常关闭退出0。下拉框默认TEMP-001，实际展开两个可见字符串选项、不允许自由编辑；学员SelectedItem绑定Mode=Default，框架BindsTwoWayByDefault=True，实际改选TEMP-002写回原DeviceId，读取/连续追加/切回001/旧行保持/清空禁用与002恢复/最小尺寸可读均通过。原数据对象、Readings和命令引用保持，三列从对应Reading取值，45个源码SHA256未变，审查程序集与原DLL相同，证据见[结果](./tasks/evidence/TASK-020/results.json)与[核对](./tasks/evidence/TASK-020/verification.json)。仅骨架内选中值连接及效果按自主证据计入[下拉框Q1](./questions/wpf-combobox.md)，默认框架机制不一并认定掌握。骨架旧初始提示和首次审查工具编译错误不记学员错题。本次只创建[TASK-021](./tasks/TASK-021.md)未开始卡片：依据计划Grid与[布局Q1](./questions/wpf-layout.md)仍待复习，学习三行分配与窗口变化；未准备源码、未切换入口，WPF阶段不宣称整体完成。下方TASK-020进行中/未连接/未运行是此前历史。
+- 2026-10-13 问答库重构：按用户要求，依据当前 AGENTS.md 重写 `docx/questions/` 全部22个分类、49条主问答及原有追问，更新[问答索引](./questions/README.md)。回答从真实对象/现象、少量代码、逐处白话说明到可观察结果展开，完整语法先于简写；历史证据与掌握边界移到文末，重复解释合并。保留原Q标题/编号与状态（待复习31、已掌握18），完整23份原稿另存[备份目录说明](./questions-backups/before-plain-rewrite-2026-10-13/manifest.md)。修正失效的独立Device.cs/Reading.cs链接与历史WpfPractice拟用路径，原任务状态/DoD/证据/错题未改；本轮未运行示例或重新验收。整理期间发现TASK-020的Width已为260，保留工作区修改，SelectedItem仍未连接，不能把源码存在当运行验证或新增掌握。文档写入阶段520个受保护文件哈希一致，问答标题/状态/追问、本地链接和代码块格式检查通过，详见[核对结果](./questions-backups/before-plain-rewrite-2026-10-13/verification.json)。
+
+- 2026-10-13 TASK-020 启动：用户明确开启，目标目录此前不存在；已创建 `WpfBae/Exercises/TASK-020-device-combobox/` 的 XAML/后台两个文件，App.xaml 切到 Task020Window。复用原 ReadingViewModel、两个命令与 TASK-019 已完成表格连接，原文件未修改；两个字符串数组/ItemsSource/DataContext 由骨架提供，SelectedItem 双向连接 DeviceId 留 TODO。首步只把 Width 从 200 改为 260，实际运行观察变宽；先具体解释选项来源、当前选择、同一个对象写回和禁止自由输入，详见 [设备下拉框 Q1](./questions/wpf-combobox.md)（待复习）。实际执行 `dotnet build WpfBae/WpfBae.csproj --nologo`，退出 0、0 警告/错误；未运行窗口或验收，三个 DoD 均未勾选，不新增自主掌握/错题。下方 TASK-020 未开始/仅创建卡片的描述为此前历史。
 
 - 2026-10-13 TASK-019 审查通关：构建 0 警告/错误，原 exe 打开 TASK-019、关闭退出 0；原编译窗口 Show 后 11 个场景全通过。恰好三列，单元格绑定 Active/DataItem 为各条 Reading，连续/换 ID 追加、只改输入保留旧行、两种空白不改变历史、清空禁用与再次读取恢复、最小尺寸均验证，BeginEdit 返回 false。审查程序集与原 DLL 一致，43 个源码哈希不变；三个 DoD 全勾选，详见 [结果](./tasks/evidence/TASK-019/results.json)与[核对](./tasks/evidence/TASK-019/verification.json)。学员自主应用限骨架内 Header、ItemsSource 和三列字段连接，[读数表格 Q1](./questions/wpf-datagrid.md) 按该范围标已掌握。骨架旧初始提示不记学员错误；不扩大为框架机制/编辑/排序掌握。依据计划明确列出的 ComboBox 尚无自主实践证据，只建立 TASK-020（⚪ 未开始），不切换入口或准备源码；下方 TASK-019 进行中/未运行记录为此前历史。
 
@@ -83,6 +91,7 @@
 
 ## ✅ 已掌握
 
+- TASK-020中学员在已有骨架里调整下拉框宽度并添加 `SelectedItem="{Binding DeviceId}"`，2026-10-13实际默认选择与改选写回原对象后读取均验证，13个场景通过，旧行、原集合、清空恢复保持。掌握限字符串选项的SelectedItem连接与当前设备读取应用；选项数组/ItemsSource/DataContext/原业务和表格由骨架或既有作品提供，不计新的自主设计，也不扩大为所有Binding默认方向或设备对象选项。下拉框Q1按该范围标已掌握，问答统计待复习30/已掌握19，其他复习范围保留。
 - TASK-019 中学员在教练提供的三列表格骨架里自主设置“设备 ID”表头、ItemsSource 连接原 Readings、DeviceId/Value/Unit 三列 Binding。2026-10-13 原编译窗口 11 个实际场景通过，各单元格绑定 Active 并读取相应 Reading，旧行/原集合保持，清空恢复与空白保护正确，最小尺寸可读。掌握限本骨架内表格集合和逐行字段连接应用，[读数表格 Q1](./questions/wpf-datagrid.md) 按该范围标已掌握；只读限制、窗口后台与原命令由既有骨架/作品提供，不计新的自主实现，也不扩大为编辑、排序或完整框架机制。证据见 [结果](./tasks/evidence/TASK-019/results.json)与[核对](./tasks/evidence/TASK-019/verification.json)。
 
 - TASK-018 中学员在教练提供的绘图骨架里补上循环内 `points.Add(new Point(x, y))`、循环后 `TemperatureLine.Points = points`，并将构造调用切到 DrawTemperatureLine；2026-10-13 原窗口实际验证三个坐标按顺序连接、原温度对应、文字可读。自主掌握限本骨架内坐标集合与折线的连接应用；窗口/数组/转换计算/标签布局由既有实现提供，不升级为自主设计。28 度副本修改与运行由教练执行，不计学员自行修改数据的证据；[坐标与折线 Q1/Q2](./questions/wpf-charts.md) 的完整机制仍待复习。证据见 [原窗口结果](./tasks/evidence/TASK-018/original-26_5.json)与[核对](./tasks/evidence/TASK-018/verification.json)。

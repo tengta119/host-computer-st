@@ -1,52 +1,102 @@
 # C# 事件
 
-掌握依据：2026-09-27 TASK-002 最终复查中，学员自主完成事件声明、发布、订阅和取消订阅，并将当前设备 ID 与读数传入处理器；实际运行输出两次完整读数，取消订阅后无第三次处理器输出。参见 [验收记录](../tasks/TASK-002.md)。
+> [返回问答索引](./README.md)
+> 2026-10-13 按当前 AGENTS.md 重构。原问题编号与掌握状态保留；历史证据集中到文末。
 
 ## Q1：TASK-002 中的“读数事件”是什么意思？
 
 - 状态：已掌握
 - 关联：[TASK-002](../tasks/TASK-002.md)；[`Task002Exercise.cs`](../../Base/Exercises/TASK-002-device-reading-event/Task002Exercise.cs)
-- 现象：`SimulatedDevice.ProduceReading(...)` 模拟设备产生新读数，任务要求通过事件通知监控侧。
-- 原因与机制：读数 `Reading` 是数据；“读数事件”是“设备产生了一条新读数”的通知。设备声明事件，监控侧用 `+=` 订阅处理器。设备产生读数时触发事件，并通过 `ReadingReceivedEventArgs` 把读数传给处理器；用 `-=` 取消订阅后，该处理器不再收到后续通知。事件在此是程序内的发布/订阅机制，并非真实硬件中断或串口消息。
-- 类比：类似 Java 中设备对象持有监听器并在数据到达时调用回调；C# `event` 将订阅和触发的职责分开，外部代码只能订阅或取消订阅，不能替设备触发事件。
-- 复查点：在 TASK-002 中自主完成事件发布、订阅与取消订阅，并用运行输出说明前两次通知和第三次不通知。
+
+在 TASK-002，设备执行 ProduceReading 产生一条读数后，监控处理方法要立即收到它。Reading 是读数数据；ReadingReceived 表示“刚产生新读数，请调用已登记的接收方法”。这就是此处的读数事件。
+
+```csharp
+SimulatedDevice device = new SimulatedDevice("001");
+device.ReadingReceived += OnReadingReceived;
+device.ProduceReading(5.0, "℃");
+```
+
+SimulatedDevice、ProduceReading、OnReadingReceived 是本项目自定义类/方法。new 创建设备 001，device 保存它。第二行把接收方法登记到这个设备的事件上，尚不调用；第三行让设备产生读数，设备内部发通知，才调用接收方法并传入读数。
+
+它可类比 Java 设备对象登记监听器、数据到来调用回调。当前通知发生在程序内部，不是串口消息或硬件中断。外部代码可登记、取消登记，发通知由设备类内部负责。
 
 ## Q2：在 C# 中如何声明一个事件？
 
 - 状态：已掌握
 - 关联：[TASK-002](../tasks/TASK-002.md)；[`Task002Exercise.cs`](../../Base/Exercises/TASK-002-device-reading-event/Task002Exercise.cs)
-- 现象：`SimulatedDevice` 中留有声明携带 `ReadingReceivedEventArgs` 的读数事件的 TODO。
-- 原因与机制：常见写法是 `public event EventHandler<TEventArgs>? EventName;`。`event` 表示对外提供订阅和取消订阅；`EventHandler<TEventArgs>` 规定处理器接收 `object? sender` 与事件数据 `TEventArgs e`；`?` 表示当前可能没有订阅者。通常只在声明事件的类内部触发它。
-- 本任务示例：在 `SimulatedDevice` 中可声明 `public event EventHandler<ReadingReceivedEventArgs>? ReadingReceived;`。声明只定义通知通道；还需在产生读数时触发，监控侧才会收到。
-- 类比：接近 Java 中定义并保存监听器回调，但 C# 的 `event` 专门约束外部代码只做订阅或取消订阅。
-- 复查点：自主声明事件，使处理器签名与事件类型匹配，并通过运行验证通知。
+
+当前自定义设备类需要公开一个通知入口，让监控侧登记“新读数到来后做什么”。类内这行就是声明：
+
+```csharp
+public event EventHandler<ReadingReceivedEventArgs>? ReadingReceived;
+```
+
+public/event 是 C# 关键字；ReadingReceived 是练习自定义事件名。EventHandler<T> 是 .NET 提供的委托类型，规定接收方法接收 sender 与一个事件参数、返回 void。这里 T 填入自定义 ReadingReceivedEventArgs，里面保存 Reading。问号表示可能没有接收方法，此时值可为 null。
+
+先看配套接收方法的形状：`void OnReadingReceived(object? sender, ReadingReceivedEventArgs e)`。sender 接收发通知的设备，e 接收这次事件数据，返回 void。只有参数与返回要求符合，才能按此事件类型登记。
+
+声明不会自动发送读数，也不创建事件参数。还要在 ProduceReading 中创建参数并调用当前登记的方法，具体用法见 Q4。事件参数类属于预备骨架，不把它的存在算成学员自主设计。
 
 ## Q3：生产者通过事件发送，订阅者通过事件接收数据吗？
 
 - 状态：已掌握
 - 关联：[TASK-002](../tasks/TASK-002.md)；[`Task002Exercise.cs`](../../Base/Exercises/TASK-002-device-reading-event/Task002Exercise.cs)
-- 现象：容易把 `ReadingReceived` 理解成存放读数、供订阅者主动读取的容器。
-- 原因与机制：设备在自己的方法中触发 `ReadingReceived`，把 `ReadingReceivedEventArgs` 交给当前订阅的处理器；订阅者先用 `+=` 注册处理器，再在处理器的 `e` 参数中取得读数。事件本身不是读数存储区或消息队列；触发时会调用当时已注册的处理器。
-- 类比：类似 Java 调用已注册监听器的回调方法，并把读数作为回调参数传入。
-- 复查点：自主完成发布和订阅，并能指出读数在处理器的哪个参数中。
+
+可以说设备发通知、订阅方收到数据，但实际动作是“设备调用已登记的处理方法，把数据作为参数传进去”。事件不是供以后主动取读数的存储区。
+
+```csharp
+private static void OnReadingReceived(object? sender, ReadingReceivedEventArgs e)
+{
+    Reading reading = e.Reading;
+    Console.WriteLine(reading.Value);
+}
+```
+
+这在已有任务类中是接收方法的简化说明。e 是本次接到的自定义参数对象；e.Reading 取得其中那条读数。变量 reading 保存它，再取 Value 输出。sender 是来源设备，读数保存在 e 的 Reading 属性中，两者用途不同。
+
+设备触发时只调用当时已登记的方法。之后才登记的接收方不会自动补收旧通知；若要保留历史，需要另用集合。取消订阅后，后续通知不再调用被移除的处理方法。
 
 ## Q4：`ReadingReceived` 声明后如何使用？
 
 - 状态：已掌握
 - 关联：[TASK-002](../tasks/TASK-002.md)；[`Task002Exercise.cs`](../../Base/Exercises/TASK-002-device-reading-event/Task002Exercise.cs)
-- 现象：已在 `SimulatedDevice` 声明 `ReadingReceived`，但还需要连接设备和监控处理器。
-- 原因与机制：监控侧用 `device.ReadingReceived += OnReadingReceived;` 注册方法；设备内部在构造事件参数后用 `ReadingReceived?.Invoke(this, args);` 触发；监控侧用 `device.ReadingReceived -= OnReadingReceived;` 取消同一方法的订阅。`?.` 使没有订阅者时跳过调用；`sender` 是设备对象，`args` 携带读数。
-- 类比：类似 Java 中 addListener、调用监听器回调、removeListener 的过程。
-- 复查点：自主在正确位置写出订阅、发布、取消订阅，并用两次通知和一次取消后的读数验证效果。
+
+先看当前任务的三步：登记、设备内部发布、移除同一接收方法。以下片段来自同一场景，放置位置不同，不能直接串成一个方法：
+
+```csharp
+device.ReadingReceived += OnReadingReceived;
+device.ReadingReceived -= OnReadingReceived;
+```
+
+第一行在监控侧登记，第二行在不再监听时移除。它们都操作原 device 的 ReadingReceived，传入没有调用括号的方法名；`+=` 本身不会立即处理读数。
+
+设备类内部发布时，先用已有 reading 创建参数，再以完整写法理解：
+
+```csharp
+ReadingReceivedEventArgs args = new ReadingReceivedEventArgs(reading);
+EventHandler<ReadingReceivedEventArgs>? handler = ReadingReceived;
+if (handler != null)
+{
+    handler(this, args);
+}
+```
+
+args 包装这条 Reading；handler 保存当前接收方法，null 表示没有。最后一行调用登记的方法，this 是发通知的设备，args 交给接收方的 e。原源码 `ReadingReceived?.Invoke(this, args)` 是同类调用的空值判断简写，有接收方才调用。它不吞掉接收方法自己抛出的异常。
+
+TASK-002 已用产生两条、移除、再产生第三条的流程验证：接收方法只输出前两条。复习时读 [真实文件](../../Base/Exercises/TASK-002-device-reading-event/Task002Exercise.cs)，无需重置已有 TODO 或再写整份答案。
 
 ## Q5：上位机 C# 中，完成 TASK-002 后还需学哪些委托和事件内容？
 
 - 状态：待复习
 - 关联：[TASK-002](../tasks/TASK-002.md)；[TASK-003](../tasks/TASK-003.md)；[计划原文](../plan.md)
-- 现象：TASK-002 已验证单设备、单处理器的声明、发布、订阅和取消订阅；还未覆盖委托作为普通方法参数、多个订阅者、长期订阅的生命周期、WPF 线程切换或异步处理。
-- 原因与机制：委托是与特定参数/返回值签名匹配的可调用对象，`Action`、`Func<T>` 和 `EventHandler<T>` 都是常见形式；事件基于委托，发布者触发时调用当前订阅的处理器。多个处理器默认同步依次执行，因此慢处理器会延迟发布调用。长期持有发布者时，订阅关系还可能让订阅者继续被引用；应在合适的生命周期点取消订阅。将来设备回调若来自后台线程，WPF 界面更新需切回 UI Dispatcher；异步事件处理涉及 `async void` 的异常处理。这些属于后续场景，不因 TASK-002 通关而视为已掌握。
-- 建议顺序：当前先在 TASK-003 练 Lambda 与委托参数；随后按原计划学习 Task/async/await。到 WPF 阶段结合控件事件、路由事件与 UI 线程练习；到设备通信阶段再处理持续订阅、异常与吞吐。
-- 复查点：能解释委托与事件的关系，用 Lambda 传递处理方法；在后续实际界面或设备场景中正确处理订阅生命周期和线程边界。
+
+TASK-002 已验证“一个设备、一个处理方法、取消订阅后不再收到”。后续要学的内容，应从实际问题引出，不能把已通关当作所有事件机制都学完。
+
+例如同一温度既要显示又要检查报警，读取代码可以接收调用方传来的处理方法，Q6 就用这个例子讲委托。多个接收方法同时登记时，普通调用会依次同步执行；一个耗时处理会拖慢发通知的方法。长期保留设备对象时，还需在界面不再使用后取消相应订阅，避免对象被订阅关系持续引用。
+
+将来真实设备数据若从后台线程来，WPF 界面更新要安排到界面线程。Dispatcher 是 WPF 用于把操作安排给界面线程的工具，到真实场景再展开。异步事件处理的异常边界同样待后续实践，不在本次整理里突然要求使用 async void。
+
+当时后续顺序是 TASK-003 委托参数与 Lambda，再到 Task/async/await；这些任务现在已完成各自验收。尚未验证的生命周期、线程与持续设备数据问题仍继续复习，课程顺序以计划和最新进度为准。
 
 ## Q6：委托是什么，为什么 handler 变量可以像方法一样调用？
 
@@ -55,47 +105,32 @@
 - 关联：[TASK-012](../tasks/TASK-012.md)、[WPF 命令 Q1](./wpf-commands.md)
 - 来源：学员追问“EventHandler 是 .NET 提供的委托类型，那委托是什么意思”。此前已验证的事件及 Lambda 使用不等于已理解所有委托基础；本轮从普通方法调用补充，不撤销既有实践证据。
 
-**现象与用途**：普通调用直接写方法名；委托允许先保存一个方法的引用，之后通过变量调用它，也可以将这种引用传给其他代码作为回调。委托是一种 C# 类型，规定能引用的方法需要接收哪些参数、返回什么类型。变量保存的是符合约定的方法引用，不是方法执行后的结果，也不是方法名字符串。
+普通方法 `ShowMessage("读取成功")` 会立即输出文字。若另一段代码需要“先保存要执行的处理方法，等读数到来再调用”，可以把方法引用保存到委托变量中。
 
-**普通方法**：为了讲解自定义 ShowMessage 方法，放在一个类中：
+先声明说明用的普通方法和委托类型，均放在同一个示例类内：
 
 ```csharp
 void ShowMessage(string text)
 {
     Console.WriteLine(text);
 }
-```
-
-ShowMessage 是例子自取的名字，Console 是 .NET 提供的类型，WriteLine 输出文字。该类的另一个方法内可直接执行 `ShowMessage("读取成功");`，立即调用它。
-
-**定义委托类型**：在同一个类里，与方法并列声明：
-
-```csharp
 public delegate void MessageHandler(string text);
 ```
 
-delegate 是 C# 关键字，MessageHandler 是例子自定义的委托类型名。void 规定方法不返回结果，string 规定接收一个字符串参数；不是在声明一个名为 MessageHandler 的普通方法。ShowMessage 的参数和返回值符合要求，因而可以使用。
+ShowMessage 与 MessageHandler 是例子自定义名字；Console.WriteLine 是 .NET 输出方法。delegate 是 C# 声明关键字，MessageHandler 规定能保存的方法“接收 string，返回 void”。它不是又声明了一个可直接输出的普通方法。
 
-**创建并调用**：在该类的另一个方法内执行：
+在同类另一个方法里：
 
 ```csharp
 MessageHandler handler = new MessageHandler(ShowMessage);
 handler("读取成功");
 ```
 
-第一行创建委托对象，让变量 handler 保存对 ShowMessage 的引用；传入的是没有括号的方法名，此时不调用 ShowMessage。第二行通过委托调用它，把字符串作为 text 参数传入，输出“读取成功”。采用完整 new 写法，不引入方法组简写、Action 或 Lambda 新语法。此为讲解示例，不添加到学员项目、不增加验收步骤。
-
-**回到 EventHandler**：.NET 已提供委托类型，其声明形状是 `public delegate void EventHandler(object? sender, EventArgs e);`，不需自己重复定义。它规定处理方法接收 object? 与 EventArgs 两个参数，返回 void。当前任务的 `EventHandler? handler = CanExecuteChanged;` 取得已注册的事件处理方法引用；`handler(this, EventArgs.Empty);` 通过这个委托调用它们。handler 是变量名，不是一个另外声明的普通方法名。EventHandler 规定形状、handler 保存引用、event 约束对外订阅/取消订阅，三者职责不同。CanExecute 返回 bool 且接收一个参数，不符合 EventHandler 的要求，不能将它直接当作此事件的处理方法。
-
-**类比与依据**：可以类比 Java 的回调，通过保存可调用的方法引用，稍后执行；这里不依赖反射按名称找方法。依据：[微软委托说明](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/)、[EventHandler 定义](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler?view=net-10.0)。
-
-**证据边界**：本轮为必要概念补充，仅更新学习记录，未修改或运行源码；Q6 待复习，TASK-012 状态与 DoD 不变，不因为讲解就认定掌握，也不将未讲清的基础记为学员错误。
+第一行创建委托，让 handler 保存 ShowMessage 的引用；没有调用 ShowMessage。第二行才调用保存的方法，把文字交给其 text 参数。变量保存的是可调用方法引用，不是输出结果或方法名字符串。
 
 ### 2026-10-11 追问：为什么不直接调用，委托只能指向一个方法有什么用？
 
-前面的 ShowMessage 示例只展示了保存引用和调用的语法；在固定只调用一个已知方法的场景，直接调用确实足够，并不需要为了使用委托而增加中间变量。需要补充的是“调用者选择行为”的真实用途，不能只重复委托可以保存方法的定义。
-
-使用固定模拟温度说明：委托类型由例子自行命名为 ReadingHandler，要求接收 double、不返回结果；ReadTemperature 完成读取后执行传入的方法，调用者可选择显示读数或检查报警。同一类内的声明和三个普通方法：
+若固定只调用一个方法，直接调用就够。委托的用处是让调用方决定读取后的动作，读取方法不写死显示或报警。下面是自定义说明方法：
 
 ```csharp
 public delegate void ReadingHandler(double temperature);
@@ -105,12 +140,15 @@ void ReadTemperature(ReadingHandler afterReading)
     double temperature = 26.5;
     afterReading(temperature);
 }
+```
 
+ReadingHandler 规定接收一个 double、返回 void；ReadTemperature 完成模拟读取后调用参数 afterReading 保存的方法。调用方可选下面两个普通方法，也放在同一个说明类中：
+
+```csharp
 void ShowTemperature(double temperature)
 {
-    Console.WriteLine($"当前温度：{temperature} °C");
+    Console.WriteLine("当前温度：" + temperature + " °C");
 }
-
 void CheckAlarm(double temperature)
 {
     if (temperature > 25)
@@ -120,45 +158,55 @@ void CheckAlarm(double temperature)
 }
 ```
 
-在该类的另一个方法里，可分别调用：
+ShowTemperature 输出传入读数，CheckAlarm 在超过 25 时输出报警；两个名字由例子自定，不是框架 API。在同类另一个方法调用 `ReadTemperature(new ReadingHandler(ShowTemperature));` 就读取后显示，换成 CheckAlarm 就读取后检查报警，ReadTemperature 本身不用写死选哪个。
+
+还可以组合，在同类另一个方法中：
 
 ```csharp
-ReadTemperature(new ReadingHandler(ShowTemperature));
-ReadTemperature(new ReadingHandler(CheckAlarm));
+ReadingHandler readingHandler = new ReadingHandler(ShowTemperature);
+readingHandler += new ReadingHandler(CheckAlarm);
+readingHandler(26.5);
 ```
 
-第一次在读取后显示“当前温度：26.5 °C”；第二次在读取后检查温度并输出“温度报警”。ReadTemperature、ShowTemperature、CheckAlarm、ReadingHandler 和参数名 afterReading 都是讲解例子自定义的名字；固定温度是模拟值，Console.WriteLine 是 .NET 输出方法。afterReading 参数保存调用者传来的委托，调用 afterReading(temperature) 时把读数传给所选方法；读取方法无需写死某个后续处理方法。这里没有引入 Lambda 或新框架，也不把示例添加到学员项目。
-
-委托也可以组合多个方法，不是只能引用一个：
-
-```csharp
-ReadingHandler handler = new ReadingHandler(ShowTemperature);
-handler += new ReadingHandler(CheckAlarm);
-handler(26.5);
-```
-
-这里 += 把符合相同要求的第二个方法加入委托，调用时在正常完成的情况下先显示再检查报警。参数和返回值约定保持一致；此例全部返回 void，暂不扩展多方法返回值与异常规则。依据沿用已读的 [微软委托说明](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/)。
-
-当前命令的事件也体现这一用途：ClearHistoryCommand 不需要知道 WPF 内部事件处理方法的具体名称，只调用已注册的处理方法；接收方由订阅连接。前面的语法示例未展示必要性属于教练示例需要改进，不记为学员错题。Q6 保持待复习，本轮未运行或修改源码，TASK-012 与 DoD 不变。
+readingHandler 保存两个匹配的方法，调用时在正常完成的情况下先显示 26.5、再输出温度报警。+= 登记第二个方法，不立即调用；最后一行才执行。委托并非只能引用一个方法。这与 Java 传入回调、监听器接收通知有相似用途，不用反射按名字查方法。片段仅作说明，本轮未运行。
 
 ### 2026-10-11 追问：EventHandler 既是委托又是事件吗？
 
-EventHandler 只是一种 .NET 提供的委托类型，不是事件。`public event EventHandler? CanExecuteChanged;` 中，event 是 C# 声明事件的关键字，EventHandler 是这个事件使用的委托类型，CanExecuteChanged 才是事件名称；当前实现的 ICommand 接口要求这个名称。? 表示可以没有订阅者。
+回到命令类的 `public event EventHandler? CanExecuteChanged;`：EventHandler 是 .NET 提供的委托类型；event 是 C# 关键字；CanExecuteChanged 才是事件名。EventHandler 要求方法接收 object? sender、EventArgs e，返回 void。
 
-委托类型规定处理方法的参数和返回值：EventHandler 要求两个参数 object? sender、EventArgs e，并返回 void。事件使用该委托类型连接处理方法，同时限制外部代码：对当前这种普通事件，外部可以用 += 登记、-= 取消，但不能直接调用事件发通知，也不能用 = 把全部登记关系替换掉。发通知由声明事件的类内部负责。不要用“事件就是委托”抹去这层区别。
-
-回到原代码：`EventHandler? handler = CanExecuteChanged;` 中 handler 是普通委托变量，类型是 EventHandler；在命令类内部，它取得事件当前登记的处理方法，随后 `handler(this, EventArgs.Empty)` 调用它们。CanExecuteChanged 是事件，handler 是委托变量，EventHandler 是委托类型，三者不是同一个身份。仅补概念说明，未修改或运行源码，Q6 保持待复习；教练此前术语需拆开解释，不记为学员错题。
+类内部的 `EventHandler? handler = CanExecuteChanged;` 使用已有类型声明普通变量，并取得当前登记的方法。handler 是变量，事件是 CanExecuteChanged，它们身份不同。外部对这类事件用 +=/-= 登记或移除；不能自行调用事件、也不能用 = 替换全部订阅关系。
 
 ### 2026-10-11 追问：delegate 声明委托，为什么又有 EventHandler？
 
-这里要分清“定义委托类型”和“使用已有委托类型”。delegate 是 C# 的声明关键字，后面的名字才是定义出来的类型；`public delegate void MessageHandler(string text);` 定义示例自命名的 MessageHandler，要求方法接收一个 string、返回 void。.NET 已经用同样的机制提供了 EventHandler，声明形状为 `public delegate void EventHandler(object? sender, EventArgs e);`，要求两个参数、返回 void；这行仅展示已有类型定义，不要求在项目中重复声明。
+delegate 定义一个委托类型，例如上面的 MessageHandler。.NET 已经定义 EventHandler；你只是在用它声明事件或变量，不需要再在项目中定义同名类型。可以用“C# 语法定义类型 → 用这个类型创建/保存对象”理解两行的先后关系。
 
-MessageHandler 和 EventHandler 是两个不同的委托类型，来源和参数要求不同，并非两套委托机制。在 `public event EventHandler? CanExecuteChanged;` 中没有定义新的委托类型，而是使用已有的 EventHandler 类型声明一个事件。在 `EventHandler? handler = CanExecuteChanged;` 中也是使用已有类型声明变量。先定义类型，再用类型声明变量或事件；不能把 delegate 关键字与 EventHandler 类型名视为两个同等身份的“委托”。本轮仅答疑，未修改或运行源码，Q6 和 TASK-012 状态不变。
+CanExecute 接收一个参数并返回 bool，不符合 EventHandler 的两个参数/void 要求，所以命令事件并不直接保存 CanExecute。
 
 ### 2026-10-11 追问：handler(...) 和 handler?.Invoke(...) 有什么区别？
 
-分开看调用方式与空值检查。`handler(this, EventArgs.Empty)` 和 `handler.Invoke(this, EventArgs.Empty)` 都通过委托执行已登记的方法，调用效果相同；Invoke 是委托类型的调用方法，由编译器为委托类型生成，不是教练新建的辅助方法。两种直接调用在 handler 为 null 时都会发生空引用异常。
+先看当前骨架的完整调用：
 
-?. 是 C# 空值条件访问语法，`handler?.Invoke(this, EventArgs.Empty)` 在 handler 为 null 时跳过调用，不为 null 时调用 Invoke。对于当前局部变量 handler，这与完整写法 `if (handler != null) { handler(this, EventArgs.Empty); }` 效果相同。handler 为 null 表示没有已登记的处理方法；?. 只处理这个空值情况，并不会吞掉处理方法执行中产生的异常。
+```csharp
+EventHandler? handler = CanExecuteChanged;
+if (handler != null)
+{
+    handler(this, EventArgs.Empty);
+}
+```
 
-任务骨架采用局部变量、普通 if 判断和直接委托调用，是为了先展示“取得已登记方法、判断是否存在、再调用”的步骤，减少尚未讲过的简写；并不是 ?.Invoke 在这里不能使用。学员现在可理解两种写法的对应关系，无需为了本次答疑修改代码，不新增验收要求。Q6 保持待复习，本轮未修改或运行源码，TASK-012/DoD 不变。
+`handler(...)` 与 `handler.Invoke(...)` 都调用委托保存的方法；Invoke 是委托的调用方法。直接调用时若 handler 为 null，会抛空引用异常。`handler?.Invoke(...)` 的 ?. 是 C# 空值条件访问：没有方法就跳过，有则调用，与这里局部变量的完整 if 写法对应。
+
+EventArgs.Empty 是 .NET 的无额外数据参数。?. 只处理 handler 为 null 的情况，不能吞掉被调用方法自己的异常。当前例子的 this 指命令对象，详情见 [命令问答](./wpf-commands.md)。
+
+## 历史证据与掌握范围
+
+Q1～Q4 保持已掌握，Q5/Q6 保持待复习。2026-09-27 TASK-002 学员自主声明、发布、登记、移除，当前设备 ID 随读数传入，实际前两次完整输出、移除后第三次无接收输出；参数类与入口由骨架提供。Q6 与各追问是 2026-10-11 的委托基础补充，没有独立示例运行证据。教练示例用途不足、术语混用属于教学改进，不撤销已有事件应用证据、不记为学员错题。
+
+相关任务卡与验收来源：[TASK-002](../tasks/TASK-002.md)、[TASK-003](../tasks/TASK-003.md)、[TASK-012](../tasks/TASK-012.md)。
+
+完整原问题、追问、教学更正与逐次复查记录见[重构前原稿](../questions-backups/before-plain-rewrite-2026-10-13/csharp-events.md)。该快照保留原文，里面的旧路径/当时状态可能已过时；当前任务状态以[学习进度](../learning.md)和对应任务卡为准。
+
+## 官方依据
+
+- [微软委托说明](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/)
+- [EventHandler 定义](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler?view=net-10.0)

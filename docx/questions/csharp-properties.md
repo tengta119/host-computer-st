@@ -1,32 +1,61 @@
 # C# 属性
 
+> [返回问答索引](./README.md)
+> 2026-10-13 按当前 AGENTS.md 重构。原问题编号与掌握状态保留；历史证据集中到文末。
+
 ## Q1：`Reading` 中的 `get; init;` 有什么用？
 
 - 状态：待复习
-- 关联：[TASK-001](../tasks/TASK-001.md)；[`Reading.cs`](../../Base/Exercises/TASK-001-device-model/Reading.cs)
-- 现象：`Reading` 的 `DeviceId`、`Value`、`Unit` 使用了 `get; init;`。
-- 原因与机制：`get` 允许读取属性；`init` 允许在对象初始化器或构造阶段赋值，但初始化结束后不能再次赋值。`= ""` 给字符串属性提供默认值；`Value` 未显式赋值时为 `0`。
-- 类比：接近 Java 构造对象时设定字段、之后只提供 getter；不同于普通 `set`，它限制后续修改。
-- 用法：`var r = new Reading { DeviceId = "D1", Value = 35.6, Unit = "℃" };` 可行；之后 `r.Value = 40;` 会产生编译错误。限制的是属性赋值，不保证引用类型指向的对象内部不可变。
-- 复查点：在任务实践中能正确初始化读数，并解释 `init` 与 `set` 的区别。
+- 关联：[TASK-001](../tasks/TASK-001.md)；[当前 Reading 定义](../../Base/Exercises/TASK-001-device-model/Task001Exercise.cs)
+
+一条设备读数创建时，需要记住“设备 001、数值 35.6、单位 ℃”。以后查看这条旧读数，不能因为当前设备变了就把它改掉。[当前 Reading 定义](../../Base/Exercises/TASK-001-device-model/Task001Exercise.cs)是本项目自定义的 C# 类，不是 .NET 自带设备类。
+
+```csharp
+Reading reading = new Reading
+{
+    DeviceId = "001",
+    Value = 35.6,
+    Unit = "℃"
+};
+double temperature = reading.Value;
+```
+
+`new Reading` 创建一条读数；花括号在创建时给这个对象的三个属性赋值，这种写法叫对象初始化器。`reading` 保存该对象的引用。最后一行从这条读数的 Value 取出 35.6。
+
+类中的 `public double Value { get; init; }` 使用 C# 属性语法。`get` 允许上面最后一行读取 Value；`init` 允许在创建对象的初始化阶段设置它。创建结束后再写 `reading.Value = 40;` 会报编译错误。普通 `set` 则允许以后继续赋值。这里没有把字段重新赋值的实现写出来，编译器为这种自动属性生成存储。
+
+`public string Unit { get; init; } = "";` 中的 `= ""` 给未填写的 Unit 一个空字符串；未赋值的 double Value 默认是 0。限制的是这些属性的后续赋值；若属性保存一个可修改的集合，init 不会连集合内部一起冻结。
+
+可联系 Java 中构造时设值、以后只暴露 getter 的读数对象理解。这里主要看“创建时能写，创建后能读”，不需要为了复习把已完成模型重新写一遍。
 
 ## Q2：另一个 `.cs` 文件里的 `Device` 如何在 `Task001Exercise.cs` 使用？
 
 - 状态：待复习
-- 关联：[TASK-001](../tasks/TASK-001.md)；[`Device.cs`](../../Base/Exercises/TASK-001-device-model/Device.cs)；[`Task001Exercise.cs`](../../Base/Exercises/TASK-001-device-model/Task001Exercise.cs)
-- 现象：`Device.cs` 声明 `public class Device`，目前没有命名空间；`Task001Exercise.cs` 位于 `Base.Exercises.Task001` 命名空间。
-- 原因与机制：同一项目的 `.cs` 文件默认参与编译；访问类型按命名空间和可见性，不按文件名或目录。当前 `Device` 属于全局命名空间，`Task001Exercise` 可以直接使用 `new Device { Id = "D1", Name = "设备一" }`。如希望组织一致，可把 `namespace Base.Exercises.Task001;` 写在 `Device.cs` 顶部，之后仍可直接使用；跨命名空间可写 `using` 或完整类型名。
-- 类比：Java 通常要求公共顶级类与文件同名，通过包和 import 找类型；C# 无一个文件只能有一个类的要求，namespace 才是组织类型的机制，目录本身不自动决定 namespace。
-- 复查点：自主创建 `Device` 实例，说明文件、命名空间与项目编译的关系。
+- 关联：[TASK-001](../tasks/TASK-001.md)；[当前 Device 定义](../../Base/Exercises/TASK-001-device-model/Task001Exercise.cs)；[`Task001Exercise.cs`](../../Base/Exercises/TASK-001-device-model/Task001Exercise.cs)
+
+先区分历史提问与当前文件：当时问题中的 Device 在另一个文件、尚未写 namespace；现在 Device 与 Reading 都定义在 [Task001Exercise.cs](../../Base/Exercises/TASK-001-device-model/Task001Exercise.cs)，属于 `Base.Exercises.Task001`。旧的独立 Device.cs 链接已失效，不能再把它当成当前源码位置。
+
+```csharp
+using Base.Exercises.Task001;
+
+Device device = new Device { Id = "001", Name = "温度传感器" };
+```
+
+这是跨命名空间使用 Device 的说明片段；`using` 放在文件开头，创建对象那行放在一个方法中。Device 是项目自定义类；`using Base.Exercises.Task001;` 让本文件可用短名字 Device。`new Device` 创建对象，初始化器设置 Id、Name，变量 device 保存它的引用。
+
+另一个文件能使用这个类，是因为它属于同一项目的编译内容、访问权限允许，且代码能找到对应命名空间。C# 不靠“文件在同一个文件夹”建立类型引用；也不是运行时先打开 Device.cs 再读取类。SDK 项目默认把项目目录内的 .cs 源码纳入编译，另有排除配置时按配置处理。
+
+如果两个类已经在同一命名空间，通常不用这行 using。若类没有写 namespace，它处在全局命名空间，当时可以直接用 Device。C# 允许在同一 .cs 文件放多个类；Java 的包/import 可帮助理解名字查找，但文件与类的规则不同。
 
 ## Q3：`get => _resultText;`、`set { ... }` 和 `value` 是什么意思？
 
 - 日期：2026-10-09
 - 状态：待复习
 - 关联：[TASK-010](../tasks/TASK-010.md)、[ReadingDisplayState.cs](../../WpfBae/Exercises/TASK-010-reading-binding/ReadingDisplayState.cs)
-- 现象：学员明确反馈此前未学过带实现的 get/set，无法理解骨架中的箭头简写。既有属性问答仍待复习，不能根据前面使用过 get/init 或填过数据模型就默认其已掌握。本次是教学缺少铺垫，不记录为学员认知错误。
 
-### 先看普通写法
+先看实际赋值：按钮执行 `_state.ResultText = "读取完成";` 后，数据对象应保存这段文字；之后绑定读取 `_state.ResultText`，得到刚保存的内容。ReadingDisplayState 是本项目自定义的数据类，ResultText 是它的公开属性名。
+
+下面是简化后的完整写法，只解释保存与读取；原类还保留变化通知：
 
 ```csharp
 private string _resultText = "尚未读取";
@@ -44,36 +73,22 @@ public string ResultText
 }
 ```
 
-`_resultText` 是实际保存字符串的私有字段；`ResultText` 是公开属性，规定外部读取与赋值时要执行的代码。它们不是同一个名字的变量，属性通过自己的 get/set 访问字段。
+`_resultText` 是真正保存字符串的字段；ResultText 是外部读写它的入口。读取 `string text = _state.ResultText;` 时执行 get，return 把字段当前值交给 text。
 
-读取 `string text = state.ResultText;` 时进入 get，返回 `_resultText` 当前值。执行 `state.ResultText = "读取完成";` 时进入 set，赋值右侧的“读取完成”就是这次 setter 中的 value；`_resultText = value` 将新值存进字段。之后再次读取属性会返回新值。
+赋值 `_state.ResultText = "读取完成";` 时执行 set。C# 自动把等号右侧的“读取完成”交给 `value`，这里 value 的类型是 string。`_resultText = value` 才是实际保存动作；若写成空的 `set { }`，这次赋值不会自动保存到字段。
 
-value 是 setter 中 C# 自动提供的隐式参数，类型与属性一致，当前为 string，不需要另外声明它。赋值会调用 setter，但保存到哪个字段、是否保存由 setter 的代码决定。若真的写空的 `set { }`，赋值时只执行空代码块，不会自动更新 `_resultText`；原任务完整代码有 `_resultText = value`，所以保存动作存在。
+理解完整写法后，再看 `get => _resultText;`：它是 `get { return _resultText; }` 的简写。这个箭头在此简写属性读取，不是在执行 Lambda 回调。
 
-### 箭头写法
+可以类比普通 Java getter/setter：`GetResultText()` 返回字段，`SetResultText(string newText)` 保存传入文字。C# 属性把调用写成读取或赋值的形式，不要求把当前项目属性改成普通方法。后续 setter 中的 OnPropertyChanged 用于通知界面，先分清保存值与发通知两件事。
 
-`get => _resultText;` 等价于这里的 `get { return _resultText; }`，是读取部分的简写。此处箭头用于简写访问器，不是在给 Binding 传 Lambda，也不是给字段赋值。首次讲解先用完整花括号与 return，再解释简写。
+## 历史证据与掌握范围
 
-### 与普通方法的类比
+三个问答均保持待复习。TASK-001 模型创建/填充有实践证据，但按 ID 查询由教练实现；TASK-010 的通知调用与数据属性更新已验证，完整 get/set、value、new()/readonly 等来自骨架，不能随任务通关全部升级。2026-10-09“未学过完整属性语法”的反馈是教学起点，不记为学员错误。本轮只重写文档和核对源码。
 
-逻辑上可以类比熟悉的 getter/setter 方法：
+相关任务卡与验收来源：[TASK-001](../tasks/TASK-001.md)、[TASK-010](../tasks/TASK-010.md)。
 
-```csharp
-public string GetResultText()
-{
-    return _resultText;
-}
+完整原问题、追问、教学更正与逐次复查记录见[重构前原稿](../questions-backups/before-plain-rewrite-2026-10-13/csharp-properties.md)。该快照保留原文，里面的旧路径/当时状态可能已过时；当前任务状态以[学习进度](../learning.md)和对应任务卡为准。
 
-public void SetResultText(string newText)
-{
-    _resultText = newText;
-}
-```
+## 官方依据
 
-访问属性时写 `state.ResultText` 和 `state.ResultText = "读取完成"`；使用普通方法时写 `state.GetResultText()` 和 `state.SetResultText("读取完成")`。这是帮助理解的逻辑对照，示例不要求把任务属性替换成方法，XAML Binding 仍按公开属性取值。
-
-### 当前教学与复查范围
-
-先理解读取进入 get、赋值进入 set、value 来自赋值右侧，再继续学习 setter 中的 PropertyChanged 通知。不引入新口试、不要求独立新练习。后续依据本任务自主属性实现与实际读写行为核对掌握；本轮未改源码、未运行或验收，状态待复习，TASK-010 保持进行中。
-
-2026-10-09 后续 TASK-010 审查：学员在已有 setter 中增加通知调用，按钮赋值进入这些 setter，实际界面更新正确；这项属性使用证据已记录在任务与绑定 Q1。get、字段赋值/value 及属性结构仍由骨架提供，尚无自主编写这些语法的新证据，本条完整属性语法保持待复习，不因任务通关全部标已掌握。
+- [Microsoft：init 属性初始化](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/init)

@@ -1,6 +1,7 @@
 # WPF 坐标与折线
 
 > [返回问答索引](./README.md)
+> 2026-10-13 按当前 AGENTS.md 重构。原问题编号与掌握状态保留；历史证据集中到文末。
 
 ## Q1：TASK-018 的中间点怎么移动，温度为什么不能直接当 y？
 
@@ -8,23 +9,27 @@
 - 状态：待复习
 - 来源：TASK-018 启动必要讲解。已有窗口实践证据，Canvas/Polyline 尚无自主应用证据。
 
-窗口里有一条叫 `TemperatureLine` 的蓝线。它是 WPF 的 Polyline，按收到的三个坐标依次连接；外面的 `ChartCanvas` 是 WPF 的 Canvas，给这条线提供放置空间。这两个名字均由教练指定。骨架用固定坐标画水平线，标签显示原始温度，当前两者还没有对应。
+TASK-018 的蓝线叫 TemperatureLine，是 WPF 的 Polyline；ChartCanvas 是包住它的 WPF Canvas。两个名字来自教练。Polyline 根据收到的坐标按顺序连线，Canvas 提供放置空间，名字本身不把温度变成坐标。
 
-Canvas 左上角为 `(0,0)`，向右 x 增大，向下 y 增大。在后台 `ShowPlaceholderLine()` 中：
+Canvas 左上角是(0,0)，向右 x 增加，向下 y 增加。先看原占位方法中的一点：
 
 ```csharp
 points.Add(new Point(280, 180));
 ```
 
-`Point` 是 WPF 使用的坐标类型，`new Point(280, 180)` 创建一个向右 280、向下 180 的坐标。`points` 是该方法用 `new PointCollection()` 创建的集合变量，PointCollection 由 WPF 提供；`Add` 把坐标按顺序加入集合。先只把这一行 180 改成 100，重新运行，预期中间点上移，两端不变。这不是温度计算，不据此认定图表完成。
+Point 是 WPF 使用的坐标类型，new Point 创建 x=280/y=180 的坐标。points 是该方法创建的 PointCollection，Add 把坐标加入它。原首步只把 180 改为 100，点就上移 80，两端没有改；这是认识位置，不是完整温度计算。
 
-高温要画在上方，所以高温需要较小的 y。本题固定上边 y=40 对应 30 °C，下边 y=240 对应 20 °C；10 度对应 200 个界面单位，每度对应 20。24 度比底部高 4 度，应上移 80，y=160；26.5 度应上移 130，y=110。直接使用温度作 y，会让温度升高时点向下走，也无法对应约定范围。
+希望温度越高点越上，需要给高温较小的 y。本题固定 y=240 对应 20 度，y=40 对应 30 度：10 度覆盖 200 个界面单位，一度上移 20。计算可读成：
 
-`ConvertTemperatureToY` 是教练定义的普通方法，接收一条温度、返回 y；目前返回固定 140，需在之后的 TODO 2 改成计算。`DrawTemperatureLine` 的普通循环取出同次读取的 x 和温度，获得 y；学员在 TODO 3 创建并加入坐标，循环后把集合赋给 `TemperatureLine.Points`。`Points` 是蓝线的 WPF 属性，保存它要连接的坐标；原温度数组没有直接交给这个属性。
+```csharp
+double y = 240 - (temperature - 20) * 20;
+```
 
-首个实际操作、运行命令、文件链接及后续分步说明见 [TASK-018 任务卡](../tasks/TASK-018.md)。本轮仅构建骨架，未运行窗口；上述观察为预期，未新增学员应用证据。不会把教练提供的集合/坐标写法当成学员已掌握。
+这是已完成转换关系的说明：temperature 是本次那条温度，先减 20 看比底部高多少度，再乘 20 得到上移距离，从底部 240 减去。24 度得到 160，26.5 度得到 110，28 度得到 80。直接拿温度当 y 会让高温向下走，也不符合本题范围。
 
-依据：[Microsoft WPF 基本图形说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/graphics-multimedia/shapes-and-basic-drawing-in-wpf-overview)、[Canvas 说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/canvas)。
+ConvertTemperatureToY 是自定义普通方法，接温度、返回 y；DrawTemperatureLine 是自定义绘图方法，逐次取 x/温度、创建 Point 加入集合，最后 `TemperatureLine.Points = points` 设置这条蓝线的坐标属性。Points 接坐标集合，不接温度数组。
+
+当前原代码已完成，见 [TASK-018 后台](../../WpfBae/Exercises/TASK-018-temperature-polyline/Task018Window.xaml.cs)。旧“返回固定 140/占位水平线”的说法是启动骨架历史，本次不改回去。
 
 ## Q2：蓝线的三个点为什么正好对应下方三个 TextBlock？
 
@@ -32,31 +37,34 @@ points.Add(new Point(280, 180));
 - 状态：待复习
 - 来源：学员询问 Polyline 与三个文字标签的位置对应关系；本轮静态核对当前 XAML/后台源码，未运行或验收。
 
-三个标签的水平中心与三个点的 x 相同，是准备骨架时手动算好的位置。先看第一个标签：
+三个标签的中心与三个点的 x 相同，因为骨架手动算了位置，不是名字自动匹配。先看实际第一个标签：
 
 ```xml
 <TextBlock x:Name="FirstReadingLabel" Canvas.Left="55" Canvas.Top="260"
            Width="90" TextAlignment="Center" />
 ```
 
-`Canvas.Left="55"` 把这个文字框的左边放在 Canvas 的 x=55 处。`Width="90"` 让文字框宽 90，所以右边在 x=145，中心在 `55 + 90 / 2 = 100`。`TextAlignment="Center"` 把文字放在这个宽 90 的文字框中间。因此文字围绕 x=100 显示，正好在第一个点的下方。
+TextBlock 是 WPF 文字控件，FirstReadingLabel 是教练命名。Canvas.Left=55 放它的左边到 x=55；Width=90 使右边到 145，中心是 55+90/2=100。TextAlignment=Center 只让文字在这 90 宽的框内居中，不负责把整个框移到点下方。
 
-当前后台 `_xPositions` 保存三个点的 x：100、280、460。循环创建 `new Point(x, y)` 加入集合，最后 `TemperatureLine.Points = points` 才把坐标交给蓝线。单独的 Polyline 标签设置的是蓝线名称、颜色和线宽，它里面没有写这三个坐标。
-
-| 读取次序 | 点的 x | 标签左边 | 标签中心计算 |
+| 标签 | 点的 x | 文字框左边 | 中心计算 |
 | :--- | ---: | ---: | :--- |
-| 第 1 次 | 100 | 55 | 55 + 90 / 2 = 100 |
-| 第 2 次 | 280 | 235 | 235 + 90 / 2 = 280 |
-| 第 3 次 | 460 | 415 | 415 + 90 / 2 = 460 |
+| 第一条 | 100 | 55 | 55+45=100 |
+| 第二条 | 280 | 235 | 235+45=280 |
+| 第三条 | 460 | 415 | 415+45=460 |
 
-`Canvas.Top="260"` 把三个文字框的上边放在 y=260。绘图区的下边是 y=240，所以标签位于绘图区下方。对应指横向中心对齐；温度点的 y 决定它的高度，标签的 y 固定在下方。
+Canvas.Top=260 设置文字框上边的 y，绘图区底部 y=240，所以文字在下方。蓝线点的 y 随温度改变，标签 y 固定；“对应”指横向中心，不表示两者高度相同。
 
-Polyline 和 TextBlock 都放在同一个 Canvas 里，当前蓝线没有额外偏移，使用同一坐标起点。两者分别设置位置，名字没有建立自动匹配关系。如果只把第一个点的 x 改成 120，标签 Left 仍是 55，它的中心就仍是 100；要继续居中对应，标签 Left 应改成 `120 - 90 / 2 = 75`。
+两者在同一 Canvas 内，蓝线无额外偏移，采用同一起点。若单独把第一点 x 改为 120，标签中心仍 100；要继续对齐，文字框左边要设为 120-45=75。这个演算只是解释，不要求修改已完成作品，见 [原XAML](../../WpfBae/Exercises/TASK-018-temperature-polyline/Task018Window.xaml)。
 
-本轮说明坐标和标签宽度的对应，未要求额外考试或扩展实践，未修改学员源码。问答保持待复习，TASK-018 保持 🟡 进行中，三个 DoD 未新增验收证据。
+## 历史证据与掌握范围
 
-## 2026-10-13 审查后的应用边界
+Q1/Q2 均保持待复习。2026-10-13 TASK-018 原窗口三个坐标(100,160)/(280,110)/(460,140)已验证；教练独立 28 度副本中间 y 变 80、上移 30，两端不变、标签可读。学员自主补循环加点、Points 赋值与调用，局部应用有效；转换计算/标签布局由既有实现提供，不计独立设计。原任务三项 DoD 通关，本轮未运行或扩大学员掌握范围。
 
-TASK-018 三个必需 DoD 已有实际窗口与独立 28 度副本证据，状态 ✅ 已通关。学员在骨架内补上循环中的坐标加入、Polyline.Points 赋值并连接绘图调用，原窗口三个点按读取顺序显示正确；这一局部应用已验证。
+相关任务卡与验收来源：[TASK-018](../tasks/TASK-018.md)。
 
-Q1 涵盖的完整坐标转换/框架机制与 Q2 的标签布局仍保持待复习：本次自主证据没有覆盖这些内容的独立设计。28 度副本比较由教练执行，不扩大为学员自行修改并验证的掌握范围。统计仍为待复习 2、已掌握 0；上方未运行/进行中表述是各次答疑当时的历史。证据见 [TASK-018 审查](../tasks/TASK-018.md)。
+完整原问题、追问、教学更正与逐次复查记录见[重构前原稿](../questions-backups/before-plain-rewrite-2026-10-13/wpf-charts.md)。该快照保留原文，里面的旧路径/当时状态可能已过时；当前任务状态以[学习进度](../learning.md)和对应任务卡为准。
+
+## 官方依据
+
+- [Microsoft WPF 基本图形说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/graphics-multimedia/shapes-and-basic-drawing-in-wpf-overview)
+- [Canvas 说明](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/canvas)

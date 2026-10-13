@@ -1,84 +1,75 @@
 # WPF 样式与资源
 
 > [返回问答索引](./README.md)
+> 2026-10-13 按当前 AGENTS.md 重构。原问题编号与掌握状态保留；历史证据集中到文末。
 
 ## Q1：Style、Setter 和 StaticResource 怎样统一两个按钮的外观？
 
 - 日期：2026-10-12
 - 来源：TASK-015 开始时的必要讲解。
 - 状态：已掌握
-- 证据边界：2026-10-12 TASK-015 最终审查通过，学员自主补齐 Padding/HorizontalAlignment Setter、两按钮资源引用并移除对应直接属性，原编译窗口实际运行确认同一 Style 对象，9 个业务场景通过；独立编译副本变化共同 Padding 后两按钮布局同步变化。掌握限现有骨架中的显式 Style/Setter/资源引用应用，不扩展为所有资源查找原理、完整属性优先级或模板设计。下文保留起步示例；之前初始化异常为已修复的历史记录。
 
-当前读取与清空按钮都直接写 `Padding="12,6"`、`HorizontalAlignment="Left"`。Padding 是 Button 的内边距属性，表示文字与按钮边缘之间的留白；两个数字分别表示左右和上下。Margin 是控件外部与周围元素的间距，清空按钮的 Margin 可以继续留在它自身。
-
-如果想调整两个按钮的内边距，原来要改两处。Style 是 WPF 提供的外观设置对象，能让多个按钮共用一组属性值；Setter 是其中的一项设置，Property 指定属性名，Value 指定值。它们都不是本题新建的 C# 业务类，也不负责读取或清空数据。
-
-下面是首步语法示例，窗口已有外层和空 Style，只需补 Setter：
+ReadButton 和 ClearButton 是“读取温度”“清空历史”两个具体按钮，都由 WPF 的 Button 类创建。要让两者文字周围都有左右 24、上下 10 的留白，可以共用下面一组设置：
 
 ```xml
-<Window.Resources>
-    <Style x:Key="ActionButtonStyle" TargetType="Button">
-        <Setter Property="Padding" Value="24,10" />
-    </Style>
-</Window.Resources>
+<Style x:Key="ActionButtonStyle" TargetType="Button">
+    <Setter Property="Padding" Value="24,10" />
+</Style>
 ```
 
-Window.Resources 是 WPF 的窗口资源集合，用来保存可被界面查找和复用的对象。这里的 XML 标签是 XAML 写法：WPF 加载时创建 Style 对象并放入集合。TargetType 指明这份样式用于 Button。x:Key 给资源起标识；ActionButtonStyle 是教练为本题选择的名字，可以自行命名，不是 WPF 固定 API。带键的 Style 需按钮显式引用，定义在资源集合里并不会自动应用到两个按钮。
+Style 是 WPF 的设置对象，这段放在已有 Window.Resources 里，保存供窗口复用。`TargetType="Button"` 说“这组设置给 Button 按钮用”；Setter 指定给该按钮的 Padding 设置 24,10。Padding 是按钮文字与自身边缘的内部留白，两个数分别是左右、上下，不是与别的控件的外部间距。
 
-读取按钮增加下面这一项属性，其他名称、文字和命令绑定继续保留：
+x:Key 给这份资源取名 ActionButtonStyle，这个名字是教练自定，不是 WPF API。带这个键的 Style 放在资源里，不会仅靠名字自动连到两个按钮；按钮要引用它：
 
 ```xml
 Style="{StaticResource ActionButtonStyle}"
 ```
 
-左边 Style 是 Button 的 WPF 属性。右边花括号是 XAML 的特殊取值写法；StaticResource 是 WPF 提供的资源查找方式，后面的名字是资源键。WPF 按键取得现有 Style 对象，再赋给按钮的 Style 属性。这里既不是 C# 的 static 关键字，也不按这个名字创建业务命令。
+左边设置这个 Button 的 Style 属性；右边 StaticResource 让 WPF 按键找到已定义的外观对象。StaticResource 是 WPF 的 XAML 写法，不是 C# static，也不读取 ViewModel 的命令。
 
-若按钮仍写 `Padding="12,6"`，该直接设置值会优先于 Style 的 Padding Setter，于是明明引用了样式，内边距仍不改变。TODO 1 要同时移除读取按钮自身的 Padding，先保留 HorizontalAlignment；后续把对齐也放进 Setter 时再移除该直接设置值。此结论依据 WPF 的属性值优先级，不要求本题学习完整优先级列表。
+若按钮上还直接写 Padding="12,6"，这个直接设置会压过 Style 中的 Padding Setter，留白仍用 12,6。把同一个属性移交给 Style 后，才会用共同值。按钮自己的 Margin 是外部位置间距，可继续保留，别因名字相似一并删除。
 
-资源查找可以沿已建立的父子关系向上查窗口资源，但还必须考虑查找时机。当前 ReadingHistoryControl 在构造函数的 InitializeComponent() 中独立加载内部 XAML，尚未接到父窗口上；内部 StaticResource 无法在此时找到只在窗口定义的 ActionButtonStyle。此前“内部清空按钮可以直接用 StaticResource”的讲解遗漏了这个限制，已按 Q2 更正；内部按钮使用 DynamicResource 延后查找，窗口读取按钮仍可用 StaticResource，不必复制样式。
-
-另一条已有连接是 DataContext：窗口后台创建 ReadingViewModel 实例并赋给 DataContext，内部控件接入后沿用这个对象，Binding 从它取得 Readings/ClearCommand。资源键找外观对象，Binding 找数据或命令属性，两条连接作用不同。
-
-首个实践只在 [Task015Window.xaml](../../WpfBae/Exercises/TASK-015-button-style/Task015Window.xaml) 做 TODO 1：补 Padding Setter、连接 ReadButton、移除该按钮原 Padding。先观察未修改骨架的原外观，再从根目录用 `dotnet run --project WpfBae/WpfBae.csproj` 运行修改后版本，预期读取按钮文字周围留白增大，清空按钮暂时不变。设计预览不是实际运行；修改 XAML 后关闭旧窗口重新运行，不依赖热重载。
-
-随后才进行 TODO 2/3/4，逐步转移对齐、通过 DynamicResource 连接清空按钮、修改同一 Setter 并验证两按钮变化与原命令行为。只提供当前首步示例，完整样式应用由学员完成。
-
-依据：[WPF 样式与资源复用](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/styles-templates-overview)、[直接设置值与 Style Setter 的优先级](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/properties/dependency-property-value-precedence)。
+当前两个按钮引用同一份 Style，改共同 Padding Setter 就能一起调整。实际原窗口与独立副本的比较放在证据区，不插在语法解释中。窗口 ReadButton 使用 StaticResource，独立历史控件内 ClearButton 使用 DynamicResource，原因单独看 Q2，不在首次 Style 说明中混进查找时机。
 
 ## Q2：历史控件的 StaticResource 为什么找不到窗口里已经定义的 Style？
 
 - 日期：2026-10-12
 - 来源：学员将 ClearButton 改为 StaticResource 引用后报告启动 XamlParseException。
 - 状态：待复习
-- 教学纠正：先前讲解与 TODO 3 漏掉独立 UserControl 初始化时机；这是教练指导不完整，不记为学员典型错误，不扩大或改变原任务验收范围。
-- 2026-10-12 最终证据边界：学员已按讲解自主换成 DynamicResource，原编译窗口正常打开且取得同一窗口 Style；此引用应用已并入 Q1。独立加载与父元素查找时机的机制仍待复习，不因任务通关将本问答整体升级。证据见 [TASK-015 最终结果](../tasks/evidence/TASK-015/results.json)。
 
-报错的关键是“无法找到名为 ActionButtonStyle 的资源”。XamlParseException 表示 WPF 在加载 XAML 时出错；内层异常才指出失败的具体原因。屏幕上乱码来自文本编码显示，不影响这个异常的含义。已核对当前文件：窗口资源键与内部引用一致，资源在 Window.Resources 中，启动入口指向 Task015Window。
+当时 ClearButton 加 StaticResource 后，原窗口启动报“无法找到 ActionButtonStyle”。键名并没拼错，问题是它查找时还没连接到包含这份资源的窗口。
 
-实际顺序是：
+1. 窗口加载，创建 Window.Resources，窗口读取按钮可以找到 Style。
+2. 窗口创建自定义 ReadingHistoryControl。
+3. 控件构造里先执行自己的 InitializeComponent，加载它内部的 XAML。
+4. 这时内部 ClearButton 解析 StaticResource，历史控件还没挂到窗口的父子结构，无法向上找到窗口资源，加载就失败了。
 
-1. WPF 加载窗口 XAML，建立窗口资源；窗口内的读取按钮能在本次加载上下文找到 Style。
-2. 遇到自定义历史控件标签，创建 ReadingHistoryControl 实例。
-3. 控件构造函数先执行自己的 InitializeComponent()，独立加载 ReadingHistoryControl.xaml。
-4. 其中的 ClearButton 在解析 StaticResource 时要求找到现有资源，但历史控件尚未接到窗口的父子结构，无法向上访问这份窗口资源。
-5. 查找抛异常，中断窗口加载，程序启动失败。
+“最终显示在窗口内”不等于“构造时已经有父窗口”。类命名空间或文件夹放哪里，也不决定这份外观资源当时是否可见。XamlParseException 是加载 XAML 失败的外层异常，内层“找不到资源”才是本例具体线索；编码造成的乱码不改变这个原因。
 
-不能仅凭“运行后控件会位于窗口内部”推定它在自身构造阶段就已连接父窗口。类的命名空间与文件夹位置也不决定资源可见范围；这里要同时考虑资源放在哪里以及查找时父子关系是否建立。
-
-DynamicResource 是 WPF 的另一种资源引用写法，保留按键查找的表达式，在需要取值时进行查找，并随父子结构变化重新求值。它适合此处：控件先单独初始化，接入窗口后再找到窗口样式。无需把它理解为实时修改磁盘 XAML，也不意味着全部 StaticResource 都要换掉。
-
-首个修复只改 [ReadingHistoryControl.xaml](../../WpfBae/Exercises/TASK-015-button-style/ReadingHistoryControl.xaml) 中 ClearButton 的一项属性：
+当前历史控件使用：
 
 ```xml
 Style="{DynamicResource ActionButtonStyle}"
 ```
 
-DynamicResource 是 WPF 提供的名字，ActionButtonStyle 仍是原自定义资源键。保留窗口里的同一份 Style，读取按钮继续 StaticResource，Command 绑定不变；不另建业务对象、不复制 Style。关闭旧进程，从工作区根目录用 `dotnet run --project WpfBae/WpfBae.csproj` 重跑，预期窗口能打开，清空按钮取得窗口 Style 的 Padding 和左对齐。原清空按钮的 `Margin="0,12,0,0"` 是独立位置间距，可保留。
+左边仍给 ClearButton.Style 取值；右边保留按键查找的表达式，可以延后求值，并在连接父元素后重新找到窗口中的同一份 Style。DynamicResource 是 WPF 提供的写法，不是监视磁盘 XAML，也不是再创建一个业务对象。
 
-另外，当前读取按钮虽然已有样式引用，却仍写着 `Padding="12,6"` 和 `HorizontalAlignment="Left"`。这不引起本次资源异常，但会覆盖 Setter；恢复启动后继续按 TODO 1/2 移除这些直接值，再观察两按钮的共同外观。
+当时单处修复只改 [历史控件 ClearButton 的资源引用](../../WpfBae/Exercises/TASK-015-button-style/ReadingHistoryControl.xaml)，保留窗口 Style 与命令绑定。窗口读取按钮仍可 StaticResource，不要求全部换掉。若另把共享样式放 Application.Resources，可以改变可见范围，但本题不搬资源或复制样式。
 
-若未来希望该内部 StaticResource 保持原写法，可以把同一份共享样式放到 Application.Resources，使应用资源在加载控件时可见；那是另一种作用域选择，本题继续保持窗口资源和内部 DynamicResource 即可。
+这次漏讲独立控件初始化时机来自教练指导，不是学员典型错误。后续原窗口已经成功打开，旧失败记录不能继续写成当前阻塞。
 
-2026-10-12 诊断证据：实际 `dotnet build WpfBae/WpfBae.csproj --nologo` 退出 0、0 警告/错误。独立诊断调用原编译 Task015Window，重现同一异常；仅在内存中将控件 XAML 的 StaticResource 换成 DynamicResource，单独加载后连接诊断窗口并 Show/UpdateLayout，验证 ClearButton.Style 与窗口资源为同一对象，Padding 为 `24,10,24,10`、对齐 Left。诊断命令 `dotnet run --project docx/tasks/evidence/TASK-015/resource-lookup-diagnostic/Diagnostic.csproj -- D:\host-computer-st` 退出 0。见 [结果](../tasks/evidence/TASK-015/resource-lookup-diagnostic/results.json)。学员源码未修改；这不是修改后完整原窗口的运行验收，三个 DoD 保持未勾选，任务 🟡 进行中。
+## 历史证据与掌握范围
 
-依据：[StaticResource 的加载时查找](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/staticresource-markup-extension)、[DynamicResource 的延后查找](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/dynamicresource-markup-extension)、[资源沿父元素查找的规则](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/systems/xaml-resources-overview)。
+Q1 保持已掌握，Q2 保持待复习。2026-10-12 TASK-015 学员补齐 Setter、引用、移除直接属性，原窗口两个按钮同一 Style，9 个业务场景通过。原 Padding=24,10 时两按钮 98×37.24，教练独立副本改为 32,14 后为 114×45.24；不计为学员自主运行时切换。资源异常曾在原编译窗口重现，内存诊断改 DynamicResource 验证同一资源；后续完整原窗口也已验收。Q2 的查找时机机制不随引用应用升级。
+
+相关任务卡与验收来源：[TASK-015](../tasks/TASK-015.md)。
+
+完整原问题、追问、教学更正与逐次复查记录见[重构前原稿](../questions-backups/before-plain-rewrite-2026-10-13/wpf-styles.md)。该快照保留原文，里面的旧路径/当时状态可能已过时；当前任务状态以[学习进度](../learning.md)和对应任务卡为准。
+
+## 官方依据
+
+- [WPF 样式与资源复用](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/styles-templates-overview)
+- [直接设置值与 Style Setter 的优先级](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/properties/dependency-property-value-precedence)
+- [StaticResource 的加载时查找](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/staticresource-markup-extension)
+- [DynamicResource 的延后查找](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/dynamicresource-markup-extension)
+- [资源沿父元素查找的规则](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/systems/xaml-resources-overview)
