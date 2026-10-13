@@ -24,8 +24,13 @@
 | WPF 数据模板 | [wpf-templates.md](./wpf-templates.md) | 0 | 2 |
 | WPF 控件模板 | [wpf-controltemplates.md](./wpf-controltemplates.md) | 2 | 2 |
 | WPF 坐标与折线 | [wpf-charts.md](./wpf-charts.md) | 2 | 0 |
+| WPF 读数表格 | [wpf-datagrid.md](./wpf-datagrid.md) | 0 | 1 |
 
 提问不等于掌握；仅在自主实践/提交检查有应用证据后更新状态。
+
+2026-10-13 TASK-019 审查通关：[读数表格 Q1](./wpf-datagrid.md) 按学员在骨架中自主配置 Header、ItemsSource 和逐行字段绑定的运行证据标已掌握，统计 0/1。11 个实际场景全通过；只读限制、窗口连接和原命令不计本次自主实现，框架内部机制/编辑/排序不一并升级。只创建 TASK-020 未开始卡片，下方 TASK-019 待复习/进行中描述为此前历史。
+
+2026-10-13 TASK-019 启动：新增 [读数表格 Q1](./wpf-datagrid.md)，先从第一列表头的小改动说明 Header，再分步解释整集合 ItemsSource、每行 Reading 的列 Binding、手动列/只读设置与原集合 Add/Clear。状态待复习，统计 1/0；仅构建骨架通过，未运行实际窗口或验收，不新增自主掌握证据。
 
 2026-10-13 TASK-018 审查通关：在 [坐标与折线](./wpf-charts.md) 追加骨架内 Points 连接的局部自主应用与边界；Q1 的完整机制和 Q2 标签布局继续待复习，统计仍 2/0。原/独立 28 度副本均实际验证，三项 DoD 通过；只创建 TASK-019 未开始卡片，下方 TASK-018 进行中描述为此前历史。
 
