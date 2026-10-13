@@ -4,7 +4,9 @@
 
 这里保留你的原问题、Q 编号及追问。回答先说原练习里的具体对象和现象，再给少量代码、逐处解释含义，最后说明可观察结果；历史验收与掌握边界放到分类文末。
 
-2026-10-13 已重构全部 22 个分类文件。重构时保留原统计；此后TASK-020实际审查通过，[设备下拉框Q1](./wpf-combobox.md)按骨架中SelectedItem连接/写回读取的应用证据标已掌握，当前待复习30、已掌握19。默认双向元数据和完整框架机制不一并升级。文档重构本身没有新增验收；本次TASK-020运行证据见对应任务卡。
+2026-10-13 已重构全部 22 个分类文件。重构时保留原统计；此后 TASK-020 实际审查通过，[设备下拉框 Q1](./wpf-combobox.md)按骨架中 SelectedItem 连接/写回读取的应用证据标已掌握，当次待复习 30、已掌握 19。默认双向元数据和完整框架机制不一并升级。文档重构本身没有新增验收；运行证据见对应任务卡。
+
+2026-10-13 TASK-021 审查通关：三行高度/区域行号/移除表格固定高度已自主应用并经 17 个实际场景验证，[布局 Q1](./wpf-layout.md)按该范围标已掌握，完整布局机制与独立界面设计继续复习。当前 49 条主问答：待复习 29、已掌握 20；分类与 Q 数不变。
 
 2026-10-13 TASK-021 启动：已在[布局 Q1](./wpf-layout.md)增量说明当前窗口三个区域、Auto/星号行、行号、表格固定高度、内外 Grid 与首个行高观察。Q1 仍待复习，条目数量与统计不变；骨架只构建，未运行或验收。
 
@@ -20,7 +22,7 @@
 | C# JSON 与配置文件 | [csharp-json.md](./csharp-json.md) | 0 | 1 |
 | 学习路线 | [learning-route.md](./learning-route.md) | 1 | 0 |
 | .NET 项目与解决方案 | [dotnet-projects.md](./dotnet-projects.md) | 1 | 0 |
-| WPF 窗口、控件与布局 | [wpf-layout.md](./wpf-layout.md) | 1 | 0 |
+| WPF 窗口、控件与布局 | [wpf-layout.md](./wpf-layout.md) | 0 | 1 |
 | WPF 数据绑定 | [wpf-binding.md](./wpf-binding.md) | 3 | 1 |
 | WPF 集合与历史列表 | [wpf-collections.md](./wpf-collections.md) | 1 | 1 |
 | WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 0 | 1 |

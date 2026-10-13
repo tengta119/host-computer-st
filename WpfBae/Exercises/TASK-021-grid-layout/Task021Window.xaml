@@ -10,11 +10,11 @@
             <!-- TODO 1（首个动作）：只把这一行 Height 从 160 改为 190。
                  它改变第 0 行预留高度；选择区下面的空隙增大，清空区向下移动。
                  固定数值是观察用占位；先不要同时修改其他行或区域位置。 -->
-            <RowDefinition Height="160" />
+            <RowDefinition Height="Auto" />
             <!-- TODO 2：完成首步后，按讲解配置三行高度：
                  顶部/底部按内容需要，中间取得剩余高度。 -->
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <StackPanel x:Name="SelectionRegion" Grid.Row="0">
@@ -31,7 +31,7 @@
         <!-- TODO 3：HistoryRegion / ActionsRegion 的行号是可运行占位。
              当前顺序为选择、清空、历史；按目标分别放到顶部、中间、底部。
              改的是外层 LayoutGrid 的行号，不要改本区域内部的行号。 -->
-        <Grid x:Name="HistoryRegion" Grid.Row="2" Margin="0,16,0,0">
+        <Grid x:Name="HistoryRegion" Grid.Row="1" Margin="0,16,0,0">
             <!-- 区域内的两行由教练提供：标题占所需高度，表格取得其余高度。
                  这里的 Grid.Row=0/1 只属于 HistoryRegion，不属于 LayoutGrid。 -->
             <Grid.RowDefinitions>
@@ -42,7 +42,7 @@
             <!-- TODO 4：行位置调整完成后，移除表格固定 Height。
                  否则它仍只要 210 高度，窗口拉高也不会填满自己的区域。
                  保留已有集合/三列字段连接与只读限制。 -->
-            <DataGrid x:Name="HistoryDataGrid" Grid.Row="1" Height="210"
+            <DataGrid x:Name="HistoryDataGrid" Grid.Row="1"
                       AutoGenerateColumns="False" IsReadOnly="True"
                       ItemsSource="{Binding Readings, Mode=OneWay}"
                       CanUserAddRows="False" CanUserDeleteRows="False">
@@ -54,7 +54,7 @@
             </DataGrid>
         </Grid>
 
-        <StackPanel x:Name="ActionsRegion" Grid.Row="1">
+        <StackPanel x:Name="ActionsRegion" Grid.Row="2">
             <Button x:Name="ClearButton" Content="清空历史"
                     Command="{Binding ClearCommand, Mode=OneWay}"
                     HorizontalAlignment="Left" Padding="12,6" Margin="0,12,0,0" />
