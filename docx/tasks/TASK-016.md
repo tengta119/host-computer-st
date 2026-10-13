@@ -5,6 +5,7 @@
 - 计划来源：[计划原文](../plan.md)「三、第二阶段：WPF」中 Style / Template；本卡先覆盖用于数据行展示的 DataTemplate，ControlTemplate 与数据图表尚未覆盖。
 - 选择依据：TASK-015 的共享 Style、窗口资源引用与原业务行为已实际验证。当前历史列表依靠 Reading.ToString() 输出整行字符串，适合继续学习 Template 如何组合数据的显示方式；沿用已使用的 Binding 和历史集合，避免同时引入通信或第三方组件。
 - 难度/预计时间：待补充（计划未给出）。
+- 知识笔记：[DataTemplate、逐行数据绑定与文字间距](../notes/TASK-016-wpf-datatemplate.md)（2026-10-13 整理；知识解释与历史证据核对，任务状态及掌握范围不变）。
 
 ## 场景与目标
 

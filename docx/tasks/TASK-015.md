@@ -5,6 +5,7 @@
 - 计划来源：[计划原文](../plan.md)「三、第二阶段：WPF」中 UserControl 后的 Style / Template；本卡先覆盖 Style 的最小应用，Template 后续按实践需要安排。
 - 选择依据：TASK-014 已通过三个必需 DoD，历史区域封装和内部集合/命令绑定已验证。读取、清空按钮当前重复设置 Padding 与 HorizontalAlignment，适合用同一外观规则继续练习窗口和内部控件的关系；绑定及通知机制仍按原范围复习。
 - 难度/预计时间：待补充（计划未给出）。
+- 知识笔记：[Style、Setter 与按钮外观资源](../notes/TASK-015-wpf-styles.md)（2026-10-13 整理；知识解释与历史证据核对，任务状态及掌握范围不变）。
 
 ## 场景与目标
 

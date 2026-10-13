@@ -16,7 +16,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <!-- 沿用 DynamicResource 延后查找父窗口的同一个 ActionButtonStyle。 -->
-        <Button x:Name="ClearButton" Content="清空历史" Command="{Binding ClearCommand, Mode=OneWay}" Style="{DynamicResource ActionButtonStyle}" />
+        <Button x:Name="ClearButton" Content="清空历史" Command="{Binding ClearCommand, Mode=OneWay}"  Margin="0,12,0,0"  Style="{DynamicResource ActionButtonStyle}" />
         <!-- TODO 5（实践 3 / DoD 2、3）：模板连接完成后再运行验证：
              初始清空禁用 → 读取启用 → 实际清空为空且禁用 → 再读恢复。
              连读、换 ID、只改输入不改旧行、空字符串/纯空格保护及三字段历史显示保持。 -->

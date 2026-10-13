@@ -39,6 +39,24 @@
 
 ## 🟡 正在学习
 
+- 2026-10-13 TASK-017 知识整理：已按用户要求保存[详细笔记](./notes/TASK-017-wpf-controltemplate.md)，展开 Style/Template/DataTemplate/UserControl 分工、Template Setter/Setter.Value、Border 与圆角/颜色、ContentPresenter 默认和显式连接、TemplateBinding 来源/单向取值、Button→Border.Padding、共享模板与内部实例/名称范围、Trigger/Opacity 及命令禁用恢复链。已读取本地结果/核对/原启动记录和审查源码，查看六张历史内容渲染；历史 39 项源码 SHA256 与当前全部一致，包括 App.xaml。区分本题原窗口临时 Padding 诊断与 TASK-015 独立副本对比，保留 Content 显式写法可选的教学更正。本轮仅整理文档和静态核对，未改源码、切换入口或重新运行；TASK-017 保持 ✅ 已通关，Q3/Q4 仅保留骨架中属性连接/禁用规则应用已掌握范围，Q1/Q2 继续待复习，TASK-018 保持 ⚪ 未开始。[笔记索引](./notes/README.md)已追加入口。
+
+- 2026-10-13 TASK-016 知识整理：已按用户要求保存[详细笔记](./notes/TASK-016-wpf-datatemplate.md)，展开 Reading/get/init/对象初始化、原集合、ItemsSource 与 ItemTemplate、属性元素语法、每行 Reading 数据源与同名 DeviceId、字段路径/OneWay、横向布局与 Margin、FallbackValue 路径和绑定配置区别、数值/间距两次自主修复及通知分工。已读取本地三版结果/验收记录/审查源码并查看四张历史内容渲染；历史哈希清单 35 项与当前对照，34 项一致，仅 App.xaml 因入口推进 TASK-017 不同。本轮仅整理文档和静态核对历史材料，未改源码、切换入口或重新运行；TASK-016 保持 ✅ 已通关，Q1/Q2 保留已有骨架中的字段绑定/逐条数据源和路径修正/Margin 应用掌握范围，机制复习不扩大，TASK-018 保持 ⚪ 未开始。[笔记索引](./notes/README.md)已追加入口。
+
+- 2026-10-13 TASK-015 知识整理：已按用户要求保存[详细笔记](./notes/TASK-015-wpf-styles.md)，展开 Padding/Thickness/对齐、Style/Setter/TargetType、资源键与作用域、StaticResource/DynamicResource、内部控件初始化与资源查找时机、直接属性优先级、同一 Style 和原业务绑定。已读取本地验收 JSON/审查源码并查看三张历史内容渲染；历史列出的十个任务/业务文件 SHA256 与当前一致，App.xaml 已推进到 TASK-017；区分原源码 `24,10` 与独立审查副本 `32,14` 的布局对比。本轮仅整理文档和静态核对历史材料，未改源码、切换入口或重新运行；TASK-015 保持 ✅ 已通关，样式 Q1 仅保留已有应用范围，资源机制 Q2 继续待复习，TASK-018 保持 ⚪ 未开始。[笔记索引](./notes/README.md)已追加入口。
+
+- 2026-10-13 TASK-014 知识整理：已按用户要求保存[详细笔记](./notes/TASK-014-wpf-usercontrol.md)，展开 UserControl/窗口与区域封装、复用类与新建实例、x:Class/partial/InitializeComponent、xmlns 前缀与嵌入标签、DataContext 同对象继承、类继承与属性值继承、ItemsSource/Command/getter、x:Name/名称范围、布局参数及读取/清空通知链。已读取本地 TASK-014 验收 JSON/审查源码并查看两张历史内容渲染；八个任务/业务文件 SHA256 与历史核对记录一致，App.xaml 已推进到 TASK-017。仅整理文档和静态核对历史材料，未改源码、切换入口或重新运行；TASK-014 保持 ✅ 已通关，掌握限已有骨架中的界面组合与绑定应用，UserControl Q1 机制继续待复习，TASK-018 保持 ⚪ 未开始。[笔记索引](./notes/README.md)已追加入口。
+
+- 2026-10-13 TASK-013 知识整理：已按用户要求保存[详细笔记](./notes/TASK-013-wpf-viewmodel.md)，展开 MVVM 角色与源码分工、同一 ViewModel/集合/双命令、DeviceId 完整属性、TwoWay、UpdateSourceTrigger 与 PropertyChanged 区别、输入写回与对象通知、读取 Execute、局部 Trim、空白 return 的历史自主修复、历史读数与当前输入、中间/最终提示及通知时序。注明当前入口仍是 TASK-017、原 TASK-013 证据目录缺失，历史通过依据任务卡和错题本。本轮仅整理文档与静态核对，未改源码、切换入口或重新运行；TASK-013 保持 ✅ 已通关，已掌握限骨架上的读取逻辑，ViewModel Q1 及机制继续待复习，TASK-018 保持 ⚪ 未开始。[笔记索引](./notes/README.md)已追加入口。
+
+- 2026-10-13 TASK-012 知识整理：已按用户要求保存[详细笔记](./notes/TASK-012-wpf-commands.md)，展开 ICommand/实现类、状态与命令构造、同一集合、完整 getter、Command/OneWay、CanExecute/Execute、防护检查、object?/null、委托/EventHandler/event、订阅与触发、?.Invoke、两个 this/sender、WPF 重查条件链及三种通知分工。注明当前入口仍是 TASK-017、原 TASK-012 证据目录缺失，历史通过依据任务卡。本轮仅整理文档与静态核对，未修改学员源码、切换入口或重新运行；TASK-012 保持 ✅ 已通关，命令 Q1 限已验证的条件/动作应用，委托与框架订阅继续待复习，TASK-018 保持 ⚪ 未开始。[笔记索引](./notes/README.md)已追加入口。
+
+- 2026-10-13 TASK-011 知识整理：已按用户要求保存[详细笔记](./notes/TASK-011-wpf-reading-history.md)，展开 ObservableCollection/泛型、复用 Reading、状态对象/集合/元素三层关系、完整 getter 与只读属性、DataContext/ItemsSource、Add/Clear/Count、CollectionChanged 与属性通知边界、空白保留历史和直接状态提示。注明当前入口仍是 TASK-017、原 TASK-011 两份验收 JSON 缺失，历史通过依据任务卡。本轮仅整理文档与静态核对，未修改学员源码、切换入口或重新运行；TASK-011 保持 ✅ 已通关，集合 Q1 的应用范围和 Q2 等待复习状态不变，TASK-018 保持 ⚪ 未开始。[笔记索引](./notes/README.md)已追加入口。
+
+- 2026-10-13 TASK-010 知识整理：已按用户要求保存[详细笔记](./notes/TASK-010-wpf-binding.md)，展开自定义数据类、字段/属性/get/set/value、new()/readonly、DataContext 与同一实例、Binding.Path/OneWay、INotifyPropertyChanged、委托/事件/参数类、nameof/?.Invoke、通知时序及输入分支。三个任务源码 SHA256 与历史审查记录一致；当前入口仍为 TASK-017，原 TASK-010 验收 JSON 缺失已注明。仅整理文档与静态核对，未修改源码、切换入口或重新运行；TASK-010 保持 ✅ 已通关，绑定 Q1 的应用范围及其他待复习状态不变，TASK-018 保持 ⚪ 未开始。[笔记索引](./notes/README.md)已追加入口。
+
+- 2026-10-13 知识整理：按用户要求，将 TASK-009 的项目入口、XAML/后台连接、基础控件、StackPanel/Grid 与间距、Click 订阅、输入校验、Reading/属性/对象初始化及显示流程详细写入[知识笔记](./notes/TASK-009-wpf-window-events.md)，并建立[笔记索引](./notes/README.md)。注明当前 App.xaml 指向 TASK-017，TASK-009 原验收 JSON/图片在当前工作区缺失，历史通过结论引用任务卡。本轮仅整理文档，未修改学员源码、切换入口或重新运行；TASK-009 保持 ✅ 已通关，布局/属性/事件等原待复习范围不升级，TASK-018 保持 ⚪ 未开始。
+
 - 当前无进行中的实践任务。[TASK-017](./tasks/TASK-017.md) 已于 2026-10-12 审查通关，原 App.xaml 仍指向 Task017Window。只创建下一张 [TASK-018](./tasks/TASK-018.md)（⚪ 未开始），继续计划数据图表：先用固定模拟温度学习坐标与折线，不新增图表框架。C#/WPF 原机制复习范围保留，两个阶段整体状态不变。下方启动/答疑记录均为通关前历史，不表示当前任务状态。
 - 2026-10-12 TODO 4 答疑：已补 [控件模板 Q4](./questions/wpf-controltemplates.md)（待复习），先解释 Trigger 是属性条件生效期间的规则、Opacity 是 0～1 不透明度，再逐项说明 Button.IsEnabled 条件、自定义 ButtonBorder 名称与 Border.Opacity 设置及恢复机制。给出仅添加一条规则的操作和初始/读取/清空/恢复观察步骤，不引入动画。重读代码已见学员 Border.Padding 的 TemplateBinding，尚未见 Trigger；未代改、构建或运行，任务继续进行中，DoD/掌握范围不变。
 - 2026-10-12 TODO 3 答疑：已新增 [控件模板 Q3](./questions/wpf-controltemplates.md)（待复习），先解释 Padding 是文字与边框之间的内部留白，分别指明共同 Setter 设置 Button.Padding、固定值设置 Border.Padding。第一步只把 Border.Padding 改为 TemplateBinding；当前原值相同，预期外观不变，再单独调整 Setter 观察两按钮一起变化。当前仍见固定 Padding，未代改/构建/运行，TASK-017 与 DoD 保持原状。
