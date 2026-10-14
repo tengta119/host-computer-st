@@ -1,0 +1,86 @@
+<Window x:Class="WpfBae.Exercises.Task026.Task026Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TASK-026：温度历史与折线" Width="960" Height="620"
+        MinWidth="860" MinHeight="600">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="同一份温度：完整历史与最新三条折线" FontSize="20" FontWeight="Bold" />
+            <TextBlock Text="样例按 24、26.5、25、28 °C 循环；表格保留全部历史。"
+                       Margin="0,8,0,12" />
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <Button x:Name="AddButton" Content="添加下一条" Padding="12,6"
+                        Click="AddButton_Click" />
+                <Button x:Name="ClearButton" Content="清空" Padding="12,6"
+                        Margin="12,0,0,0" Click="ClearButton_Click" />
+            </StackPanel>
+            <TextBlock x:Name="ReadingCountText" Text="完整历史条数：0"
+                       FontWeight="Bold" Margin="0,0,0,12" />
+        </StackPanel>
+
+        <!-- ChartRegion 在第 0 列（左），HistoryRegion 在第 1 列（右）。
+             左列 Auto 按 560 宽的图表及右边距安排；右列 * 使用剩余宽度。
+             这份布局由教练提供，本题先完成表格数据连接。 -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="ChartRegion" Grid.Column="0" Margin="0,0,20,0">
+                <TextBlock Text="最新最多三条" FontWeight="Bold" Margin="0,0,0,8" />
+                <Canvas x:Name="ChartCanvas" Width="560" Height="300"
+                        HorizontalAlignment="Left" Background="#F8FAFC">
+                    <Rectangle Canvas.Left="100" Canvas.Top="40" Width="360" Height="200"
+                               Fill="#EEF2F6" Stroke="#94A3B8" StrokeThickness="1" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="30" Text="30 °C" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="130" Text="25 °C" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="230" Text="20 °C" />
+                    <Polyline x:Name="TemperatureLine" Stroke="#2563EB" StrokeThickness="3" />
+                    <Ellipse x:Name="SinglePointMarker" Width="8" Height="8"
+                             Fill="#2563EB" Visibility="Collapsed" />
+                    <TextBlock x:Name="FirstReadingLabel" Canvas.Left="55" Canvas.Top="260"
+                               Width="90" TextAlignment="Center" />
+                    <TextBlock x:Name="SecondReadingLabel" Canvas.Left="235" Canvas.Top="260"
+                               Width="90" TextAlignment="Center" />
+                    <TextBlock x:Name="ThirdReadingLabel" Canvas.Left="415" Canvas.Top="260"
+                               Width="90" TextAlignment="Center" />
+                </Canvas>
+            </StackPanel>
+
+            <Grid x:Name="HistoryRegion" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="完整温度历史" FontWeight="Bold" Margin="0,0,0,8" />
+                <!-- HistoryDataGrid 是这张 WPF 表格的自定义名字。
+                     首步连接在后台 TODO 1；教练先提供读取当前行的列 Binding，便于观察 24。
+                     本行直接是 double 温度；Path=. 读取本行本身，不取 Value 属性。
+                     Mode=OneWay 让单元格只从本行取值显示。
+                     TODO 2（实践 2 / DoD 1）：关闭自动生成列，给下方唯一文字列的Header 标清“温度 (°C)”，将列宽改为 * 使用表格内部可用宽度。
+                     TODO 3（实践 2 / DoD 1）：设置表格只读并禁止用户新增行。
+                     CanUserDeleteRows=False 与 CanUserSortColumns=False 由教练提供，
+                     保留完整历史的添加顺序。 -->
+                <DataGrid x:Name="HistoryDataGrid" Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False" CanUserSortColumns="False">
+                    <DataGrid.Columns>
+                        <!-- 该 Binding 由教练提供，不计学员自主完成列绑定。 -->
+                        <DataGridTextColumn Header="温度 (°C)" Binding="{Binding Path=., Mode=OneWay}" Width="100" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+
+        <TextBlock Grid.Row="2" Margin="0,12,0,0" TextWrapping="Wrap"
+                   Text="先做后台 TODO 1：把 HistoryDataGrid 的 ItemsSource 设为原 _temperatures。运行后点一次添加，观察右边一行 24 与左边单点。列和只读设置随后完成。" />
+    </Grid>
+</Window>

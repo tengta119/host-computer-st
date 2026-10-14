@@ -1,6 +1,6 @@
 # TASK-017：按钮的圆角、文字和禁用外观怎样画出来
 
-> 2026-10-13 白话重写。先认识按钮里的两个元素，再看它们怎样取得按钮属性，最后解释禁用规则。当前代码已经通关；历史诊断、工具和掌握范围在文末。
+> 2026-10-13 白话重写，2026-10-14 结合 TASK-017～025 整理更新入口与后续状态。先认识按钮里的两个元素，再看它们怎样取得按钮属性，最后解释禁用规则。当前代码已经通关；历史诊断、工具和掌握范围在文末。
 
 ## 1. 先看屏幕上的两个按钮
 
@@ -317,7 +317,7 @@ Button 的 ControlTemplate 与 Reading 的 DataTemplate 可以并存，分别处
 
 实际文件：[窗口模板](../../WpfBae/Exercises/TASK-017-button-controltemplate/Task017Window.xaml)、[窗口后台](../../WpfBae/Exercises/TASK-017-button-controltemplate/Task017Window.xaml.cs)、[历史控件](../../WpfBae/Exercises/TASK-017-button-controltemplate/ReadingHistoryControl.xaml)、[控件后台](../../WpfBae/Exercises/TASK-017-button-controltemplate/ReadingHistoryControl.xaml.cs)、[任务卡](../tasks/TASK-017.md)。
 
-当前 [App.xaml](../../WpfBae/App.xaml) 就指向 TASK-017。从工作区执行 `dotnet run --project WpfBae/WpfBae.csproj` 会按此入口启动。可选小观察：只把禁用 Opacity 从 0.4 改为 0.6，重跑看清空仍不能用但更不透明，读取后仍恢复 1，再还原。本轮没有改源码或运行。
+当前 [App.xaml](../../WpfBae/App.xaml) 指向 TASK-025。从工作区执行 `dotnet run --project WpfBae/WpfBae.csproj` 会启动 TASK-025，不会自动打开这篇的 TASK-017。若以后专门复跑旧题，先明确切换到 Task017Window 的入口、关闭旧窗口并运行新版本，观察后恢复现入口。可选小观察：只把禁用 Opacity 从 0.4 改为 0.6，重跑看清空仍不能用但更不透明，读取后仍恢复 1，再还原。本轮没有改源码或运行。
 
 2026-10-12 已通关：[11 个场景及诊断](../tasks/evidence/TASK-017/results.json)、[构建/源码/程序集核对](../tasks/evidence/TASK-017/verification.json)、[原启动](../tasks/evidence/TASK-017/launch.json)、[审查程序](../tasks/evidence/TASK-017/Review.cs)。场景含初始、首次、重复、换 ID、仅改输入、两种空白、清空、Trim 后恢复、最小尺寸、再次清空；均显示/业务通过。空历史清空 False/0.4，有历史 True/1，读取保持 True/1，最小窗口为 360×460。
 
@@ -325,10 +325,10 @@ Padding 诊断是在已显示的原窗口内，临时将两个 Button.Padding �
 
 六张历史内容渲染：[初始](../tasks/evidence/TASK-017/initial-disabled.png)、[三条历史](../tasks/evidence/TASK-017/history-three-readings.png)、[清空](../tasks/evidence/TASK-017/history-cleared.png)、[恢复](../tasks/evidence/TASK-017/reading-restored.png)、[最小尺寸](../tasks/evidence/TASK-017/minimum-size.png)、[Padding 诊断](../tasks/evidence/TASK-017/padding-diagnostic.png)。不含完整桌面/标题栏；Show 与原启动有独立记录，不是本轮重新运行。
 
-先前整理对照历史清单 39 个源码哈希全部与当前一致，包括入口；历史原程序集/审查程序集哈希也一致。本轮重写未产生新验收结论。
+2026-10-13 整理时，对照历史清单的 39 个源码哈希全部一致，包括当时入口；历史原程序集/审查程序集哈希也一致。这是当时的核对记录，不能用来宣称 2026-10-14 的 App.xaml 仍指向 TASK-017。本轮笔记整理未产生新验收结论。
 
 旧注释仍写固定 Padding、显式 Content 必写等原安排，实际已连接，最新卡片已更正必写要求。教学表达曾让学员难以阅读，已要求从具体对象和效果解释，不记为学员错误。
 
-Q3/Q4 按骨架中的 Padding 连接和禁用规则应用已掌握；Q1/Q2 的外层模板、默认内容及框架机制继续待复习。完整控件设计/全部属性规则、悬停/按下等没有因此一起掌握，TASK-018 仍未开始。
+Q3/Q4 按骨架中的 Padding 连接和禁用规则应用已掌握；Q1/Q2 的外层模板、默认内容及框架机制继续待复习。完整控件设计/全部属性规则、悬停/按下等没有因此一起掌握。最新进度中 TASK-018～025 均已通关，TASK-026 未开始；后续内容从 [TASK-018：三条温度画成折线](./TASK-018-wpf-temperature-polyline.md) 继续阅读。
 
 答疑见 [控件模板问答](../questions/wpf-controltemplates.md)。官方查阅：[创建模板](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/how-to-create-apply-template)、[TemplateBinding](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/templatebinding-markup-extension)、[默认内容来源](https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.contentpresenter.contentsource?view=windowsdesktop-10.0)、[Trigger](https://learn.microsoft.com/en-us/dotnet/api/system.windows.trigger?view=windowsdesktop-10.0)、[Opacity](https://learn.microsoft.com/en-us/dotnet/api/system.windows.uielement.opacity?view=windowsdesktop-10.0)。
