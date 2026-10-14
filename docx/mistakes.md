@@ -4,6 +4,16 @@
 
 <!-- 发生错误后追加：情况与证据、根因、修复线索、复查点及状态。 -->
 
+## TASK-022：历史区被纵向 StackPanel 包裹，未取得剩余高度
+
+- 状态：✅ 已通关
+- 2026-10-13 最终复查：学员已自主移除外层容器、调整直接子区域顺序并启用填满，17个实际场景全部通过，三个必需DoD已通过。窗口640→840时表格369.2267→569.2267，上下区稳定，恢复及最小尺寸/原业务正确；50个源码哈希未变，教练未代改。见[最新结果](./tasks/evidence/TASK-022/results.json)与[核对](./tasks/evidence/TASK-022/verification.json)。本条问题已修复，下方待复查/失败为对应历史。
+- 2026-10-13 后续源码观察：学员已移除 ShowHistory，直接子区域改为选择/清空/历史，LastChildFill=True；本轮仅答疑，未重新运行验证，因此本条仍待复查。下方情况是修改前首次审查证据，未撤销既有业务能力。
+- 情况与证据：2026-10-13 首次审查时窗口新增 ShowHistory StackPanel 包裹历史 Grid；主 DockPanel 直接子区域为 SelectionRegion、ShowHistory、ActionsRegion，LastChildFill=False。实际窗口高 640→840，表格仍 43.48；4 个布局场景未通过，13 个业务场景通过，见[首次结果](./tasks/evidence/TASK-022/first-review/results.json)及[当时源码快照](./tasks/evidence/TASK-022/first-review/Task022Window.xaml.txt)。
+- 根因（确认的布局机制）：纵向 StackPanel 使内部历史 Grid 按内容高度测量；主 DockPanel 没有把剩余空间分给历史 Grid，移除表格自身固定 Height 不足以让它随窗口增长。未推断学员为何新增容器，未将此局部问题扩大为原 Binding/业务能力不足。
+- 修复线索：先仅移除 ShowHistory 外层两标签，保留完整历史 Grid；随后让历史 Grid 成为主 DockPanel 最后一个直接子区域并启用 LastChildFill。详见[布局 Q2](./questions/wpf-layout.md)，源码由学员修正。
+- 复查点：实际显示/拉高/恢复窗口，历史表格随高度增长且顶部/底部内容高度稳定；最小尺寸可读，旧行/原集合/命令连接继续正常。不要只改 LastChildFill 而把余下空间给当前最后的清空区。
+
 ## TASK-016：行内数值绑定路径与 Reading 属性名不对应
 
 - 状态：✅ 已通关
