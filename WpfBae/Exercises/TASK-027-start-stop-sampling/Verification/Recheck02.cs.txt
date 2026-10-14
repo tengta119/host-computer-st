@@ -1,0 +1,224 @@
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Text.Json;
+using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+using WpfBae.Exercises.Task027;
+using Path = System.IO.Path;
+
+internal static class TaskReview
+{
+    [STAThread]
+    private static int Main(string[] args)
+    {
+        string output = Path.GetFullPath(args[0]);
+        if (File.Exists(Path.Combine(output, "results.json"))) throw new IOException("Preserve previous evidence.");
+        List<object> checks = new List<object>();
+        List<object> states = new List<object>();
+        List<string> errors = new List<string>();
+        Application app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        Task027Window? window = null;
+        try
+        {
+            window = new Task027Window();
+            window.Show();
+            Pump(150);
+            var type = typeof(Task027Window);
+            var timerField = type.GetField("_samplingTimer", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            var timer = (DispatcherTimer)timerField.GetValue(window)!;
+            var history = (ObservableCollection<double>)type.GetField("_temperatures", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(window)!;
+            var grid = (DataGrid)window.FindName("HistoryDataGrid");
+            var line = (Polyline)window.FindName("TemperatureLine");
+            var clear = (Button)window.FindName("ClearButton");
+            var observe = (Button)window.FindName("ObserveButton");
+            var status = (TextBlock)window.FindName("SamplingStateText");
+            var count = (TextBlock)window.FindName("ReadingCountText");
+            int actualTicks = 0;
+            bool singleTickAdds = true;
+            EventHandler observer = (sender, e) => actualTicks++;
+            timer.Tick += observer;
+            Check(1, "实际打开TASK-027", window.IsLoaded && window.IsVisible);
+            Pump(1200);
+            Check(1, "初始跨一个间隔不采集", !timer.IsEnabled && history.Count == 0 && actualTicks == 0);
+            Check(1, "表格只读且无新增空行", grid.IsReadOnly && !grid.CanUserAddRows && !grid.CanUserDeleteRows && grid.Columns.Count == 1);
+            Click("StartButton");
+            for (int repeat = 0; repeat < 3; repeat++) DirectClick("StartButton");
+            Check(2, "重复启动沿用同一个定时器", timer.IsEnabled && ReferenceEquals(timer, timerField.GetValue(window)));
+            Check(2, "正式启动文字表示运行", status.Text.Contains("执行") || status.Text.Contains("采集中"));
+            Check(3, "采集中清空禁用", !clear.IsEnabled);
+            var wait = Stopwatch.StartNew();
+            int previousCount = 0;
+            while (history.Count < 5 && wait.ElapsedMilliseconds < 8000)
+            {
+                Pump(50);
+                if (history.Count != previousCount)
+                {
+                    singleTickAdds &= history.Count == previousCount + 1;
+                    previousCount = history.Count;
+                    ValidateDisplay("automatic-" + history.Count);
+                }
+            }
+            Check(1, "实际自动取得至少五条且样例顺序正确", history.Count >= 5 && history.Take(5).SequenceEqual(new double[] { 24, 26.5, 25, 28, 24 }));
+            Check(2, "重复启动后一次Tick只追加一条", singleTickAdds && history.Count == actualTicks);
+            Snapshot("running-five.png");
+            Click("StopButton");
+            for (int repeat = 0; repeat < 3; repeat++) DirectClick("StopButton");
+            int stoppedCount = history.Count;
+            var stoppedValues = history.ToArray();
+            int stoppedTicks = actualTicks;
+            wait.Restart();
+            Pump(2250);
+            Check(2, "停止跨两个间隔历史保持", !timer.IsEnabled && history.SequenceEqual(stoppedValues) && actualTicks == stoppedTicks, new { waitedMs = wait.ElapsedMilliseconds, stoppedCount });
+            Check(2, "正式停止文字表示停止", status.Text.Contains("取消") || status.Text.Contains("停止"));
+            Check(3, "正式停止后清空可点击", clear.IsEnabled);
+            Snapshot("stopped.png");
+            Click("StartButton");
+            WaitForCount(stoppedCount + 1);
+            Click("StopButton");
+            double expected = new double[] { 24, 26.5, 25, 28 }[stoppedCount % 4];
+            Check(2, "再启动接着下一条样例", history.Count == stoppedCount + 1 && history[^1] == expected, new { expected, history = history.ToArray() });
+            ValidateDisplay("resumed");
+            bool uiClear = Click("ClearButton");
+            Check(3, "停止后实际按钮清空历史", uiClear && history.Count == 0);
+
+            // 此诊断直接触发已经注册的方法，只区分方法本体与被禁用的界面入口。
+            DirectClick("ClearButton");
+            ValidateDisplay("diagnostic-stopped-clear");
+            Check(3, "停止清空方法本体可复位", history.Count == 0 && line.Points.Count == 0);
+            Click("StartButton");
+            WaitForCount(1);
+            Check(3, "停止清空本体后重新启动恢复24", history.Count == 1 && history[0] == 24);
+            int beforeGuard = history.Count;
+            DirectClick("ClearButton");
+            Check(3, "运行中直接触发清空方法也保留历史", history.Count == beforeGuard && history[0] == 24);
+            bool runningClear = Click("ClearButton");
+            Check(3, "采集中实际点击清空不会删除历史", !runningClear && history.Count == 1, new { invoked = runningClear, count = history.Count, clearEnabled = clear.IsEnabled });
+            Click("StopButton");
+            if (observe.IsVisible)
+            {
+                string beforeStatus = status.Text;
+                Click("ObserveButton");
+                Check(2, "保留的临时入口启动后状态与定时器一致", timer.IsEnabled && status.Text != beforeStatus && !clear.IsEnabled, new { timerEnabled = timer.IsEnabled, status = status.Text, clearEnabled = clear.IsEnabled });
+                Click("ObserveButton");
+            }
+            Check(2, "临时观察入口已收尾隐藏", observe.Visibility == Visibility.Collapsed);
+            DirectClick("AddButton");
+            ValidateDisplay("manual-add");
+            Layout("default");
+            Snapshot("default.png");
+            window.Width = window.MinWidth;
+            window.Height = window.MinHeight;
+            Pump(150);
+            Layout("minimum");
+            Snapshot("minimum.png");
+            timer.Tick -= observer;
+            Click("StartButton");
+            window.Close();
+            int afterCloseCount = history.Count;
+            Pump(1200);
+            Check(3, "运行中关闭停止定时器且不再追加", !window.IsVisible && !timer.IsEnabled && history.Count == afterCloseCount);
+            app.Shutdown();
+
+            void ValidateDisplay(string name)
+            {
+                window.UpdateLayout();
+                bool table = ReferenceEquals(grid.ItemsSource, history) && grid.Items.Count == history.Count && grid.Items.Cast<object>().OfType<double>().SequenceEqual(history);
+                bool counter = count.Text == "完整历史条数：" + history.Count;
+                int start = Math.Max(0, history.Count - 3);
+                bool geometry = line.Points.Count == Math.Min(3, history.Count);
+                string[] labels = new[] { "FirstReadingLabel", "SecondReadingLabel", "ThirdReadingLabel" };
+                for (int slot = 0; slot < 3; slot++)
+                {
+                    string label = ((TextBlock)window.FindName(labels[slot])).Text;
+                    if (start + slot < history.Count)
+                    {
+                        int index = start + slot;
+                        double value = history[index];
+                        Point point = line.Points[slot];
+                        geometry &= point.X == new double[] { 100, 280, 460 }[slot] && Math.Abs(point.Y - (240 - (value - 20) * 20)) < 0.01;
+                        geometry &= label == "第 " + (index + 1) + " 条：" + value + " °C";
+                    }
+                    else geometry &= label == "";
+                }
+                Check(1, name + "表格/真实Count/最新三点标签一致", table && counter && geometry);
+                states.Add(new { name, history = history.ToArray(), timerEnabled = timer.IsEnabled, counter = count.Text, status = status.Text, clearEnabled = clear.IsEnabled, ticks = actualTicks });
+            }
+            void WaitForCount(int target)
+            {
+                var clock = Stopwatch.StartNew();
+                while (history.Count < target && clock.ElapsedMilliseconds < 2500) Pump(50);
+            }
+            bool Click(string name)
+            {
+                Button button = (Button)window.FindName(name);
+                if (!button.IsEnabled || !button.IsVisible) return false;
+                var peer = new ButtonAutomationPeer(button);
+                ((IInvokeProvider)peer.GetPattern(PatternInterface.Invoke)!).Invoke();
+                Pump(25);
+                return true;
+            }
+            void DirectClick(string name)
+            {
+                ((Button)window.FindName(name)).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            void Layout(string name)
+            {
+                FrameworkElement root = (FrameworkElement)window.Content;
+                bool contained = true;
+                foreach (string item in new[] { "StartButton", "StopButton", "ClearButton", "ReadingCountText", "SamplingStateText", "TickCountText", "ChartCanvas", "HistoryDataGrid", "FirstReadingLabel", "SecondReadingLabel", "ThirdReadingLabel" })
+                {
+                    var element = (FrameworkElement)window.FindName(item);
+                    Point p = element.TranslatePoint(new Point(0, 0), root);
+                    contained &= element.ActualWidth > 0 && element.ActualHeight > 0 && p.X >= -1 && p.Y >= -1 && p.X + element.ActualWidth <= root.ActualWidth + 1 && p.Y + element.ActualHeight <= root.ActualHeight + 1;
+                }
+                var canvas = (FrameworkElement)window.FindName("ChartCanvas");
+                var footer = (FrameworkElement)((Grid)root).Children[2];
+                contained &= canvas.TranslatePoint(new Point(0, canvas.ActualHeight), root).Y <= footer.TranslatePoint(new Point(0, 0), root).Y;
+                Check(3, name + "布局可读且图表不遮挡说明", contained);
+            }
+            void Snapshot(string name)
+            {
+                FrameworkElement root = (FrameworkElement)window.Content;
+                var bitmap = new RenderTargetBitmap((int)Math.Ceiling(root.ActualWidth), (int)Math.Ceiling(root.ActualHeight), 96, 96, PixelFormats.Pbgra32);
+                var white = new DrawingVisual();
+                using (var context = white.RenderOpen()) context.DrawRectangle(Brushes.White, null, new Rect(0, 0, root.ActualWidth, root.ActualHeight));
+                bitmap.Render(white);
+                bitmap.Render(root);
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                using var stream = File.Create(Path.Combine(output, name));
+                encoder.Save(stream);
+            }
+        }
+        catch (Exception error)
+        {
+            errors.Add(error.ToString());
+            window?.Close();
+        }
+        File.WriteAllText(Path.Combine(output, "results.json"), JsonSerializer.Serialize(new { checks, states, errors, passed = errors.Count == 0 && !checks.Cast<dynamic>().Any(c => !(bool)c.passed) }, new JsonSerializerOptions { WriteIndented = true }));
+        return errors.Count == 0 ? 0 : 1;
+
+        void Check(int dod, string name, bool passed, object? detail = null)
+        {
+            checks.Add(new { dod, name, passed, detail });
+        }
+    }
+    private static void Pump(int milliseconds)
+    {
+        var frame = new DispatcherFrame();
+        var stop = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(milliseconds) };
+        stop.Tick += (sender, e) => { stop.Stop(); frame.Continue = false; };
+        stop.Start();
+        Dispatcher.PushFrame(frame);
+    }
+}
