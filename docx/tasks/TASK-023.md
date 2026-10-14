@@ -1,10 +1,12 @@
 # TASK-023：用 Grid 列布局组织设备监控界面
 
 - 阶段：第二阶段：WPF（起步）
-- 状态：⚪ 未开始
+- 状态：✅ 已通关
 - 计划来源：[计划原文](../plan.md)「三、第二阶段：WPF」中的 Grid 布局及独立设备监控界面目标。
 - 选择依据：TASK-021/022 已验证上下区域分配和窗口拉高；Grid 左右列分配与在双栏界面里组合设备操作/历史尚无自主验证证据。延续原设备与读取场景，先巩固左右空间分配，不直接扩大到完整实时监控项目。
 - 难度/预计时间：待补充（计划未给出）。
+
+2026-10-14 审查通过：三项必需 DoD 和19个实际场景全通过，详细证据见文末审查结果。下方数字占位与首步为启动时骨架说明；当前源码已配置左 Auto / 右星号并移除固定表格宽高，不要求重做。
 
 ## 场景与目标
 
@@ -22,21 +24,89 @@
 ## 用户实践与产出
 
 1. 用户明确开启后，先核对任务卡、当前源码树和入口，创建独立窗口骨架，复用原设备选项与业务连接；列定义/区域位置/伸展核心留 TODO，不覆盖旧作品。
-2. 首步只改一处骨架中的左栏占位宽度，以相同窗口尺寸重新运行，观察右侧起点移动；具体占位值和实际位置由开启时的骨架登记，当前不虚构运行结果。
+2. 首步只把主 Grid 的第一条 `ColumnDefinition` 的 `Width="320"` 改为 `Width="360"`，其他设置保留；以相同窗口尺寸重新运行，观察右侧“读取历史”标题的起点右移。数字使用 WPF 布局单位，预期移动 40 个单位，不把它当成已验证结果。
 3. 按讲解安排左操作区/右历史区，实际拉宽、拉高、恢复及最小尺寸核对；复核两设备选择、连续读取、旧行保持和清空/再读恢复。
 
 ## 目录与开始约定
 
-本卡只规划，未创建 TASK-023 源码、未切换 App.xaml 或运行本任务。拟用独立目录 `WpfBae/Exercises/TASK-023-grid-columns/`，明确开启时先检查目录及既有代码。
+2026-10-14 用户明确开启后已检查目标目录，此前不存在；现已创建专属目录 `WpfBae/Exercises/TASK-023-grid-columns/`。默认窗口 900×640，最小尺寸约定为 760×420。骨架已构建，未实际运行窗口或验收。
 
-开启时读原 [TASK-022 窗口](../../WpfBae/Exercises/TASK-022-dockpanel-layout/Task022Window.xaml)、[后台](../../WpfBae/Exercises/TASK-022-dockpanel-layout/Task022Window.xaml.cs)、[ReadingViewModel](../../WpfBae/Exercises/TASK-013-reading-viewmodel/ReadingViewModel.cs)和共享 [App.xaml](../../WpfBae/App.xaml)。开启时登记实际创建/复用路径、共享入口例外及 TODO 对应，当前不链接不存在的代码。
+已读原 [TASK-022 窗口](../../WpfBae/Exercises/TASK-022-dockpanel-layout/Task022Window.xaml)、[后台](../../WpfBae/Exercises/TASK-022-dockpanel-layout/Task022Window.xaml.cs)、项目与运行入口；未改旧作品。
+
+| 路径 | 本次用途 |
+| :--- | :--- |
+| [Task023Window.xaml](../../WpfBae/Exercises/TASK-023-grid-columns/Task023Window.xaml) | 新建窗口；主 Grid、左操作区、右历史区及列宽/表格伸展 TODO |
+| [Task023Window.xaml.cs](../../WpfBae/Exercises/TASK-023-grid-columns/Task023Window.xaml.cs) | 新建后台；创建一份原 ReadingViewModel，连接原两设备选项和 DataContext，无待补业务实现 |
+| [ReadingViewModel.cs](../../WpfBae/Exercises/TASK-013-reading-viewmodel/ReadingViewModel.cs) | 复用已有设备 ID、状态文字、原历史集合与通知，不修改 |
+| [ReadTemperatureCommand.cs](../../WpfBae/Exercises/TASK-013-reading-viewmodel/ReadTemperatureCommand.cs)、[ClearHistoryCommand.cs](../../WpfBae/Exercises/TASK-013-reading-viewmodel/ClearHistoryCommand.cs) | 沿用原读取/清空命令，不修改 |
+| [App.xaml](../../WpfBae/App.xaml) | 共享入口例外：仅将 StartupUri 切为 `Exercises/TASK-023-grid-columns/Task023Window.xaml` |
+| [WpfBae.csproj](../../WpfBae/WpfBae.csproj) | 沿用 .NET 10 WPF 项目；默认包含新增源码/XAML，无需改项目或添加依赖 |
+
+## 动手前：先看这两块具体区域
+
+左边 `OperationsRegion` 放设备下拉框、读取/清空按钮和状态文字；右边 `HistoryRegion` 放历史标题与表格。这两个名字是教练给具体区域起的名字。`Grid` 是 WPF 提供的布局容器，`DataGrid` 才是显示设备 ID、温度和单位的表格。
+
+窗口里的主 Grid 叫 `LayoutGrid`，下面这段写在它内部，给它划分左右两列：
+
+```xml
+<Grid.ColumnDefinitions>
+    <ColumnDefinition Width="320" />
+    <ColumnDefinition Width="360" />
+</Grid.ColumnDefinitions>
+```
+
+`Grid.ColumnDefinitions` 设置这个主 Grid 的列列表；每条 `ColumnDefinition` 描述一列。第一条控制左列宽度，第二条控制右列宽度，两条都是 WPF 的 XAML 写法。当前左列宽 320、右列宽 360，是方便观察的占位，窗口更宽时还会有未分配给这两列的空白。首步增加左列宽度，会推后右列的起点；还没有要求表格随窗口增长。
+
+观察之后再完成 TODO 2：左列 `Width="Auto"` 表示按左侧控件与间距需要安排宽度。本骨架下拉框和状态文字均宽 260，操作区右边还有 20 空隙，避免状态文字变长时整栏不断扩宽。右列 `Width="*"` 表示本题只有这一列用星号时，把主 Grid 的剩余宽度分给它；同样的左侧内容不变，拉宽窗口时新增空间给右列。[微软 GridLength 文档](https://learn.microsoft.com/en-us/dotnet/api/system.windows.gridlength?view=windowsdesktop-10.0)说明数字、Auto 和星号的尺寸写法。
+
+区域位置由区域自己的 `Grid.Column` 告诉主 Grid：`OperationsRegion` 的 0 是第一列，`HistoryRegion` 的 1 是第二列。骨架已提供这两个不重叠的位置，要核对它们的作用，不要求为练习故意制造重叠。若两个区域都用默认的 0，会挤到同一列。
+
+右侧 `HistoryRegion` 里面还有一个小 Grid：它的第 0 行放“读取历史”，第 1 行放表格。内部 `Auto` 行先给标题所需高度，内部星号行分配余下高度。主 Grid 的列号安排整块区域，小 Grid 的行号只安排标题和表格，彼此不替代。
+
+最后处理 TODO 3：右列得到更多空间之后，表格自己的 `Width="300"`、`Height="210"` 仍会把表格尺寸固定住。去掉表格上的这两项，骨架默认的伸展对齐才能让它使用所在格子分配的宽高。下拉框/状态文字的宽 260、表格内部三个 `DataGridTextColumn` 的星号宽度均保留；表格内部列宽只分配表格已有宽度，不给主窗口分列。表格直接放在这个小 Grid 中，避免新增纵向 StackPanel 包住它而改变高度分配。
+
+后台 `Task023Window` 是教练新建的窗口类；`new ReadingViewModel()` 创建原自定义数据类的一份对象，`_viewModel` 保存它的引用。WPF 的 `DataContext` 属性把这份对象交给整个窗口的绑定使用；设备框连接它的 `DeviceId`，两个按钮连接原命令，表格连接原 `Readings` 集合。后台和内部两行由教练提供，本次核心是列宽与表格伸展，不把现成连接计为自主设计。
+
+## TODO 对应与运行方式
+
+| TODO | 实践与可观察结果 | DoD 对应 |
+| :--- | :--- | :--- |
+| 1 | 只改第一条列定义 320→360，以同样窗口尺寸运行，比较右历史标题起点 | DoD 1/2 的入门观察，不直接代表通过 |
+| 2 | 理解后配置左列按内容、右列取得剩余宽度，核对整块操作/历史区域的 0/1 列号 | DoD 1、DoD 2 的横向分配 |
+| 3 | 移除表格固定宽高；实际拉宽/拉高/恢复，核对最小 760×420 的所有内容 | DoD 2；保持原 Binding，配合业务复核 DoD 3 |
+
+从工作区根目录运行：
+
+```powershell
+dotnet run --project WpfBae/WpfBae.csproj
+```
+
+先运行当前骨架作比较，关闭窗口后只做 TODO 1，再用同一命令重新运行；保持窗口尺寸一致观察“读取历史”标题。编辑器预览与编译通过不代替实际窗口结论。其余 TODO 后续逐步做，全部完成后发送“检查 TASK-023”。
 
 ## 验收标准（DoD）
 
-- [ ] 构建并实际打开 TASK-023 窗口；主 Grid 左右两列配置正确，左操作区和右历史区分别位于第 0/1 列，右侧标题/表格内部行安排正确，无重叠。
-- [ ] 实际拉宽窗口后右表格宽度增加、左栏按内容所需宽度保持；拉高表格高度增加，恢复及骨架约定的最小尺寸时设备/按钮/提示/标题和三列可读、无裁切，不受固定表格宽高限制。
-- [ ] 默认设备/改选、连续读取、旧行保持、原集合/命令连接、清空禁用与再读恢复实际通过。
+- [x] 构建并实际打开 TASK-023 窗口；主 Grid 左右两列配置正确，左操作区和右历史区分别位于第 0/1 列，右侧标题/表格内部行安排正确，无重叠。
+- [x] 实际拉宽窗口后右表格宽度增加、左栏按内容所需宽度保持；拉高表格高度增加，恢复及骨架约定的最小尺寸时设备/按钮/提示/标题和三列可读、无裁切，不受固定表格宽高限制。
+- [x] 默认设备/改选、连续读取、旧行保持、原集合/命令连接、清空禁用与再读恢复实际通过。
+
+## 2026-10-14 审查结果
+
+三个必需 DoD 全部通过，状态 ✅ 已通关。学员已配置主 Grid 左 Auto / 右星号，移除表格固定 Width/Height。区域列号、内部两行和业务连接由骨架提供，不计为新增自主设计。教练未修改学员源码；52个源码哈希前后一致，原/审查引用 DLL 哈希相同。
+
+| DoD | 结论 | 实际证据 |
+| :--- | :--- | :--- |
+| 1：构建与左右布局 | 通过 | 原项目及审查工程构建退出0、0警告/错误；原exe启动TASK-023并正常关闭退出0。同一原编译Task023Window实际Show并加载；主Grid两列为Auto/*，操作/历史区分别为0/1列，小Grid标题/表格为0/1行，无重叠。 |
+| 2：伸展、恢复与最小尺寸 | 通过 | 默认900×640表格宽565.3333、高539.4267；拉宽200后宽765.3333，高不变；拉高200后高739.4267，宽不变；恢复回原尺寸。左列六种场景均为280。最小760×420表格425.3333×319.4267，设备/按钮/提示/标题及三列可读；图像和实际文字所需空间均核对。 |
+| 3：原业务连接 | 通过 | 13个业务场景验证默认TEMP-001、实际展开恰好两设备、改选写回、连续读取与旧行对象保持、原集合不替换、原命令/绑定Active、清空禁用和按当前设备再读恢复；最小尺寸仍可选择/清空，三字段显示26.5及°C、表格只读。 |
+
+证据：[19个场景](./evidence/TASK-023/results.json)、[源码/程序集与DoD核对](./evidence/TASK-023/verification.json)、[原程序启动/退出](./evidence/TASK-023/launch.json)、[三条历史](./evidence/TASK-023/history-three-readings.png)、[最小尺寸](./evidence/TASK-023/minimum-size.png)。图像来自实际显示窗口的内容渲染，不是设计预览。实际执行的命令与各尺寸数据见[证据说明](./evidence/TASK-023/README.md)。19个场景全部通过、0运行异常。
+
+[布局Q3](../questions/wpf-layout.md#q3task-023怎样把操作区放左边历史表格放右边)限本骨架中的左Auto/右星号与移除表格固定宽高应用标已掌握；不升级为独立完整界面设计。骨架残留TODO注释/初始提示是启动时教学文本，不扩大本卡验收；未发现新典型认知错误。
+
+下一步依据：计划的数据图表目标仍需巩固，TASK-018坐标转换由教练提供、中间温度改动由教练执行，没有相应自主证据。因此仅创建[TASK-024：把温度值换算为折线坐标](./TASK-024.md)（⚪ 未开始），不准备源码或切换入口，不宣称WPF阶段整体完成。
 
 ## 状态与证据
 
+- 2026-10-14 审查完成：三个必需DoD已勾选，19个实际场景全通过、0运行异常，原项目/审查工程构建0警告/错误，原exe正常启动关闭退出0。52个源码哈希前后一致，原/审查DLL相同；状态 ✅ 已通关，仅建TASK-024卡片（⚪ 未开始）。下方未运行/进行中描述为启动时历史。
 - 2026-10-13：TASK-022 三个必需 DoD 和17个实际场景通过后，仅创建本卡。状态 ⚪ 未开始；未准备源码、切换入口或运行，当前 App.xaml 保留 Task022Window。保持原阶段整体状态和待复习边界。
+- 2026-10-14：用户明确开启 TASK-023；创建专属目录两个窗口文件，App.xaml 已切到 Task023Window。复用原 ViewModel、两设备、命令/集合和三列表格，旧源码未改。数字列宽和固定表格宽高留 TODO；首步只改左列 320→360，预期右标题起点右移。实际 `dotnet build WpfBae/WpfBae.csproj --nologo` 退出 0、0 警告/错误；未运行窗口、拉伸或业务验收，三个 DoD 均未勾选。状态 🟡 进行中；[布局 Q3](../questions/wpf-layout.md#q3task-023怎样把操作区放左边历史表格放右边) 待复习，不扩展原掌握范围。上条未准备源码/旧入口描述为创建卡片时的历史。
