@@ -154,16 +154,16 @@ namespace WpfBae.Exercises.Task029
                 ThresholdFeedbackText.Text = "请输入20到30之间的数字。";
                 return;
             }
-            // TODO 3（实践2 / DoD 2）：只接受20到30且包含端点的数值，范围不合法时说明原因并return，保留原阈值。
+            // TOD 3（实践2 / DoD 2）：只接受20到30且包含端点的数值，范围不合法时说明原因并return，保留原阈值。
             if (threshold < 20 || threshold > 30)
             {
                 ThresholdFeedbackText.Text = "阈值温度只允许在20到30";
                 return;
             }
-            // TODO 4（实践2 / DoD 1/2）：只有检查通过才给_alarmThreshold赋新值，调用UpdateThresholdDisplay()并显示应用成功。
+            // TOD 4（实践2 / DoD 1/2）：只有检查通过才给_alarmThreshold赋新值，调用UpdateThresholdDisplay()并显示应用成功。
             _alarmThreshold = threshold;
             UpdateThresholdDisplay();
-            // TODO 5（实践3 / DoD 1/3）：成功保存后调用UpdateTemperatureAlert()，用已有最新温度立即刷新，不追加或清空历史。
+            // TOD 5（实践3 / DoD 1/3）：成功保存后调用UpdateTemperatureAlert()，用已有最新温度立即刷新，不追加或清空历史。
             UpdateTemperatureAlert();
             ThresholdFeedbackText.Text = "阈值已应用成功。";
         }

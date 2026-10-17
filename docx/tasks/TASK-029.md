@@ -130,3 +130,12 @@ NaN与20/30做小于或大于比较时都为false，所以当前threshold < 20 |
 证据：[98项结果](./evidence/TASK-029/review-final/results.json)、[源码/DLL核对](./evidence/TASK-029/review-final/verification.json)、[原exe运行](./evidence/TASK-029/review-final/launch.json)、[默认内容](./evidence/TASK-029/review-final/default.png)、[最小内容](./evidence/TASK-029/review-final/minimum.png)。
 三个DoD全勾选，TASK-029✅ 已通关；[阈值输入Q2](../questions/wpf-alerts.md#q2task-029-怎样让输入的报警阈值生效)限本骨架中的字段/Parse-catch/范围/IsNaN/保存与立即刷新自主应用标已掌握，不包含TryParse/out、独立界面设计及提供的显示方法实现。
 只创建下一张[TASK-030：用JSON保存并恢复报警阈值](./TASK-030.md)（⚪ 未开始），依据计划配置与参数设置目标，未准备源码或切换入口，WPF阶段仍进行中；上文未通过结论为历史。
+## 2026-10-17 再次指定复查TASK-029
+
+用户明确指定task29，本轮只复查TASK-029，不改变正在进行的TASK-030。
+实际dotnet build WpfBae/WpfBae.csproj --nologo退出0、0警告/错误。
+实际dotnet run --project WpfBae/Exercises/TASK-029-alarm-threshold/Verification/TaskReview.csproj -- docx/tasks/evidence/TASK-029/review-again退出0，独立程序实际显示原编译Task029Window，98项检查全部通过、0未处理运行异常。
+三个DoD继续通过：立即刷新/同历史、合法和非法输入/NaN保护、原自动采集/停止/清空/图表/默认与最小布局及窗口关闭均保持。
+源码未代改，复查前后本题两个源码哈希一致，审查DLL与主项目DLL一致，App.xaml仍启动TASK-030，未用当前主入口冒充TASK-029运行。
+证据：[98项结果](./evidence/TASK-029/review-again/results.json)、[源码与DLL核对](./evidence/TASK-029/review-again/verification.json)。
+TASK-029保持✅ 已通关，TASK-030保持🟡 进行中，不额外创建下一张卡片，不改变既有掌握范围。
