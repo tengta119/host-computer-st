@@ -2,6 +2,82 @@
 
 > [返回问答索引](./README.md)
 
+## Q2：TASK-032 怎样选择保存位置，确认或取消以后分别做什么？
+
+- 日期：2026-10-17。
+- 状态：已掌握。
+- 来源：TASK-032开启必要讲解，TASK-031的完整组行和固定格式读写已验证，保存窗口与结果判断尚无自主证据。
+
+### 保存窗口给用户选择什么
+
+本题点击“导出历史”后，希望出现Windows保存窗口，用户可以切换目录、输入文件名，并点击保存或取消。
+保存窗口只负责取得选择，实际CSV仍由我们自己的文件写入代码保存。
+Microsoft.Win32.SaveFileDialog是.NET为WPF提供的文件保存对话框类，完整名称已写在代码中，不需要安装新依赖。
+本题后台里的CreateCsvSaveDialog是教练新建的普通辅助方法，它创建一个SaveFileDialog并返回这个对象，不会自己显示窗口。
+
+```csharp
+Microsoft.Win32.SaveFileDialog dialog = CreateCsvSaveDialog();
+```
+
+dialog是我们自行命名的局部变量，指向本次新建的保存窗口对象，后面用这个变量打开窗口和读取用户选中的路径。
+辅助方法里的FileName给文件名输入框提供temperature-history.csv，Filter让文件类型显示CSV，DefaultExt和AddExtension在省略扩展名时补上csv。
+Filter里的CSV文件 (*.csv)是显示给人看的说明，竖线后面的*.csv是匹配CSV文件的规则。
+OverwritePrompt=true让选择已有文件时出现覆盖确认；这个确认不会替我们完成File.WriteAllText。
+CreateTestFile=false避免保存窗口尝试创建测试文件，便于首步只观察路径。
+这些属性设置由教练准备，不算学员自主实现保存窗口。
+
+### 打开窗口以后接收确认或取消的结果
+
+```csharp
+bool? result = dialog.ShowDialog(this);
+```
+
+ShowDialog是.NET提供的方法，这一行显示dialog指向的保存窗口，用户完成操作并关闭它后，才会继续执行后面的语句。
+this是C#表示当前对象的写法，这里指当前Task032Window监控窗口，传入它使保存窗口属于当前监控窗口。
+result是示例自行命名的变量，接收本次选择结果。
+bool表示true或false，bool?在这里表示还允许null，因此不能直接把result当成普通bool放入if。
+只把result == true当成用户确认；其他结果统一按未确认处理，显示取消并return，不写任何文件。
+
+```csharp
+if (result == true)
+{
+    ExportStatusText.Text = "选择的路径：" + dialog.FileName;
+}
+else
+{
+    ExportStatusText.Text = "已取消导出。";
+    return;
+}
+```
+
+FileName是保存窗口提供的属性，确认后读取它可取得用户选中的完整文件路径；这里把路径写到结果文字控件，只是显示，不是写文件。
+else是C#条件不成立时的分支，return结束这次ExportTemperatureHistory方法调用，防止后面继续写文件。
+上面代码是本题首步路径观察，不要保留方法末尾的占位文字赋值，否则刚显示的结果会被覆盖。
+运行WpfBae项目后添加一条，在停止状态点导出，选择一个新文件名并确认，结果应显示完整路径，但文件尚不存在；再点导出并取消，应显示已取消。
+
+### 观察结果后再连接已有写入
+
+BuildCsvText是教练从TASK-031提取的已验证组行方法，返回表头与全部原历史的CSV文字，固定小数格式保持。
+WriteCsvToPath是教练从原写入代码提取的方法，它的string path参数接收完整目标路径，再创建父目录、覆盖写文件、捕获失败并显示实际结果。
+确认路径观察通过后，只有确认分支才将dialog.FileName传给WriteCsvToPath，不再使用TASK-031的固定_exportPath。
+不要在确认前写文件，也不要先调用写入再检查取消；打开窗口本身如果抛出异常，也要显示原因并继续使用。
+当前停止/空历史保护已经沿用并放在创建保存窗口之前，不要求学员重写；本题还需实际验证覆盖确认、取消、不同目录及写入失败恢复。
+
+### 当前证据与边界
+
+骨架已实际显示并检查默认/最小布局、原集合与五条组行、停止/空历史保护、对话框配置和原exe关闭，尚未接通ShowDialog和写入连接。
+没有把属性检查说成实际交互过保存窗口，确认、取消与覆盖操作仍待首步实践和后续验收。
+Q2待复习，TASK-032进行中，三个DoD未勾选，TASK-031与Q1已有自主证据保留。
+依据：[Microsoft SaveFileDialog文档](https://learn.microsoft.com/en-us/dotnet/api/microsoft.win32.savefiledialog?view=windowsdesktop-10.0)。
+
+### 2026-10-17 TASK-032通关与掌握边界
+
+Q2按ShowDialog接收bool?结果、result != true时返回、确认后将dialog.FileName传入已有写入方法的自主应用标已掌握，78项实际检查全通过，见[TASK-032审查](../tasks/TASK-032.md)。
+真实保存窗口在两个目录导出、取消、拒绝覆盖与接受覆盖均运行验证；ShowDialog无参数重载本次可用，不要求仅为传this重提。
+教练直接删除外层无条件成功文字以保留写入失败结果，另整理取消说明与一处错字，这三处不算学员自主实现。
+WriteCsvToPath的return只结束写入方法，调用者ExportTemperatureHistory仍会继续执行，所以原外层成功赋值会覆盖失败文字；由负责写入的方法显示最终成功/失败结果即可。
+保存窗口配置、原CSV组行与写入辅助方法为提供或复用，打开对话框异常未实现/模拟，不扩大为这些内容均已自主掌握。
+当前25分类/59条、待复习32/已掌握27，Q1范围保持，前述Q2待复习/未接通为开启历史。
 ## Q1：TASK-031 怎样把完整温度历史写成CSV？
 
 - 日期：2026-10-17。

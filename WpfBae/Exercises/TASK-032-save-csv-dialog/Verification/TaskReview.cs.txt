@@ -1,0 +1,40 @@
+using System.IO;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Runtime.InteropServices;
+using WpfBae.Exercises.Task032;
+class TaskReview
+{
+    delegate bool EnumProc(IntPtr h,IntPtr l);
+    [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc p,IntPtr l);
+    [DllImport("user32.dll")] static extern bool EnumChildWindows(IntPtr h,EnumProc p,IntPtr l);
+    [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr h,out uint p);
+    [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetWindowText(IntPtr h,StringBuilder s,int n);
+    [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetClassName(IntPtr h,StringBuilder s,int n);
+    [DllImport("user32.dll")] static extern int GetDlgCtrlID(IntPtr h);
+    [DllImport("user32.dll")] static extern bool PostMessage(IntPtr h,uint m,IntPtr w,IntPtr l);
+    static string Class(IntPtr h){var s=new StringBuilder(256);GetClassName(h,s,256);return s.ToString();}
+    static string Title(IntPtr h){var s=new StringBuilder(1024);GetWindowText(h,s,1024);return s.ToString();}
+    [STAThread] static void Main(string[] args)
+    {
+        var app=new Application{ShutdownMode=ShutdownMode.OnExplicitShutdown};
+        var window=new Task032Window(); window.Show();
+        ((Button)window.FindName("AddButton")).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        var worker=Task.Run(()=>
+        {
+            for(int attempt=0;attempt<100;attempt++)
+            {
+                Thread.Sleep(100); IntPtr found=IntPtr.Zero;
+                EnumWindows((h,l)=>{GetWindowThreadProcessId(h,out uint p);if(p==Environment.ProcessId && Class(h)=="#32770")found=h;return true;},IntPtr.Zero);
+                if(found==IntPtr.Zero) continue;
+                Thread.Sleep(300);var lines=new List<string>{Title(found)};
+                EnumChildWindows(found,(h,l)=>{lines.Add(h+" | "+Class(h)+" | "+GetDlgCtrlID(h)+" | "+Title(h));return true;},IntPtr.Zero);
+                File.WriteAllLines(Path.Combine(args[0],"dialog-controls.txt"),lines);
+                PostMessage(found,0x0010,IntPtr.Zero,IntPtr.Zero);return;
+            }
+        });
+        ((Button)window.FindName("ExportHistoryButton")).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        worker.GetAwaiter().GetResult(); window.Close(); app.Shutdown();
+    }
+}
