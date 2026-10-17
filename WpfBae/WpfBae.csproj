@@ -12,6 +12,7 @@
         <!-- TASK-027 的独立骨架验证项目自行编译，主程序不编译其生成文件。 -->
         <Compile Remove="Exercises/TASK-027-start-stop-sampling/Verification/**/*.cs" />
         <Compile Remove="Exercises/TASK-028-temperature-alert/Verification/**/*.cs" />
+        <Compile Remove="Exercises/TASK-029-alarm-threshold/Verification/**/*.cs" />
     </ItemGroup>
 
 </Project>

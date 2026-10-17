@@ -1,0 +1,182 @@
+using System.Reflection;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Text.Json;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using WpfBae.Exercises.Task029;
+
+internal static class TaskReview
+{
+    [STAThread]
+    private static int Main(string[] args)
+    {
+        string output = Path.GetFullPath(args[0]);
+        var checks = new List<object>();
+        bool passed = true;
+        Application app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        Task029Window? window = null;
+        try
+        {
+            window = new Task029Window();
+            window.Show();
+            Pump(250);
+            Check("实际窗口显示", window.IsLoaded && window.IsVisible);
+            var timer = (DispatcherTimer)typeof(Task029Window).GetField("_samplingTimer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(window)!;
+            var history = (ObservableCollection<double>)typeof(Task029Window).GetField("_temperatures", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(window)!;
+            var table = (DataGrid)window.FindName("HistoryDataGrid");
+            Check("初始停止与单一原集合", !timer.IsEnabled && history.Count == 0 && ReferenceEquals(table.ItemsSource, history));
+            Check("间隔一秒", timer.Interval == TimeSpan.FromSeconds(1));
+            Check("初始提示占位", ((TextBlock)window.FindName("AlarmText")).Text == "暂无温度");
+            string Alarm() { return ((TextBlock)window.FindName("AlarmText")).Text; }
+            string Feedback() { return ((TextBlock)window.FindName("ThresholdFeedbackText")).Text; }
+            double Threshold() { return (double)typeof(Task029Window).GetField("_alarmThreshold", BindingFlags.Instance|BindingFlags.NonPublic)!.GetValue(window)!; }
+            void Apply(string text) { ((TextBox)window.FindName("ThresholdInput")).Text=text; Click("ApplyThresholdButton"); Pump(20); }
+            void Displays(string name)
+            {
+                Pump(20);
+                Check(name+"/表格计数", ReferenceEquals(table.ItemsSource,history) && table.Items.Count==history.Count && ((TextBlock)window.FindName("ReadingCountText")).Text=="完整历史条数："+history.Count);
+                var pts=((System.Windows.Shapes.Polyline)window.FindName("TemperatureLine")).Points;
+                int count=Math.Min(3,history.Count);
+                Check(name+"/最新三点",pts.Count==count && pts.Select((p,i)=>Math.Abs(p.Y-(240-(history[history.Count-count+i]-20)*20))<0.01 && Math.Abs(p.X-new double[]{100,280,460}[i])<0.01).All(v=>v));
+            }
+            Check("初始有效27",Threshold()==27 && ((TextBlock)window.FindName("CurrentThresholdText")).Text=="当前有效阈值：27 °C");
+            double[] values={24,26.5,25,28,24};
+            for(int i=0;i<5;i++) { Click("AddButton"); Check("初始样例"+(i+1),history.Last()==values[i] && Alarm()==(values[i]>=27?"温度超限":"温度正常")); Displays("手动"+(i+1)); }
+            Click("ClearButton");
+            Click("AddButton"); Click("AddButton");
+            var original=history.ToArray();
+            Apply("26");
+            Check("应用26保存字段",Threshold()==26);
+            Check("26.5应用26立即超限",Alarm()=="温度超限");
+            Check("应用26历史不变",history.SequenceEqual(original));
+            Apply("27");
+            Check("26.5应用27立即正常",Threshold()==27 && Alarm()=="温度正常");
+            foreach(string text in new[]{"20","30","26.5"})
+            {
+                Apply(text);
+                double expected=double.Parse(text);
+                Check("合法"+text+"/保存显示",Threshold()==expected && ((TextBlock)window.FindName("CurrentThresholdText")).Text=="当前有效阈值："+expected+" °C");
+                Check("合法"+text+"/立即刷新",Alarm()==(26.5>=expected?"温度超限":"温度正常"));
+                Check("合法"+text+"/成功反馈",!Feedback().Contains("请先完成") && Feedback().Contains("成功"));
+                Check("合法"+text+"/历史不变",history.SequenceEqual(original));
+            }
+            Check("恰等阈值26.5立即超限",Alarm()=="温度超限");
+            foreach(string text in new[]{"","   ","abc","19.9","30.1"})
+            {
+                double previous=Threshold();
+                string priorFeedback=Feedback();
+                string priorAlarm=Alarm();
+                Apply(text);
+                Check("非法["+text+"]/保留有效阈值历史",Threshold()==previous && history.SequenceEqual(original));
+                Check("非法["+text+"]/错误显示反馈区",Feedback()!=priorFeedback || Feedback().Contains("数字") || Feedback().Contains("20"));
+                Check("非法["+text+"]/温度提示不被覆盖",Alarm()==priorAlarm);
+            }
+            Apply("27");
+            Check("错误后合法输入恢复",Threshold()==27 && Alarm()=="温度正常" && Feedback().Contains("成功"));
+            Apply("NaN");
+            Check("补充边界NaN不可成为有效阈值",Threshold()==27);
+            Apply("27");
+            Click("ClearButton");
+            Apply("26");
+            Check("空历史应用仍暂无温度",history.Count==0 && Alarm()=="暂无温度");
+            Apply("27");
+            Click("StartButton"); Click("StartButton");
+            Check("运行禁止清空",timer.IsEnabled && !((Button)window.FindName("ClearButton")).IsEnabled);
+            var watch=System.Diagnostics.Stopwatch.StartNew();
+            while(history.Count<1 && watch.ElapsedMilliseconds<1800) Pump(20);
+            Check("自动首条24",history.Count==1 && history[0]==24 && Alarm()=="温度正常");
+            Apply("20");
+            Check("运行应用20立即超限",Threshold()==20 && Alarm()=="温度超限" && timer.IsEnabled);
+            int autoCount=history.Count;
+            watch.Restart(); while(history.Count==autoCount && watch.ElapsedMilliseconds<1800) Pump(20);
+            Check("后续采集使用新阈值",history.Count==autoCount+1 && history.Last()==26.5 && Alarm()=="温度超限");
+            Displays("自动采集");
+            Click("StopButton"); Click("StopButton");
+            int stoppedCount=history.Count; string stoppedAlarm=Alarm();
+            Pump(2200);
+            Check("停止保留",!timer.IsEnabled && history.Count==stoppedCount && Alarm()==stoppedAlarm);
+            Click("ClearButton");
+            Check("停止清空复位",history.Count==0 && Alarm()=="暂无温度");
+            Click("StartButton");
+            watch.Restart(); while(history.Count==0 && watch.ElapsedMilliseconds<1800) Pump(20);
+            Click("StopButton");
+            Check("重启24使用已保存20",history.Count==1 && history[0]==24 && Alarm()=="温度超限");
+            Displays("重启");
+            Apply("27");            CheckLayout("默认布局");
+            Snapshot("default.png");
+            window.Width = window.MinWidth;
+            window.Height = window.MinHeight;
+            Pump(250);
+            CheckLayout("最小布局");
+            Snapshot("minimum.png");
+            Click("ClearButton");
+            Check("停止状态清空", history.Count == 0);
+            Click("StartButton");
+            window.Close();
+            Check("关闭收尾停止定时器", !timer.IsEnabled && !window.IsVisible);
+            app.Shutdown();
+
+            void Click(string name)
+            {
+                ((Button)window.FindName(name)).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            void CheckLayout(string prefix)
+            {
+                FrameworkElement root = (FrameworkElement)window.Content;
+                foreach (string name in new[] { "ThresholdInput", "ApplyThresholdButton", "CurrentThresholdText", "ThresholdFeedbackText", "StartButton", "StopButton", "AlarmText", "ClearButton", "SamplingStateText", "TickCountText", "ReadingCountText", "ChartCanvas", "HistoryDataGrid", "FirstReadingLabel" })
+                {
+                    var element = (FrameworkElement)window.FindName(name);
+                    Point p = element.TranslatePoint(new Point(0, 0), root);
+                    Check(prefix + "/" + name, element.ActualWidth > 0 && element.ActualHeight > 0 && p.X >= -1 && p.Y >= -1 && p.X + element.ActualWidth <= root.ActualWidth + 1 && p.Y + element.ActualHeight <= root.ActualHeight + 1);
+                }
+                var canvas = (FrameworkElement)window.FindName("ChartCanvas");
+                var footer = (FrameworkElement)((System.Windows.Controls.Grid)root).Children[2];
+                Point bottom = canvas.TranslatePoint(new Point(0, canvas.ActualHeight), root);
+                Point top = footer.TranslatePoint(new Point(0, 0), root);
+                Check(prefix + "/图表不遮挡底部说明", bottom.Y <= top.Y);
+            }
+            void Snapshot(string name)
+            {
+                FrameworkElement root = (FrameworkElement)window.Content;
+                var bitmap = new RenderTargetBitmap((int)Math.Ceiling(root.ActualWidth), (int)Math.Ceiling(root.ActualHeight), 96, 96, PixelFormats.Pbgra32);
+                var backdrop = new DrawingVisual();
+                using (var drawing = backdrop.RenderOpen())
+                {
+                    drawing.DrawRectangle(Brushes.White, null, new Rect(0, 0, root.ActualWidth, root.ActualHeight));
+                }
+                bitmap.Render(backdrop);
+                bitmap.Render(root);
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                using var stream = File.Create(Path.Combine(output, name));
+                encoder.Save(stream);
+            }
+        }
+        catch (Exception error)
+        {
+            passed = false;
+            checks.Add(new { name = "运行异常", passed = false, error = error.ToString() });
+            window?.Close();
+        }
+        File.WriteAllText(Path.Combine(output, "results.json"), JsonSerializer.Serialize(new { purpose = "TASK-029实际窗口DoD审查", passed, checks }, new JsonSerializerOptions { WriteIndented = true }));
+        return passed ? 0 : 1;
+
+        void Check(string name, bool result)
+        {
+            passed &= result;
+            checks.Add(new { name, passed = result });
+        }
+    }
+    private static void Pump(int milliseconds)
+    {
+        var frame = new DispatcherFrame();
+        var stop = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(milliseconds) };
+        stop.Tick += (sender, e) => { stop.Stop(); frame.Continue = false; };
+        stop.Start();
+        Dispatcher.PushFrame(frame);
+    }
+}
