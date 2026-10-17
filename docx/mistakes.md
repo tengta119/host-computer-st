@@ -4,6 +4,16 @@
 
 <!-- 发生错误后追加：情况与证据、根因、修复线索、复查点及状态。 -->
 
+## TASK-031：CSV温度转换未固定小数点格式
+
+- 2026-10-17最终复查：固定格式已自主修复，默认/de-DE均导出26.5，84项全通过，本条已修复；[最终结果](./tasks/evidence/TASK-031/review-final/results.json)，本轮源码未代改，下方失败为历史。
+
+- 状态：✅ 已通关。
+- 情况与证据：2026-10-17实际窗口在de-DE区域导出五条，第二条为2,26,5而非2,26.5，84项83通过，见[结果](./tasks/evidence/TASK-031/review-01/results.json)与[实际CSV](./tasks/evidence/TASK-031/review-01/de-DE.csv)。
+- 根因：当前Convert.ToString(_temperatures[i])使用区域格式，小数逗号与本题CSV分隔逗号冲突，不推测学员误写动机。
+- 修复线索：仅给温度ToString传入System.Globalization.CultureInfo.InvariantCulture，保留原集合、遍历、保护与写入。
+- 复查点：默认和de-DE区域均为表头加五条、每条两列、26.5小数点不变，原保护/覆盖/异常恢复保持。
+- 掌握边界：完整历史和序号/文件写入等已验证局部能力保留，固定格式待验证，教练本轮未代改代码。
 ## TASK-030：反序列化成功后没有检查对象与配置值
 
 - 2026-10-17最终复查：null分支和候选值先验证后赋值均已自主修复，null/{}/35/19.9保留27且原文件不变，合法26可恢复，147项实际检查全通过；本轮未代改源码，见[最终结果](./tasks/evidence/TASK-030/review-final/results.json)，本条已修复，下方为历次问题记录。

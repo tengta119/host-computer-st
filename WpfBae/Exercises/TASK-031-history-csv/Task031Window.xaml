@@ -1,0 +1,101 @@
+<Window x:Class="WpfBae.Exercises.Task031.Task031Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TASK-031：导出完整温度历史为CSV" Width="960" Height="960"
+        MinWidth="860" MinHeight="920">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="模拟温度监控：导出完整温度历史" FontSize="20" FontWeight="Bold" />
+            <TextBlock Text="样例按 24、26.5、25、28 °C 循环；表格保留全部历史。"
+                       Margin="0,8,0,12" />
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <Button x:Name="StartButton" Content="启动" Padding="12,6" Click="StartButton_Click" />
+                <Button x:Name="StopButton" Content="停止" Padding="12,6" Margin="12,0,0,0" Click="StopButton_Click" />
+                <Button x:Name="ObserveButton" Content="观察通知（临时）" Padding="12,6" Margin="12,0,12,0" Click="ObserveButton_Click"  Visibility="Collapsed"  />
+                <Button x:Name="AddButton" Content="添加下一条" Padding="12,6"
+                        Click="AddButton_Click" />
+                <Button x:Name="ClearButton" Content="清空" Padding="12,6"
+                        Margin="12,0,0,0" Click="ClearButton_Click" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock x:Name="SamplingStateText" Text="采集状态：已停止" Margin="0,0,24,0" />
+                <TextBlock x:Name="TickCountText" Text="通知次数：0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="报警阈值 (°C)" VerticalAlignment="Center" Margin="0,0,12,0" />
+                <TextBox x:Name="ThresholdInput" Text="27" Width="90" Padding="6,4" VerticalContentAlignment="Center" />
+                <Button x:Name="ApplyThresholdButton" Content="应用阈值" Padding="12,6" Margin="12,0,16,0" Click="ApplyThresholdButton_Click" />
+                <Button x:Name="SaveThresholdButton" Content="保存阈值" Padding="12,6" Margin="0,0,16,0" Click="SaveThresholdButton_Click" />
+                <TextBlock x:Name="CurrentThresholdText" Text="当前有效阈值：27 °C" VerticalAlignment="Center" />
+            </StackPanel>
+            <TextBlock x:Name="ThresholdFeedbackText" Text="请输入20到30之间的阈值，点击应用后生效。" TextWrapping="Wrap" Margin="0,0,0,8" />
+            <TextBlock x:Name="ConfigStatusText" Text="配置功能待完成。" TextWrapping="Wrap" Margin="0,0,0,6" />
+            <TextBlock x:Name="ConfigPathText" Text="配置路径初始化中。" TextWrapping="Wrap" FontSize="11" Margin="0,0,0,8" />
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                <Button x:Name="ExportHistoryButton" Content="导出历史" Padding="12,6" Click="ExportHistoryButton_Click" />
+                <TextBlock Text="停止采集后导出表格全部记录。" VerticalAlignment="Center" Margin="12,0,0,0" />
+            </StackPanel>
+            <TextBlock x:Name="ExportStatusText" Text="导出待完成：首步只观察原集合条数。" TextWrapping="Wrap" Margin="0,0,0,6" />
+            <TextBlock x:Name="ExportPathText" Text="CSV路径初始化中。" TextWrapping="Wrap" FontSize="11" Margin="0,0,0,8" />
+            <TextBlock x:Name="AlarmText" Text="暂无温度" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+            <TextBlock x:Name="ReadingCountText" Text="完整历史条数：0"
+                       FontWeight="Bold" Margin="0,0,0,12" />
+        </StackPanel>
+
+        <!-- 布局、表格、绘图与启停沿用原作品，本题新增导出入口。 -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="ChartRegion" Grid.Column="0" Margin="0,0,20,0">
+                <TextBlock Text="最新最多三条" FontWeight="Bold" Margin="0,0,0,8" />
+                <Canvas x:Name="ChartCanvas" Width="560" Height="300"
+                        HorizontalAlignment="Left" Background="#F8FAFC">
+                    <Rectangle Canvas.Left="100" Canvas.Top="40" Width="360" Height="200"
+                               Fill="#EEF2F6" Stroke="#94A3B8" StrokeThickness="1" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="30" Text="30 °C" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="130" Text="25 °C" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="230" Text="20 °C" />
+                    <Polyline x:Name="TemperatureLine" Stroke="#2563EB" StrokeThickness="3" />
+                    <Ellipse x:Name="SinglePointMarker" Width="8" Height="8"
+                             Fill="#2563EB" Visibility="Collapsed" />
+                    <TextBlock x:Name="FirstReadingLabel" Canvas.Left="55" Canvas.Top="260"
+                               Width="90" TextAlignment="Center" />
+                    <TextBlock x:Name="SecondReadingLabel" Canvas.Left="235" Canvas.Top="260"
+                               Width="90" TextAlignment="Center" />
+                    <TextBlock x:Name="ThirdReadingLabel" Canvas.Left="415" Canvas.Top="260"
+                               Width="90" TextAlignment="Center" />
+                </Canvas>
+            </StackPanel>
+
+            <Grid x:Name="HistoryRegion" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="完整温度历史" FontWeight="Bold" Margin="0,0,0,8" />
+                <!-- 此表格连接原温度集合，显示全部历史，保持只读和添加顺序。 -->
+                <DataGrid x:Name="HistoryDataGrid" Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False" CanUserSortColumns="False">
+                    <DataGrid.Columns>
+                        <!-- 该 Binding 由教练提供，不计学员自主完成列绑定。 -->
+                        <DataGridTextColumn Header="温度 (°C)" Binding="{Binding Path=., Mode=OneWay}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+
+        <TextBlock Grid.Row="2" Margin="0,12,0,0" TextWrapping="Wrap"
+                   Text="点击启动后约每秒追加一条温度，停止后保留历史；停止时可以清空，清空后下一条从 24 °C 开始。表格显示完整历史，折线显示最新最多三条。" />
+    </Grid>
+</Window>

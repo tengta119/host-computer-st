@@ -1,0 +1,152 @@
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text.Json;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+using WpfBae.Exercises.Task031;
+
+internal static class TaskReview
+{
+    [STAThread]
+    static int Main(string[] args)
+    {
+        string output = System.IO.Path.GetFullPath(args[0]);
+        var checks = new List<object>();
+        bool passed = true;
+        var app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        Task031Window? window = null;
+        CultureInfo original = CultureInfo.CurrentCulture;
+        try
+        {
+            string folder = System.IO.Path.Combine(AppContext.BaseDirectory, "Exercises", "TASK-031-history-csv");
+            if (Directory.Exists(folder)) throw new Exception("独立审查数据目录已存在，停止以保护证据。");
+            window = new Task031Window(); window.Show(); Pump(150);
+            var history = (ObservableCollection<double>)Field("_temperatures");
+            var timer = (DispatcherTimer)Field("_samplingTimer");
+            string csv = (string)Field("_exportPath");
+            string settings = (string)Field("_settingsPath");
+            Check("初始实际显示与停止", window.IsVisible && !timer.IsEnabled);
+            Check("缺失配置保留27且不创建文件", Threshold() == 27 && !File.Exists(settings));
+            Check("表格连接原集合", ReferenceEquals(((DataGrid)window.FindName("HistoryDataGrid")).ItemsSource, history));
+            Click("ExportHistoryButton");
+            Check("空历史拒绝且不创建CSV", Status().Contains("空") && !File.Exists(csv));
+            for(int i=0;i<5;i++) Click("AddButton");
+            Check("五条原历史", history.SequenceEqual(new double[]{24,26.5,25,28,24}));
+            CheckDisplay("五条");
+            Input("26"); Click("SaveThresholdButton");
+            byte[] configBefore = File.ReadAllBytes(settings);
+            double[] before = history.ToArray();
+            Click("ExportHistoryButton");
+            ValidateCsv("默认区域五条");
+            Check("成功提示及界面真实路径", Status().Contains("成功") && Text("ExportPathText").Contains(csv));
+            Check("导出保留历史和阈值", history.SequenceEqual(before) && Threshold()==26);
+            Check("导出不改变配置字节", File.ReadAllBytes(settings).SequenceEqual(configBefore));
+            File.Copy(csv, System.IO.Path.Combine(output,"default-culture.csv"));
+            byte[] exported = File.ReadAllBytes(csv);
+            Click("ClearButton"); Click("ExportHistoryButton");
+            Check("已有文件空历史拒绝并保留字节", Status().Contains("空") && File.ReadAllBytes(csv).SequenceEqual(exported));
+            Click("StartButton"); Pump(2250);
+            Check("真实周期采集增加至少两条", timer.IsEnabled && history.Count>=2);
+            Check("运行清空禁用", !((Button)window.FindName("ClearButton")).IsEnabled);
+            int runningCount=history.Count;
+            typeof(Task031Window).GetMethod("ClearButton_Click",BindingFlags.Instance|BindingFlags.NonPublic)!.Invoke(window,new object[]{window,new RoutedEventArgs()});
+            Check("运行直接清空入口也保留",history.Count==runningCount);
+            Click("ExportHistoryButton");
+            Check("运行导出拒绝并保留字节",Status().Contains("停止") && File.ReadAllBytes(csv).SequenceEqual(exported));
+            Input("26");
+            Check("运行阈值即时报警",Text("AlarmText")=="温度超限");
+            Click("StopButton");
+            int stoppedCount=history.Count; Pump(1150);
+            Check("停止后不再追加", !timer.IsEnabled && history.Count==stoppedCount);
+            Check("停止后可清空",((Button)window.FindName("ClearButton")).IsEnabled);
+            Input("27"); Check("停止后参数即时正常",Text("AlarmText")=="温度正常");
+            Click("ClearButton"); Click("AddButton");
+            Click("ExportHistoryButton"); ValidateCsv("再次导出仅一条");
+            Check("覆盖移除旧行",File.ReadAllLines(csv).Length==2);
+            using(var locked = new FileStream(csv,FileMode.Open,FileAccess.ReadWrite,FileShare.None))
+            {
+                Click("ExportHistoryButton"); Check("文件占用失败有说明且窗口可用",Status().Contains("失败") && window.IsVisible);
+            }
+            Click("AddButton"); Click("ExportHistoryButton"); ValidateCsv("文件解锁恢复");
+            string held = csv+".saved"; File.Move(csv,held); Directory.CreateDirectory(csv);
+            Click("ExportHistoryButton"); Check("目标为目录失败可用",Status().Contains("失败") && window.IsVisible);
+            Directory.Delete(csv); Click("ExportHistoryButton"); ValidateCsv("目录冲突恢复");
+            Check("失败与恢复保留配置",File.ReadAllBytes(settings).SequenceEqual(configBefore));
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+            Click("ClearButton"); for(int i=0;i<5;i++) Click("AddButton");
+            Click("ExportHistoryButton"); ValidateCsv("逗号小数区域五条");
+            File.Copy(csv,System.IO.Path.Combine(output,"de-DE.csv"));
+            CultureInfo.CurrentCulture = original;
+            CheckDisplay("区域测试后");
+            Layout("默认"); Snapshot("default.png");
+            window.Width=window.MinWidth; window.Height=window.MinHeight; Pump(150);
+            Layout("最小"); Snapshot("minimum.png");
+            window.Close(); Check("关闭停止定时器",!timer.IsEnabled && !window.IsVisible);
+            window=new Task031Window(); window.Show(); Pump(100);
+            Check("重开恢复已保存26与输入",Threshold()==26 && ((TextBox)window.FindName("ThresholdInput")).Text=="26");
+            Check("重开不改配置",File.ReadAllBytes(settings).SequenceEqual(configBefore));
+            Click("StartButton"); window.Close(); Check("采集中关闭也停止定时器",!((DispatcherTimer)Field("_samplingTimer")).IsEnabled);
+
+            object Field(string name) => typeof(Task031Window).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic)!.GetValue(window)!;
+            string Text(string name) => ((TextBlock)window.FindName(name)).Text;
+            string Status() => Text("ExportStatusText");
+            double Threshold() => (double)Field("_alarmThreshold");
+            void Click(string name) => ((Button)window.FindName(name)).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            void Input(string value) { ((TextBox)window.FindName("ThresholdInput")).Text=value; Click("ApplyThresholdButton"); }
+            void ValidateCsv(string label)
+            {
+                var lines=File.ReadAllLines(csv);
+                Check(label+"/表头",lines.Length>0 && lines[0]=="Sequence,TemperatureC");
+                Check(label+"/完整行数",lines.Length==history.Count+1);
+                for(int i=0;i<history.Count;i++)
+                {
+                    string expected=(i+1).ToString(CultureInfo.InvariantCulture)+","+history[i].ToString(CultureInfo.InvariantCulture);
+                    Check(label+"/第"+(i+1)+"条",i+1<lines.Length && lines[i+1]==expected);
+                }
+            }
+            void CheckDisplay(string label)
+            {
+                Check(label+"/表格全部条数",((DataGrid)window.FindName("HistoryDataGrid")).Items.Count==history.Count);
+                Check(label+"/完整Count",Text("ReadingCountText")=="完整历史条数："+history.Count);
+                Check(label+"/最新三点",((Polyline)window.FindName("TemperatureLine")).Points.Count==Math.Min(3,history.Count));
+            }
+            void Layout(string label)
+            {
+                FrameworkElement root=(FrameworkElement)window.Content;
+                foreach(string name in new[]{"ExportHistoryButton","ExportStatusText","ExportPathText","ConfigPathText","ThresholdInput","CurrentThresholdText","SaveThresholdButton","HistoryDataGrid","ChartCanvas","ReadingCountText","AlarmText","StartButton","StopButton"})
+                {
+                    var item=(FrameworkElement)window.FindName(name); Point p=item.TranslatePoint(new Point(),root);
+                    Check(label+"/"+name,item.ActualWidth>0 && item.ActualHeight>0 && p.X>=0 && p.Y>=0 && p.X+item.ActualWidth<=root.ActualWidth+1 && p.Y+item.ActualHeight<=root.ActualHeight+1);
+                }
+                var canvas=(FrameworkElement)window.FindName("ChartCanvas"); var footer=(FrameworkElement)((Grid)root).Children[2];
+                Check(label+"/图表不遮说明",canvas.TranslatePoint(new Point(0,canvas.ActualHeight),root).Y<=footer.TranslatePoint(new Point(),root).Y);
+            }
+            void Snapshot(string name)
+            {
+                FrameworkElement root=(FrameworkElement)window.Content;
+                var bitmap=new RenderTargetBitmap((int)Math.Ceiling(root.ActualWidth),(int)Math.Ceiling(root.ActualHeight),96,96,PixelFormats.Pbgra32);
+                var background=new DrawingVisual(); using(var draw=background.RenderOpen()) draw.DrawRectangle(Brushes.White,null,new Rect(0,0,root.ActualWidth,root.ActualHeight));
+                bitmap.Render(background); bitmap.Render(root); var encoder=new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                using var file=File.Create(System.IO.Path.Combine(output,name)); encoder.Save(file);
+            }
+        }
+        catch(Exception error) { passed=false; checks.Add(new{name="异常",passed=false,error=error.ToString()}); }
+        finally { CultureInfo.CurrentCulture=original; foreach(Window item in app.Windows.Cast<Window>().ToArray()) item.Close(); app.Shutdown(); }
+        File.WriteAllText(System.IO.Path.Combine(output,"results.json"),JsonSerializer.Serialize(new{passed,checks},new JsonSerializerOptions{WriteIndented=true}));
+        Console.WriteLine(JsonSerializer.Serialize(new{passed,count=checks.Count}));
+        return passed?0:1;
+        void Check(string name,bool result) { passed &= result; checks.Add(new{name,passed=result}); }
+    }
+    static void Pump(int milliseconds)
+    {
+        var frame=new DispatcherFrame(); var timer=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(milliseconds)};
+        timer.Tick+=(s,e)=>{timer.Stop();frame.Continue=false;};timer.Start();Dispatcher.PushFrame(frame);
+    }
+}

@@ -1,0 +1,126 @@
+using System.Reflection;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Text.Json;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using WpfBae.Exercises.Task031;
+
+internal static class StartupReview
+{
+    [STAThread]
+    private static int Main(string[] args)
+    {
+        string output = Path.GetFullPath(args[0]);
+        var checks = new List<object>();
+        bool passed = true;
+        Application app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        Task031Window? window = null;
+        try
+        {
+            window = new Task031Window();
+            window.Show();
+            Pump(250);
+            Check("实际窗口显示", window.IsLoaded && window.IsVisible);
+            var timer = (DispatcherTimer)typeof(Task031Window).GetField("_samplingTimer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(window)!;
+            var history = (ObservableCollection<double>)typeof(Task031Window).GetField("_temperatures", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(window)!;
+            var table = (DataGrid)window.FindName("HistoryDataGrid");
+            Check("初始停止与单一原集合", !timer.IsEnabled && history.Count == 0 && ReferenceEquals(table.ItemsSource, history));
+            Check("间隔一秒", timer.Interval == TimeSpan.FromSeconds(1));
+            Check("初始提示占位", ((TextBlock)window.FindName("AlarmText")).Text == "暂无温度");
+            Check("阈值输入与当前有效值初始27", ((TextBox)window.FindName("ThresholdInput")).Text == "27" && ((TextBlock)window.FindName("CurrentThresholdText")).Text == "当前有效阈值：27 °C");
+            ((TextBox)window.FindName("ThresholdInput")).Text = "26";
+            Click("ApplyThresholdButton");
+            Check("复用应用26且不追加历史", history.Count == 0 && ((TextBlock)window.FindName("CurrentThresholdText")).Text == "当前有效阈值：26 °C");
+            string path=(string)typeof(Task031Window).GetField("_settingsPath", BindingFlags.Instance|BindingFlags.NonPublic)!.GetValue(window)!;
+            Check("任务专属配置路径", path.Contains("TASK-031-history-csv") && path.EndsWith("alarm-threshold.json"));
+            Check("显示真实路径", ((TextBlock)window.FindName("ConfigPathText")).Text.Contains(path));
+            Check("启动骨架不创建文件", !File.Exists(path));
+            string csvPath = (string)typeof(Task031Window).GetField("_exportPath", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(window)!;
+            Check("独立CSV路径显示", csvPath.Contains("TASK-031-history-csv") && ((TextBlock)window.FindName("ExportPathText")).Text.Contains(csvPath));
+            for (int i = 0; i < 5; i++) Click("AddButton");
+            Click("ExportHistoryButton");
+            Check("完整五条与最新三点", history.Count == 5 && ((System.Windows.Shapes.Polyline)window.FindName("TemperatureLine")).Points.Count == 3);
+            Check("导出占位不写文件或更改历史", !File.Exists(csvPath) && history.Count == 5 && ((TextBlock)window.FindName("ExportStatusText")).Text.Contains("尚未实现"));
+            Click("ClearButton");
+            Check("观察导出并清空后不创建配置且历史为空", !File.Exists(path) && history.Count==0);
+            Click("AddButton");
+            Pump(120);
+            Check("原手动追加与计数", history.Count == 1 && history[0] == 24 && ((TextBlock)window.FindName("ReadingCountText")).Text == "完整历史条数：1");
+            Check("追加不重复加载配置", ((TextBlock)window.FindName("ConfigStatusText")).Text == "配置文件不存在");
+            CheckLayout("默认布局");
+            Snapshot("default.png");
+            window.Width = window.MinWidth;
+            window.Height = window.MinHeight;
+            Pump(250);
+            CheckLayout("最小布局");
+            Snapshot("minimum.png");
+            Click("ClearButton");
+            Check("停止状态清空", history.Count == 0);
+            window.Close();
+            Check("关闭收尾停止定时器", !timer.IsEnabled && !window.IsVisible);
+            app.Shutdown();
+
+            void Click(string name)
+            {
+                ((Button)window.FindName(name)).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            void CheckLayout(string prefix)
+            {
+                FrameworkElement root = (FrameworkElement)window.Content;
+                foreach (string name in new[] { "ExportHistoryButton", "ExportStatusText", "ExportPathText", "SaveThresholdButton", "ConfigStatusText", "ConfigPathText", "ThresholdInput", "ApplyThresholdButton", "CurrentThresholdText", "ThresholdFeedbackText", "StartButton", "StopButton", "AlarmText", "ClearButton", "SamplingStateText", "TickCountText", "ReadingCountText", "ChartCanvas", "HistoryDataGrid", "FirstReadingLabel" })
+                {
+                    var element = (FrameworkElement)window.FindName(name);
+                    Point p = element.TranslatePoint(new Point(0, 0), root);
+                    Check(prefix + "/" + name, element.ActualWidth > 0 && element.ActualHeight > 0 && p.X >= -1 && p.Y >= -1 && p.X + element.ActualWidth <= root.ActualWidth + 1 && p.Y + element.ActualHeight <= root.ActualHeight + 1);
+                }
+                var canvas = (FrameworkElement)window.FindName("ChartCanvas");
+                var footer = (FrameworkElement)((System.Windows.Controls.Grid)root).Children[2];
+                Point bottom = canvas.TranslatePoint(new Point(0, canvas.ActualHeight), root);
+                Point top = footer.TranslatePoint(new Point(0, 0), root);
+                Check(prefix + "/图表不遮挡底部说明", bottom.Y <= top.Y);
+            }
+            void Snapshot(string name)
+            {
+                FrameworkElement root = (FrameworkElement)window.Content;
+                var bitmap = new RenderTargetBitmap((int)Math.Ceiling(root.ActualWidth), (int)Math.Ceiling(root.ActualHeight), 96, 96, PixelFormats.Pbgra32);
+                var backdrop = new DrawingVisual();
+                using (var drawing = backdrop.RenderOpen())
+                {
+                    drawing.DrawRectangle(Brushes.White, null, new Rect(0, 0, root.ActualWidth, root.ActualHeight));
+                }
+                bitmap.Render(backdrop);
+                bitmap.Render(root);
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                using var stream = File.Create(Path.Combine(output, name));
+                encoder.Save(stream);
+            }
+        }
+        catch (Exception error)
+        {
+            passed = false;
+            checks.Add(new { name = "运行异常", passed = false, error = error.ToString() });
+            window?.Close();
+        }
+        File.WriteAllText(Path.Combine(output, "results.json"), JsonSerializer.Serialize(new { purpose = "骨架启动验证，非DoD验收", passed, checks }, new JsonSerializerOptions { WriteIndented = true }));
+        return passed ? 0 : 1;
+
+        void Check(string name, bool result)
+        {
+            passed &= result;
+            checks.Add(new { name, passed = result });
+        }
+    }
+    private static void Pump(int milliseconds)
+    {
+        var frame = new DispatcherFrame();
+        var stop = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(milliseconds) };
+        stop.Tick += (sender, e) => { stop.Stop(); frame.Continue = false; };
+        stop.Start();
+        Dispatcher.PushFrame(frame);
+    }
+}

@@ -14,6 +14,7 @@
         <Compile Remove="Exercises/TASK-028-temperature-alert/Verification/**/*.cs" />
         <Compile Remove="Exercises/TASK-029-alarm-threshold/Verification/**/*.cs" />
         <Compile Remove="Exercises/TASK-030-threshold-settings/Verification/**/*.cs" />
+        <Compile Remove="Exercises/TASK-031-history-csv/Verification/**/*.cs" />
     </ItemGroup>
 
 </Project>

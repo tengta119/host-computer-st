@@ -113,6 +113,27 @@ OnClosed关闭处理由教练提供，窗口关闭时停止定时器，并以-=�
 
 依据：[Microsoft DispatcherTimer 文档](https://learn.microsoft.com/en-us/dotnet/api/system.windows.threading.dispatchertimer?view=windowsdesktop-10.0)。
 
+### 2026-10-17 TASK-031追问：_samplingTimer.IsEnabled是什么意思？
+
+_samplingTimer是当前窗口中保存的那一个WPF DispatcherTimer定时器，由教练自行命名；IsEnabled是WPF给这个定时器提供的属性。
+_samplingTimer.IsEnabled读取“这个定时器是否处于启动状态”，结果是C#的bool值true或false。
+调用_samplingTimer.Start()后它为true，定时器安排后续Tick；调用_samplingTimer.Stop()后它为false，停止后续通知。
+点号表示访问左边对象的成员，这里访问的是定时器的IsEnabled属性；读取这个属性本身不会启动或停止定时器。
+
+```csharp
+if (_samplingTimer.IsEnabled)
+{
+    ExportStatusText.Text = "正在采集，请先停止再导出。";
+    return;
+}
+```
+
+if是C#的条件判断，属性为true时执行大括号里的语句，为false时跳过这一块，继续后面的代码。
+上例在正在采集时显示原因，return结束这一次ExportTemperatureHistory调用，避免继续执行后续导出；return本身不会停止采集。
+_samplingTimer.IsEnabled的意思等同于这里写_samplingTimer.IsEnabled == true，可以直接把bool值放入if。
+ClearButton.IsEnabled虽然同名，但左边是按钮，表示按钮能否点击；这里左边是定时器，表示它是否启动，需看具体对象。
+预期观察：点击启动后点导出，显示先停止；点击停止后再点导出，跳过这个分支，但仍需另行处理空历史和实际写入。
+本次仅根据当前源码答疑与补充记录，未修改学员代码或运行验收，TASK-031仍🟡 进行中，DoD与掌握范围不变，Q1仍待复习。
 ### 当前证据与掌握边界
 
 2026-10-14最终复查：用户要求教练直接收尾状态文案，教练已修正运行/停止文字及骨架过期提示，实际29项全通过、三个DoD通关；学员自主Tick连接/计次/单次追加、原定时器启停与保护、清空条件/运行保护、临时按钮隐藏的证据保留，协助状态文字不计自主掌握，Q1整体仍待复习。最终证据见[复查](../tasks/evidence/TASK-027/recheck-02/README.md)，下方文字相反与未通过为历史，不要求恢复错误状态；状态文案等低影响收尾今后由教练主动修正验证，避免学员反复提交。
