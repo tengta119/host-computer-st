@@ -1,5 +1,9 @@
 # 问答库
 
+2026-10-17 TASK-034最终通关：[Command Q2](./wpf-commands.md)按按钮命令/Execute调用/清空条件取反/运行状态同步与条件通知的自主范围标已掌握，105项全过，本轮源码未改；提供的命令签名和通知基础不扩大掌握，当前25分类/61条、待复习32/已掌握29，下方失败与待复习为历史。
+
+2026-10-17 TASK-034审查：[Command Q2](./wpf-commands.md)记录IsSampling与清空允许条件的取反关系，93项86通过、DoD1/3通过/2未通过；保留追加命令与状态通知等已验证局部能力，Q2待复习，25分类/61条、待复习33/已掌握28不变，本轮源码未改。
+
 2026-10-17 TASK-034开启：新增[Command Q2](./wpf-commands.md)（待复习），从添加按钮/同一命令与ViewModel解释Execute，再说明清空条件、运行状态赋值与条件通知；74项骨架检查不计自主掌握，当前25分类/61条、待复习33/已掌握28，Q1原范围保持，下方统计为历史。
 
 2026-10-17 TASK-033通关：[MVVM Q2](./wpf-mvvm.md)按同对象/同集合绑定、属性状态更新与通知、窗口刷新转交的自主范围标已掌握，最终97项全过；教练补空历史暂无温度一行不计自主实现，Q1待复习保持，当前25分类/60条、待复习32/已掌握28，下方待复习为历史。
@@ -106,7 +110,7 @@
 | WPF 窗口、控件与布局 | [wpf-layout.md](./wpf-layout.md) | 0 | 3 |
 | WPF 数据绑定 | [wpf-binding.md](./wpf-binding.md) | 3 | 1 |
 | WPF 集合与历史列表 | [wpf-collections.md](./wpf-collections.md) | 1 | 1 |
-| WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 1 | 1 |
+| WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 0 | 2 |
 | WPF 窗口与 ViewModel | [wpf-mvvm.md](./wpf-mvvm.md) | 1 | 1 |
 | WPF 界面区域与 UserControl | [wpf-usercontrol.md](./wpf-usercontrol.md) | 1 | 0 |
 | WPF 样式与资源 | [wpf-styles.md](./wpf-styles.md) | 1 | 1 |

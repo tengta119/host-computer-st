@@ -3,6 +3,108 @@
 > [返回问答索引](./README.md)
 > 2026-10-13 按当前 AGENTS.md 重构。原问题编号与掌握状态保留；历史证据集中到文末。
 
+## Q2：TASK-034 怎样把添加和清空按钮连接到当前ViewModel的命令？
+
+- 日期：2026-10-17。
+- 状态：已掌握。
+- 来源：TASK-034开启，复用Q1已经验证的命令应用范围，本题同一监控对象与运行状态连接尚无自主证据。
+
+### 首步只替换添加按钮的调用入口
+
+原AddButton点击后调用窗口的AddButton_Click，后者转到AppendNextSample追加一条温度。
+本题希望按钮直接取得ViewModel提供的追加命令，再由命令调用同一个AppendNextSample，不再经由旧Click处理器。
+TemperatureMonitorViewModel是沿用的自定义数据类，当前对象保存在窗口_viewModel中，并已作为DataContext。
+AppendTemperatureCommand是教练为本题新建的命令类，ICommand是.NET提供的接口，WPF按钮能按照这个接口询问是否可执行，并请求执行动作。
+
+ViewModel构造方法中的这一行已由骨架提供。
+
+```csharp
+_addCommand = new AppendTemperatureCommand(this);
+```
+
+this指当前正在创建的ViewModel对象，这个对象传入命令构造方法，再由命令的_viewModel字段保存引用。
+命令里不再new另一个ViewModel，因此它操作的还是表格、条数、绘图和CSV共用的原集合。
+AddCommand是自定义公开属性，get返回刚才保存的_addCommand，按钮通过绑定读取这个属性，不直接访问私有字段。
+
+首步在AppendTemperatureCommand.cs的Execute方法TODO 1a填写：
+
+```csharp
+_viewModel.AppendNextSample();
+```
+
+AppendNextSample是教练从原窗口迁入ViewModel的普通方法，内部仍使用原24、26.5、25、28样例和下一条位置，每次只追加一条。
+Execute是ICommand规定的执行方法，正常点击已连接的按钮时WPF会调用它；object? parameter是接口要求的参数，本题没有传入额外数据，可以暂不使用。
+CanExecute是接口规定的允许条件，返回true表示按钮允许执行，返回false表示不允许；添加按钮沿用原本运行和停止时都可追加的行为，骨架固定返回true。
+
+接着在Task034Window.xaml的AddButton标签中删除Click="AddButton_Click"，添加：
+
+```xml
+Command="{Binding AddCommand, Mode=OneWay}"
+```
+
+左边Command是WPF按钮的属性，右边AddCommand是当前DataContext对象的公开属性名，Binding读取该属性得到追加命令对象。
+不能同时保留Click追加和Command追加，否则一次点击可能执行两次，写入两条温度。
+运行项目，在停止状态点一次“添加下一条”，应新增一行24、Count为1，再点一次得到26.5，先确认这一小步。
+首步完成后再做清空，不要求先实现所有运行状态通知。
+
+### 清空命令分别回答能不能执行与真正执行
+
+ClearTemperatureHistoryCommand是本题第二个自定义命令类，同样由ViewModel构造方法传入this，公开ClearCommand属性返回同一个清空命令对象。
+清空的CanExecute在TODO 2a应读取_viewModel.IsSampling，正在采集就拒绝，停止就允许；本题沿用原空历史也可清空的行为，不额外增加Count大于0要求。
+IsSampling是本题自定义bool属性，保存在ViewModel里，true表示窗口告诉它正在采集，false表示已停止，它本身不是定时器。
+Execute在TODO 2b先检查CanExecute(parameter)，不允许时return，允许时再调用已有_viewModel.ClearHistory()。
+ClearHistory是教练从原清空方法迁移的普通方法，内部还检查IsSampling，再复位下一条位置并清空原集合，以保留运行保护。
+TODO 2c将ClearButton从旧Click改为Command绑定ClearCommand，接通后再删除两个无用的旧Click方法。
+
+### ViewModel怎样知道窗口定时器已经启动
+
+窗口_samplingTimer是真实WPF定时器，IsEnabled是它当前的启动状态；ViewModel.IsSampling只保存一个bool值，两者不会因意思相近自动同步。
+TODO 4在原UpdateSamplingControls里，用普通赋值把真实状态交给同一个ViewModel。
+
+```csharp
+_viewModel.IsSampling = _samplingTimer.IsEnabled;
+```
+
+右侧先读取实际定时器状态，再把这个true或false交给左边自定义属性的set，set中的value就得到这次新状态。
+窗口已有启动/停止调用UpdateSamplingControls的路径，所以只需在这个方法同步，不另建定时器或重复登记Tick。
+停止/启动文字仍可由窗口设置，但完成命令连接时应移除这里两处ClearButton.IsEnabled赋值，把按钮是否可执行交给清空命令。
+
+### 保存新状态以后让按钮重新检查条件
+
+IsSampling的set已把value保存到_isSampling字段，TODO 3还需调用_clearCommand.NotifyCanExecuteChanged()。
+NotifyCanExecuteChanged是教练提供的普通辅助方法，它发出ICommand规定的CanExecuteChanged事件，让已经连接清空命令的按钮重新调用CanExecute。
+这个通知不会执行清空；它只让按钮根据新状态变为可用或不可用。
+窗口启动后状态赋值true，发通知，按钮重查条件得到false而禁用；停止后状态赋值false，按钮重查条件得到true而恢复。
+提供的通知方法先用EventHandler?变量保存事件接收方法，非null才调用，this在这里是发通知的命令对象，EventArgs.Empty表示没有额外事件数据；这些基础代码沿用原项目完整写法，首步无需改它。
+
+### 原数据更新链保持
+
+ViewModel.AppendNextSample对原Temperatures执行Add，原CollectionChanged处理器继续重画并调用RefreshDisplay，已完成的属性通知让Count和报警文字更新。
+定时器Tick仍经窗口AppendNextSample转到同一个ViewModel方法，手动命令与自动采集不各维护一份样例位置。
+配置和文件保存窗口暂留窗口，当前只迁移两个按钮的业务入口，不需要引入新MVVM框架。
+
+### 开启时证据与边界
+
+两个命令的类型、签名、事件通知基础代码与同一ViewModel连接由教练提供，追加/清空算法从原作品迁移；命令执行、清空条件/通知、运行状态同步与按钮绑定仍留TODO。
+实际74项骨架检查和原exe启动关闭通过，原Click路径与定时采集可运行，不等于Command已实现或DoD已通过。
+三个DoD保持未勾选，Q2待复习，Q1原掌握范围保持，当前25分类/61条、待复习33/已掌握28；路径与实际命令见[TASK-034](../tasks/TASK-034.md)。
+
+### 2026-10-17 TASK-034审查：正在采集和允许清空是两个不同的问题
+
+当前CanExecute返回_viewModel.IsSampling，实际表现为运行清空按钮可点、停止反而变灰，停止直接请求Execute也因CanExecute为false直接返回。
+IsSampling回答“现在是否正在采集”，清空CanExecute回答“现在是否允许清空”，本题两者应取相反值。
+可用return _viewModel.IsSampling == false;表达“已停止才允许”，也可写return !_viewModel.IsSampling;，感叹号是C#布尔取反，在这里仅改变本次返回结果，不改原状态字段。
+窗口状态同步、IsSampling setter里的NotifyCanExecuteChanged、按钮Command连接及Execute先检查条件的控制关系已实际验证，不需要交换状态或删除保护。
+原ClearHistory仍在运行时拒绝清空，所以目前按钮虽可点但没有真正删历史；停止时则命令提前返回，不能把运行中未误删理解成整条清空命令已正确。
+93项检查86通过、7项失败均归因于此条件，DoD1/3通过、2未通过，Q2继续待复习；追加/命令绑定/旧Click移除/状态同步和条件通知的局部自主应用证据保留，原Q1不撤销。
+本轮源码未代改，修复后观察启动按钮清空应变灰、停止后应恢复，点清空后Count0/暂无温度/空图，下一条24，再请求审查，详见[TASK-034](../tasks/TASK-034.md)。
+25分类/61条、待复习33/已掌握28保持，前述命令未接通为开启时历史。
+### 2026-10-17 TASK-034最终复查与掌握边界
+
+学员已自主将清空CanExecute改为!IsSampling，最终105项实际检查全通过，三个DoD通关，见[最终结果](../tasks/evidence/TASK-034/review-final/results.json)。
+Q2按现有骨架的AddCommand/ClearCommand绑定、Execute调用原VM操作、清空条件取反、窗口状态同步与setter通知的自主应用标已掌握；真实按钮/直接命令的运行保护、停止恢复、清空复位和混合追加均已验证，本轮未代改源码。
+事件通知基础、命令类型及签名/构造对象连接、原样例追加清空算法由教练提供或迁移，不扩大为所有接口/委托/事件机制与完整MVVM架构已独立掌握。
+Q1原范围保持，当前25分类/61条、待复习32/已掌握29，前述Q2待复习和首次条件相反为历史。
 ## Q1：Command 是什么，CanExecute、Execute 和 CanExecuteChanged 怎样控制清空按钮？
 
 - 日期：2026-10-11

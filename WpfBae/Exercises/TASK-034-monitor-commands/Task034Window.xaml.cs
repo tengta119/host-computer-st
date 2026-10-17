@@ -179,17 +179,16 @@ namespace WpfBae.Exercises.Task034
         private void UpdateSamplingControls()
         {
             // TODO 4（实践2 / DoD 2）：把_samplingTimer.IsEnabled赋给_viewModel.IsSampling，再移除本方法两处ClearButton.IsEnabled直接赋值，让命令决定按钮可用性。
+            _viewModel.IsSampling = _samplingTimer.IsEnabled;
             // 已完成：原TASK-027步骤4（实践 2/4 / DoD 2/3）：根据 _samplingTimer.IsEnabled 设置 SamplingStateText.Text 和 ClearButton.IsEnabled，并让启动/停止按钮状态与启停一致。
             // IsEnabled 是 WPF 按钮属性，False 让按钮不能点击，True 让按钮可以点击。
             if (_samplingTimer.IsEnabled)
             {
                 SamplingStateText.Text = "采集中";
-                ClearButton.IsEnabled = false;
             }
             else
             {
                 SamplingStateText.Text = "已停止";
-                ClearButton.IsEnabled = true;
             }
         }
 
@@ -200,21 +199,10 @@ namespace WpfBae.Exercises.Task034
             _viewModel.AppendNextSample();
         }
         // TODO 5a（实践1/3 / DoD 1）：XAML改为Command后删除这个旧Click方法，避免保留重复入口。
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            AppendNextSample();
-        }
+
 
         // TODO 5b（实践2/3 / DoD 1/2）：清空Command接通后删除这个旧Click方法，运行保护已由ViewModel.ClearHistory承接。
-        private void ClearButton_Click(object sender, RoutedEventArgs e)
-        {
-            // 已完成：原TASK-027步骤5（实践 4 / DoD 3）：先检查定时器是否正在运行，正在运行时直接返回，保留下方停止状态清空与样例复位。
-            if (_samplingTimer.IsEnabled)
-            {
-                return;
-            }
-            _viewModel.ClearHistory();
-        }
+
 
         private void Temperatures_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {

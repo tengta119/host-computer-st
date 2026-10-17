@@ -19,11 +19,10 @@
                 <Button x:Name="StopButton" Content="停止" Padding="12,6" Margin="12,0,0,0" Click="StopButton_Click" />
                 <Button x:Name="ObserveButton" Content="观察通知（临时）" Padding="12,6" Margin="12,0,12,0" Click="ObserveButton_Click"  Visibility="Collapsed"  />
                 <!-- TODO 1b（实践1 / DoD 1）：添加Command绑定AddCommand，并删除本按钮Click，不能两条路径同时执行。 -->
-                <Button x:Name="AddButton" Content="添加下一条" Padding="12,6"
-                        Click="AddButton_Click" />
+                <Button x:Name="AddButton" Content="添加下一条" Padding="12,6" Command="{Binding AddCommand}"/>
                 <!-- TODO 2c（实践2 / DoD 1/2）：清空命令实现后添加Command绑定ClearCommand，并删除本按钮Click。 -->
-                <Button x:Name="ClearButton" Content="清空" Padding="12,6"
-                        Margin="12,0,0,0" Click="ClearButton_Click" />
+                <Button x:Name="ClearButton" Content="清空" Padding="12,6" Command="{Binding ClearCommand}"
+                        Margin="12,0,0,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                 <TextBlock x:Name="SamplingStateText" Text="采集状态：已停止" Margin="0,0,24,0" />

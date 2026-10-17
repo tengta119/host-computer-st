@@ -51,6 +51,7 @@ namespace WpfBae.Exercises.Task034
             {
                 _isSampling = value;
                 // TODO 3（实践2 / DoD 2）：调用已有_clearCommand.NotifyCanExecuteChanged，让按钮重新询问能否清空。
+                _clearCommand.NotifyCanExecuteChanged();
             }
         }
 

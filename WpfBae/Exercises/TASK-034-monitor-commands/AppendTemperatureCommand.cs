@@ -21,6 +21,7 @@ namespace WpfBae.Exercises.Task034
         public void Execute(object? parameter)
         {
             // TODO 1a（实践1 / DoD 1）：调用已有_viewModel.AppendNextSample一次，不另建集合或ViewModel。
+            _viewModel.AppendNextSample();
         }
 
         public event EventHandler? CanExecuteChanged;

@@ -15,12 +15,17 @@ namespace WpfBae.Exercises.Task034
         public bool CanExecute(object? parameter)
         {
             // TODO 2a（实践2 / DoD 2）：根据_viewModel.IsSampling返回能否清空，停止允许、采集中拒绝，不添加新的历史非空要求。
-            return false;
+            return !_viewModel.IsSampling;
         }
 
         public void Execute(object? parameter)
         {
             // TODO 2b（实践2 / DoD 1/2）：先检查CanExecute(parameter)，不允许就return，允许时调用原_viewModel.ClearHistory。
+            if (!CanExecute(parameter))
+            {
+                return;
+            }
+            _viewModel.ClearHistory();
         }
 
         public event EventHandler? CanExecuteChanged;
