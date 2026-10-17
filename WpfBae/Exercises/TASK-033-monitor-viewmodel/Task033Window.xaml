@@ -44,10 +44,9 @@
             <TextBlock x:Name="ExportStatusText" Text="本题首步：连接历史表格绑定，添加一条后应显示一行。" TextWrapping="Wrap" Margin="0,0,0,6" />
             <TextBlock x:Name="ExportPathText" Text="CSV位置：尚未选择。" TextWrapping="Wrap" FontSize="11" Margin="0,0,0,8" />
             <!-- TODO 4a（实践2 / DoD 2）：把AlarmText的Text改为绑定ViewModel的AlarmText属性。 -->
-            <TextBlock x:Name="AlarmText" Text="暂无温度" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+            <TextBlock x:Name="AlarmText" Text="{Binding AlarmText}"  FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
             <!-- TODO 4b（实践2 / DoD 2）：把ReadingCountText的Text改为绑定ViewModel的ReadingCountText属性。 -->
-            <TextBlock x:Name="ReadingCountText" Text="完整历史条数：0"
-                       FontWeight="Bold" Margin="0,0,0,12" />
+            <TextBlock x:Name="ReadingCountText" Text="{Binding ReadingCountText}" FontWeight="Bold" Margin="0,0,0,12" />
         </StackPanel>
 
         <!-- 布局、表格、绘图与启停沿用原作品，本题新增导出入口。 -->
@@ -88,6 +87,7 @@
                 <DataGrid x:Name="HistoryDataGrid" Grid.Row="1"
                           AutoGenerateColumns="False"
                           IsReadOnly="True"
+                          ItemsSource="{Binding Temperatures}"
                           CanUserAddRows="False"
                           CanUserDeleteRows="False" CanUserSortColumns="False">
                     <DataGrid.Columns>

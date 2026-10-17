@@ -28,6 +28,7 @@ namespace WpfBae.Exercises.Task033
             {
                 _readingCountText = value;
                 // TODO 3a（实践2 / DoD 2）：存好新文字后调用OnPropertyChanged，传入本属性的名称字符串。
+                OnPropertyChanged(nameof(ReadingCountText));
             }
         }
 
@@ -41,6 +42,7 @@ namespace WpfBae.Exercises.Task033
             {
                 _alarmText = value;
                 // TODO 3b（实践2 / DoD 2）：存好新文字后通知本属性变化，不传字段名或文字内容。
+                OnPropertyChanged(nameof(AlarmText));
             }
         }
 
@@ -49,6 +51,24 @@ namespace WpfBae.Exercises.Task033
         {
             // TODO 2（实践2 / DoD 1/2）：用Temperatures.Count更新ReadingCountText，再处理空历史、最新原温度与threshold比较，把结果赋给AlarmText属性。
             // 空历史应先设置暂无温度再return，先更新条数以保证清空后能显示0。
+            ReadingCountText = "完整历史条数：" + Temperatures.Count.ToString();
+            if (Temperatures.Count == 0)
+            {
+                AlarmText = "暂无温度";
+                return;
+            } 
+            double temperature = Temperatures[Temperatures.Count - 1];
+            
+            AlarmText = "最新温度" + temperature;
+            
+            if (temperature >= threshold)
+            {
+                AlarmText = "温度超限";
+            }
+            else
+            {
+                AlarmText = "温度正常";
+            }
         }
 
         // INotifyPropertyChanged与这些事件参数来自.NET，下面是教练提供的通知基础代码。

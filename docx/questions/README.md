@@ -1,5 +1,7 @@
 # 问答库
 
+2026-10-17 TASK-033通关：[MVVM Q2](./wpf-mvvm.md)按同对象/同集合绑定、属性状态更新与通知、窗口刷新转交的自主范围标已掌握，最终97项全过；教练补空历史暂无温度一行不计自主实现，Q1待复习保持，当前25分类/60条、待复习32/已掌握28，下方待复习为历史。
+
 2026-10-17 TASK-033开启：新增[MVVM Q2](./wpf-mvvm.md)（待复习），按唯一ViewModel对象与集合→表格首步→完整属性和value→通知与文字绑定→原判断迁移展开，71项骨架验证不计自主掌握；当前25分类/60条、待复习33/已掌握27，下方统计为历史。
 
 2026-10-17 TASK-032通关：[CSV Q2](./csharp-csv.md)按保存窗口结果/确认取消/所选路径传入已有写入的自主范围标已掌握，78项全过，教练三处结果文案收尾不计自主实现；当前25分类/59条、待复习32/已掌握27，下方待复习为历史。
@@ -103,7 +105,7 @@
 | WPF 数据绑定 | [wpf-binding.md](./wpf-binding.md) | 3 | 1 |
 | WPF 集合与历史列表 | [wpf-collections.md](./wpf-collections.md) | 1 | 1 |
 | WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 0 | 1 |
-| WPF 窗口与 ViewModel | [wpf-mvvm.md](./wpf-mvvm.md) | 2 | 0 |
+| WPF 窗口与 ViewModel | [wpf-mvvm.md](./wpf-mvvm.md) | 1 | 1 |
 | WPF 界面区域与 UserControl | [wpf-usercontrol.md](./wpf-usercontrol.md) | 1 | 0 |
 | WPF 样式与资源 | [wpf-styles.md](./wpf-styles.md) | 1 | 1 |
 | WPF 数据模板 | [wpf-templates.md](./wpf-templates.md) | 0 | 2 |

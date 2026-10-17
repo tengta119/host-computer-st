@@ -118,7 +118,7 @@ namespace WpfBae.Exercises.Task033
             _temperatures = _viewModel.Temperatures;
             InitializeComponent();
             // TODO 1a（实践1 / DoD 1）：将当前窗口DataContext设为已有_viewModel，不能再new另一份对象。
-            
+            DataContext = _viewModel;
             ConfigPathText.Text = "配置文件：" + _settingsPath;
             ExportPathText.Text = "CSV位置：尚未选择。";
             UpdateThresholdDisplay();
@@ -226,7 +226,6 @@ namespace WpfBae.Exercises.Task033
         private void Temperatures_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             // TODO 5a（实践2/3 / DoD 2）：通知与绑定接通后删除下一行直接赋值，保留绘图和UpdateTemperatureAlert调用。
-            ReadingCountText.Text = "完整历史条数：" + _temperatures.Count;
             DrawTemperatureLine();
             UpdateTemperatureAlert();
 
@@ -349,25 +348,7 @@ namespace WpfBae.Exercises.Task033
         // TODO 5b（实践2/3 / DoD 2）：把本方法内部原判断迁到ViewModel的RefreshDisplay，完成后本方法只调用_viewModel.RefreshDisplay(_alarmThreshold)。
         private void UpdateTemperatureAlert()
         {
-            //实践1 / DoD 1/2）：先判断 _temperatures.Count == 0 并 return，避免读取空集合的最后元素。
-            if (_temperatures.Count == 0)
-            {
-                AlarmText.Text = "暂无温度";
-                return;
-            }
-            // （实践1 / DoD 1）：读取下标 Count - 1 的原温度，先只把它显示到 AlarmText.Text，添加第一条后应看到24。
-            var temperature = _temperatures[_temperatures.Count - 1];
-            AlarmText.Text = "最新温度" + temperature;
-            // 已完成：TASK-029步骤1：只把下方比较中的27替换为_alarmThreshold，保留原正常/超限两个分支。
-            if (temperature >= _alarmThreshold)
-            {
-                AlarmText.Text = "温度超限";
-            }
-            else
-            {
-                AlarmText.Text = "温度正常";
-            }
-            // 空集合文字复位已沿用TASK-028最终版本。
+            _viewModel.RefreshDisplay(_alarmThreshold);
         }
         // 复用 TASK-024 当前计算，已提供，不是本题的新 TODO。
         private double ConvertTemperatureToY(double temperature)
