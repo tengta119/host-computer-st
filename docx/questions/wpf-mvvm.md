@@ -55,6 +55,97 @@ DeviceId 在可编辑 TextBox，需要把用户输入写回，所以用 TwoWay�
 
 旧 Reading 中的 DeviceId 是当时创建那条读数时保存的值。改变当前 ViewModel.DeviceId 不会自动把旧历史改掉，原读取命令继续创建新 Reading 并 Add 同一集合。
 
+## Q2：TASK-033 怎样让监控表格、条数和报警从同一个ViewModel取值？
+
+- 日期：2026-10-17。
+- 状态：待复习。
+- 来源：TASK-033开启；先前ViewModel/绑定骨架不代表完整属性通知已经自主掌握，沿用已有集合和CSV实践。
+
+### 先找到温度实际存在哪里
+
+TemperatureMonitorViewModel是教练为本题新建的普通C#类，定义在同名.cs文件中，不是WPF自带类型。
+这个类里创建了一个ObservableCollection<double>保存全部温度，公开的Temperatures属性返回这一份集合。
+窗口里的_viewModel指向一个TemperatureMonitorViewModel对象，教练提供的创建代码如下。
+
+```csharp
+private readonly TemperatureMonitorViewModel _viewModel = new TemperatureMonitorViewModel();
+```
+
+右边的new创建这一个对象，左边的字段保存它的引用，后续整个窗口复用这一份，不在点击按钮时再创建。
+窗口构造方法中的_temperatures = _viewModel.Temperatures已经由骨架提供，它让原采集、清空、绘图、CSV继续通过旧名字操作同一集合，没有复制温度，也没有创建第二份集合。
+因此点一次添加时，新增的温度实际保存在_viewModel那份对象的Temperatures集合里。
+
+### 首步只接通表格的来源
+
+在Task033Window.xaml.cs构造方法InitializeComponent之后的TODO 1a填写：
+
+```csharp
+DataContext = _viewModel;
+```
+
+DataContext是WPF窗口提供的属性，这里给当前窗口指定“绑定从这一个_viewModel对象查找数据”，不是创建对象，也不是复制集合。
+HistoryDataGrid会从窗口继承这个来源，除非另外给它设置自己的DataContext，本题不需要额外设置。
+接着在Task033Window.xaml的HistoryDataGrid开始标签中添加：
+
+```xml
+ItemsSource="{Binding Temperatures, Mode=OneWay}"
+```
+
+左边ItemsSource是这个WPF表格的行数据来源，右边的Temperatures是自定义ViewModel公开属性名，Binding让表格去读取它。
+OneWay在这里让数据对象提供表格来源，界面不反向替换这个集合；集合中的新增与清空仍通过原ObservableCollection的通知更新表格。
+表格内部那条Binding Path=.负责显示每行自己的double温度，首步不修改它。
+骨架已移除原HistoryDataGrid.ItemsSource直接赋值，所以尚未完成首步时，左图和条数可以变化，表格仍为空，这是等待连接的占位效果。
+运行项目，在停止状态点击一次添加，应看到表格一行24，再加到五条应看到五行，折线仍最多三点。
+不需要先改RefreshDisplay或通知代码才能完成这一观察。
+
+### 后续文字怎样进入属性
+
+ViewModel中的ReadingCountText保存“完整历史条数：5”这段文字，AlarmText保存“温度正常”“温度超限”或“暂无温度”。
+这两个名字都是自定义属性，窗口里两个同名TextBlock是另外两个具体控件；相同名字不代表同一个对象，也不会自动连接。
+后续TODO 4才给这两个TextBlock的Text设置绑定，分别读取ViewModel同名属性，方向均为OneWay。
+先看已有属性的完整普通写法，省略通知时如下。
+
+```csharp
+public string AlarmText
+{
+    get
+    {
+        return _alarmText;
+    }
+    set
+    {
+        _alarmText = value;
+    }
+}
+```
+
+_alarmText字段实际保存文字，get在读取AlarmText时返回当前字段值，set在给AlarmText赋值时执行。
+例如AlarmText = "温度正常"会让C#把右侧字符串交给value，_alarmText = value才把它保存到这个ViewModel对象里。
+仅保存字段还没有告诉已绑定的文字控件重新读取，这正是TODO 3需要补通知的原因。
+
+### 通知让已经绑定的文字重新读取哪个属性
+
+INotifyPropertyChanged是.NET提供的属性变化通知接口，教练已准备PropertyChanged事件和OnPropertyChanged辅助方法。
+OnPropertyChanged是本题自定义普通方法，参数是发生变化的公开属性名，不是控件名、字段名或要显示的结果。
+例如AlarmText的set存好value后，调用OnPropertyChanged("AlarmText")，通知会让已经绑定这个属性的控件重新执行get取得新文字。
+这与集合Add发出的通知不同，ObservableCollection负责表格新增/删除行，ViewModel的属性通知负责ReadingCountText与AlarmText这两段文字变化。
+原通知方法中的PropertyChanged(this, new PropertyChangedEventArgs(propertyName))表示发出属性变化事件，this是当前ViewModel，参数对象携带要重读的属性名；这段基础代码已提供，不要求首步重写。
+
+### 最后才把原判断搬到数据对象
+
+RefreshDisplay(double threshold)是教练预留的普通方法，threshold参数接收窗口已经验证生效的阈值。
+TODO 2在这里先更新真实条数，再处理空历史，最后取原集合最新温度与threshold比较，分别给ViewModel的两个文字属性赋值，不访问TextBlock。
+Count更新要放在空集合return之前，保证清空后条数能变回0。
+TODO 5完成以后，窗口原UpdateTemperatureAlert仅转交_viewModel.RefreshDisplay(_alarmThreshold)，原集合变化、应用阈值和加载配置的调用入口仍可复用。
+窗口原ReadingCountText.Text赋值也要移除，否则直接赋值会覆盖已经建立的Text绑定；先把属性更新/通知/绑定接通，再完成这些替换。
+定时器、绘图、阈值输入和文件保存对话框本题可以暂留窗口，不需要一次引入命令或重写整套配置。
+
+### 开启时证据与掌握边界
+
+实际71项骨架检查和原exe启动关闭通过，验证进程曾临时设置DataContext与表格绑定确认一条显示一行、五条显示五行，随后撤销；没有把该运行内诊断写进学员源码或算作学员已完成。
+源码中首步连接、RefreshDisplay、通知调用、文字绑定与旧显示迁移仍留TODO，三个DoD均未勾选，Q2待复习，原Q1和其他已验证能力保持。
+任务路径与命令见[TASK-033](../tasks/TASK-033.md)，当前25分类/60条、待复习33/已掌握27。
+
 ## 历史证据与掌握范围
 
 Q1 保持待复习。2026-10-12 TASK-013 的 10 个场景验证读取、Trim/空白 return、Reading 创建、Add 与提示，学员自主修复漏 return。输入绑定/完整属性/通知/对象连接由骨架提供，综合机制不按通关全部升级。教练未展开修改来源导致的追问保留为教学反馈，不记错题；漏 return 的实际实践错误保留原错题记录。
