@@ -18,6 +18,7 @@
         <Compile Remove="Exercises/TASK-032-save-csv-dialog/Verification/**/*.cs" />
         <Compile Remove="Exercises/TASK-033-monitor-viewmodel/Verification/**/*.cs" />
         <Compile Remove="Exercises/TASK-034-monitor-commands/Verification/**/*.cs" />
+        <Compile Remove="Exercises/TASK-035-threshold-viewmodel/Verification/**/*.cs" />
     </ItemGroup>
 
 </Project>

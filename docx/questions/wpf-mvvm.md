@@ -154,6 +154,80 @@ Q2按同一对象DataContext/表格与文字绑定、RefreshDisplay读取完整�
 教练依用户既有状态文案收尾要求仅补AlarmText = "暂无温度"，该行不计学员自主实现，其余状态计算/通知/绑定保留。
 自定义类、唯一集合及窗口兼容引用、完整属性骨架和通知辅助方法为教练提供，不扩大为独立完整架构设计，也不因已使用nameof就推定相关语法全部掌握。
 Q1继续待复习，当前25分类/60条、待复习32/已掌握28，前述Q2待复习/骨架未接通为历史，下一张仅建TASK-034未开始卡片。
+## Q3：TASK-035 怎样把输入框文字和应用阈值交给同一个ViewModel？
+
+- 日期：2026-10-17。
+- 状态：待复习。
+- 来源：TASK-035开启，沿用TASK-033/034已验证的同对象绑定和命令应用；输入双向写回与本次参数迁移尚无自主证据。
+
+### 先分清输入文字和真正生效的数值
+
+当前窗口已有一个TemperatureMonitorViewModel，_viewModel指向它，DataContext也使用这个对象，不需要再创建另一份。
+本题在这个自定义类中新增ThresholdInputText、AlarmThreshold、ThresholdFeedbackText和CurrentThresholdText属性，这些名字是教练命名的，不是WPF内置属性。
+ThresholdInputText保存输入框文字，例如用户正在输入的29；AlarmThreshold保存已经验证并生效的double数值，例如当前27。
+因此只输入29而未点击应用，输入文字应为29，有效阈值仍为27，报警和配置保存继续使用27。
+ThresholdFeedbackText保存输入是否合法或应用是否成功的说明，CurrentThresholdText的get用当前有效数值组成显示文字。
+本题已提供这些属性的完整get/set和通知代码；输入属性的set只存value并报告变化，不自动解析或应用阈值。
+
+### 首步只观察输入文字进入数据对象
+
+在Task035Window.xaml中，把ThresholdInput原来的Text="27"替换为：
+
+```xml
+Text="{Binding ThresholdInputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+```
+
+左边是这个TextBox的Text属性，右边ThresholdInputText是当前ViewModel的公开属性。
+TwoWay表示两个方向：初始从ViewModel取文字显示到输入框，用户修改输入框后再把新文字写入同一ViewModel。
+UpdateSourceTrigger决定用户编辑后何时写回，PropertyChanged在这里表示文字一变就写回，不等输入框失去焦点。
+这里的PropertyChanged是WPF绑定设置的选项名，不是要求再调用一次我们的OnPropertyChanged方法。
+例如键入29，WPF会把字符串"29"交给ThresholdInputText的set，value得到它，_thresholdInputText = value保存这段文字。
+这个动作没有执行double.Parse，也没有修改AlarmThreshold。
+
+再把新增ThresholdInputObservationText的Text改为：
+
+```xml
+Text="{Binding ThresholdInputText, Mode=OneWay}"
+```
+
+这块TextBlock只显示同一ViewModel收到的输入，用户不在这里编辑，所以用OneWay。
+输入框写回属性后，提供的setter发属性变化通知，这块观察文字重新读取ThresholdInputText，应立即显示29。
+从工作区根目录运行WpfBae，输入29但不点应用，应看到观察文字29、当前有效阈值27；再输入abc，观察文字显示abc，有效阈值仍为27。
+这一步只验证文字连接，不要求先实现命令或数值验证，也不应点击保存配置。
+
+### 后续才把应用按钮连接到命令
+
+ApplyThresholdCommand是教练新增的命令类，也保存在原ViewModel里，命令构造时收到同一个this，逻辑连接与TASK-034相同。
+TODO 2在命令Execute里调用_viewModel.ApplyThreshold()，同时把应用按钮Click删除并改为Command绑定ApplyThresholdCommand，避免两条应用路径并存。
+ApplyThreshold是ViewModel的新普通方法，目前只有安全占位，不改变有效阈值。
+TODO 3参照保留在旧窗口ApplyThresholdButton_Click中的原验证算法，把读取ThresholdInput.Text改为读取ThresholdInputText，把反馈控件赋值改为给ThresholdFeedbackText赋文字。
+原Parse/catch、NaN检查、20至30范围检查按原规则复用；验证失败时返回，保留AlarmThreshold，全部检查通过才把候选值写入有效属性。
+成功后调用RefreshDisplay(AlarmThreshold)重判已有温度，不调用Add或Clear，也不自动保存配置。
+AlarmThreshold的setter已提供对CurrentThresholdText的通知，因此读取这个显示属性的文字控件可以重新显示新有效值。
+
+### 显示绑定和旧直接赋值要一起整理
+
+TODO 4将CurrentThresholdText与ThresholdFeedbackText两个控件的Text分别绑定到ViewModel同名属性。
+新命令接通后删除旧ApplyThresholdButton_Click和UpdateThresholdDisplay及其调用，避免后续旧代码直接给Text赋值而替换绑定。
+此处ViewModel.CurrentThresholdText是数据属性，窗口的CurrentThresholdText是一个TextBlock，名字相同但不是同一对象，必须通过Binding连接。
+不要仅删除原验证算法却不把它移入新方法，也不要只绑定显示而继续保留旧控件写入路径。
+
+### 配置和报警只保留一个有效值来源
+
+骨架把窗口原_alarmThreshold字段换成一个兼容属性，它的get/set直接转交_viewModel.AlarmThreshold，不再单独存值，所以过渡阶段也只有一个有效数值。
+TODO 5把保存/报警等旧入口改为直接读取_viewModel.AlarmThreshold，所有引用改完后删除窗口这个兼容属性。
+保存只读有效数值，不能把ThresholdInputText直接当成有效配置；未应用或拒绝的文字不应写入文件。
+加载仍先处理缺失/损坏/null/范围，合法后恢复到ViewModel.AlarmThreshold和ThresholdInputText，再刷新报警，移除LoadThresholdSettings中的输入框及有效显示Text直接赋值。
+加载是在程序代码中给输入属性赋值，提供的属性通知会让TwoWay绑定的输入框显示恢复后的文字，不需要再写ThresholdInput.Text。
+本题文件读写仍可留窗口，不需要再设计配置服务或新框架。
+
+### 开启时证据与边界
+
+实际74项骨架检查和原exe启动关闭通过，验证进程临时接通两个输入观察绑定后，输入29会进入原VM并显示29，有效值保持原26且不写配置，随后撤销临时绑定。
+该诊断未写入学员源码，不算学员已完成；源码中的输入绑定、应用命令/验证迁移、显示绑定和旧配置连接仍留五组TODO。
+旧Click应用路径临时保留以便原功能可运行，不能把它的成功当成本题命令验收通过；Q3待复习、三个DoD未勾选，当前25分类/62条、待复习33/已掌握29。
+实际文件路径和命令见[TASK-035](../tasks/TASK-035.md)。
+
 ## 历史证据与掌握范围
 
 Q1 保持待复习。2026-10-12 TASK-013 的 10 个场景验证读取、Trim/空白 return、Reading 创建、Add 与提示，学员自主修复漏 return。输入绑定/完整属性/通知/对象连接由骨架提供，综合机制不按通关全部升级。教练未展开修改来源导致的追问保留为教学反馈，不记错题；漏 return 的实际实践错误保留原错题记录。
