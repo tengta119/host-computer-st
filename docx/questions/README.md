@@ -1,5 +1,11 @@
 # 问答库
 
+2026-10-18 TASK-035最终通关：[MVVM Q3](./wpf-mvvm.md)按输入绑定/命令验证/属性通知/即时报警与配置连接的自主范围标已掌握，182项全通过，本轮源码未改，提供的属性基础与兼容入口不计独立设计；当前25分类/62条、待复习32/已掌握30，下方失败/待复习为历史。
+
+2026-10-18 TASK-035审查：[MVVM Q3](./wpf-mvvm.md)补字段赋值绕过属性通知与参数保存后需调用报警刷新两处关系，182项173通过，DoD1/2未通过、3通过；保留输入绑定/命令/原验证与配置连接局部自主证据，Q3待复习、25分类/62条、待复习33/已掌握29不变，本轮源码未改。
+
+2026-10-18 TASK-035答疑：在[MVVM Q3](./wpf-mvvm.md)补充输入框TwoWay与观察文字OneWay的具体双向/单向关系、输入写回时机PropertyChanged与TextBox默认失焦的差别，以及它和setter通知各自负责的方向；本轮未改学员代码或运行验收，Q3待复习、任务与DoD保持，25分类/62条、待复习33/已掌握29不变。
+
 2026-10-17 TASK-035开启：新增[MVVM Q3](./wpf-mvvm.md)（待复习），具体解释输入文字/有效参数/反馈、TwoWay与即时写回、应用命令和配置恢复；74项骨架验证不计自主掌握，当前25分类/62条、待复习33/已掌握29，下方统计为历史。
 
 2026-10-17 TASK-034最终通关：[Command Q2](./wpf-commands.md)按按钮命令/Execute调用/清空条件取反/运行状态同步与条件通知的自主范围标已掌握，105项全过，本轮源码未改；提供的命令签名和通知基础不扩大掌握，当前25分类/61条、待复习32/已掌握29，下方失败与待复习为历史。
@@ -113,7 +119,7 @@
 | WPF 数据绑定 | [wpf-binding.md](./wpf-binding.md) | 3 | 1 |
 | WPF 集合与历史列表 | [wpf-collections.md](./wpf-collections.md) | 1 | 1 |
 | WPF 按钮命令 | [wpf-commands.md](./wpf-commands.md) | 0 | 2 |
-| WPF 窗口与 ViewModel | [wpf-mvvm.md](./wpf-mvvm.md) | 2 | 1 |
+| WPF 窗口与 ViewModel | [wpf-mvvm.md](./wpf-mvvm.md) | 1 | 2 |
 | WPF 界面区域与 UserControl | [wpf-usercontrol.md](./wpf-usercontrol.md) | 1 | 0 |
 | WPF 样式与资源 | [wpf-styles.md](./wpf-styles.md) | 1 | 1 |
 | WPF 数据模板 | [wpf-templates.md](./wpf-templates.md) | 0 | 2 |

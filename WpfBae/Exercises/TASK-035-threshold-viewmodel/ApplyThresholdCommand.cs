@@ -20,7 +20,8 @@ namespace WpfBae.Exercises.Task035
 
         public void Execute(object? parameter)
         {
-            // TODO 2a（实践2 / DoD 1）：调用已有_viewModel.ApplyThreshold一次，不读取控件或创建另一份VM。
+            // TOD 2a（实践2 / DoD 1）：调用已有_viewModel.ApplyThreshold一次，不读取控件或创建另一份VM。
+            _viewModel.ApplyThreshold();
         }
 
         public event EventHandler? CanExecuteChanged;

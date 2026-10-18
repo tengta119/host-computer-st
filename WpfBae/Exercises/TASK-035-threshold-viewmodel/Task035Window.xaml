@@ -30,18 +30,18 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                 <TextBlock Text="报警阈值 (°C)" VerticalAlignment="Center" Margin="0,0,12,0" />
-                <!-- TODO 1a（实践1 / DoD 1准备）：Text改为TwoWay绑定ThresholdInputText，UpdateSourceTrigger设为PropertyChanged。 -->
-                <TextBox x:Name="ThresholdInput" Text="27" Width="90" Padding="6,4" VerticalContentAlignment="Center" />
-                <!-- TODO 2b（实践2 / DoD 1）：删除应用按钮Click，改为Command绑定ApplyThresholdCommand。 -->
-                <Button x:Name="ApplyThresholdButton" Content="应用阈值" Padding="12,6" Margin="12,0,16,0" Click="ApplyThresholdButton_Click" />
+                <!-- TOD 1a（实践1 / DoD 1准备）：Text改为TwoWay绑定ThresholdInputText，UpdateSourceTrigger设为PropertyChanged。 -->
+                <TextBox x:Name="ThresholdInput" Text="{Binding ThresholdInputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Padding="6,4" VerticalContentAlignment="Center" />
+                <!-- TOD 2b（实践2 / DoD 1）：删除应用按钮Click，改为Command绑定ApplyThresholdCommand。 -->
+                <Button x:Name="ApplyThresholdButton" Content="应用阈值" Padding="12,6" Margin="12,0,16,0" Command="{Binding ApplyThresholdCommand}"/>
                 <Button x:Name="SaveThresholdButton" Content="保存阈值" Padding="12,6" Margin="0,0,16,0" Click="SaveThresholdButton_Click" />
-                <!-- TODO 4a（实践2 / DoD 1/2）：Text绑定CurrentThresholdText，配合后台移除旧直接显示。 -->
-                <TextBlock x:Name="CurrentThresholdText" Text="当前有效阈值：27 °C" VerticalAlignment="Center" />
+                <!-- TOD 4a（实践2 / DoD 1/2）：Text绑定CurrentThresholdText，配合后台移除旧直接显示。 -->
+                <TextBlock x:Name="CurrentThresholdText" Text="{Binding CurrentThresholdText}" VerticalAlignment="Center" />
             </StackPanel>
-            <!-- TODO 1b（实践1 / DoD 1准备）：下面观察文字的Text绑定ThresholdInputText，仅观察输入，不应用。 -->
-            <TextBlock x:Name="ThresholdInputObservationText" Text="输入观察：等待绑定。" FontSize="12" Margin="0,0,0,6" />
-            <!-- TODO 4b（实践2 / DoD 1）：反馈Text绑定ThresholdFeedbackText，移除旧Click后不再给它直接赋Text。 -->
-            <TextBlock x:Name="ThresholdFeedbackText" Text="请输入20到30之间的阈值，点击应用后生效。" TextWrapping="Wrap" Margin="0,0,0,8" />
+            <!-- TOD 1b（实践1 / DoD 1准备）：下面观察文字的Text绑定ThresholdInputText，仅观察输入，不应用。 -->
+            <TextBlock x:Name="ThresholdInputObservationText" Text="{Binding ThresholdInputText, Mode=OneWay}" FontSize="12" Margin="0,0,0,6" />
+            <!-- TOD 4b（实践2 / DoD 1）：反馈Text绑定ThresholdFeedbackText，移除旧Click后不再给它直接赋Text。 -->
+            <TextBlock x:Name="ThresholdFeedbackText" Text="{Binding ThresholdFeedbackText}" TextWrapping="Wrap" Margin="0,0,0,8" />
             <TextBlock x:Name="ConfigStatusText" Text="配置功能待完成。" TextWrapping="Wrap" Margin="0,0,0,6" />
             <TextBlock x:Name="ConfigPathText" Text="配置路径初始化中。" TextWrapping="Wrap" FontSize="11" Margin="0,0,0,8" />
             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">

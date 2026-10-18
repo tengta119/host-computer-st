@@ -157,7 +157,7 @@ Q1继续待复习，当前25分类/60条、待复习32/已掌握28，前述Q2待
 ## Q3：TASK-035 怎样把输入框文字和应用阈值交给同一个ViewModel？
 
 - 日期：2026-10-17。
-- 状态：待复习。
+- 状态：已掌握。
 - 来源：TASK-035开启，沿用TASK-033/034已验证的同对象绑定和命令应用；输入双向写回与本次参数迁移尚无自主证据。
 
 ### 先分清输入文字和真正生效的数值
@@ -228,6 +228,34 @@ TODO 5把保存/报警等旧入口改为直接读取_viewModel.AlarmThreshold，
 旧Click应用路径临时保留以便原功能可运行，不能把它的成功当成本题命令验收通过；Q3待复习、三个DoD未勾选，当前25分类/62条、待复习33/已掌握29。
 实际文件路径和命令见[TASK-035](../tasks/TASK-035.md)。
 
+### 2026-10-18追问：为什么输入框TwoWay，观察文字OneWay，PropertyChanged有什么用？
+
+这两个控件读取的是同一个ViewModel.ThresholdInputText，但用户只能在ThresholdInput输入框编辑文字，不能在ThresholdInputObservationText这块TextBlock里编辑。
+TwoWay让ViewModel属性中的27先显示到输入框，也让用户在输入框改成29后，把字符串29写回同一个属性，所以输入框用双向。
+OneWay让观察TextBlock从这个属性取得文字，属性后续变成29也继续显示29；它没有用户编辑写回的需求，所以只需要单向，不表示只读取一次。
+Mode决定数据允许往哪些方向走，UpdateSourceTrigger决定输入框到ViewModel这一个方向在什么时机写回。
+这里Source指ViewModel的ThresholdInputText，PropertyChanged选项表示输入框Text一变就写回，不等用户离开输入框；它本身不执行数值解析、应用阈值或保存文件。
+如果输入框省略UpdateSourceTrigger，TextBox.Text默认在失去焦点时写回，例如点击另一控件或用Tab移开，观察文字通常到这时才变化。
+当前链为用户编辑输入框→绑定把新文字交给ThresholdInputText的set→value存入字段→提供的OnPropertyChanged通知属性变化→观察TextBlock重新读取并显示。
+UpdateSourceTrigger=PropertyChanged负责输入框往属性写入的时机，setter的OnPropertyChanged("ThresholdInputText")负责属性变化后让显示控件重读，两者不是同一个调用，也不能互相替代。
+先把输入改成29且光标仍在输入框，预期观察文字已经是29；本题首步不点应用时AlarmThreshold仍27。
+本轮只根据可见代码答疑，没有运行新验收或修改学员代码；已见学员写了两处绑定，仅此不推定已自主运行验证，Q3继续待复习，TASK-035状态与DoD保持，25分类/62条、待复习33/已掌握29不变。
+### 2026-10-18实际审查：字段值改了，为什么显示和报警没有立即更新？
+
+当前ApplyThreshold成功路径给_alarmThreshold字段赋值，AlarmThreshold的get能返回新数值，所以保存文件可得到新值，但没有执行AlarmThreshold的set，也就没有执行其中的CurrentThresholdText通知。
+改为AlarmThreshold = threshold会进入该属性的set，set先保存字段，再通知读取CurrentThresholdText的控件重新取文字；不要另建第二份有效参数。
+报警还需要RefreshDisplay(AlarmThreshold)按已存在的最新温度重新比较，通知显示有效阈值不会自动替你执行这次判断。
+首个小改动是在当前成功路径用公开属性赋值替换字段赋值，接着调用已有RefreshDisplay，原输入验证与反馈保留；停止状态同一26.5应用26/27应立即超限/正常，不应等下一次采集。
+本轮182项173通过、9失败，6项为20/30/26.5成功后的有效显示与通知，3项为停止/运行中即时报警；DoD1/2未通过、3通过，详见[TASK-035](../tasks/TASK-035.md)。
+已验证局部自主范围包括TwoWay即时输入写回/观察显示、命令调用原VM、合法与非法检查/NaN拒绝、失败保留有效值、保存只读有效值与加载恢复属性和原绑定存活；不因两处未完成撤销这些证据。
+窗口兼容_alarmThreshold属性仍转交VM同一值，没有第二份有效存储；删除无用兼容入口可在核心修复后按原步骤整理，不新增失败理由。
+Q3待复习，Q1/Q2范围保持，本轮未代改核心代码，以上结果来自实际审查，25分类/62条、待复习33/已掌握29不变，上方骨架未接通为历史。
+### 2026-10-18 TASK-035最终复查与掌握边界
+
+学员已自主改为通过AlarmThreshold属性赋值并调用RefreshDisplay，182项实际检查全通过，TASK-035三个DoD通关，见[最终结果](../tasks/evidence/TASK-035/review-final/results.json)。
+Q3按现有骨架的输入TwoWay即时写回/观察显示、原VM应用命令、输入验证迁移/拒绝保留有效值、属性赋值触发有效显示通知、已有温度即时刷新、保存读取有效值与合法加载恢复属性及绑定存活的自主范围标已掌握。
+教练提供了属性get/set及通知基础、新命令类签名和旧有效值兼容入口，不扩大为独立完整参数架构设计；nameof等其他语法机制不因代码存在一并升级，Q1仍待复习、Q2已掌握范围保持。
+本轮源码未代改，原用户配置和CSV未动，25分类/62条、待复习32/已掌握30，前述首次失败/Q3待复习为历史；只创建TASK-036未开始卡片。
 ## 历史证据与掌握范围
 
 Q1 保持待复习。2026-10-12 TASK-013 的 10 个场景验证读取、Trim/空白 return、Reading 创建、Add 与提示，学员自主修复漏 return。输入绑定/完整属性/通知/对象连接由骨架提供，综合机制不按通关全部升级。教练未展开修改来源导致的追问保留为教学反馈，不记错题；漏 return 的实际实践错误保留原错题记录。

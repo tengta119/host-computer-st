@@ -32,7 +32,7 @@ namespace WpfBae.Exercises.Task035
                 _viewModel.AlarmThreshold = value;
             }
         }
-        // TODO 5c（实践3 / DoD 2/3）：旧入口全部改为直接使用_viewModel.AlarmThreshold后删除这个兼容属性，不另建有效字段。
+        // TOD 5c（实践3 / DoD 2/3）：旧入口全部改为直接使用_viewModel.AlarmThreshold后删除这个兼容属性，不另建有效字段。
 
         // AppContext.BaseDirectory是运行程序所在目录，Path.Combine拼接目录与文件名，启动不创建或覆盖配置。
         private readonly string _settingsPath = Path.Combine(
@@ -131,7 +131,7 @@ namespace WpfBae.Exercises.Task035
             DataContext = _viewModel;
             ConfigPathText.Text = "配置文件：" + _settingsPath;
             ExportPathText.Text = "CSV位置：尚未选择。";
-            UpdateThresholdDisplay();
+            
             // TASK-033表格已绑定唯一ViewModel中的Temperatures。
             _temperatures.CollectionChanged += Temperatures_CollectionChanged;
 
@@ -230,13 +230,13 @@ namespace WpfBae.Exercises.Task035
         }
 
         // 教练命名的普通方法，保存逻辑由学员完成，首步仅观察当前有效字段。
-        // TODO 5a（实践3 / DoD 2）：保存只读取_viewModel.AlarmThreshold，不从输入文字获取有效值。
+        // TOD 5a（实践3 / DoD 2）：保存只读取_viewModel.AlarmThreshold，不从输入文字获取有效值。
         private void SaveThresholdSettings()
         {
             // TOD 1（实践1 / DoD 1）：先把_alarmThreshold显示到ConfigStatusText.Text，应用26后保存应看到26，未应用输入29后仍看到26，先不写文件。
-            ConfigStatusText.Text = "准备保存的有效阈值：" + _alarmThreshold;
+            ConfigStatusText.Text = "准备保存的有效阈值：" + _viewModel.AlarmThreshold;
             // TOD 2（实践1 / DoD 1/2）：用AlarmThresholdSettings对象保存当前有效字段，序列化为JSON并写入_settingsPath，创建专属父目录，成功后才显示保存成功，写入失败显示原因且程序继续可用。
-            AlarmThresholdSettings alarmThresholdSettings = new AlarmThresholdSettings{Threshold = _alarmThreshold};
+            AlarmThresholdSettings alarmThresholdSettings = new AlarmThresholdSettings{Threshold = _viewModel.AlarmThreshold};
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
             {
                 WriteIndented = true
@@ -293,54 +293,15 @@ namespace WpfBae.Exercises.Task035
                 ConfigStatusText.Text = "配置中的报警阈值不合法。";
                 return;
             }
-            _alarmThreshold = alarmThresholdSettings.Threshold;
+            _viewModel.AlarmThreshold = alarmThresholdSettings.Threshold;
             // TODO 5b（实践3 / DoD 2/3）：验证配置候选值后，恢复到_viewModel.AlarmThreshold与ThresholdInputText，移除下面两处控件Text直接赋值。
-            ThresholdInput.Text = Convert.ToString(alarmThresholdSettings.Threshold);
-            CurrentThresholdText.Text = "当前有效阈值：" + ThresholdInput.Text + "°C";
+            _viewModel.ThresholdInputText = Convert.ToString(alarmThresholdSettings.Threshold);
             UpdateTemperatureAlert();
             ConfigStatusText.Text = "配置加载完成";
         }
-        // 应用按钮通过XAML的Click调用这里，方法名由教练命名，输入检查与保存由学员完成。
-        // TODO 2/3迁移参考：原验证保留在下方；新命令接通后删除这个旧Click方法，不能保留两条应用路径。
-        private void ApplyThresholdButton_Click(object sender, RoutedEventArgs e)
-        {
-            // 已完成：TASK-029步骤2：读取ThresholdInput.Text，用double.TryParse尝试转换，失败时设置ThresholdFeedbackText.Text后return，保留原阈值。
-            string thresholdInputText = ThresholdInput.Text;
-            double threshold;
-            try
-            {
-                threshold = double.Parse(thresholdInputText);
-                if (double.IsNaN(threshold))
-                {
-                    throw new Exception("温度不合法");
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                ThresholdFeedbackText.Text = "请输入20到30之间的数字。";
-                return;
-            }
-            // 已完成：TASK-029步骤3：只接受20到30且包含端点的数值，范围不合法时说明原因并return，保留原阈值。
-            if (threshold < 20 || threshold > 30)
-            {
-                ThresholdFeedbackText.Text = "阈值温度只允许在20到30";
-                return;
-            }
-            // 已完成：TASK-029步骤4：只有检查通过才给_alarmThreshold赋新值，调用UpdateThresholdDisplay()并显示应用成功。
-            _alarmThreshold = threshold;
-            UpdateThresholdDisplay();
-            // 已完成：TASK-029步骤5：成功保存后调用UpdateTemperatureAlert()，用已有最新温度立即刷新，不追加或清空历史。
-            UpdateTemperatureAlert();
-            ThresholdFeedbackText.Text = "阈值已应用成功。";
-        }
 
         // 教练提供的普通显示方法，只把已保存的数值写到文字控件，不解析输入，也不改变有效阈值。
-        // TODO 4c（实践2/3 / DoD 1/2）：CurrentThresholdText改为绑定后删除此旧直接显示方法及其调用，避免覆盖绑定。
-        private void UpdateThresholdDisplay()
-        {
-            CurrentThresholdText.Text = "当前有效阈值：" + _alarmThreshold + " °C";
-        }
+        // TOD 4c（实践2/3 / DoD 1/2）：CurrentThresholdText改为绑定后删除此旧直接显示方法及其调用，避免覆盖绑定。
         // UpdateTemperatureAlert 是教练新建的普通方法，负责把原集合的最新温度写到 AlarmText.Text。
         // TASK-033已完成报警刷新转交，本题沿用。
         private void UpdateTemperatureAlert()

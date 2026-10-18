@@ -84,7 +84,32 @@ namespace WpfBae.Exercises.Task035
         {
             // TODO 3（实践2 / DoD 1/2）：参照旧窗口ApplyThresholdButton_Click，把输入读取改为ThresholdInputText，沿用Parse/catch、NaN及20至30验证。
             // 验证失败只更新ThresholdFeedbackText并return；成功才给AlarmThreshold赋候选值、调用RefreshDisplay(AlarmThreshold)，再显示成功，不修改历史。
-            ThresholdFeedbackText = "阈值应用命令尚未实现，当前有效值保持。";
+            // 已完成：TASK-029步骤2：读取ThresholdInput.Text，用double.TryParse尝试转换，失败时设置ThresholdFeedbackText.Text后return，保留原阈值。
+            string thresholdInputText = ThresholdInputText;
+            double threshold;
+            try
+            {
+                threshold = double.Parse(thresholdInputText);
+                if (double.IsNaN(threshold))
+                {
+                    throw new Exception("温度不合法");
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                ThresholdFeedbackText = "请输入20到30之间的数字。";
+                return;
+            }
+            if (threshold < 20 || threshold > 30)
+            {
+                ThresholdFeedbackText  = "阈值温度只允许在20到30";
+                return;
+            }
+            AlarmThreshold = threshold;
+            RefreshDisplay(AlarmThreshold);
+
+            ThresholdFeedbackText = "阈值已应用成功。";
         }
 
         public TemperatureMonitorViewModel()
