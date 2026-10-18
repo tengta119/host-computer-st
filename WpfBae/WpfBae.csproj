@@ -20,6 +20,8 @@
         <Compile Remove="Exercises/TASK-034-monitor-commands/Verification/**/*.cs" />
         <Compile Remove="Exercises/TASK-035-threshold-viewmodel/Verification/**/*.cs" />
         <Compile Remove="Exercises/TASK-036-device-monitor/Verification/**/*.cs" />
+        <Compile Remove="Exercises/TASK-037-monitor-layout/Verification/**/*.cs" />
+        <Compile Remove="Exercises/TASK-038-monitor-project/Verification/**/*.cs" />
     </ItemGroup>
 
 </Project>

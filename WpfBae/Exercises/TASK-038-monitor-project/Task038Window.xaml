@@ -1,0 +1,97 @@
+<Window x:Class="WpfBae.Exercises.Task038.Task038Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TASK-038：独立完成模拟设备监控小项目" Width="960" Height="1000"
+        MinWidth="860" MinHeight="960">
+    <Grid x:Name="RootLayout" Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0">
+            <StackPanel x:Name="DeviceArea" VerticalAlignment="Top">
+                <TextBlock Text="TASK-038：独立连接监控数据、命令与采集" FontSize="20" FontWeight="Bold" Margin="0,0,0,16" />
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                    <TextBlock Text="选择设备" Margin="0,0,0,6" />
+                    <!-- TODO 2c（实践1/DoD1/2）：删除SelectedIndex，SelectedItem双向绑定SelectedDeviceId，IsEnabled读取CanSelectDevice。 -->
+                    <ComboBox x:Name="DeviceComboBox" Width="160" HorizontalAlignment="Left" 
+                              ItemsSource="{Binding DeviceIds}" 
+                              SelectedIndex="0" 
+                               
+                              Margin="0,0,0,12" />
+                    <TextBlock Text="当前监控：" />
+                    <!-- TODO 2d（实践1/DoD1）：Text读取CurrentDevice.Id，切换后跟随实际设备。 -->
+                    <TextBlock x:Name="CurrentDeviceText" Text="当前编号待绑定。" FontWeight="Bold" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <Button x:Name="StartButton" Content="启动" Padding="12,6" Click="StartButton_Click" />
+                <Button x:Name="StopButton" Content="停止" Padding="12,6" Click="StopButton_Click" />
+                <!-- TODO 4d（实践2/DoD1/2）：AddButton和ClearButton分别绑定AddCommand和ClearCommand。 -->
+                <Button x:Name="AddButton" Content="添加下一条" Padding="12,6" />
+                <Button x:Name="ClearButton" Content="清空" Padding="12,6"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock x:Name="SamplingStateText" Text="已停止" Margin="0,0,24,0" />
+                <TextBlock x:Name="TickCountText" Text="通知次数：0" />
+            </StackPanel>
+            <!-- 此布局复用已验证的长文字换行方案，独立核心是数据、命令和采集连接。 -->
+            <!-- TODO 6c（实践3/DoD3）：输入即时双向绑定ThresholdInputText，应用按钮绑定ApplyThresholdCommand，有效值与反馈读取各自同名属性。 -->
+            <StackPanel x:Name="ThresholdArea" Margin="0,0,0,12">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="公共报警阈值 (°C)" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <TextBox x:Name="ThresholdInput" Width="90" Text="27" HorizontalAlignment="Left" Padding="6,4" />
+                    <Button x:Name="ApplyThresholdButton"  Content="应用阈值" Padding="12,6" Margin="8,0,0,0" />
+                    <Button x:Name="SaveThresholdButton" Content="保存阈值" Padding="12,6" Margin="8,0,12,0" Click="SaveThresholdButton_Click" />
+                    <TextBlock x:Name="CurrentThresholdText" Text="有效阈值待绑定。" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock x:Name="ThresholdFeedbackText" Text="应用反馈待绑定。" TextWrapping="Wrap" Margin="0,0,0,4" />
+                <TextBlock x:Name="ConfigStatusText" Text="配置初始化中。" TextWrapping="Wrap" Margin="0,0,0,4" />
+                <TextBlock x:Name="ConfigPathText" TextWrapping="Wrap" FontSize="11" />
+            </StackPanel>
+            <StackPanel x:Name="ExportArea" Margin="0,0,0,12">
+                <Button x:Name="ExportHistoryButton" Content="导出当前设备历史" Padding="12,6" HorizontalAlignment="Left" Margin="0,0,0,6" Click="ExportHistoryButton_Click" />
+                <TextBlock x:Name="ExportStatusText" Text="导出连接待完成（TODO 7c）。" TextWrapping="Wrap" Margin="0,0,0,4" />
+                <TextBlock x:Name="ExportPathText" TextWrapping="Wrap" FontSize="11" />
+            </StackPanel>
+        </StackPanel>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="ChartRegion" Grid.Column="0" Margin="0,0,20,0">
+                <!-- TODO 4e（实践2/DoD1）：报警和条数Text读取同名VM属性，HistoryDataGrid.ItemsSource读取Temperatures。 -->
+                <TextBlock x:Name="AlarmText" Text="暂无温度" FontSize="18" FontWeight="Bold" />
+                <TextBlock x:Name="ReadingCountText" Text="完整历史条数：0" FontWeight="Bold" />
+                <TextBlock Text="最新最多三条" FontWeight="Bold" Margin="0,0,0,8" />
+                <Canvas x:Name="ChartCanvas" Width="560" Height="300" HorizontalAlignment="Left" Background="#F8FAFC">
+                    <Rectangle Canvas.Left="100" Canvas.Top="40" Width="360" Height="200" Fill="#EEF2F6" Stroke="#94A3B8" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="30" Text="30 °C" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="130" Text="25 °C" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="230" Text="20 °C" />
+                    <Polyline x:Name="TemperatureLine" Stroke="#2563EB" StrokeThickness="3" />
+                    <Ellipse x:Name="SinglePointMarker" Width="8" Height="8" Fill="#2563EB" Visibility="Collapsed" />
+                    <TextBlock x:Name="FirstReadingLabel" Canvas.Left="55" Canvas.Top="260" Width="90" TextAlignment="Center" />
+                    <TextBlock x:Name="SecondReadingLabel" Canvas.Left="235" Canvas.Top="260" Width="90" TextAlignment="Center" />
+                    <TextBlock x:Name="ThirdReadingLabel" Canvas.Left="415" Canvas.Top="260" Width="90" TextAlignment="Center" />
+                </Canvas>
+            </StackPanel>
+            <Grid x:Name="HistoryRegion" Grid.Column="1">
+                <Grid>
+                    <DataGrid x:Name="HistoryDataGrid"  AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="温度 (°C)" Binding="{Binding Path=., Mode=OneWay}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
+            
+        </Grid>
+        
+        <!-- TODO 8（实践3/DoD1/2/3）：按任务卡运行全部场景并填写本题RUN-RECORD.md，记录自主部分与教练辅助边界。 -->
+    </Grid>
+</Window>

@@ -1,0 +1,107 @@
+<Window x:Class="WpfBae.Exercises.Task037.Task037Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TASK-037：独立组织模拟设备监控界面" Width="960" Height="1000"
+        MinWidth="860" MinHeight="960">
+    <!-- RootLayout是教练给这个Grid取的名字，目前只有设备区可见，不是最终布局。 -->
+    <Grid x:Name="RootLayout" Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0">
+            <!-- TOD 1a（实践1/DoD1/2准备）：标题保留上方，在标题下添加一个Orientation="Horizontal"的StackPanel，把后面四个现有控件移进去，使它们在窗口中从左到右并排显示。 -->
+            <StackPanel x:Name="DeviceArea" VerticalAlignment="Top">
+                <TextBlock Text="TASK-037：先接通设备选择，再组织完整界面" FontSize="20" FontWeight="Bold" Margin="0,0,0,16" />
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                    <!-- TOD 1b（实践1/DoD2）：删除SelectedIndex，SelectedItem双向绑定SelectedDeviceId，IsEnabled单向绑定CanSelectDevice。 -->
+                    <TextBlock Text="选择设备" Margin="0,0,0,6" />
+                    <ComboBox x:Name="DeviceComboBox" Width="160" HorizontalAlignment="Left" 
+                              ItemsSource="{Binding DeviceIds}" 
+                              SelectedItem="{Binding SelectedDeviceId, Mode=TwoWay}" 
+                              IsEnabled="{Binding CanSelectDevice}" 
+                              Margin="0,0,0,12" />
+                    <TextBlock Text="当前监控：" />
+                    <!-- TOD 1c（实践1/DoD2）：Text读取CurrentDevice.Id，改选设备后这里应跟随变化。 -->
+                    <TextBlock x:Name="CurrentDeviceText" Text="{Binding CurrentDevice.Id}" FontWeight="Bold" />
+                </StackPanel>
+            </StackPanel>
+            
+            <!-- TOD 2a（实践1/DoD1）：为RootLayout自行安排各区域的行/列，先放设备区和操作区，后续逐区添加。 -->
+            <!-- Collapsed来自WPF，暂时不显示且不占空间；先给区域安排位置，再改为Visible，不能只展开使它盖住设备区。 -->
+            <!-- 下列命名控件由教练预留给已验证后台使用；可以改父容器和位置，保留x:Name与已有Click。 -->
+            <!-- TOD 2b（实践1/DoD1/2）：把操作区放入自己安排的位置并显示，自行排列按钮和状态，添加AddCommand与ClearCommand绑定。 -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <Button x:Name="StartButton" Content="启动" Padding="12,6" Click="StartButton_Click" />
+                <Button x:Name="StopButton" Content="停止" Padding="12,6" Click="StopButton_Click" />
+                <Button x:Name="AddButton" Content="添加下一条" Padding="12,6" Command="{Binding AddCommand}"/>
+                <Button x:Name="ClearButton" Content="清空" Padding="12,6" Command="{Binding ClearCommand}" />
+                <Button x:Name="ObserveButton" Content="旧临时入口" Visibility="Collapsed" Click="ObserveButton_Click" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock x:Name="SamplingStateText" Text="已停止" Margin="0,0,24,0" />
+                <TextBlock x:Name="TickCountText" Text="通知次数：0" />
+            </StackPanel>
+            
+            <!-- TODO 3a（实践2/DoD1/3）：安排阈值区并显示，输入双向即时写回ThresholdInputText，应用按钮绑定ApplyThresholdCommand。 -->
+            <!-- TODO 3b（实践2/DoD3）：两个显示文字分别绑定CurrentThresholdText与ThresholdFeedbackText，保存按钮Click已由教练连接。 -->
+            <!-- 用户要求教练修正长文字越界：输入和按钮保持横排，反馈及路径在下面逐行显示。 -->
+            <StackPanel x:Name="ThresholdArea" Margin="0,0,0,12">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="公共报警阈值 (°C)" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <TextBox x:Name="ThresholdInput" Width="90" Text="{Binding ThresholdInputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Padding="6,4" />
+                    <Button x:Name="ApplyThresholdButton" Command="{Binding ApplyThresholdCommand}" Content="应用阈值" Padding="12,6" Margin="8,0,0,0" />
+                    <Button x:Name="SaveThresholdButton" Content="保存阈值" Padding="12,6" Margin="8,0,12,0" Click="SaveThresholdButton_Click" />
+                    <TextBlock x:Name="CurrentThresholdText" Text="{Binding CurrentThresholdText}" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock x:Name="ThresholdFeedbackText" Text="{Binding ThresholdFeedbackText}" TextWrapping="Wrap" Margin="0,0,0,4" />
+                <TextBlock x:Name="ConfigStatusText" Text="配置初始化中。" TextWrapping="Wrap" Margin="0,0,0,4" />
+                <TextBlock x:Name="ConfigPathText" TextWrapping="Wrap" FontSize="11" />
+            </StackPanel>
+            
+            <!-- TODO 3c（实践2/DoD1/3）：安排导出区并显示，保留Click和结果控件；结果由后台写入，不另绑Text。 -->
+            <StackPanel x:Name="ExportArea" Margin="0,0,0,12">
+                <Button x:Name="ExportHistoryButton" Content="导出当前设备历史" Padding="12,6" HorizontalAlignment="Left" Margin="0,0,0,6" Click="ExportHistoryButton_Click" />
+                <TextBlock x:Name="ExportStatusText" Text="停止采集后可导出当前设备全部历史。" TextWrapping="Wrap" Margin="0,0,0,4" />
+                <TextBlock x:Name="ExportPathText" TextWrapping="Wrap" FontSize="11" />
+            </StackPanel>
+        </StackPanel>
+        
+        <Grid Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="ChartRegion" Grid.Column="0" Margin="0,0,20,0">
+                <TextBlock x:Name="AlarmText" Text="{Binding AlarmText}" FontSize="18" FontWeight="Bold" />
+                <TextBlock x:Name="ReadingCountText" Text="{Binding ReadingCountText}" FontWeight="Bold" />
+                <TextBlock Text="最新最多三条" FontWeight="Bold" Margin="0,0,0,8" />
+                <Canvas x:Name="ChartCanvas" Width="560" Height="300" HorizontalAlignment="Left" Background="#F8FAFC">
+                    <Rectangle Canvas.Left="100" Canvas.Top="40" Width="360" Height="200" Fill="#EEF2F6" Stroke="#94A3B8" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="30" Text="30 °C" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="130" Text="25 °C" />
+                    <TextBlock Canvas.Left="35" Canvas.Top="230" Text="20 °C" />
+                    <Polyline x:Name="TemperatureLine" Stroke="#2563EB" StrokeThickness="3" />
+                    <Ellipse x:Name="SinglePointMarker" Width="8" Height="8" Fill="#2563EB" Visibility="Collapsed" />
+                    <TextBlock x:Name="FirstReadingLabel" Canvas.Left="55" Canvas.Top="260" Width="90" TextAlignment="Center" />
+                    <TextBlock x:Name="SecondReadingLabel" Canvas.Left="235" Canvas.Top="260" Width="90" TextAlignment="Center" />
+                    <TextBlock x:Name="ThirdReadingLabel" Canvas.Left="415" Canvas.Top="260" Width="90" TextAlignment="Center" />
+                </Canvas>
+            </StackPanel>
+            <Grid x:Name="HistoryRegion" Grid.Column="1">
+                <Grid>
+                    <DataGrid x:Name="HistoryDataGrid" ItemsSource="{Binding Temperatures}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False">
+                        <DataGrid.Columns>
+                            <!-- 此列读取每条double数值的连接由教练复用，不是本题新TODO。 -->
+                            <DataGridTextColumn Header="温度 (°C)" Binding="{Binding Path=., Mode=OneWay}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
+            
+        </Grid>
+        
+    </Grid>
+</Window>

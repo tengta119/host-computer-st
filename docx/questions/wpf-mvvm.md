@@ -55,6 +55,13 @@ DeviceId 在可编辑 TextBox，需要把用户输入写回，所以用 TwoWay�
 
 旧 Reading 中的 DeviceId 是当时创建那条读数时保存的值。改变当前 ViewModel.DeviceId 不会自动把旧历史改掉，原读取命令继续创建新 Reading 并 Add 同一集合。
 
+### 2026-10-18 TASK-038：为什么新窗口下拉框是空的，首步要给谁设置DataContext？
+
+Task038Window.xaml.cs里的_viewModel已经保存新建的TASK-038 TemperatureMonitorViewModel对象，它的DeviceIds包含TEMP-001和TEMP-002，设备选择框的ItemsSource="{Binding DeviceIds}"已经写好。
+当前窗口还没有DataContext，所以选择框不知道要从哪个对象读取DeviceIds；在Task038Window构造方法InitializeComponent();后的TODO1写DataContext = _viewModel;，就是给这个窗口设置读取对象，下拉框才会出现这两个选项。
+DataContext来自WPF，_viewModel和TemperatureMonitorViewModel是本题自定义名字；不要在此再new一个VM，因为绘图、文件辅助和三个命令已经指向字段里那一份对象。
+本步只观察选项出现，CurrentDevice.Id和选择写回的绑定要到TODO2再接，编号待绑定和真实设备未切换仍是明确占位，不表示首步失败。
+本轮77项骨架检查中的临时数据上下文赋值仅存在于独立验证进程，已撤销且未写入学员源码，不证明学员已自主连接；Q1继续待复习，Q2/Q3既有掌握范围保留，TASK-038进行中，三个DoD未勾选，见[任务卡](../tasks/TASK-038.md)。
 ## Q2：TASK-033 怎样让监控表格、条数和报警从同一个ViewModel取值？
 
 - 日期：2026-10-17。

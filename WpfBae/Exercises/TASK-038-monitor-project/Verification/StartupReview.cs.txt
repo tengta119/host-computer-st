@@ -1,0 +1,139 @@
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
+using System.Text.Json;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using WpfBae.Exercises.Task038;
+using DeviceMonitorState = WpfBae.Exercises.Task036.DeviceMonitorState;
+
+internal static class StartupReview
+{
+    [STAThread]
+    static int Main(string[] args)
+    {
+        string output = Path.GetFullPath(args[0]);
+        var checks = new List<object>(); bool passed = true;
+        var app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        Task038Window? window = null;
+        try
+        {
+            window = new Task038Window(); window.Show(); Pump(150);
+            var vm = (TemperatureMonitorViewModel)Field("_viewModel");
+            var timer = (DispatcherTimer)Field("_samplingTimer");
+            var selector = (ComboBox)window.FindName("DeviceComboBox");
+            var table = (DataGrid)window.FindName("HistoryDataGrid");
+            string config = (string)Field("_settingsPath");
+            Check("实际打开TASK-038", window.IsLoaded && window.IsVisible && window.Title.Contains("TASK-038"));
+            Check("新VM来自038而非旧VM", vm.GetType().Namespace == "WpfBae.Exercises.Task038");
+            Check("新窗口未连接DataContext仍留TODO1", window.DataContext == null && selector.Items.Count == 0);
+            Check("表格来源留TODO4e", table.ItemsSource == null);
+            foreach (string name in new[] { "AddButton", "ClearButton", "ApplyThresholdButton" })
+                Check(name + "命令尚未连接", ((Button)window.FindName(name)).Command == null);
+            Check("选择写回和当前编号留TODO2", BindingOperations.GetBinding(selector, ComboBox.SelectedItemProperty) == null && BindingOperations.GetBinding((TextBlock)window.FindName("CurrentDeviceText"), TextBlock.TextProperty) == null);
+            Check("定时器初始停止且原间隔一秒", !timer.IsEnabled && timer.Interval == TimeSpan.FromSeconds(1));
+            Check("旧临时观察入口已移除", window.FindName("ObserveButton") == null);
+            Check("原配置尚未创建", !File.Exists(config));
+            Check("独立配置路径与显示", config.Contains("TASK-038-monitor-project") && Text("ConfigPathText").Contains(config));
+            Check("三个命令持有同一新VM", ReferenceEquals(CommandOwner(vm.AddCommand), vm) && ReferenceEquals(CommandOwner(vm.ClearCommand), vm) && ReferenceEquals(CommandOwner(vm.ApplyThresholdCommand), vm));
+            var states = (DeviceMonitorState[])typeof(TemperatureMonitorViewModel).GetField("_devices", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(vm)!;
+            Check("两台原数据类存储独立", states.Length == 2 && !ReferenceEquals(states[0].Temperatures, states[1].Temperatures) && states.All(item => item.NextSampleIndex == 0));
+            vm.AppendNextSample(); vm.AddCommand.Execute(null); vm.ClearHistory(); vm.ClearCommand.Execute(null); vm.ThresholdInputText = "26"; vm.ApplyThreshold(); vm.ApplyThresholdCommand.Execute(null);
+            Check("追加清空应用核心仍留占位", states.All(item => item.Temperatures.Count == 0) && vm.AlarmThreshold == 27);
+            Click("StartButton"); Pump(1100);
+            Check("启动和Tick核心尚未连接", !timer.IsEnabled && states.All(item => item.Temperatures.Count == 0) && Text("TickCountText") == "通知次数：0");
+            Click("SaveThresholdButton"); Click("ExportHistoryButton");
+            Check("保存导出入口占位不写文件", !File.Exists(config));
+            Layout("默认初始"); Snapshot("default-initial.png");
+
+            // 运行内临时连接首步，只验证教练准备的对象可被界面读取，不写入源码或代完成TODO。
+            window.DataContext = vm; Pump(60);
+            Check("诊断只设置DataContext即显示两项设备", selector.Items.Count == 2 && (string)selector.SelectedItem == "TEMP-001");
+            Check("诊断原窗口同一个VM", ReferenceEquals(window.DataContext, Field("_viewModel")));
+            BindingOperations.SetBinding(selector, ComboBox.SelectedItemProperty, new Binding("SelectedDeviceId") { Mode = BindingMode.TwoWay });
+            selector.SetCurrentValue(ComboBox.SelectedItemProperty, "TEMP-002"); Pump(30);
+            Check("诊断选择字符串写回但切换仍留TODO", vm.SelectedDeviceId == "TEMP-002" && vm.CurrentDevice.Id == "TEMP-001");
+            BindingOperations.ClearBinding(selector, ComboBox.SelectedItemProperty);
+            vm.SelectedDeviceId = "TEMP-001";
+            window.DataContext = null; Pump(30);
+            Check("诊断已撤销源码连接仍未完成", window.DataContext == null && table.ItemsSource == null && BindingOperations.GetBinding(selector, ComboBox.SelectedItemProperty) == null);
+
+            // 下面直接改变教练提供的数据对象，仅验证绘图与集合换接辅助，不算学生的追加或切换实现。
+            states[0].Temperatures.Add(24); Pump(30);
+            Check("诊断原集合单点绘图", LineCount() == 1 && ((FrameworkElement)window.FindName("SinglePointMarker")).Visibility == Visibility.Visible);
+            states[0].Temperatures.Add(26.5); states[0].Temperatures.Add(25); states[0].Temperatures.Add(28);
+            Check("诊断最新三点与真实序号", LineCount() == 3 && Text("FirstReadingLabel").StartsWith("第 2 条") && Text("ThirdReadingLabel").StartsWith("第 4 条"));
+            var currentField = typeof(TemperatureMonitorViewModel).GetField("_currentDevice", BindingFlags.NonPublic | BindingFlags.Instance)!;
+            var notify = typeof(TemperatureMonitorViewModel).GetMethod("OnPropertyChanged", BindingFlags.NonPublic | BindingFlags.Instance)!;
+            currentField.SetValue(vm, states[1]); notify.Invoke(vm, new object[] { "Temperatures" });
+            Check("诊断窗口改接新集合并清空曲线", ReferenceEquals(Field("_temperatures"), states[1].Temperatures) && LineCount() == 0);
+            states[0].Temperatures.Add(24);
+            Check("诊断旧设备不刷新新设备曲线", LineCount() == 0);
+            states[1].Temperatures.Add(24); states[1].Temperatures.Add(26.5);
+            string csv = (string)Call("BuildCsvText")!;
+            Check("诊断CSV辅助读取当前设备完整历史", csv == "Sequence,TemperatureC" + Environment.NewLine + "1,24" + Environment.NewLine + "2,26.5" + Environment.NewLine);
+            string exported = Path.Combine(output, "diagnostic-device002.csv"); Call("WriteCsvToPath", exported);
+            Check("诊断CSV辅助写入及当前编号路径", File.ReadAllText(exported) == csv && Text("ExportStatusText").Contains("TEMP-002") && Text("ExportPathText").Contains(exported));
+            Call("WriteThresholdToFile", 26.0);
+            Check("诊断配置写入辅助按参数保存", JsonDocument.Parse(File.ReadAllText(config)).RootElement.GetProperty("Threshold").GetDouble() == 26);
+            Call("LoadThresholdSettings");
+            Check("配置恢复连接仍留TODO7b", vm.AlarmThreshold == 27);
+            var dialog = (Microsoft.Win32.SaveFileDialog)Call("CreateCsvSaveDialog")!;
+            Check("保存窗口辅助配置正确", dialog.OverwritePrompt && dialog.AddExtension && !dialog.CreateTestFile && dialog.Filter.Contains("*.csv"));
+            Layout("默认长结果"); Snapshot("default.png");
+            window.Width = window.MinWidth; window.Height = window.MinHeight; Pump(100);
+            Layout("最小长结果"); Snapshot("minimum.png");
+            states[0].Temperatures.Clear(); states[1].Temperatures.Clear(); currentField.SetValue(vm, states[0]); notify.Invoke(vm, new object[] { "Temperatures" });
+            Check("诊断数据已清空并回到初始对象", vm.CurrentDevice.Id == "TEMP-001" && vm.Temperatures.Count == 0 && LineCount() == 0);
+            timer.Start(); window.Close(); Pump(30);
+            Check("教练关闭安全收尾停止定时器", !timer.IsEnabled && !window.IsVisible);
+            app.Shutdown();
+
+            object Field(string name) => typeof(Task038Window).GetField(name, BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(window)!;
+            object? Call(string name, params object[] values) => typeof(Task038Window).GetMethod(name, BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(window, values);
+            string Text(string name) => ((TextBlock)window.FindName(name)).Text;
+            int LineCount() => ((System.Windows.Shapes.Polyline)window.FindName("TemperatureLine")).Points.Count;
+            object CommandOwner(object command) => command.GetType().GetField("_viewModel", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(command)!;
+            void Click(string name)
+            {
+                var button = (Button)window.FindName(name);
+                var peer = new System.Windows.Automation.Peers.ButtonAutomationPeer(button);
+                ((System.Windows.Automation.Provider.IInvokeProvider)peer.GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)!).Invoke();
+                Pump(30);
+            }
+            void Layout(string label)
+            {
+                var root = (FrameworkElement)window.Content;
+                foreach (string name in new[] { "DeviceComboBox", "CurrentDeviceText", "ThresholdInput", "ApplyThresholdButton", "SaveThresholdButton", "CurrentThresholdText", "ThresholdFeedbackText", "ConfigStatusText", "ConfigPathText", "ExportHistoryButton", "ExportStatusText", "ExportPathText", "ChartCanvas", "HistoryDataGrid" })
+                {
+                    var item = (FrameworkElement)window.FindName(name); var point = item.TranslatePoint(new Point(), root);
+                    Check(label + "/" + name, item.IsVisible && item.ActualWidth > 0 && item.ActualHeight > 0 && point.X >= -1 && point.Y >= -1 && point.X + item.ActualWidth <= root.ActualWidth + 1 && point.Y + item.ActualHeight <= root.ActualHeight + 1);
+                }
+                var top = (FrameworkElement)((Grid)root).Children[0]; var monitor = (FrameworkElement)((Grid)root).Children[1];
+                Check(label + "/区域不重叠", monitor.TranslatePoint(new Point(), root).Y >= top.TranslatePoint(new Point(0, top.ActualHeight), root).Y - 1);
+            }
+            void Snapshot(string name)
+            {
+                var root = (FrameworkElement)window.Content;
+                var bmp = new RenderTargetBitmap((int)Math.Ceiling(root.ActualWidth), (int)Math.Ceiling(root.ActualHeight), 96, 96, PixelFormats.Pbgra32);
+                var background = new DrawingVisual(); using (var drawing = background.RenderOpen()) drawing.DrawRectangle(Brushes.White, null, new Rect(0, 0, root.ActualWidth, root.ActualHeight));
+                bmp.Render(background); bmp.Render(root); var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(bmp));
+                using var file = File.Create(Path.Combine(output, name)); encoder.Save(file);
+            }
+        }
+        catch (Exception error) { passed = false; checks.Add(new { name = "骨架异常", passed = false, error = error.ToString() }); window?.Close(); }
+        File.WriteAllText(Path.Combine(output, "results.json"), JsonSerializer.Serialize(new { purpose = "骨架与教练辅助验证，临时诊断不计学员实现或DoD", passed, checks }, new JsonSerializerOptions { WriteIndented = true }));
+        Console.WriteLine(JsonSerializer.Serialize(new { passed, count = checks.Count }));
+        return passed ? 0 : 1;
+        void Check(string name, bool result) { passed &= result; checks.Add(new { name, passed = result }); }
+    }
+    static void Pump(int milliseconds)
+    {
+        var frame = new DispatcherFrame(); var stop = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(milliseconds) };
+        stop.Tick += (sender, e) => { stop.Stop(); frame.Continue = false; }; stop.Start(); Dispatcher.PushFrame(frame);
+    }
+}
