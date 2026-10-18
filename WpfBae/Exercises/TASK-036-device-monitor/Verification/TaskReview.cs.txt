@@ -1,0 +1,241 @@
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.Json;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using WpfBae.Exercises.Task036;
+class DialogReview
+{
+    delegate bool EnumProc(IntPtr h,IntPtr l);
+    [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc p,IntPtr l);
+    [DllImport("user32.dll")] static extern bool EnumChildWindows(IntPtr h,EnumProc p,IntPtr l);
+    [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr h,out uint p);
+    [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetWindowText(IntPtr h,StringBuilder s,int n);
+    [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetClassName(IntPtr h,StringBuilder s,int n);
+    [DllImport("user32.dll")] static extern int GetDlgCtrlID(IntPtr h);
+    [DllImport("user32.dll")] static extern bool PostMessage(IntPtr h,uint m,IntPtr w,IntPtr l);
+    [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern IntPtr SendMessage(IntPtr h,uint m,IntPtr w,string text);
+    static string Class(IntPtr h){var s=new StringBuilder(256);GetClassName(h,s,256);return s.ToString();}
+    static string Title(IntPtr h){var s=new StringBuilder(1024);GetWindowText(h,s,1024);return s.ToString();}
+    static List<IntPtr> Dialogs(){var list=new List<IntPtr>();EnumWindows((h,l)=>{GetWindowThreadProcessId(h,out uint p);if(p==Environment.ProcessId && Class(h)=="#32770")list.Add(h);return true;},IntPtr.Zero);return list;}
+    [STAThread] static int Main(string[] args)
+    {
+        string output=Path.GetFullPath(args[0]);var checks=new List<object>();bool passed=true;
+        var app=new Application{ShutdownMode=ShutdownMode.OnExplicitShutdown};Task036Window? window=null;
+        try
+        {
+            string data=Path.Combine(output,"chosen");if(Directory.Exists(data))throw new Exception("目标证据已存在");
+            Directory.CreateDirectory(Path.Combine(data,"A"));Directory.CreateDirectory(Path.Combine(data,"B"));
+            string a=Path.Combine(data,"A","first.csv"),b=Path.Combine(data,"B","second.csv");
+            window=new Task036Window();window.Show();Pump(100);
+            var history=(ObservableCollection<double>)Field("_temperatures");var timer=(DispatcherTimer)Field("_samplingTimer");
+            string config=(string)Field("_settingsPath");
+            var vm=(TemperatureMonitorViewModel)Field("_viewModel");
+            var selector=(ComboBox)window.FindName("DeviceComboBox");
+            var states=(DeviceMonitorState[])typeof(TemperatureMonitorViewModel).GetField("_devices",BindingFlags.Instance|BindingFlags.NonPublic)!.GetValue(vm)!;
+            Check("默认001与设备列表",vm.CurrentDevice.Id=="TEMP-001" && vm.SelectedDeviceId=="TEMP-001" && (string)selector.SelectedItem=="TEMP-001" && selector.Items.Count==2);
+            for(int i=0;i<5;i++)Click("AddButton");
+            Check("001五条固定样例顺序",history.SequenceEqual(new double[]{24,26.5,25,28,24}));
+            var firstSaved=history.ToArray();CheckDeviceDisplay("001五条");
+            Select("TEMP-002");Check("002初次空历史与空图",history.Count==0 && Text("ReadingCountText")=="完整历史条数：0" && Text("AlarmText")=="暂无温度" && ((System.Windows.Shapes.Polyline)window.FindName("TemperatureLine")).Points.Count==0);
+            Click("AddButton");Click("AddButton");Check("002前两条从24开始",history.SequenceEqual(new double[]{24,26.5}));var secondSaved=history.ToArray();
+            Export(Path.Combine(data,"B","device002.csv"));Validate(Path.Combine(data,"B","device002.csv"),"002专属导出");Check("002导出识别当前设备且不改001",Text("ExportStatusText").Contains("TEMP-002") && states[0].Temperatures.SequenceEqual(firstSaved));
+            Select("TEMP-001");Check("切回001保留完整原数据",history.SequenceEqual(firstSaved) && states[1].Temperatures.SequenceEqual(secondSaved));CheckDeviceDisplay("切回001");
+            Click("AddButton");Check("001独立继续第六条26.5",history.Count==6 && history[5]==26.5);
+            Select("TEMP-002");Click("AddButton");Check("002独立继续第三条25",history.Count==3 && history[2]==25);
+            var kept001=states[0].Temperatures.ToArray();Click("ClearButton");Click("AddButton");Check("清空002仅复位002且001保留",history.SequenceEqual(new double[]{24}) && states[0].Temperatures.SequenceEqual(kept001));
+            Input("26");Select("TEMP-001");Check("切回001按公共26立即报警",Text("AlarmText")=="温度超限");Select("TEMP-002");Check("切到002按公共26正常",Text("AlarmText")=="温度正常" && Threshold()==26);
+            Select("TEMP-001");for(int i=0;i<4;i++){Select("TEMP-002");Select("TEMP-001");}
+            int refreshEvents=0;vm.PropertyChanged+=(s,e)=>{if(e.PropertyName=="ReadingCountText")refreshEvents++;};int countBefore=history.Count;Click("AddButton");Check("反复切换后追加一次一条一次刷新",history.Count==countBefore+1 && refreshEvents==1);
+            var frozen002=states[1].Temperatures.ToArray();int beforeAuto=history.Count;int ticksBefore=(int)Field("_tickCount");Click("StartButton");
+            Check("运行选择条件拒绝",!vm.CanSelectDevice);Check("运行选择控件应禁用",!selector.IsEnabled);
+            vm.SelectedDeviceId="TEMP-002";vm.SwitchToSelectedDevice();Check("运行直接选择与切换方法保护",vm.SelectedDeviceId=="TEMP-001" && vm.CurrentDevice.Id=="TEMP-001");
+            Pump(1150);Click("StopButton");int ticksAfter=(int)Field("_tickCount");Check("自动追加当前设备且另一设备不变",history.Count==beforeAuto+ticksAfter-ticksBefore && ticksAfter>ticksBefore && states[1].Temperatures.SequenceEqual(frozen002));
+            Check("停止恢复选择",vm.CanSelectDevice && selector.IsEnabled);
+            // 使用已实现的真实命令清空两设备，隔离后面的原功能复测，不修补样例算法。
+            Select("TEMP-002");Click("ClearButton");Select("TEMP-001");Click("ClearButton");Input("27");
+            Check("两个按钮取得原VM命令",ReferenceEquals(((Button)window.FindName("AddButton")).Command,vm.AddCommand) && ReferenceEquals(((Button)window.FindName("ClearButton")).Command,vm.ClearCommand));
+            Check("旧Click方法已移除",typeof(Task036Window).GetMethod("AddButton_Click",BindingFlags.Instance|BindingFlags.NonPublic)==null && typeof(Task036Window).GetMethod("ClearButton_Click",BindingFlags.Instance|BindingFlags.NonPublic)==null);
+            Check("初始停止VM状态",!vm.IsSampling && !timer.IsEnabled);
+            Check("停止清空CanExecute应允许",vm.ClearCommand.CanExecute(null));
+            Check("初始清空按钮应可用",((Button)window.FindName("ClearButton")).IsEnabled);
+            int conditionNotices=0;vm.ClearCommand.CanExecuteChanged+=(s,e)=>conditionNotices++;
+            Check("实际窗口显示与初始停止",window.IsVisible && !timer.IsEnabled);
+            Click("ExportHistoryButton");Check("空历史拒绝无保存窗口",Text("ExportStatusText").Contains("空") && Dialogs().Count==0);
+            Check("应用按钮使用原VM命令",ReferenceEquals(((Button)window.FindName("ApplyThresholdButton")).Command,vm.ApplyThresholdCommand));
+            Check("旧应用Click已移除",typeof(Task036Window).GetMethod("ApplyThresholdButton_Click",BindingFlags.Instance|BindingFlags.NonPublic)==null);
+            Type("29");Check("输入即时双向写回与观察显示",vm.ThresholdInputText=="29" && Text("ThresholdInputObservationText")=="29");
+            Check("未应用不改变有效值与文件",Threshold()==27 && !File.Exists(config));
+            var notices=new List<string?>();vm.PropertyChanged+=(s,e)=>notices.Add(e.PropertyName);
+            foreach(double valid in new double[]{20,30,26.5})
+            {
+                notices.Clear();Input(valid.ToString(CultureInfo.CurrentCulture));
+                Check("合法"+valid+"/有效值",Threshold()==valid);
+                Check("合法"+valid+"/显示同步",Text("CurrentThresholdText")==vm.CurrentThresholdText);
+                Check("合法"+valid+"/有效显示通知",notices.Contains("CurrentThresholdText"));
+                Check("合法"+valid+"/成功反馈",Text("ThresholdFeedbackText").Contains("成功"));
+            }
+            foreach(string bad in new[]{"","   ","abc","19.9","30.1","NaN","Infinity","-Infinity"})
+            {
+                double kept=Threshold();Input(bad);
+                Check("非法输入["+bad+"]/保留有效值",Threshold()==kept);
+                Check("非法输入["+bad+"]/反馈拒绝",!Text("ThresholdFeedbackText").Contains("成功") && Text("ThresholdFeedbackText").Length>0);
+            }
+            Input("27");Click("AddButton");Click("AddButton");double[] stateBefore=history.ToArray();
+            Input("26");Check("停止同一26.5应用26立即超限",Text("AlarmText")=="温度超限");
+            Input("27");Check("停止同一26.5应用27立即正常",Text("AlarmText")=="温度正常");
+            Check("应用不改历史",history.SequenceEqual(stateBefore));
+            Click("ClearButton");
+            CheckThresholdBindings("验证输入后");            for(int i=0;i<5;i++)Click("AddButton");
+            Check("五条完整原值",history.SequenceEqual(new double[]{24,26.5,25,28,24}));
+            Check("表格Count三点同集合",ReferenceEquals(history,vm.Temperatures) && ReferenceEquals(((DataGrid)window.FindName("HistoryDataGrid")).ItemsSource,history) && Text("ReadingCountText")=="完整历史条数：5" && ((System.Windows.Shapes.Polyline)window.FindName("TemperatureLine")).Points.Count==3);
+            Input("26");Click("SaveThresholdButton");byte[] configBytes=File.ReadAllBytes(config);
+            Type("29");Click("SaveThresholdButton");Check("未应用29仍保存有效26",JsonDocument.Parse(File.ReadAllText(config)).RootElement.GetProperty("Threshold").GetDouble()==26);
+            Input("abc");Click("SaveThresholdButton");Check("拒绝输入仍保存有效26",JsonDocument.Parse(File.ReadAllText(config)).RootElement.GetProperty("Threshold").GetDouble()==26);
+            Type("26");configBytes=File.ReadAllBytes(config);
+            var original=history.ToArray();
+            Export(a);Validate(a,"第一目录");Check("第一实际路径显示",Text("ExportPathText").Contains(a) && Text("ExportStatusText").Contains(a));
+            Export(b);Validate(b,"第二目录");Check("第二实际路径显示",Text("ExportPathText").Contains(b));
+            Check("导出不改历史阈值配置",history.SequenceEqual(original) && Threshold()==26 && File.ReadAllBytes(config).SequenceEqual(configBytes));
+            byte[] saved=File.ReadAllBytes(b);Export(null);Check("取消说明和已有文件保留",Text("ExportStatusText").Contains("取消") && File.ReadAllBytes(b).SequenceEqual(saved));
+            Check("取消不改数据配置",history.SequenceEqual(original) && Threshold()==26 && File.ReadAllBytes(config).SequenceEqual(configBytes));
+            File.WriteAllText(a,"existing-original");Export(a,false);Check("拒绝覆盖并取消保留原文",File.ReadAllText(a)=="existing-original" && Text("ExportStatusText").Contains("取消"));
+            Export(a,true);Validate(a,"接受覆盖");
+            var culture=CultureInfo.CurrentCulture;try{CultureInfo.CurrentCulture=CultureInfo.GetCultureInfo("de-DE");Export(Path.Combine(data,"B","german"));Validate(Path.Combine(data,"B","german.csv"),"固定小数与自动扩展名");}finally{CultureInfo.CurrentCulture=culture;}
+            Click("StartButton");Click("StartButton");
+            Check("运行状态正确同步",timer.IsEnabled && vm.IsSampling);
+            Check("运行CanExecute应拒绝",!vm.ClearCommand.CanExecute(null));
+            Check("启停会发条件通知",conditionNotices>0);
+            int manualBefore=history.Count;Click("AddButton");Check("运行中手动仅追加一次",history.Count==manualBefore+1 && history[manualBefore]==26.5);
+            Pump(2150);Check("真实采集追加",history.Count>=7 && timer.IsEnabled);            int ticks=(int)Field("_tickCount");
+            Check("重复启动没有额外追加",ticks-ticksAfter>=2 && history.Count==6+ticks-ticksAfter);
+            Check("混合追加完整顺序",history.SequenceEqual(Enumerable.Range(0,history.Count).Select(i=>new double[]{24,26.5,25,28}[i%4])));
+            int beforeApplyRunning=history.Count;Input("30");Check("采中应用30立即正常",Text("AlarmText")=="温度正常");
+            Input("26");Check("采中应用26立即超限",Text("AlarmText")=="温度超限");
+            Check("采中应用本身不追加清空",history.Count==beforeApplyRunning);            Click("ExportHistoryButton");Check("采集拒绝且无对话框",Text("ExportStatusText").Contains("停止") && Dialogs().Count==0);
+            Check("运行清空禁用",!((Button)window.FindName("ClearButton")).IsEnabled);
+            int running=history.Count;vm.ClearCommand.Execute(null);Check("运行直接执行命令保护",history.Count==running);
+            Click("StopButton");Click("StopButton");int stopped=history.Count;Pump(1100);Check("停止后不追加",history.Count==stopped && !timer.IsEnabled);
+            Check("停止VM状态同步",!vm.IsSampling);
+            Check("停止后CanExecute应允许",vm.ClearCommand.CanExecute(null));
+            Check("停止后按钮应恢复",((Button)window.FindName("ClearButton")).IsEnabled);
+            vm.ClearCommand.Execute(null);Check("停止直接执行清空应清空",history.Count==0);
+            // 不通过的清空命令不代为修复，使用已提供的底层方法仅重置后续独立场景。
+            Check("停止直接清空后图表与文字复位",Text("ReadingCountText")=="完整历史条数：0" && Text("AlarmText")=="暂无温度" && ((System.Windows.Shapes.Polyline)window.FindName("TemperatureLine")).Points.Count==0);
+            Click("ClearButton");Click("AddButton");Click("AddButton");Input("26");Check("阈值立即超限",Text("AlarmText")=="温度超限");Input("27");Check("阈值立即恢复",Text("AlarmText")=="温度正常");
+            using(var locked=new FileStream(b,FileMode.Open,FileAccess.ReadWrite,FileShare.None)){Invoke("WriteCsvToPath",new object[]{b});Check("实际写入方法占用失败说明",Text("ExportStatusText").Contains("失败"));}
+            Export(b,true);Validate(b,"解锁后再次选择恢复");
+            string conflict=Path.Combine(data,"blocked.csv");Directory.CreateDirectory(conflict);Invoke("WriteCsvToPath",new object[]{conflict});Check("实际写入方法目录冲突失败",Text("ExportStatusText").Contains("失败"));
+            Export(Path.Combine(data,"A","recovered.csv"));Validate(Path.Combine(data,"A","recovered.csv"),"冲突后另选路径恢复");
+            Check("原表格Count与三点",((DataGrid)window.FindName("HistoryDataGrid")).Items.Count==history.Count && Text("ReadingCountText")=="完整历史条数："+history.Count && ((System.Windows.Shapes.Polyline)window.FindName("TemperatureLine")).Points.Count==2);
+            Check("导出全程保留配置",File.ReadAllBytes(config).SequenceEqual(configBytes));
+            Click("ClearButton");for(int i=0;i<4;i++)Click("AddButton");Check("清空后追加从24开始",history.SequenceEqual(new double[]{24,26.5,25,28}));
+            Check("清空前超限",Text("AlarmText")=="温度超限");
+            Click("ClearButton");Check("清空后集合引用保留",ReferenceEquals(history,vm.Temperatures) && ReferenceEquals(((DataGrid)window.FindName("HistoryDataGrid")).ItemsSource,history));
+            Click("AddButton");Check("再次清空后首条24",history.Count==1 && history[0]==24);Click("AddButton");
+            CheckThresholdBindings("全路径后");
+            Layout("默认");Snapshot("default.png");window.Width=window.MinWidth;window.Height=window.MinHeight;Pump(100);Layout("最小");Snapshot("minimum.png");
+            window.Close();Check("正常关闭停止",!timer.IsEnabled && !window.IsVisible);
+            window=new Task036Window();window.Show();Check("新窗口配置恢复26",Threshold()==26 && ((TextBox)window.FindName("ThresholdInput")).Text=="26");
+            Click("StartButton");window.Close();Check("采集中关闭停止",!((DispatcherTimer)Field("_samplingTimer")).IsEnabled);
+            foreach(string badJson in new[]{"null","{}","{\"Threshold\":35}","{\"Threshold\":19.9}","broken"})
+            {
+                File.WriteAllText(config,badJson);window=new Task036Window();window.Show();Pump(50);
+                Check("无效配置["+badJson+"]/默认27",Threshold()==27 && ((TextBox)window.FindName("ThresholdInput")).Text=="27");
+                Check("无效配置["+badJson+"]/不改原文件",File.ReadAllText(config)==badJson);
+                CheckThresholdBindings("无效配置["+badJson+"]");window.Close();
+            }
+            File.WriteAllText(config,"{\"Threshold\":26.5}");window=new Task036Window();window.Show();Pump(50);
+            Check("合法配置恢复VM输入与有效显示",Threshold()==26.5 && ((TextBox)window.FindName("ThresholdInput")).Text=="26.5" && Text("CurrentThresholdText").Contains("26.5"));
+            CheckThresholdBindings("合法恢复");window.Close();
+            File.WriteAllBytes(config,configBytes);
+
+            object Field(string name)=>typeof(Task036Window).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic)!.GetValue(window)!;
+            object? Invoke(string name,object[] values)=>typeof(Task036Window).GetMethod(name,BindingFlags.Instance|BindingFlags.NonPublic)!.Invoke(window,values);
+            string Text(string name)=>((TextBlock)window.FindName(name)).Text;
+            double Threshold()=>((TemperatureMonitorViewModel)Field("_viewModel")).AlarmThreshold;
+            void Click(string name)
+            {
+                var button=(Button)window.FindName(name);
+                if(button.IsEnabled)
+                {
+                    var peer=new System.Windows.Automation.Peers.ButtonAutomationPeer(button);
+                    ((System.Windows.Automation.Provider.IInvokeProvider)peer.GetPattern(System.Windows.Automation.Peers.PatternInterface.Invoke)!).Invoke();
+                    Pump(40);
+                }
+                if(name=="ClearButton")
+                {
+                    Check("停止实际清空按钮清空/场景"+checks.Count,history.Count==0);
+                    Check("清空后界面复位/场景"+checks.Count,Text("ReadingCountText")=="完整历史条数：0" && Text("AlarmText")=="暂无温度" && ((System.Windows.Shapes.Polyline)window.FindName("TemperatureLine")).Points.Count==0);
+                }
+            }
+            void Type(string text){((TextBox)window.FindName("ThresholdInput")).SetCurrentValue(TextBox.TextProperty,text);Pump(20);}
+            void Input(string text){Type(text);Click("ApplyThresholdButton");}
+            void Export(string? path,bool? overwrite=null)
+            {
+                bool seen=false,confirmation=false;string? error=null;
+                var worker=Task.Run(()=>
+                {
+                    try
+                    {
+                        IntPtr main=IntPtr.Zero;
+                        for(int i=0;i<80;i++){main=Dialogs().FirstOrDefault(h=>Title(h)=="选择温度历史CSV保存位置");if(main!=IntPtr.Zero)break;Thread.Sleep(100);}
+                        if(main==IntPtr.Zero)throw new Exception("保存窗口未出现");seen=true;Thread.Sleep(200);
+                        if(path==null){PostMessage(main,0x111,new IntPtr(2),IntPtr.Zero);return;}
+                        IntPtr edit=IntPtr.Zero;EnumChildWindows(main,(h,l)=>{if(Class(h)=="Edit" && GetDlgCtrlID(h)==1001)edit=h;return true;},IntPtr.Zero);
+                        if(edit==IntPtr.Zero)throw new Exception("文件名输入框未找到");SendMessage(edit,0x000C,IntPtr.Zero,path);PostMessage(main,0x111,new IntPtr(1),IntPtr.Zero);
+                        for(int i=0;i<80;i++)
+                        {
+                            Thread.Sleep(100);var active=Dialogs();if(!active.Contains(main))return;
+                            var other=active.FirstOrDefault(h=>h!=main);
+                            if(other==IntPtr.Zero)continue;confirmation=true;
+                            if(overwrite==true)PostMessage(other,0x111,new IntPtr(6),IntPtr.Zero);
+                            else{PostMessage(other,0x111,new IntPtr(7),IntPtr.Zero);Thread.Sleep(200);PostMessage(main,0x111,new IntPtr(2),IntPtr.Zero);}return;
+                        }
+                        throw new Exception("保存窗口操作超时");
+                    }
+                    catch(Exception ex){error=ex.Message;foreach(var d in Dialogs())PostMessage(d,0x10,IntPtr.Zero,IntPtr.Zero);}
+                });
+                Click("ExportHistoryButton");worker.GetAwaiter().GetResult();Pump(50);
+                Check("实际保存窗口/"+(path??"取消"),seen && error==null);
+                if(overwrite.HasValue)Check("已有文件出现覆盖确认/"+path,confirmation);
+                if(error!=null)throw new Exception(error);
+            }
+            void Select(string id)
+            {
+                selector.SetCurrentValue(ComboBox.SelectedItemProperty,id);Pump(50);history=vm.Temperatures;
+                Check("选择真实绑定/"+id,vm.SelectedDeviceId==id && vm.CurrentDevice.Id==id && (string)selector.SelectedItem==id && Text("CurrentDeviceText")==id);
+            }
+            void CheckDeviceDisplay(string label)
+            {
+                Check(label+"/表格窗口VM集合一致",ReferenceEquals(((DataGrid)window.FindName("HistoryDataGrid")).ItemsSource,history) && ReferenceEquals(Field("_temperatures"),history) && ReferenceEquals(vm.CurrentDevice.Temperatures,history));
+                Check(label+"/条数与三点",Text("ReadingCountText")=="完整历史条数："+history.Count && ((DataGrid)window.FindName("HistoryDataGrid")).Items.Count==history.Count && ((System.Windows.Shapes.Polyline)window.FindName("TemperatureLine")).Points.Count==Math.Min(3,history.Count));
+            }
+            void CheckThresholdBindings(string label)
+            {
+                var input=(TextBox)window.FindName("ThresholdInput");var inputBinding=System.Windows.Data.BindingOperations.GetBindingExpression(input,TextBox.TextProperty);
+                Check(label+"/输入绑定存活",inputBinding!=null && inputBinding.Status==System.Windows.Data.BindingStatus.Active && inputBinding.ParentBinding.Mode==System.Windows.Data.BindingMode.TwoWay && inputBinding.ParentBinding.UpdateSourceTrigger==System.Windows.Data.UpdateSourceTrigger.PropertyChanged);
+                foreach(string name in new[]{"CurrentThresholdText","ThresholdFeedbackText"})
+                {
+                    var expression=System.Windows.Data.BindingOperations.GetBindingExpression((TextBlock)window.FindName(name),TextBlock.TextProperty);
+                    Check(label+"/"+name+"绑定存活",expression!=null && expression.Status==System.Windows.Data.BindingStatus.Active && ReferenceEquals(expression.DataItem,window.DataContext));
+                }
+            }
+            void Validate(string path,string label){var lines=File.ReadAllLines(path);Check(label+"/头与完整行数",lines[0]=="Sequence,TemperatureC" && lines.Length==history.Count+1);for(int i=0;i<history.Count;i++)Check(label+"/第"+(i+1)+"行",lines[i+1]==(i+1).ToString(CultureInfo.InvariantCulture)+","+history[i].ToString(CultureInfo.InvariantCulture));}
+            void Layout(string label){var root=(FrameworkElement)window.Content;foreach(string name in new[]{"DeviceComboBox","SelectedDeviceObservationText","CurrentDeviceText","ExportHistoryButton","ExportStatusText","ExportPathText","ChartCanvas","HistoryDataGrid","ConfigPathText","ReadingCountText"}){var item=(FrameworkElement)window.FindName(name);var p=item.TranslatePoint(new Point(),root);Check(label+"/"+name,item.ActualWidth>0 && item.ActualHeight>0 && p.X>=0 && p.Y>=0 && p.X+item.ActualWidth<=root.ActualWidth+1 && p.Y+item.ActualHeight<=root.ActualHeight+1);}}
+            void Snapshot(string name){var root=(FrameworkElement)window.Content;var bmp=new RenderTargetBitmap((int)Math.Ceiling(root.ActualWidth),(int)Math.Ceiling(root.ActualHeight),96,96,PixelFormats.Pbgra32);var bg=new DrawingVisual();using(var draw=bg.RenderOpen())draw.DrawRectangle(Brushes.White,null,new Rect(0,0,root.ActualWidth,root.ActualHeight));bmp.Render(bg);bmp.Render(root);var png=new PngBitmapEncoder();png.Frames.Add(BitmapFrame.Create(bmp));using var stream=File.Create(Path.Combine(output,name));png.Save(stream);}
+        }
+        catch(Exception ex){passed=false;checks.Add(new{name="异常详情",passed=false,error=ex.ToString()});}
+        finally{foreach(Window w in app.Windows.Cast<Window>().ToArray())w.Close();app.Shutdown();}
+        File.WriteAllText(Path.Combine(output,"results.json"),JsonSerializer.Serialize(new{passed,checks},new JsonSerializerOptions{WriteIndented=true}));Console.WriteLine(JsonSerializer.Serialize(new{passed,count=checks.Count}));return passed?0:1;
+        void Check(string name,bool result){passed &= result;checks.Add(new{name,passed=result});}
+    }
+    static void Pump(int ms){var frame=new DispatcherFrame();var timer=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(ms)};timer.Tick+=(s,e)=>{timer.Stop();frame.Continue=false;};timer.Start();Dispatcher.PushFrame(frame);}
+}
