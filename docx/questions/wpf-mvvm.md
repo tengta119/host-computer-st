@@ -263,6 +263,17 @@ Q3待复习，Q1/Q2范围保持，本轮未代改核心代码，以上结果来�
 Q3按现有骨架的输入TwoWay即时写回/观察显示、原VM应用命令、输入验证迁移/拒绝保留有效值、属性赋值触发有效显示通知、已有温度即时刷新、保存读取有效值与合法加载恢复属性及绑定存活的自主范围标已掌握。
 教练提供了属性get/set及通知基础、新命令类签名和旧有效值兼容入口，不扩大为独立完整参数架构设计；nameof等其他语法机制不因代码存在一并升级，Q1仍待复习、Q2已掌握范围保持。
 本轮源码未代改，原用户配置和CSV未动，25分类/62条、待复习32/已掌握30，前述首次失败/Q3待复习为历史；只创建TASK-036未开始卡片。
+### 2026-10-18 TASK-038审查：有效数值已改变，显示却仍是待绑定
+
+当前XAML中CurrentThresholdText和ThresholdFeedbackText的Text仍分别是固定占位文字，VM应用阈值时不会自动替换它们，需要各自绑定VM同名属性。
+ThresholdInput写Text="{Binding ThresholdInputText}"沿用TextBox默认双向但失焦写回的行为，实际输入瞬间VM未改变，不应把它说成默认单向；TODO6c要求输入即时写回，需要明确配置TwoWay及UpdateSourceTrigger=PropertyChanged。
+AlarmThreshold.set还漏了CurrentThresholdText通知；CurrentThresholdText的get虽然能计算新文字，已绑定界面也需要知道该公开属性应重新读取。
+7b数值和输入恢复、合法非法阈值方法与报警重判都已独立验证通过，界面结果未同步不能归因为7b没有读到文件；本轮未代改实现，Q3原局部掌握与Q1待复习保持，见[TASK-038](../tasks/TASK-038.md)。
+### 2026-10-18 TASK-038第二次审查：输入与结果显示已同步
+
+学员已补输入TwoWay/PropertyChanged、有效阈值和反馈绑定、CurrentThresholdText通知，实际逐字输入写回、合法/非法应用、即时报警及配置恢复后的输入/有效显示同步均通过；264项功能全部通过，上一轮缺口已修复。
+本轮未代写实现，原问答局部掌握及待复习范围保持，不把骨架或运行成功推定为完整MVVM机制掌握，TASK-038仅待运行记录，见[结果](../tasks/evidence/TASK-038/review-02/results.json)。
+
 ## 历史证据与掌握范围
 
 Q1 保持待复习。2026-10-12 TASK-013 的 10 个场景验证读取、Trim/空白 return、Reading 创建、Add 与提示，学员自主修复漏 return。输入绑定/完整属性/通知/对象连接由骨架提供，综合机制不按通关全部升级。教练未展开修改来源导致的追问保留为教学反馈，不记错题；漏 return 的实际实践错误保留原错题记录。

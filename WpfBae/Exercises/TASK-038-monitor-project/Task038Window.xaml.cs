@@ -37,7 +37,33 @@ namespace WpfBae.Exercises.Task038
 
         private void ExportTemperatureHistory()
         {
-            // TODO 7c（实践3/DoD2/3）：先拒绝采集或空历史，再显示CreateCsvSaveDialog，只有确认才将FileName交给WriteCsvToPath，取消保留已有文件并说明。
+            // TOD 7c（实践3/DoD2/3）：先拒绝采集或空历史，再显示CreateCsvSaveDialog，只有确认才将FileName交给WriteCsvToPath，取消保留已有文件并说明。
+            if (_samplingTimer.IsEnabled)
+            {
+                ExportStatusText.Text = "正在采集，请先停止再导出。";
+                return;
+            }
+            if (_temperatures.Count == 0)
+            {
+                ExportStatusText.Text = "数据为空";
+                return;
+            }
+
+            // dialog是本次点击新建的保存窗口，CreateCsvSaveDialog是教练提供的普通辅助方法。
+            Microsoft.Win32.SaveFileDialog dialog = CreateCsvSaveDialog();
+            // 沿用TASK-032已完成步骤1（原实践1 / DoD 1/2准备）：调用dialog.ShowDialog(this)，用bool?变量接结果，此步先不写文件。
+            bool? result = dialog.ShowDialog();
+            // 沿用TASK-032已完成步骤2（原实践1 / DoD 2）：只有结果等于true才读取dialog.FileName，其他结果显示已取消并return；确认时先显示路径。
+            if (result != true)
+            {
+                ExportStatusText.Text = "已取消导出。";
+                return;
+            }
+            ExportStatusText.Text = "选择的路径：" + dialog.FileName;
+            // 沿用TASK-032已完成步骤3（原实践2 / DoD 1/2/3）：路径观察通过后，把确认的dialog.FileName传给WriteCsvToPath，取消路径不得调用它。
+            WriteCsvToPath(dialog.FileName);
+            // TASK-032原覆盖确认/取消和写入失败已验证，打开窗口异常未实现的边界保持。
+            // 写入方法负责显示成功或失败，这里保留它给出的实际结果。
         }
         private Microsoft.Win32.SaveFileDialog CreateCsvSaveDialog()
         {
@@ -84,36 +110,60 @@ namespace WpfBae.Exercises.Task038
         {
             _temperatures = _viewModel.Temperatures;
             InitializeComponent();
-            // TODO 1（实践1/DoD1准备）：让当前窗口的DataContext指向上方已有_viewModel，不创建第二份对象。
+            // TOD 1（实践1/DoD1准备）：让当前窗口的DataContext指向上方已有_viewModel，不创建第二份对象。
+            DataContext = _viewModel;
             ConfigPathText.Text = "配置文件：" + _settingsPath;
             ExportPathText.Text = "CSV位置：尚未选择。";
             _temperatures.CollectionChanged += Temperatures_CollectionChanged;
             _viewModel.PropertyChanged += ViewModel_PropertyChanged;
             _samplingTimer.Interval = new TimeSpan(0, 0, 1);
             TickCountText.Text = "通知次数：" + _tickCount;
-            // TODO 5d（实践2/DoD2）：在构造方法将SamplingTimer_Tick登记到原_samplingTimer.Tick一次。
+            // TOD 5d（实践2/DoD2）：在构造方法将SamplingTimer_Tick登记到原_samplingTimer.Tick一次。
+            _samplingTimer.Tick += SamplingTimer_Tick;
             DrawTemperatureLine();
             UpdateTemperatureAlert();
             LoadThresholdSettings();
         }
         private void SamplingTimer_Tick(object? sender, EventArgs e)
         {
-            // TODO 5c（实践2/DoD2）：累加_tickCount并更新TickCountText，然后只调用一次_viewModel.AppendNextSample。
+            // TOD 5c（实践2/DoD2）：累加_tickCount并更新TickCountText，然后只调用一次_viewModel.AppendNextSample。
+            _tickCount++;
+            TickCountText.Text = "通知次数：" + _tickCount;
+            _viewModel.AppendNextSample();
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO 5e（实践2/DoD2）：已运行直接返回，否则启动原_samplingTimer并调用UpdateSamplingControls，不new或重复登记Tick。
+            // TOD 5e（实践2/DoD2）：已运行直接返回，否则启动原_samplingTimer并调用UpdateSamplingControls，不new或重复登记Tick。
+            if (_samplingTimer.IsEnabled)
+            {
+                return;
+            }
+            _samplingTimer.Start();
+            UpdateSamplingControls();
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO 5f（实践2/DoD2）：停止原_samplingTimer并调用UpdateSamplingControls，保留历史和样例位置。
+            // TOD 5f（实践2/DoD2）：停止原_samplingTimer并调用UpdateSamplingControls，保留历史和样例位置。
+            _samplingTimer.Stop();
+            UpdateSamplingControls();
         }
 
         private void UpdateSamplingControls()
         {
-            // TODO 5b（实践2/DoD2）：把_samplingTimer.IsEnabled交给_viewModel.IsSampling，并把已停止/采集中写到SamplingStateText。
+            // TOD 5b（实践2/DoD2）：把_samplingTimer.IsEnabled交给_viewModel.IsSampling，并把已停止/采集中写到SamplingStateText。
+            _viewModel.IsSampling = _samplingTimer.IsEnabled;
+            // 已完成：原TASK-027步骤4（实践 2/4 / DoD 2/3）：根据 _samplingTimer.IsEnabled 设置 SamplingStateText.Text 和 ClearButton.IsEnabled，并让启动/停止按钮状态与启停一致。
+            // IsEnabled 是 WPF 按钮属性，False 让按钮不能点击，True 让按钮可以点击。
+            if (_samplingTimer.IsEnabled)
+            {
+                SamplingStateText.Text = "采集中";
+            }
+            else
+            {
+                SamplingStateText.Text = "已停止";
+            }
         }
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -140,11 +190,20 @@ namespace WpfBae.Exercises.Task038
         // 教练提取文件写入方法，下面两个连接由学员完成；threshold是已读取并验证的候选数值。
         private void SaveThresholdSettings()
         {
-            // TODO 7a（实践3/DoD3）：把_viewModel.AlarmThreshold传给WriteThresholdToFile，不从未应用输入读取。
+            // TOD 7a（实践3/DoD3）：把_viewModel.AlarmThreshold传给WriteThresholdToFile，不从未应用输入读取。
+            WriteThresholdToFile(_viewModel.AlarmThreshold);
         }
         private void ApplyLoadedThreshold(double threshold)
         {
-            // TODO 7b（实践3/DoD3）：恢复到同一VM的AlarmThreshold和ThresholdInputText，重算报警并显示加载完成，不保存或覆盖文件。
+            // TOD 7b（实践3/DoD3）：threshold是文件已读出的合法阈值，例如26；把它设为当前有效阈值和输入框文字，再刷新报警并显示配置加载完成，本步不写文件。
+            // 把报警实际使用的阈值改成26。
+            _viewModel.AlarmThreshold = threshold;
+            // 让输入框也显示26。
+            _viewModel.ThresholdInputText = Convert.ToString(threshold);
+            // 用恢复后的阈值重新判断当前温度是否超限。
+            UpdateTemperatureAlert();
+            // 在界面上显示加载结果。
+            ConfigStatusText.Text = "配置加载完成。";
         }
         private void WriteThresholdToFile(double threshold)
         {

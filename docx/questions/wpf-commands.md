@@ -105,6 +105,17 @@ IsSampling回答“现在是否正在采集”，清空CanExecute回答“现在
 Q2按现有骨架的AddCommand/ClearCommand绑定、Execute调用原VM操作、清空条件取反、窗口状态同步与setter通知的自主应用标已掌握；真实按钮/直接命令的运行保护、停止恢复、清空复位和混合追加均已验证，本轮未代改源码。
 事件通知基础、命令类型及签名/构造对象连接、原样例追加清空算法由教练提供或迁移，不扩大为所有接口/委托/事件机制与完整MVVM架构已独立掌握。
 Q1原范围保持，当前25分类/61条、待复习32/已掌握29，前述Q2待复习和首次条件相反为历史。
+### 2026-10-18 TASK-038审查：Command里的名字取自哪里？
+
+实际AddButton写Command="{Binding AddButton}"，这会让WPF去当前DataContext即新VM里查找公开属性AddButton，而不是拿窗口里x:Name叫AddButton的按钮；VM公开的是AddCommand，所以实际Command为空，点击不追加。
+ClearButton同理要读取ClearCommand，两个原命令的Execute和清空CanExecute方法已通过独立诊断，不需要重写成Click算法。
+IsSampling.set还只发了CanSelectDevice属性通知，未调用_clearCommand.NotifyCanExecuteChanged()，启停时实际条件通知为0；CanExecute是询问能否清空，NotifyCanExecuteChanged是要求按钮重新询问，两者各有作用。
+本轮没有修补绑定或条件通知，TASK-038三个DoD未通过；原TASK-034已验证的局部掌握保留，不把此新项目连接未完成等同于旧证据不存在。
+### 2026-10-18 TASK-038第二次审查通过
+
+AddCommand/ClearCommand绑定和IsSampling后的清空条件重查已自主修复，真实按钮添加/清空、运行禁用/停止恢复、命令直接执行保护均通过，264项功能全部通过，前轮缺口已修复。
+原Q2局部掌握范围保留，接口和命令构造仍为教练提供，不推定全部事件机制独立掌握；TASK-038仅因运行记录未填写保持进行中，见[结果](../tasks/evidence/TASK-038/review-02/results.json)。
+
 ## Q1：Command 是什么，CanExecute、Execute 和 CanExecuteChanged 怎样控制清空按钮？
 
 - 日期：2026-10-11

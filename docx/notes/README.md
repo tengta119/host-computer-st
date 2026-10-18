@@ -69,3 +69,6 @@ TASK-009～013 的部分原验收附件在当前工作区缺失，笔记明确�
 重写前的 10 份旧稿单独保存在 `docx/notes-backups/before-plain-rewrite-2026-10-13/`，供需要时回查；这里展示新版。
 
 [返回学习导航](../README.md) · [学习进度](../learning.md) · [任务索引](../tasks/README.md) · [问答库](../questions/README.md)
+
+
+- [WPF阶段目标核对](./WPF-stage-check.md)：2026-10-18按计划主题与最终监控目标核对实践证据，阶段实践已通关，原理复习和协助边界保留。

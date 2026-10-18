@@ -143,6 +143,15 @@ Q2当前标已掌握，范围限现有骨架中从有效字段创建配置对象
 独立骨架提供了类、路径和方法签名，核心对象使用/JSON读写/错误保护/加载同步留五个TODO，不计学员自主掌握。
 实际构建0警告/错误、50项骨架检查及原exe启动关闭通过，详见[TASK-030](../tasks/TASK-030.md)；三个DoD均待实践。
 Q1已有WriteIndented自主证据保持，Q2待复习；当前24分类/57问答，待复习33/已掌握24。
+### 2026-10-18 TASK-038追问：TODO7b要做什么？
+
+具体场景是上次把阈值设为26并保存，关闭后再打开程序，初始值仍是27，但文件中保存的是26；LoadThresholdSettings已经把26读出来并验证合法，再调用ApplyLoadedThreshold(26)，因此方法参数threshold此时就是26。
+TODO7b负责把这个已读出的26用于当前程序：有效阈值改26、输入框显示26、按26重判当前报警，最后显示配置加载完成。
+对应的四个动作是_viewModel.AlarmThreshold = threshold;、_viewModel.ThresholdInputText = Convert.ToString(threshold);、UpdateTemperatureAlert();和ConfigStatusText.Text = "配置加载完成。";，都写在ApplyLoadedThreshold方法里。
+第一行改变报警实际使用的数字，第二行把这个数字转换成输入框需要的文字，第三行调用已有方法重新判断最新温度是否超限，第四行只报告加载结果。
+文件读取和合法性检查已经在调用前完成，本步不再调用WriteThresholdToFile，也不读取输入框文字覆盖文件。
+本轮源码可见AlarmThreshold的setter只通知AlarmThreshold，TODO6a还要求通知CurrentThresholdText，否则有效值文字不会被要求重读；这与7b恢复数值是两个具体连接位置，只作源码提示，未运行判断实际行为或记录新错题。
+本轮仅解释与澄清TODO注释，未代写四行动作或运行验收，TASK-038进行中/DoD、Q2原掌握范围和25分类/63条、待复习32/已掌握31保持。
 ## 历史证据与掌握范围
 
 Q1 保持已掌握。2026-10-05 学员自主将 WriteIndented=true 的选项传给 Serialize 并完成写入，save 入口退出 0，实际合法 JSON 含设备 002、200 ms 和换行缩进。此前无法编译/尚未验证的描述是修复前历史，完整旧稿保留。本次没有重新执行保存。

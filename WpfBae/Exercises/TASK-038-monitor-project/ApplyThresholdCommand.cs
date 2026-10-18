@@ -18,7 +18,8 @@ namespace WpfBae.Exercises.Task038
 
         public void Execute(object? parameter)
         {
-            // TODO 6b（实践3/DoD3）：VM.ApplyThreshold完成后，在这里调用同一_viewModel.ApplyThreshold一次。
+            // TOD 6b（实践3/DoD3）：VM.ApplyThreshold完成后，在这里调用同一_viewModel.ApplyThreshold一次。
+            _viewModel.ApplyThreshold();
         }
 
         public event EventHandler? CanExecuteChanged;

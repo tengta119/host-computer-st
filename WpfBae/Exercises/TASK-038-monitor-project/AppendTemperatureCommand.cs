@@ -19,7 +19,8 @@ namespace WpfBae.Exercises.Task038
 
         public void Execute(object? parameter)
         {
-            // TODO 4a（实践2/DoD1/2）：只调用当前_viewModel的AppendNextSample一次。
+            // TOD 4a（实践2/DoD1/2）：只调用当前_viewModel的AppendNextSample一次。
+            _viewModel.AppendNextSample();
         }
 
         public event EventHandler? CanExecuteChanged;
