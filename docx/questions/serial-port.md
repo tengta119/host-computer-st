@@ -60,3 +60,43 @@ PrintReading中int value = (frame[3] * 256 + frame[4]) / 10先执行整数除法
 用户进一步明确“源码没问题就通过”，学员已自行分开int rawValue与double temperature，并使用10.0进行浮点除法；收发调用和缓冲清理源码未发现任务范围内的阻塞问题，TASK-044按调整后的静态DoD标为✅ 已通关。
 教练只补输出中的原始值、温度单位/标识以及关闭文案错字，没有代写学员计算，修改后仅重读源码，未构建、运行或测试，详见[最终静态记录](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-044-serial-roundtrip/Verification/static-review-final-2026-10-19.md)。
 Q2继续待复习，记录学员已完成源码连接与浮点换算修正，但不把本次静态任务通关扩展成真实串口往返已自主验证；Q1和既有字节实践能力保持。
+
+## Q3：TASK-045收到串口数据后怎样交给WPF窗口更新？
+
+- 日期：2026-10-19。
+- 状态：待复习。
+- 来源：TASK-045开启必要讲解，旧WPF模拟采集与事件实践保留，不推定已经掌握串口辅助线程与窗口交接。
+- 对应：[窗口后台](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-045-serial-monitor/Task045Window.xaml.cs)、[具体讲解与运行](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-045-serial-monitor/RUN-GUIDE.md)。
+
+窗口的_connection是教练自定义Task045SerialConnection对象，Open方法内部打开.NET串口并登记DataReceived，后台读取有效字节、进已有缓冲、取完整帧后产生Task045Reading读数，再发出自定义ReadingReceived通知。
+窗口SerialReadingReceived里的e是Task045ReadingEventArgs，e.Reading保存此次完整读数；虽然这个方法写在窗口后台文件里，它仍跟着串口通知在辅助线程执行，不能直接修改LatestReadingText或向正在被DataGrid使用的_history追加。[Microsoft：DataReceived](https://learn.microsoft.com/en-us/dotnet/api/system.io.ports.serialport.datareceived)
+Dispatcher是WPF用于安排该窗口界面操作的对象，TODO 4使用BeginInvoke把调用ApplyReadingOnUi(e)的动作交给窗口线程，动作由.NET的Action委托保存，不是在接收线程当场执行；具体最小代码和逐处解释已写在运行说明，先解释再要求使用。[Microsoft：WPF线程模型](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/threading-model)
+ApplyReadingOnUi是教练命名的普通方法，在窗口线程执行后，TODO 5才将e.Reading追加到已有ObservableCollection，再调用教练的RefreshPresentation更新最新值、条数、曲线和报警；TODO 4决定在哪里执行，TODO 5连接读数与集合，两个方法不是同一件事的重复拆分。
+数据类、事件登记、锁/旧连接通知保护、关闭安全收尾和绘图辅助由教练准备，不要求重写已验证缓冲或先口试线程原理；五个TODO尚未由学员实现，教练的13项准备检查和注入数据显示不计串口往返或学员已掌握，Q3待复习，旧能力保持。
+
+2026-10-19用户追问两条EventHandler声明的用途，已在[委托基础Q6](./csharp-events.md#q6委托是什么为什么-handler-变量可以像方法一样调用)补当前真实对象与方法：ReadingReceived报告完整读数，ReceiveFailed报告需要显示的接收异常，窗口通过+=登记SerialReadingReceived与SerialReceiveFailed，事件本身不自动切换线程；委托类型由.NET提供，两个参数类和事件名由教练定义，未改代码或改变掌握/任务状态。
+
+### 一行BeginInvoke怎样拆开看
+
+2026-10-19用户追问Dispatcher.BeginInvoke(new Action(() => ApplyReadingOnUi(e)))，当前源码已见学员写入这一行，只有源码使用证据，尚未据此认定已经掌握界面线程交接，Q3仍待复习。
+先看具体效果：串口刚收到一条设备1、25.0℃的读数，当前e带着这条读数，这一行把“拿e调用ApplyReadingOnUi”的动作交给窗口线程去执行，接收代码安排后即可继续，不需要等窗口更新完。
+同一行可以分开写成：
+
+```csharp
+Action updateWindow = new Action(() =>
+{
+    ApplyReadingOnUi(e);
+});
+Dispatcher.BeginInvoke(updateWindow);
+```
+
+ApplyReadingOnUi是教练命名的普通方法，调用时把当前e传给它，方法内部才有历史追加和显示连接；这里不是某个WPF内置更新接口。
+`() => { ApplyReadingOnUi(e); }`是一个待执行的小动作，这时先描述要做什么，不马上调用方法；外面空括号表示这个动作不需要再接收新参数，里面仍可以使用本次接收方法已有的e。
+Action是.NET提供的无参数/void委托类型，new Action把这个小动作保存为可交给别处执行的委托对象，updateWindow是说明示例中新起的变量名，并非新增API。
+Dispatcher是当前窗口的WPF调度对象，BeginInvoke把updateWindow放入这个窗口线程待处理的队列，之后由窗口线程执行；因此真正运行ApplyReadingOnUi时才回到了可以操作控件和绑定历史集合的线程。
+直接写ApplyReadingOnUi(e)会在当前接收线程执行，同样的方法名不会自己带来线程切换；本轮仅解释这一关系，没有改动学员代码、运行或改变任务DoD，不追加新的考试或错题。
+
+### 2026-10-19 TASK-045最终静态审查
+
+学员已完成按钮连接/断开/发送、BeginInvoke安排ApplyReadingOnUi和_history.Add(e.Reading)后的显示刷新，保持旧连接/关闭判断，TASK-045按最近源码偏好通关；教练仅删事件登记行末多余x并清理旧界面提示，没有代写核心连接，详见[静态依据](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-045-serial-monitor/Verification/static-review-final-2026-10-19.md)。
+本轮未构建、运行或测试，记录已完成源码应用，不将静态通关推定为实际串口往返或委托/线程完整原理已验证，Q3与委托Q6仍待复习，既有应用证据保持，不因一个多余字符追加认知错题。

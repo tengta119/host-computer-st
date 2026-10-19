@@ -1,0 +1,18 @@
+{
+  "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-039-byte-basics\\Task039Exercise.cs": "a892acccf72ffb2cae32b3d86c230a069454beb0f8e6f675e9bb0ce6d425d5ed",
+  "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-040-valid-bytes\\Task040Exercise.cs": "8a90146eff02f49c4bcb720e6efe28b7f0e8dfcfc35129c353ecb9ac08fa00ff",
+  "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-041-receive-buffer\\Task041Exercise.cs": "be5d07ee9c8a348c16abfd8a43a1f74059a52c921b84f0a9562eff7928e1b2c4",
+  "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-042-fixed-frame\\Task042Exercise.cs": "9e07493bdc8ec4e291e3d4de24fb95ae3929f769e07a3d0c53171d278543efad",
+  "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-043-frame-resync\\Task043Exercise.cs": "b42ebd17ddefbc7875997f7b3418cdae81e4169d2bd1db87a50b873032e57042",
+  "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-044-serial-roundtrip\\Task044Exercise.cs": "e8b4fd3627f08dd87a5e99e7dd04a583f1d9820603802907c8c28c317ba8aac1",
+  "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-044-serial-roundtrip\\Task044Simulator.cs": "3d1d90634349fa1701fa7dada0eb2fc2fe5aa13e9b14fa2bc45bba98c6763ecf",
+  "Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "1eb79dde4e730b1459c828f005dfe6852fc3273b1378ef18fe166ee4dc353e59",
+  "Stage03-DeviceCommunication\\DeviceCommunication.Wpf\\MainWindow.xaml": "42573d9840fe8fb77f43c9400bac122bcb0542047ed6b4a5673671b17c58034a",
+  "Stage03-DeviceCommunication\\DeviceCommunication.Wpf\\MainWindow.xaml.cs": "20d1ecad723faa2d806908dc3a223471ad2074d2b70e2af14bf6b16c78f77b25",
+  "WpfBae\\Exercises\\TASK-038-monitor-project\\AppendTemperatureCommand.cs": "8d24561fa1943138e506414a91fed14eef9bb89fbd0ab3531fb69c0166f1b9b0",
+  "WpfBae\\Exercises\\TASK-038-monitor-project\\ApplyThresholdCommand.cs": "0459cd03c317383e72b628f753d4e644c56428b2dfe26c0c5e5d36f4f675a465",
+  "WpfBae\\Exercises\\TASK-038-monitor-project\\ClearTemperatureHistoryCommand.cs": "d99813c291b23a45df6a2d35f9c54e7ca832e88c7e5c30c706f530564689e40e",
+  "WpfBae\\Exercises\\TASK-038-monitor-project\\Task038Window.xaml.cs": "86be81f3711877f383bd431fbf794feac541a5788d64e283101ae79fb5ba3743",
+  "WpfBae\\Exercises\\TASK-038-monitor-project\\TemperatureMonitorViewModel.cs": "8b356c88fceeaa2fc36fe518071657d26e65bdaadae0a66cfcbee798142443a8",
+  "WpfBae\\Exercises\\TASK-038-monitor-project\\Task038Window.xaml": "35fa777332524bbe13e4d9f724a736719f45e1eabdbbb3ce44c379151daad06a"
+}

@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
+using System.Text.Json;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using DeviceCommunication.Wpf.Exercises.Task045;
+
+internal class StartupReview
+{
+    [STAThread]
+    private static int Main(string[] args)
+    {
+        Application app = new Application();
+        app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        Task045Window window = new Task045Window();
+        window.Left = -20000;
+        window.Top = -20000;
+        window.Show();
+        window.UpdateLayout();
+        window.Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ApplicationIdle);
+        Dictionary<string, bool> checks = new Dictionary<string, bool>();
+        BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
+        Type type = typeof(Task045Window);
+        ObservableCollection<Task045Reading> history = (ObservableCollection<Task045Reading>)type.GetField("_history", flags)!.GetValue(window)!;
+        Button send = (Button)window.FindName("SendButton");
+        Button connect = (Button)window.FindName("ConnectButton");
+        ComboBox port = (ComboBox)window.FindName("PortComboBox");
+        checks["initial_history_empty"] = history.Count == 0;
+        checks["initial_connect_enabled_send_disabled"] = connect.IsEnabled && !send.IsEnabled;
+        checks["no_timer_or_fake_readings"] = history.Count == 0;
+        port.Text = "COM1";
+        connect.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        checks["connect_is_honest_todo"] = ((TextBlock)window.FindName("OperationText")).Text.Contains("TODO 1");
+        checks["todo_does_not_claim_connected"] = ((TextBlock)window.FindName("ConnectionStatusText")).Text == "未连接";
+        Save(window, Path.Combine(args[0], "startup-empty.png"));
+
+        // 仅注入教练辅助诊断数据检查布局/绘图，不调用学员TODO，也不代表串口收发成功。
+        history.Add(new Task045Reading(1, 250));
+        type.GetMethod("RefreshPresentation", flags)!.Invoke(window, null);
+        window.UpdateLayout();
+        checks["single_reading_visible_dot"] = ((FrameworkElement)window.FindName("SingleReadingDot")).Visibility == Visibility.Visible;
+        history.Add(new Task045Reading(1, 256));
+        history.Add(new Task045Reading(2, 260));
+        type.GetMethod("RefreshPresentation", flags)!.Invoke(window, null);
+        checks["latest_and_alarm_helpers"] = ((TextBlock)window.FindName("LatestReadingText")).Text.Contains("26.0")
+            && ((TextBlock)window.FindName("AlarmText")).Text.Contains("超限");
+        Save(window, Path.Combine(args[0], "startup-helper-data.png"));
+        window.Width = 960;
+        window.Height = 640;
+        Save(window, Path.Combine(args[0], "startup-minimum.png"));
+        checks["minimum_canvas_usable"] = ((Canvas)window.FindName("ChartCanvas")).ActualWidth > 200
+            && ((Canvas)window.FindName("ChartCanvas")).ActualHeight > 100;
+        checks["history_grid_visible"] = ((DataGrid)window.FindName("HistoryGrid")).ActualWidth > 300;
+
+        Task045SerialConnection connection = new Task045SerialConnection();
+        Type serviceType = connection.GetType();
+        List<byte> buffer = (List<byte>)serviceType.GetField("_receivedBytes", flags)!.GetValue(connection)!;
+        List<Task045Reading> readings = new List<Task045Reading>();
+        MethodInfo extract = serviceType.GetMethod("ExtractReadings", flags)!;
+        buffer.AddRange(new byte[] { 0x99, 0xAA, 0x01 });
+        extract.Invoke(connection, new object[] { readings });
+        checks["provided_buffer_retains_partial"] = buffer.Count == 2 && buffer[0] == 0xAA && readings.Count == 0;
+        buffer.AddRange(new byte[] { 0x03, 0x01, 0x00, 0x5F, 0x88 });
+        extract.Invoke(connection, new object[] { readings });
+        checks["provided_parser_and_noise_clear"] = buffer.Count == 0 && readings.Count == 1 && readings[0].RawValue == 256 && readings[0].Temperature == 25.6;
+        connection.Dispose();
+        checks["closed_session_rejected"] = !connection.IsCurrentSession(0);
+        window.Close();
+        checks["window_close_cleans_service"] = !( (Task045SerialConnection)type.GetField("_connection", flags)!.GetValue(window)! ).IsConnected;
+        bool allPassed = true;
+        foreach (bool passed in checks.Values) allPassed = allPassed && passed;
+        Console.WriteLine(JsonSerializer.Serialize(new { allPassed, checks, serialRoundtripVerified = false, learnerTodosCompleted = false }));
+        app.Shutdown();
+        return allPassed ? 0 : 1;
+    }
+
+    private static void Save(Window window, string path)
+    {
+        window.UpdateLayout();
+        window.Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ApplicationIdle);
+        RenderTargetBitmap bitmap = new RenderTargetBitmap((int)window.ActualWidth, (int)window.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+        bitmap.Render(window);
+        PngBitmapEncoder encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        using FileStream stream = File.Create(path);
+        encoder.Save(stream);
+    }
+}

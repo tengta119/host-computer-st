@@ -128,6 +128,30 @@ handler("读取成功");
 
 第一行创建委托，让 handler 保存 ShowMessage 的引用；没有调用 ShowMessage。第二行才调用保存的方法，把文字交给其 text 参数。变量保存的是可调用方法引用，不是输出结果或方法名字符串。
 
+### 2026-10-19 TASK-045：两个EventHandler声明在做什么
+
+串口辅助Task045SerialConnection收到并解析出完整读数后，需要告诉窗口“这是一条读数”；读取中遇到需要报告的异常时，需要告诉窗口“接收失败，原因在这里”，两个事件分别通知这两种结果。
+
+```csharp
+public event EventHandler<Task045ReadingEventArgs>? ReadingReceived;
+public event EventHandler<Task045SerialErrorEventArgs>? ReceiveFailed;
+```
+
+ReadingReceived和ReceiveFailed是教练自行命名的两个事件，event是C#关键字；EventHandler<T>是.NET已经定义好的委托类型，本题不用再写一份delegate声明。
+EventHandler<Task045ReadingEventArgs>规定可以登记的方法接收object? sender、Task045ReadingEventArgs e并返回void，实际登记的是窗口的SerialReadingReceived；EventHandler<Task045SerialErrorEventArgs>则要求第二个参数为Task045SerialErrorEventArgs，实际登记的是SerialReceiveFailed。
+Task045ReadingEventArgs和Task045SerialErrorEventArgs都是教练新建的参数类，不是.NET内置类型；前者的Reading保存设备编号、原始值和温度，后者的Message保存错误说明，SessionId是教练提供的旧连接通知保护，不在本次用途解释里追加其内部机制。
+
+```csharp
+_connection.ReadingReceived += SerialReadingReceived;
+_connection.ReceiveFailed += SerialReceiveFailed;
+```
+
+这两行已经写在Task045Window构造方法中，第一行把“收到读数时要调用的窗口方法”登记进去，第二行把“读取错误时要调用的窗口方法”登记进去；+=此时只登记，不立即执行这些方法。
+辅助类以后通过局部委托handler调用登记的方法，例如handler(this, new Task045ReadingEventArgs(reading, sessionId))把当前辅助对象作为sender，把此次读数放入e交给SerialReadingReceived；没有任何方法登记时可能为null，因此声明带?且调用前判断handler != null。
+这样串口辅助只负责读数据、报告结果，不需要知道窗口里哪个TextBlock显示温度、哪个位置显示错误；窗口登记自己的处理方法决定收到结果后做什么，这就是当前代码使用委托事件的具体用途。
+普通事件通知本身不会切换到窗口线程，调用仍跟着发通知的接收线程执行，TASK-045的Dispatcher负责后续界面交接，两者用途分开讲。
+本轮只是解释教练提供的声明与连接，未改代码或运行示例，Q6仍待复习，不撤销TASK-002已有事件登记/发布/移除的实践能力，也不记学员错题。
+
 ### 2026-10-11 追问：为什么不直接调用，委托只能指向一个方法有什么用？
 
 若固定只调用一个方法，直接调用就够。委托的用处是让调用方决定读取后的动作，读取方法不写死显示或报警。下面是自定义说明方法：
