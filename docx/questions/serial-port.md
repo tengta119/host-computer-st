@@ -2,6 +2,8 @@
 
 > [返回问答索引](./README.md)
 
+2026-10-19新增Q4讲解TASK-046的等待与超时，Q1至Q4均待复习；TASK-046骨架已准备，四个TODO尚未完成，不新增自主掌握。
+
 ## Q1：串口是什么，需要在电脑上创建一个吗？
 
 - 日期：2026-10-19。
@@ -100,3 +102,20 @@ Dispatcher是当前窗口的WPF调度对象，BeginInvoke把updateWindow放入�
 
 学员已完成按钮连接/断开/发送、BeginInvoke安排ApplyReadingOnUi和_history.Add(e.Reading)后的显示刷新，保持旧连接/关闭判断，TASK-045按最近源码偏好通关；教练仅删事件登记行末多余x并清理旧界面提示，没有代写核心连接，详见[静态依据](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-045-serial-monitor/Verification/static-review-final-2026-10-19.md)。
 本轮未构建、运行或测试，记录已完成源码应用，不将静态通关推定为实际串口往返或委托/线程完整原理已验证，Q3与委托Q6仍待复习，既有应用证据保持，不因一个多余字符追加认知错题。
+
+
+## Q4：发送成功后怎样等待回复，ReadTimeout为什么不是这次请求的超时？
+
+- 日期：2026-10-19。
+- 状态：待复习。
+- 来源：TASK-046开启时先补的必要说明，不是学员认知错误。
+- 关联：[TASK-046](../tasks/TASK-046.md)与[实际运行说明](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/RUN-GUIDE.md)。
+
+窗口调用_connection.SendRequest写出55 01成功，设备仍可能不回复，所以窗口还要单独记住“现在正在等”，并在完整读数到达或等待超时后恢复发送按钮。
+串口辅助中的ReadTimeout = 200限制某一次Read等字节的时间，若对端完全不发数据，可能连DataReceived和Read都没有执行，因此它不能负责判断点击发送后3秒仍没有完整回复。
+本题新增的_requestWatch是.NET的Stopwatch秒表对象，BeginWaiting里Restart从零计时，之后用Elapsed读取经过时长；EndWaiting里Reset停止并归零，不需要Thread.Sleep阻塞窗口。
+_timeoutTimer是WPF的DispatcherTimer对象，Start之后每隔约200毫秒安排窗口执行CheckResponseTimeout，Stop结束检查；检查读取秒表是否已到3秒，不生成温度，不把半帧变成完整帧，窗口忙时也不保证恰好每200毫秒执行。
+收到完整读数、超时、主动断开和错误处理共用EndWaiting，后者是教练命名的普通方法，学员在TODO 2里接好停止检查、清标记和刷新显示，避免多个出口遗漏一个。
+接收错误时使用BelongsToCurrentConnection核对编号即可，不能同时要求IsOpen为true，否则已经失效的当前端口恰好会被当作无须处理；这些编号保护由教练提供，旧连接的排队读数或错误不能影响重连后的窗口。
+没有请求编号就无法严格匹配迟到回复，当前仅约定同一连接一次等待、下一条发送后完整读数算响应；虚拟对端退出不一定令本端IsOpen变false，此时通常靠无回复超时发现问题。
+具体对象、最小秒表示例、四个TODO和运行步骤先读实际运行说明，当前仅有骨架启动/关闭证据，未验证学员超时或重连，不扩大既有掌握范围。

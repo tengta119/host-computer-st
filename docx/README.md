@@ -1,5 +1,7 @@
 # 上位机开发学习工作区
 
+2026-10-19 [TASK-046](./tasks/TASK-046.md)已明确开启，状态🟡 进行中；独立骨架和[运行说明](../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/RUN-GUIDE.md)已准备，WPF入口切到本题，旧源码保留，四个TODO待实现。教练构建与窗口启动/关闭准备通过，未验证串口或学员DoD，第三阶段仍🟡 进行中，下方只建卡为历史。
+
 2026-10-19 TASK-045按最近源码偏好✅ 已通关：按钮收发、Dispatcher交接与历史追加五处连接正确，教练清理多余x和两处旧提示，未构建/运行/测试，不声称实际联调已验证；依据见[TASK-045](./tasks/TASK-045.md)，只创建[TASK-046：处理串口超时、断开与重新连接](./tasks/TASK-046.md)⚪ 未开始卡片，未准备源码或切换入口，第三阶段仍🟡 进行中，下方待实现为历史。
 
 2026-10-19 TASK-045已开启，状态🟡 进行中；新WPF任务窗口、串口接收辅助、读数对象与[运行说明](../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-045-serial-monitor/RUN-GUIDE.md)已准备，入口接通，旧作品保留。构建0警告/0错误、窗口及13项教练准备检查通过，核心连接留五个TODO、三个DoD未勾选，实际串口往返未验证，首步从连接按钮开始，详见[TASK-045](./tasks/TASK-045.md)，下方仅建卡为历史。

@@ -1,17 +1,41 @@
 # TASK-046：处理串口超时、断开与重新连接
 
 - 阶段：第三阶段：设备通信（通信稳定性）。
-- 状态：⚪ 未开始
+- 状态：🟡 进行中
 - 创建日期：2026-10-19。
+- 开启日期：2026-10-19，用户明确要求“开启task046”。
 - 计划来源：[计划](../plan.md)第三阶段中超时、设备断开、恢复连接及窗口关闭后的正确收尾。
 - 选择依据：TASK-045已按用户静态口径通关，串口收发与WPF读数连接齐全，下一步把“对端不回复或通信中断时怎样恢复”纳入同一个完整功能，保留原源码与实际证据边界。
 - 项目：复用[DeviceCommunication.Wpf.csproj](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/DeviceCommunication.Wpf.csproj)和TASK-044的可控模拟端，不新增通信框架。
 - 难度/预计时间：待补充，不预设时长。
 
-## 本轮只建卡
+## 独立骨架与复用范围
 
-本轮未开启TASK-046，未准备其源码、修改TASK-045成果或切换WPF入口；明确开启后检查现有实现，在独立目录Exercises/TASK-046-serial-recovery/准备安全增量骨架。
-使用已完成的窗口与协议思路，不重复让学员重写按钮、曲线或字节缓冲，必要的超时/恢复机制在具体发送与接收位置讲解。
+此前只建卡的安排已由本次明确开启覆盖，原TASK-045文件保留，当前实际目录为Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/。
+新增[窗口源码](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml.cs)、[布局](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml)、[串口辅助](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046SerialConnection.cs)和[运行说明](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/RUN-GUIDE.md)。
+Task046SerialConnection复用上一题的串口/缓冲思路，直接引用Task045Reading及两种事件参数，保留学员已有按钮、Dispatcher、历史、曲线和报警连接，不要求重写。
+共享文件只修改DeviceCommunication.Wpf/App.xaml的StartupUri，切到本题窗口；项目依赖与控制台Program.cs不改，模拟端仍用TASK-044的Task044Simulator。
+教练提供CurrentSessionId、HasConnection和BelongsToCurrentConnection辅助、串口失效错误通知路径、等待时禁用按钮的显示连接及关闭窗口的最终保护，核心等待/恢复逻辑留给学员。
+
+## 本题的明确约定
+
+发送55 01成功后开始计时，最多等待3秒，同一连接只允许一个等待请求，之后到达的下一条完整读数结束等待；接收处已用连接编号和发送时间排除旧连接或发送前产生的排队读数。
+检查定时器每200毫秒安排一次窗口检查，秒表保存实际经过时长，窗口繁忙时检查可能延后；超时不依赖Tick次数，不靠等待时长判断帧是否完整。
+超时后结束等待并允许重发，保留当前连接、历史及半帧；主动断开或通信失败则结束等待并释放旧连接，关闭时清理旧半帧。
+没有请求编号就不能严格区分迟到的旧回复与新请求的回复，本题不声称解决这种协议限制；虚拟串口对端退出也不一定让本端IsOpen变false，可能只能观察到请求超时。
+
+## TODO与首个动作
+
+| TODO | 实际位置与产出 | 对应DoD |
+| --- | --- | --- |
+| 1 | BeginWaiting记录等待标记、连接编号与发送时间，启动秒表/检查定时器，显示等待并刷新按钮。 | 1 |
+| 2 | EndWaiting停止检查、归零秒表、清等待标记和编号，显示传入结果并恢复按钮，供回复/超时/断开共用。 | 1、3 |
+| 3 | CheckResponseTimeout排除关闭和旧连接，处理当前连接失效，并按实际时长决定继续等待或显示超时。 | 1、2、3 |
+| 4 | RecoverConnection统一结束等待、释放端口、保留失败原因，即使释放异常也刷新按钮，允许手动重连。 | 2、3 |
+
+首个动作只完成Task046Window.xaml.cs的BeginWaiting；连接后点击发送，看到等待提示且发送按钮变灰，之后再把其余出口接起来，TODO 2/3未完成时暂时不会自动恢复按钮。
+新对象、Restart/Reset/Elapsed、定时器Start/Stop及错误编号判断先在运行说明中按当前窗口解释，不把前一题写过事件或Dispatcher推定为已掌握全部机制。
+运行命令和模拟端1/2/3/r的实际操作见运行说明，沿用已有虚拟串口对，无需为每个任务重复创建端口。
 
 ## 完成一个能够恢复的通信流程
 
@@ -36,4 +60,6 @@
 
 ## 当前证据
 
-仅有此卡片，尚无TASK-046源码、构建、运行或验收证据，三个DoD未勾选，第三阶段仍🟡 进行中。
+2026-10-19实际执行dotnet build .\Stage03-DeviceCommunication\DeviceCommunication.Wpf\DeviceCommunication.Wpf.csproj --nologo，0警告/0错误；随后执行python .\Stage03-DeviceCommunication\DeviceCommunication.Wpf\Exercises\TASK-046-serial-recovery\Verification\verify_startup.py，构建和临时窗口宿主均退出0。
+教练仅检查本题窗口实际Show、最小尺寸渲染和关闭，已查看[最小布局](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Verification/startup-minimum-2026-10-19.png)，未打开串口、注入读数或测试学员TODO；[准备记录](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Verification/startup-2026-10-19.json)记录25个既有文件哈希不变。
+四个TODO尚未由学员完成，三个DoD未勾选，准备检查不计通信超时/重连的学员证据，第三阶段仍🟡 进行中，不创建下一任务。
