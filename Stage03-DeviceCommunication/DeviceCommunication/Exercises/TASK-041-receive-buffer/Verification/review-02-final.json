@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-19",
+  "task": "TASK-041",
+  "runs": [
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj",
+        "--nologo"
+      ],
+      "cwd": "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication",
+      "exit_code": 0,
+      "stdout": "  正在确定要还原的项目…\r\n  所有项目均是最新的，无法还原。\r\n  DeviceCommunication -> D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.70\r\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj",
+        "--no-build"
+      ],
+      "cwd": "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication",
+      "exit_code": 0,
+      "stdout": "Hello, World!\r\nTASK-041：保留分批收到的有效字节\r\n开始时\r\n0\r\n第一批后\r\n2\r\n0,170,AA\r\n1,1,01\r\n第二批后\r\n5\r\n0,170,AA\r\n1,1,01\r\n2,3,03\r\n3,0,00\r\n4,100,64\r\n第三批后\r\n6\r\n0,170,AA\r\n1,1,01\r\n2,3,03\r\n3,0,00\r\n4,100,64\r\n5,95,5F\r\n零数量后\r\n6\r\n0,170,AA\r\n1,1,01\r\n2,3,03\r\n3,0,00\r\n4,100,64\r\n5,95,5F\r\n清空后\r\n0\r\n重新接收第一批后\r\n2\r\n0,170,AA\r\n1,1,01\r\n重新接收第二批后\r\n5\r\n0,170,AA\r\n1,1,01\r\n2,3,03\r\n3,0,00\r\n4,100,64\r\n重新接收第三批后\r\n6\r\n0,170,AA\r\n1,1,01\r\n2,3,03\r\n3,0,00\r\n4,100,64\r\n5,95,5F\r\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task041-review-j511ihag\\Review.csproj",
+        "--nologo"
+      ],
+      "cwd": "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task041-review-j511ihag",
+      "exit_code": 0,
+      "stdout": "  正在确定要还原的项目…\r\n  已还原 C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task041-review-j511ihag\\Review.csproj (用时 47 毫秒)。\r\n  Review -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task041-review-j511ihag\\bin\\Debug\\net10.0\\Review.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.79\r\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task041-review-j511ihag\\Review.csproj",
+        "--no-build"
+      ],
+      "cwd": "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task041-review-j511ihag",
+      "exit_code": 0,
+      "stdout": "COUNT=2\r\nDATA=AA 01\r\nSAME_LIST=True\r\nCOUNT=5\r\nDATA=AA 01 03 00 64\r\nSAME_LIST=True\r\nCOUNT=6\r\nDATA=AA 01 03 00 64 5F\r\nSAME_LIST=True\r\nZERO_NO_CHANGE=True\r\nINPUTS_UNCHANGED=True\r\n",
+      "stderr": ""
+    }
+  ],
+  "submitted_source": "using System;\nusing System.Collections.Generic;\n\nnamespace DeviceCommunication.Exercises.Task041\n{\n    public class Task041Exercise\n    {\n        private List<byte> _receivedBytes = new List<byte>();\n\n        public void Run()\n        {\n            Console.WriteLine(\"TASK-041：保留分批收到的有效字节\");\n            PrintBuffer(\"开始时\");\n\n            byte[] firstChunk = new byte[] { 0xAA, 0x01, 0xEE, 0xFF };\n            byte[] secondChunk = new byte[] { 0x03, 0x00, 0x64, 0xEE };\n            byte[] thirdChunk = new byte[] { 0x5F, 0xEE };\n\n            AppendReceivedBytes(firstChunk, 2);\n            PrintBuffer(\"第一批后\");\n\n            AppendReceivedBytes(secondChunk, 3);\n            PrintBuffer(\"第二批后\");\n\n            AppendReceivedBytes(thirdChunk, 1);\n            PrintBuffer(\"第三批后\");\n\n            // TOD 3a：用同一个 firstChunk 和有效数量 0 调用追加，再观察列表，预期数量仍为 6、内容不变。\n            AppendReceivedBytes(firstChunk, 0);\n            PrintBuffer(\"零数量后\");\n            // TODO 3b：主动清空 _receivedBytes 并观察数量 0，再按原顺序处理同样三批，观察数量重新变为 2、5、6。\n            _receivedBytes.Clear();\n            PrintBuffer(\"清空后\");\n            AppendReceivedBytes(thirdChunk, 0);\n            AppendReceivedBytes(firstChunk, 2);\n            PrintBuffer(\"重新接收第一批后\");\n            AppendReceivedBytes(secondChunk, 3);\n            PrintBuffer(\"重新接收第二批后\");\n            AppendReceivedBytes(thirdChunk, 1);\n            PrintBuffer(\"重新接收第三批后\");\n        }\n\n        private void AppendReceivedBytes(byte[] data, int bytesRead)\n        {\n            // TOD 2：只遍历本次有效位置，把 data 中对应的字节逐个追加到已有的 _receivedBytes，保留前次内容和有效的 00。\n            for (int i = 0; i < bytesRead; i++)\n            {\n                _receivedBytes.Add(data[i]);\n            }\n        }\n\n        private void PrintBuffer(string label)\n        {\n            Console.WriteLine(label);\n\n            // TOD 1a：在这里输出 _receivedBytes.Count，先运行观察“开始时”的数量为 0。\n            Console.WriteLine(_receivedBytes.Count);\n            // TOD 1b：按列表当前 Count 遍历 _receivedBytes，每行输出下标、十进制值和两位大写十六进制。\n            for (int i = 0; i < _receivedBytes.Count; i++)\n            {\n                Console.WriteLine(i + \",\" + _receivedBytes[i] + \",\" + _receivedBytes[i].ToString(\"X2\"));\n            }\n        }\n    }\n}\n",
+  "checks": {
+    "real_entry_counts_and_contents": true,
+    "same_list_valid_append_inputs_preserved": true,
+    "inputs_unchanged_during_review": true,
+    "coach_only_added_four_observation_calls": true,
+    "project_entry_unchanged": true
+  },
+  "all_passed": true,
+  "hashes_after_assistance": {
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-041-receive-buffer\\Task041Exercise.cs": "934ae282370cc270e06d72bc4f4275140b9a5cb26cd2b63742dc1f99b6b1c560",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj": "8048b35cc22c40a1f064a5420a31ab13cc5aef76512c88e5922f6bb9409bc214",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "7e9f371e5363cf48de32cb83949fb5d31105d55b9117357b6f92d4648ba99189"
+  },
+  "coach_assistance": "Four PrintBuffer observation calls only; learner zero/Clear/replay logic retained.",
+  "prior_evidence": "review-02-before.json",
+  "dod": {
+    "1": "passed",
+    "2": "passed",
+    "3": "passed"
+  },
+  "task_status": "complete"
+}

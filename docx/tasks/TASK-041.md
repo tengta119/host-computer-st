@@ -1,9 +1,10 @@
 # TASK-041：保留分批收到的有效字节
 
 - 阶段：第三阶段：设备通信（串口准备）。
-- 状态：🟡 进行中
+- 状态：✅ 已通关
 - 创建日期：2026-10-19。
 - 开始日期：2026-10-19。
+- 通关日期：2026-10-19。
 - 计划来源：[学习计划](../plan.md)「四、第三阶段：设备通信」中保留前次尚未处理字节、把新到字节接在后面的接收缓冲。
 - 选择依据：TASK-040已验证只处理数组中的有效位置，下一步需要让多次收到的有效部分按原顺序留下来；暂不判断包是否完整。
 - 项目：复用[DeviceCommunication.csproj](../../Stage03-DeviceCommunication/DeviceCommunication/DeviceCommunication.csproj)，不新增依赖。
@@ -66,7 +67,7 @@ Task041Exercise类和方法签名均由教练准备，List<byte>与Console由.NE
 | 位置 | 当前事实与用途 |
 | :--- | :--- |
 | 专属目录Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-041-receive-buffer/ | 已创建，本题文件集中在此目录，未搬动已有作品。 |
-| [Task041Exercise.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-041-receive-buffer/Task041Exercise.cs) | 已准备普通类、共享列表字段、Run、三批样例与调用、追加方法与观察方法，核心实现留TODO。 |
+| [Task041Exercise.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-041-receive-buffer/Task041Exercise.cs) | 学员已完成有效追加、零数量与主动清空重来；教练仅补清空后及第二轮三批后的四处观察输出，全部DoD通过。 |
 | [Program.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Program.cs) | 共享入口的必要例外，仅将当前练习类连接改为Task041Exercise，保留Hello, World!输出。 |
 
 | 当前TODO | 对应实践与DoD | 完成后的可观察结果 |
@@ -88,19 +89,64 @@ Console.WriteLine("当前已保留数量：" + _receivedBytes.Count);
 dotnet run --project .\Stage03-DeviceCommunication\DeviceCommunication\DeviceCommunication.csproj
 ```
 
-当前未实现骨架只输出原问候语、本题标题和“开始时/第一批后/第二批后/第三批后”四个检查点标题。
-完成首步后，每个检查点下面都会出现数量0，因为追加TODO 2仍未实现；先确认“开始时”为0，后续实现追加后再观察后三处变成2、5、6。
+开启时未实现骨架只输出原问候语、本题标题和四个检查点标题，首步完成而追加未实现时数量均为0。
+当前实现已实际输出开始时0、三批后2/5/6、零数量后6、清空后0及第二轮三批后2/5/6，全部内容与顺序通过，四处收尾观察输出由教练补充。
 必要说明见[字节问答Q3](../questions/csharp-bytes.md#q3task-041-怎样把分批收到的字节保留在同一个列表里)。
 
 完成后说“检查TASK-041”即可，不要求额外抄写报告或口试。
 
 ## 验收标准（DoD）
 
-- [ ] 同一个字节列表处理三批人工输入后，Count依次为2、5、6，内容逐次与表格一致，每次都保留前面已收到的字节。
-- [ ] 追加依据本次有效数量，00正常保留，EE/FF等无效尾部不混入；不通过写死结果、每次清空或重建列表替代持续追加，输入数组内容保持。
-- [ ] 已有内容时传入数量0，列表数量和内容均不变；主动清空后重新处理三批，仍得到2、5、6及相同顺序，没有上次残留。
+- [x] 同一个字节列表处理三批人工输入后，Count依次为2、5、6，内容逐次与表格一致，每次都保留前面已收到的字节。
+- [x] 追加依据本次有效数量，00正常保留，EE/FF等无效尾部不混入；不通过写死结果、每次清空或重建列表替代持续追加，输入数组内容保持。
+- [x] 已有内容时传入数量0，列表数量和内容均不变；主动清空后重新处理三批，仍得到2、5、6及相同顺序，没有上次残留。
 
 ## 验收记录与掌握边界
+
+### 2026-10-19最终复查
+
+学员已自主补充数量0的追加调用和观察、_receivedBytes.Clear()、清空后再按2/3/1处理原三批，清空重来的核心逻辑已完成。
+复查开始时实际构建与运行退出0，零数量后仍输出原6个字节；清空后和第二轮三批后缺观察输出，[本次协助前证据](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-041-receive-buffer/Verification/review-02-before.json)保留提交源码、哈希及真实输出。
+依据用户既有低影响收尾授权，教练仅增加四个PrintBuffer调用，分别观察清空后、重新接收第一批后、第二批后和第三批后；没有修改Clear、数组、有效数量、Add循环、零数量调用或其他学员逻辑。
+实际执行`python .\Stage03-DeviceCommunication\DeviceCommunication\Exercises\TASK-041-receive-buffer\Verification\review_task041_final.py`，退出0；[最终脚本](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-041-receive-buffer/Verification/review_task041_final.py)与[完整证据](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-041-receive-buffer/Verification/review-02-final.json)保存在任务独立目录，原首次审查脚本与结果继续保留。
+
+| 验收项 | 本次真实证据 | 最终结论 |
+| :--- | :--- | :--- |
+| DoD1 | 真实入口第一轮数量2/5/6及各字节与预期一致，按同一列表持续追加。 | 通过。 |
+| DoD2 | 有效范围追加保留00、排除EE/FF，诊断确认列表身份一致且输入数组不变。 | 通过。 |
+| DoD3 | 真实入口零数量后仍为原6个字节，学员Clear后显示0，第二轮按2/3/1追加后显示2/5/6及相同顺序，没有上轮残留。 | 通过，四处观察输出由教练收尾。 |
+
+最终真实项目和诊断项目均构建0警告/0错误、运行退出0，五项输出、状态与修改范围检查全部通过；差异校验确认本轮只加四个观察调用，Program.cs与项目文件哈希不变，临时诊断项目已自动清理。
+三个DoD全部勾选，TASK-041为✅ 已通关；Q3按学员自主Count/内容遍历、有效Add、零数量调用、Clear和重新追加的范围标已掌握，类、共享字段和样例骨架、教练收尾观察不计新的自主设计。
+没有观察到新的典型认知错误，不新增错题；按计划只创建下一张[TASK-042：按明确规则取出完整数据帧](./TASK-042.md)，状态⚪ 未开始，未准备源码或切换入口，第三阶段仍进行中。
+
+### 2026-10-19首次审查（历史）
+
+状态仍为🟡 进行中，DoD1/2通过，DoD3尚未完成，未创建TASK-042。
+实际执行`python .\Stage03-DeviceCommunication\DeviceCommunication\Exercises\TASK-041-receive-buffer\Verification\review_task041.py`，退出0；[审查脚本](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-041-receive-buffer/Verification/review_task041.py)与[运行证据](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-041-receive-buffer/Verification/review-2026-10-19.json)保存在本题独立目录。
+真实项目与临时诊断项目均构建0警告/0错误、运行退出0，三个已执行的输出/状态/源码保护检查全通过，不代表全部DoD通过。
+
+| 验收项 | 证据与缺项 | 结论 |
+| :--- | :--- | :--- |
+| DoD1 | 原项目真实入口输出开始时0、三批后2/5/6，各检查点字节与表格逐项一致，第三批后为AA 01 03 00 64 5F。 | 通过。 |
+| DoD2 | 源码使用i < bytesRead并Add(data[i])；诊断确认同一个列表对象持续保留，00有效、EE/FF不混入，三个输入数组内容均不变。 | 通过。 |
+| DoD3 | 教练诊断调用零数量时列表不变，但学员Run里的TODO 3a/3b仍空着，没有零数量观察段，也没有主动清空、观察0、重新三批并观察2/5/6的调用，清空重来未完成验收。 | 未通过，待补验证调用。 |
+
+本轮未修改学员实现、Program.cs或项目文件，三个输入文件的审查前后SHA-256一致；诊断临时项目已清理，教练调用不冒充学员已补充的源码或历史运行。
+学员自主Count/内容遍历、按有效数量Add到已有列表并保留前次字节的局部实践已验证，予以保留；类、共享字段及样例调用由教练提供，Q3整体仍待复习，不把清空恢复或协议组包计为已掌握。
+未观察到新的典型认知错误，本次只是TODO验证步骤尚未补齐，不新增错题或额外报告要求。
+
+下一步先在Run的TODO 3a补一个小改动：
+
+```csharp
+AppendReceivedBytes(firstChunk, 0);
+PrintBuffer("零数量后");
+```
+
+这两行把已有firstChunk数组和数量0传给现成追加方法，再显示同一列表，预期仍为6个字节且内容不变。
+随后在TODO 3b主动调用已有列表的Clear并观察0，再复用前面三组追加与显示调用，预期重新得到2/5/6；补完后按任务入口运行并说“审查TASK-041”即可。
+
+### 开启时的历史记录
 
 - 2026-10-19已准备独立骨架、样例数组与调用、共享列表字段及入口，核心输出、有效追加、零数量/清空恢复仍待学员完成，三个DoD未勾选。
 - 实际执行`dotnet build .\Stage03-DeviceCommunication\DeviceCommunication\DeviceCommunication.csproj --nologo`，退出0，0警告/0错误。

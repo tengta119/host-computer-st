@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-19",
+  "task": "TASK-042",
+  "stage": "coach_skeleton_only",
+  "command": [
+    "dotnet",
+    "run",
+    "--project",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj",
+    "--no-build"
+  ],
+  "exit_code": 0,
+  "stdout": "Hello, World!\r\nTASK-042：按明确规则取出完整数据帧\r\n\r\n场景一：帧A分2/3/1到达\r\n输入：收到A前2字节\r\n缓冲剩余数量：2\r\n缓冲剩余字节：AA 01 \r\n本组已输出帧数：0\r\n输入：又收到A的3字节\r\n缓冲剩余数量：5\r\n缓冲剩余字节：AA 01 03 00 64 \r\n本组已输出帧数：0\r\n输入：收到A最后1字节\r\n缓冲剩余数量：6\r\n缓冲剩余字节：AA 01 03 00 64 5F \r\n本组已输出帧数：0\r\n\r\n场景二：一次收到帧A和帧B\r\n输入：一次收到12字节\r\n缓冲剩余数量：12\r\n缓冲剩余字节：AA 01 03 00 64 5F AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲剩余数量：12\r\n缓冲剩余字节：AA 01 03 00 64 5F AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n\r\n场景三：先收到A和B前2字节，再补齐B\r\n输入：先收到8字节\r\n缓冲剩余数量：8\r\n缓冲剩余字节：AA 01 03 00 64 5F AA 02 \r\n本组已输出帧数：0\r\n输入：再收到B剩余4字节\r\n缓冲剩余数量：12\r\n缓冲剩余字节：AA 01 03 00 64 5F AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲剩余数量：12\r\n缓冲剩余字节：AA 01 03 00 64 5F AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n\r\n场景四：同样的A和B分2/3/1/6到达\r\n输入：收到A前2字节\r\n缓冲剩余数量：2\r\n缓冲剩余字节：AA 01 \r\n本组已输出帧数：0\r\n输入：又收到A的3字节\r\n缓冲剩余数量：5\r\n缓冲剩余字节：AA 01 03 00 64 \r\n本组已输出帧数：0\r\n输入：收到A最后1字节\r\n缓冲剩余数量：6\r\n缓冲剩余字节：AA 01 03 00 64 5F \r\n本组已输出帧数：0\r\n输入：收到完整帧B\r\n缓冲剩余数量：12\r\n缓冲剩余字节：AA 01 03 00 64 5F AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲剩余数量：12\r\n缓冲剩余字节：AA 01 03 00 64 5F AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n",
+  "stderr": "",
+  "checks": {
+    "sample_counts_correct": true,
+    "sample_contents_correct": true,
+    "no_frames_from_unimplemented_skeleton": true,
+    "first_input_has_two_bytes": true
+  },
+  "all_passed": true,
+  "dod_accepted": false
+}

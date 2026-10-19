@@ -25,23 +25,41 @@ namespace DeviceCommunication.Exercises.Task041
             AppendReceivedBytes(thirdChunk, 1);
             PrintBuffer("第三批后");
 
-            // TODO 3a：用同一个 firstChunk 和有效数量 0 调用追加，再观察列表，预期数量仍为 6、内容不变。
-
-            // TODO 3b：主动清空 _receivedBytes 并观察数量 0，再按原顺序处理同样三批，观察数量重新变为 2、5、6。
+            // TOD 3a：用同一个 firstChunk 和有效数量 0 调用追加，再观察列表，预期数量仍为 6、内容不变。
+            AppendReceivedBytes(firstChunk, 0);
+            PrintBuffer("零数量后");
+            // TOD 3b：主动清空 _receivedBytes 并观察数量 0，再按原顺序处理同样三批，观察数量重新变为 2、5、6。
+            _receivedBytes.Clear();
+            PrintBuffer("清空后");
+            AppendReceivedBytes(thirdChunk, 0);
+            AppendReceivedBytes(firstChunk, 2);
+            PrintBuffer("重新接收第一批后");
+            AppendReceivedBytes(secondChunk, 3);
+            PrintBuffer("重新接收第二批后");
+            AppendReceivedBytes(thirdChunk, 1);
+            PrintBuffer("重新接收第三批后");
         }
 
         private void AppendReceivedBytes(byte[] data, int bytesRead)
         {
-            // TODO 2：只遍历本次有效位置，把 data 中对应的字节逐个追加到已有的 _receivedBytes，保留前次内容和有效的 00。
+            // TOD 2：只遍历本次有效位置，把 data 中对应的字节逐个追加到已有的 _receivedBytes，保留前次内容和有效的 00。
+            for (int i = 0; i < bytesRead; i++)
+            {
+                _receivedBytes.Add(data[i]);
+            }
         }
 
         private void PrintBuffer(string label)
         {
             Console.WriteLine(label);
 
-            // TODO 1a：在这里输出 _receivedBytes.Count，先运行观察“开始时”的数量为 0。
-
-            // TODO 1b：按列表当前 Count 遍历 _receivedBytes，每行输出下标、十进制值和两位大写十六进制。
+            // TOD 1a：在这里输出 _receivedBytes.Count，先运行观察“开始时”的数量为 0。
+            Console.WriteLine(_receivedBytes.Count);
+            // TOD 1b：按列表当前 Count 遍历 _receivedBytes，每行输出下标、十进制值和两位大写十六进制。
+            for (int i = 0; i < _receivedBytes.Count; i++)
+            {
+                Console.WriteLine(i + "," + _receivedBytes[i] + "," + _receivedBytes[i].ToString("X2"));
+            }
         }
     }
 }
