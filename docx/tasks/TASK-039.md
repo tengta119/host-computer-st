@@ -1,9 +1,10 @@
 # TASK-039：认识字节与十六进制数据
 
 - 阶段：第三阶段：设备通信（串口准备）。
-- 状态：🟡 进行中
+- 状态：✅ 已通关
 - 创建日期：2026-10-18。
 - 开始日期：2026-10-18。
+- 通关日期：2026-10-19。
 - 计划来源：[学习计划](../plan.md)「四、第三阶段：设备通信」中的字节、十六进制、字节数组及原始数据观察。
 - 选择依据：WPF阶段实践已通关，但尚无字节表示和原始通信数据的自主实践证据，因此先在新控制台项目中看清每个字节和输出结果，再逐步学习有效读取长度、缓冲与解析。
 - 项目：复用已创建的[DeviceCommunication.csproj](../../Stage03-DeviceCommunication/DeviceCommunication/DeviceCommunication.csproj)，当前目标框架为net10.0。
@@ -17,7 +18,7 @@
 
 ## 开始前先解释
 
-当前骨架里的sample暂时是占位值0，下面的0x64是完成TODO 1后的示例，尚未替你写入练习文件。
+开启时教练提供的sample为占位值0，学员已于2026-10-19提交0x64与两种格式输出，以下讲解保留供复习。
 
 ```csharp
 byte sample = 0x64;
@@ -68,7 +69,7 @@ byte[] data = new byte[] { 0xAA, 0x01 };
 | [DeviceCommunication.csproj](../../Stage03-DeviceCommunication/DeviceCommunication/DeviceCommunication.csproj) | 已存在，复用当前控制台项目，本题不需要新增包。 |
 | [Program.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Program.cs) | 保留原Hello, World!输出，增量创建Task039Exercise对象并调用Run方法；这是共享入口的必要例外。 |
 | 专属目录`Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-039-byte-basics/` | 已实际创建，任务专属源码集中在此目录。 |
-| [Task039Exercise.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-039-byte-basics/Task039Exercise.cs) | 已实际创建，包含普通类和Run方法、单字节占位值及TODO 1a至3，不添加第二份顶层语句。 |
+| [Task039Exercise.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-039-byte-basics/Task039Exercise.cs) | 学员已完成单字节输出、数组与遍历，第五个字节最终为0x65，原TODO注释保留，实际审查通过。 |
 | [新WPF项目](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/DeviceCommunication.Wpf.csproj) | 已存在，本题只在控制台观察数据，后续WPF实践使用此新项目。 |
 
 Program.cs中的Task039Exercise是教练新建并命名的练习类，new Task039Exercise()创建本次练习对象，exercise指向这个对象，exercise.Run()执行该对象的练习方法。
@@ -88,7 +89,7 @@ using DeviceCommunication.Exercises.Task039让Program.cs可以直接写Task039Ex
 dotnet run --project .\Stage03-DeviceCommunication\DeviceCommunication\DeviceCommunication.csproj
 ```
 
-当前未修改占位值时，输出依次是原Hello, World!、本题标题和0；完成首步后的预期是最后一行变为100。
+开启时未修改占位值的输出依次是原Hello, World!、本题标题和0；2026-10-19已实测学员完成后的100、64、6与六行数组输出，完整结果见下方本次验收。
 以后对照TODO 3时，保持单独的sample仍为0x64，只修改数组第五个元素，先核对原始版本，再观察修改版本，不要求另抄运行报告。
 更详细的显示关系和后续数组提示见[字节入门Q1](../questions/csharp-bytes.md)。
 
@@ -96,11 +97,32 @@ dotnet run --project .\Stage03-DeviceCommunication\DeviceCommunication\DeviceCom
 
 ## 验收标准（DoD）
 
-- [ ] 单个字节0x64在实际运行中分别显示为十进制100和十六进制64，使用的是同一个字节值。
-- [ ] 六字节样例用byte数组保存并按实际元素遍历，长度为6，下标和十进制/两位十六进制输出均与预期表一致。
-- [ ] 将第五个字节改为0x65后，实际运行仅对应数据由100/64变为101/65，数组长度与其他五个字节保持原样。
+- [x] 单个字节0x64在实际运行中分别显示为十进制100和十六进制64，使用的是同一个字节值。
+- [x] 六字节样例用byte数组保存并按实际元素遍历，长度为6，下标和十进制/两位十六进制输出均与预期表一致。
+- [x] 将第五个字节改为0x65后，实际运行仅对应数据由100/64变为101/65，数组长度与其他五个字节保持原样。
 
 ## 验收记录与掌握边界
+
+### 2026-10-19本次审查
+
+三个DoD均通过，任务状态为✅ 已通关。
+实际执行[审查脚本](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-039-byte-basics/Verification/review_task039.py)，命令为`python .\Stage03-DeviceCommunication\DeviceCommunication\Exercises\TASK-039-byte-basics\Verification\review_task039.py`，退出0。
+[完整运行证据](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-039-byte-basics/Verification/review-2026-10-19.json)保存两次构建、两次实际运行的精确命令、退出码、标准输出和输入文件哈希。
+
+| 验收项 | 本次可见证据 | 结论 |
+| :--- | :--- | :--- |
+| DoD1 | 当前原项目的同一个sample依次输出100和64。 | 通过。 |
+| DoD2 | 隔离副本只把数组第五个初始化值恢复为0x64，实际输出长度6，下标0～5依次为170/AA、1/01、3/03、0/00、100/64、95/5F。 | 通过。 |
+| DoD3 | 当前学员源码的第五个初始化值为0x65，实际输出下标4为101/0x65，和原始样例副本逐行对照仅这一行变化，长度和其他五个元素不变。 | 通过。 |
+
+原项目与隔离副本均构建0警告/0错误，两次程序运行均退出0，四项输出与源码保护检查全通过。
+原始0x64版本由教练在系统临时目录的独立项目中复现，不冒充学员此前已经运行过的历史记录；副本已随审查自动清理，实际命令与输出仍保存在证据文件。
+学员练习文件、Program.cs和项目文件的审查前后SHA-256完全一致，本轮未代改实现。
+学员自主应用已验证为本练习内的byte/0x数值、同值两种输出、byte[]创建、Length、for下标遍历与修改第五元素，入口、类和Run签名仍属教练提供。
+字节入门Q1按上述实践范围标已掌握，不扩大为编码转换、有效读取长度、串口、组包或完整协议知识。
+没有观察到新的典型认知错误，不新增错题；按计划只创建下一张[TASK-040：只处理接收数组中的有效字节](./TASK-040.md)，状态⚪ 未开始，未准备新源码或切换入口。
+
+### 2026-10-18开启记录
 
 - 2026-10-18已准备任务专属源码和入口，教练准备的默认输出与占位值不计学员自主实践，三个DoD均未勾选。
 - 实际执行`dotnet build .\Stage03-DeviceCommunication\DeviceCommunication\DeviceCommunication.csproj --nologo`，退出0，0警告/0错误。

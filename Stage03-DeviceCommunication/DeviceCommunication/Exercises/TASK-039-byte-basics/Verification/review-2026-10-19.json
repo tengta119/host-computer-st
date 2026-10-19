@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-19",
+  "task": "TASK-039",
+  "baseline_note": "Coach restored only the fifth array initializer in a temporary copy; this is not evidence of a historical learner run.",
+  "source_sha256_before": {
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-039-byte-basics\\Task039Exercise.cs": "b1cb3a75c3b5eed36082a1cbd74deb27df7daa228e40d2aa391f9f5528cae3bd",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj": "8048b35cc22c40a1f064a5420a31ab13cc5aef76512c88e5922f6bb9409bc214",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "4c879b65b6df1d1242014df315c658edd84e26060cc318bd71e773ef793f2831"
+  },
+  "submitted_source": "using System;\n\nnamespace DeviceCommunication.Exercises.Task039\n{\n    public class Task039Exercise\n    {\n        public void Run()\n        {\n            Console.WriteLine(\"TASK-039：认识字节与十六进制数据\");\n\n            // TODO 1a：把 sample 的占位值 0 改为 0x64，再运行观察下面这一行输出由 0 变为 100。\n            byte sample = 0x64;\n            Console.WriteLine(sample);\n\n            // TODO 1b：在这里用同一个 sample 的 ToString(\"X2\") 输出两位大写十六进制，预期看到 64。\n            Console.WriteLine(sample.ToString(\"X2\"));\n            // TODO 2a：在这里用完整的 new byte[] 写法创建 data，按顺序保存 AA 01 03 00 64 5F 六个字节。\n            byte[] data = new byte[] {0xAA, 0x01, 0x03, 0x00, 0x65, 0x5F};\n            // TODO 2b：输出 data.Length，预期看到 6。\n            Console.WriteLine(data.Length);\n            // TODO 2c：用普通 for 循环遍历实际数组元素，每行输出下标、十进制值和 ToString(\"X2\") 得到的文字。\n            for (int i = 0; i < data.Length; i++)\n            {\n                Console.WriteLine(i + \": \" + data[i] + \",0x\" + data[i].ToString(\"X2\"));\n            }\n            // TODO 3：先运行并核对原始六字节输出，再只把数组中第五个字节改为 0x65，重新运行对照下标 4 的变化。\n        }\n    }\n}\n",
+  "baseline_replacement": {
+    "from": "0x00, 0x65, 0x5F",
+    "to": "0x00, 0x64, 0x5F"
+  },
+  "runs": [
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj",
+        "--nologo"
+      ],
+      "cwd": "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication",
+      "exit_code": 0,
+      "stdout": "  正在确定要还原的项目…\n  所有项目均是最新的，无法还原。\n  DeviceCommunication -> D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll\n\n已成功生成。\n    0 个警告\n    0 个错误\n\n已用时间 00:00:00.59\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj",
+        "--no-build"
+      ],
+      "cwd": "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication",
+      "exit_code": 0,
+      "stdout": "Hello, World!\nTASK-039：认识字节与十六进制数据\n100\n64\n6\n0: 170,0xAA\n1: 1,0x01\n2: 3,0x03\n3: 0,0x00\n4: 101,0x65\n5: 95,0x5F\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task039-review-bwdsf5oh\\DeviceCommunication.csproj",
+        "--nologo"
+      ],
+      "cwd": "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task039-review-bwdsf5oh",
+      "exit_code": 0,
+      "stdout": "  正在确定要还原的项目…\n  已还原 C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task039-review-bwdsf5oh\\DeviceCommunication.csproj (用时 44 毫秒)。\n  DeviceCommunication -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task039-review-bwdsf5oh\\bin\\Debug\\net10.0\\DeviceCommunication.dll\n\n已成功生成。\n    0 个警告\n    0 个错误\n\n已用时间 00:00:00.81\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task039-review-bwdsf5oh\\DeviceCommunication.csproj",
+        "--no-build"
+      ],
+      "cwd": "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task039-review-bwdsf5oh",
+      "exit_code": 0,
+      "stdout": "Hello, World!\nTASK-039：认识字节与十六进制数据\n100\n64\n6\n0: 170,0xAA\n1: 1,0x01\n2: 3,0x03\n3: 0,0x00\n4: 100,0x64\n5: 95,0x5F\n",
+      "stderr": ""
+    }
+  ],
+  "checks": {
+    "submitted_output_matches_changed_sample": true,
+    "isolated_output_matches_original_sample": true,
+    "only_array_index_four_output_changed": true,
+    "learner_inputs_unchanged": true
+  },
+  "source_sha256_after": {
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-039-byte-basics\\Task039Exercise.cs": "b1cb3a75c3b5eed36082a1cbd74deb27df7daa228e40d2aa391f9f5528cae3bd",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj": "8048b35cc22c40a1f064a5420a31ab13cc5aef76512c88e5922f6bb9409bc214",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "4c879b65b6df1d1242014df315c658edd84e26060cc318bd71e773ef793f2831"
+  },
+  "all_passed": true
+}

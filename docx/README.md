@@ -1,5 +1,9 @@
 # 上位机开发学习工作区
 
+2026-10-19 TASK-040已明确开启，状态🟡 进行中；已创建[Task040Exercise.cs](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-040-valid-bytes/Task040Exercise.cs)，提供8元素数组、模拟数量6和显示方法签名，Program.cs已切到本题，TASK-039学员源码保留。实际构建0警告/0错误，运行显示原问候语和本题标题，首步只在TODO 1输出Length与bytesRead以观察8和6，输出、遍历与数量对照留学员完成，三个DoD未勾选，下方只建TASK-040卡片为历史。
+
+2026-10-19 TASK-039审查通关：单字节100/64、原始六字节遍历及第五元素修改对照均实际通过，原项目与隔离副本构建均0警告/0错误、运行退出0，学员源码和入口未改，状态✅ 已通关；证据见[TASK-039](./tasks/TASK-039.md)。只创建下一张[TASK-040：只处理接收数组中的有效字节](./tasks/TASK-040.md)，状态⚪ 未开始，未准备源码或切换入口，第三阶段继续🟡 进行中，下方开启与未开始文字为历史。
+
 2026-10-18 TASK-039已明确开启，当前状态🟡 进行中；已在Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-039-byte-basics/创建[Task039Exercise.cs](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-039-byte-basics/Task039Exercise.cs)，Program.cs保留原输出并接通练习对象的Run方法。实际构建0警告/0错误，运行退出0，输出原问候语、本题标题和占位值0；首步只将sample改为0x64并观察100，核心TODO待学员完成，三个DoD未勾选，下一任务尚未创建；下方未开始与另建学习系统安排为此前历史。
 
 2026-10-18 第三阶段任务创建：用户已在Stage03-DeviceCommunication创建控制台DeviceCommunication与新WPF项目DeviceCommunication.Wpf，现明确要求在当前工作区创建第三阶段任务；已新增[TASK-039：认识字节与十六进制数据](./tasks/TASK-039.md)，状态⚪ 未开始，仅有卡片，两个项目源码和入口未改，尚未运行或验收。后续先在控制台学习通信，再在新WPF项目练习界面联动；当前无进行中任务，下一任务为TASK-039，下方另建学习系统及不创建后续任务的安排为此前历史。
@@ -81,7 +85,7 @@
 - [学习计划](./plan.md)（前两阶段原文复制自 `D:\tmp\上位机.md`，2026-10-18按用户提示增补第三阶段设备通信）
 - [学习进度](./learning.md)（阶段路线、状态与技能）
 - [任务索引](./tasks/README.md)（已创建的任务卡）
-- [问答库](./questions/README.md)（26个分类、64条问答，待复习33条/已掌握31条；新增字节与十六进制入门Q1，既有实践范围保留）
+- [问答库](./questions/README.md)（26个分类、65条问答，待复习33条/已掌握32条；字节Q1原掌握范围保留，新增Q2有效数量入门为待复习）
 - [知识笔记](./notes/README.md)（按任务详细提取知识点与代码说明）
 - [错题本](./mistakes.md)（已观察到的典型错误）
 
