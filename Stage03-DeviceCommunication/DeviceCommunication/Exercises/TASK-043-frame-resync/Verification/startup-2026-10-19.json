@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-19",
+  "task": "TASK-043",
+  "stage": "coach_skeleton_only",
+  "command": [
+    "dotnet",
+    "run",
+    "--project",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj",
+    "--no-build"
+  ],
+  "exit_code": 0,
+  "stdout": "Hello, World!\r\nTASK-043：跳过无效开头并恢复取帧\r\n\r\n场景一：只有两个无效字节\r\n输入：收到99 88\r\n缓冲剩余数量：2\r\n缓冲剩余字节：99 88 \r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲剩余数量：2\r\n缓冲剩余字节：99 88 \r\n本组已输出帧数：0\r\n\r\n场景二：无效前导后接完整A\r\n输入：收到99 88和完整A\r\n缓冲剩余数量：8\r\n缓冲剩余字节：99 88 AA 01 03 00 64 5F \r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲剩余数量：8\r\n缓冲剩余字节：99 88 AA 01 03 00 64 5F \r\n本组已输出帧数：0\r\n\r\n场景三：无效前导后先留合法半帧，再补齐\r\n输入：收到77 AA 01\r\n缓冲剩余数量：3\r\n缓冲剩余字节：77 AA 01 \r\n本组已输出帧数：0\r\n输入：收到A剩余4字节\r\n缓冲剩余数量：7\r\n缓冲剩余字节：77 AA 01 03 00 64 5F \r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲剩余数量：7\r\n缓冲剩余字节：77 AA 01 03 00 64 5F \r\n本组已输出帧数：0\r\n\r\n场景四：两帧之间有无效字节\r\n输入：一次收到A、99和B\r\n缓冲剩余数量：13\r\n缓冲剩余字节：AA 01 03 00 64 5F 99 AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲剩余数量：13\r\n缓冲剩余字节：AA 01 03 00 64 5F 99 AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n\r\n场景五：完整帧内部也有AA\r\n输入：收到完整C\r\n缓冲剩余数量：6\r\n缓冲剩余字节：AA 03 AA 00 66 61 \r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲剩余数量：6\r\n缓冲剩余字节：AA 03 AA 00 66 61 \r\n本组已输出帧数：0\r\n\r\n场景六：同样的A、99和B分段到达\r\n输入：收到A前2字节\r\n缓冲剩余数量：2\r\n缓冲剩余字节：AA 01 \r\n本组已输出帧数：0\r\n输入：收到A尾部、99和B的AA\r\n缓冲剩余数量：8\r\n缓冲剩余字节：AA 01 03 00 64 5F 99 AA \r\n本组已输出帧数：0\r\n输入：收到B剩余5字节\r\n缓冲剩余数量：13\r\n缓冲剩余字节：AA 01 03 00 64 5F 99 AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲剩余数量：13\r\n缓冲剩余字节：AA 01 03 00 64 5F 99 AA 02 03 00 65 60 \r\n本组已输出帧数：0\r\n\r\n场景七：空缓冲收到零数量\r\n输入：没有新字节\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：0\r\n",
+  "stderr": "",
+  "checks": {
+    "sample_counts_correct": true,
+    "sample_contents_correct": true,
+    "no_frames_from_unimplemented_process": true,
+    "first_noise_and_empty_cases_ready": true
+  },
+  "all_passed": true,
+  "dod_accepted": false
+}

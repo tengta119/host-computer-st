@@ -1,0 +1,291 @@
+{
+  "date": "2026-10-19",
+  "task": "TASK-042",
+  "source": "using System;\nusing System.Collections.Generic;\n\nnamespace DeviceCommunication.Exercises.Task042\n{\n    public class Task042Exercise\n    {\n        private List<byte> _receivedBytes = new List<byte>();\n        private int _printedFrameCount = 0;\n\n        public void Run()\n        {\n            Console.WriteLine(\"TASK-042：按明确规则取出完整数据帧\");\n\n            byte[] firstChunk = new byte[] { 0xAA, 0x01, 0xEE, 0xFF };\n            byte[] secondChunk = new byte[] { 0x03, 0x00, 0x64, 0xEE };\n            byte[] thirdChunk = new byte[] { 0x5F, 0xEE };\n            byte[] frameB = new byte[] { 0xAA, 0x02, 0x03, 0x00, 0x65, 0x60 };\n            byte[] bothFrames = new byte[] { 0xAA, 0x01, 0x03, 0x00, 0x64, 0x5F, 0xAA, 0x02, 0x03, 0x00, 0x65, 0x60 };\n            byte[] oneAndPrefix = new byte[] { 0xAA, 0x01, 0x03, 0x00, 0x64, 0x5F, 0xAA, 0x02 };\n            byte[] restOfB = new byte[] { 0x03, 0x00, 0x65, 0x60, 0xEE };\n\n            StartScenario(\"场景一：帧A分2/3/1到达\");\n            ReceiveChunk(firstChunk, 2, \"收到A前2字节\");\n            ReceiveChunk(secondChunk, 3, \"又收到A的3字节\");\n            ReceiveChunk(thirdChunk, 1, \"收到A最后1字节\");\n\n            StartScenario(\"场景二：一次收到帧A和帧B\");\n            ReceiveChunk(bothFrames, 12, \"一次收到12字节\");\n            ReceiveChunk(firstChunk, 0, \"本次有效数量0\");\n\n            StartScenario(\"场景三：先收到A和B前2字节，再补齐B\");\n            ReceiveChunk(oneAndPrefix, 8, \"先收到8字节\");\n            ReceiveChunk(restOfB, 4, \"再收到B剩余4字节\");\n            ReceiveChunk(firstChunk, 0, \"本次有效数量0\");\n\n            StartScenario(\"场景四：同样的A和B分2/3/1/6到达\");\n            ReceiveChunk(firstChunk, 2, \"收到A前2字节\");\n            ReceiveChunk(secondChunk, 3, \"又收到A的3字节\");\n            ReceiveChunk(thirdChunk, 1, \"收到A最后1字节\");\n            ReceiveChunk(frameB, 6, \"收到完整帧B\");\n            ReceiveChunk(firstChunk, 0, \"本次有效数量0\");\n\n            // TODO 3：核心提取完成后，实际运行并对照上述四组输出，确认整段与分段结果一致、零数量不重复输出帧。\n        }\n\n        private void ProcessBuffer()\n        {\n            // TOD 1：先用 if 判断 _receivedBytes.Count 是否小于 6，分别输出“继续等待”或“已经够一帧”，运行先观察第一段的 2 个字节。\n            if (_receivedBytes.Count < 6)\n            {\n                Console.WriteLine(\"继续等待\");\n                return;\n            }\n            // TOD 2a：缓冲足够时，新建 6 个位置的 byte 数组，把缓冲最前面的 6 个字节按顺序复制进去。\n            byte[] data = new byte[6];\n            for (int i = 0; i < 6; i++)\n            {\n                data[i] = _receivedBytes[i];\n            }\n            // TOD 2b：复制完成后，只移除缓冲开头已经取出的 6 个字节，并调用 PrintFrame 输出刚复制的数组，保留后面的字节。\n            _receivedBytes.RemoveRange(0, 6);\n            PrintFrame(data);\n            // TOD 2c：用 while 重复检查剩余数量，每次取出一帧后继续处理，直到不足 6 个字节，避免同一帧重复输出。\n            while (_receivedBytes.Count > 6)\n            {\n                ProcessBuffer();\n            }\n        }\n\n        private void AppendReceivedBytes(byte[] data, int bytesRead)\n        {\n            // 这里复用 TASK-041 已验证的有效数量追加，不计作本题新的自主实现。\n            for (int i = 0; i < bytesRead; i++)\n            {\n                _receivedBytes.Add(data[i]);\n            }\n        }\n\n        private void ReceiveChunk(byte[] data, int bytesRead, string label)\n        {\n            Console.WriteLine(\"输入：\" + label);\n            AppendReceivedBytes(data, bytesRead);\n            ProcessBuffer();\n            PrintBufferState();\n        }\n\n        private void StartScenario(string label)\n        {\n            // 只在不同测试组之间清空，每组内部持续保留同一个列表。\n            _receivedBytes.Clear();\n            _printedFrameCount = 0;\n            Console.WriteLine();\n            Console.WriteLine(label);\n        }\n\n        private void PrintFrame(byte[] frame)\n        {\n            _printedFrameCount = _printedFrameCount + 1;\n            Console.Write(\"完整帧\" + _printedFrameCount + \"：\");\n            for (int i = 0; i < frame.Length; i++)\n            {\n                Console.Write(frame[i].ToString(\"X2\") + \" \");\n            }\n            Console.WriteLine();\n        }\n\n        private void PrintBufferState()\n        {\n            Console.WriteLine(\"缓冲剩余数量：\" + _receivedBytes.Count);\n            Console.Write(\"缓冲剩余字节：\");\n            for (int i = 0; i < _receivedBytes.Count; i++)\n            {\n                Console.Write(_receivedBytes[i].ToString(\"X2\") + \" \");\n            }\n            Console.WriteLine();\n            Console.WriteLine(\"本组已输出帧数：\" + _printedFrameCount);\n        }\n    }\n}\n",
+  "runs": [
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj",
+        "--nologo"
+      ],
+      "cwd": "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication",
+      "exit_code": 0,
+      "stdout": "  正在确定要还原的项目…\r\n  所有项目均是最新的，无法还原。\r\n  DeviceCommunication -> D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.68\r\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj",
+        "--no-build"
+      ],
+      "cwd": "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication",
+      "exit_code": 0,
+      "stdout": "Hello, World!\r\nTASK-042：按明确规则取出完整数据帧\r\n\r\n场景一：帧A分2/3/1到达\r\n输入：收到A前2字节\r\n继续等待\r\n缓冲剩余数量：2\r\n缓冲剩余字节：AA 01 \r\n本组已输出帧数：0\r\n输入：又收到A的3字节\r\n继续等待\r\n缓冲剩余数量：5\r\n缓冲剩余字节：AA 01 03 00 64 \r\n本组已输出帧数：0\r\n输入：收到A最后1字节\r\n完整帧1：AA 01 03 00 64 5F \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：1\r\n\r\n场景二：一次收到帧A和帧B\r\n输入：一次收到12字节\r\n完整帧1：AA 01 03 00 64 5F \r\n缓冲剩余数量：6\r\n缓冲剩余字节：AA 02 03 00 65 60 \r\n本组已输出帧数：1\r\n输入：本次有效数量0\r\n完整帧2：AA 02 03 00 65 60 \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n\r\n场景三：先收到A和B前2字节，再补齐B\r\n输入：先收到8字节\r\n完整帧1：AA 01 03 00 64 5F \r\n缓冲剩余数量：2\r\n缓冲剩余字节：AA 02 \r\n本组已输出帧数：1\r\n输入：再收到B剩余4字节\r\n完整帧2：AA 02 03 00 65 60 \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n输入：本次有效数量0\r\n继续等待\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n\r\n场景四：同样的A和B分2/3/1/6到达\r\n输入：收到A前2字节\r\n继续等待\r\n缓冲剩余数量：2\r\n缓冲剩余字节：AA 01 \r\n本组已输出帧数：0\r\n输入：又收到A的3字节\r\n继续等待\r\n缓冲剩余数量：5\r\n缓冲剩余字节：AA 01 03 00 64 \r\n本组已输出帧数：0\r\n输入：收到A最后1字节\r\n完整帧1：AA 01 03 00 64 5F \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：1\r\n输入：收到完整帧B\r\n完整帧2：AA 02 03 00 65 60 \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n输入：本次有效数量0\r\n继续等待\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task042-review-8qbvtmcb\\Review.csproj",
+        "--nologo"
+      ],
+      "cwd": "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task042-review-8qbvtmcb",
+      "exit_code": 0,
+      "stdout": "  正在确定要还原的项目…\r\n  已还原 C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task042-review-8qbvtmcb\\Review.csproj (用时 54 毫秒)。\r\n  Review -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task042-review-8qbvtmcb\\bin\\Debug\\net10.0\\Review.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.86\r\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task042-review-8qbvtmcb\\Review.csproj",
+        "--no-build"
+      ],
+      "cwd": "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task042-review-8qbvtmcb",
+      "exit_code": 0,
+      "stdout": "{\"remainingAfter12\":6,\"framesAfter12\":1,\"remainingAfterZero\":0,\"framesAfterZero\":2,\"inputsUnchanged\":true,\"sameList\":true,\"captured\":\"\\r\\ndiagnostic\\r\\n\\u8F93\\u5165\\uFF1Acombined\\r\\n\\u5B8C\\u6574\\u5E271\\uFF1AAA 01 03 00 64 5F \\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u6570\\u91CF\\uFF1A6\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u5B57\\u8282\\uFF1AAA 02 03 00 65 60 \\r\\n\\u672C\\u7EC4\\u5DF2\\u8F93\\u51FA\\u5E27\\u6570\\uFF1A1\\r\\n\\u8F93\\u5165\\uFF1Azero\\r\\n\\u5B8C\\u6574\\u5E272\\uFF1AAA 02 03 00 65 60 \\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u5B57\\u8282\\uFF1A\\r\\n\\u672C\\u7EC4\\u5DF2\\u8F93\\u51FA\\u5E27\\u6570\\uFF1A2\\r\\n\"}\r\n",
+      "stderr": ""
+    }
+  ],
+  "checks": {
+    "split_A_waits_and_extracts_once": true,
+    "combined_AB_drained_immediately": false,
+    "tail_prefix_preserved_and_completed": true,
+    "split_AB_result_correct": true,
+    "input_array_and_list_identity_preserved": true,
+    "learner_inputs_unchanged": true,
+    "zero_not_needed_to_drain_complete_frames": false,
+    "final_frame_bytes_once_and_in_order": true
+  },
+  "dod": {
+    "1": true,
+    "2": false,
+    "3": false
+  },
+  "actual_groups": [
+    [
+      {
+        "frames": [],
+        "remaining": 2,
+        "bytes": "AA 01",
+        "printed": 0
+      },
+      {
+        "frames": [],
+        "remaining": 5,
+        "bytes": "AA 01 03 00 64",
+        "printed": 0
+      },
+      {
+        "frames": [
+          "AA 01 03 00 64 5F"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 1
+      }
+    ],
+    [
+      {
+        "frames": [
+          "AA 01 03 00 64 5F"
+        ],
+        "remaining": 6,
+        "bytes": "AA 02 03 00 65 60",
+        "printed": 1
+      },
+      {
+        "frames": [
+          "AA 02 03 00 65 60"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      }
+    ],
+    [
+      {
+        "frames": [
+          "AA 01 03 00 64 5F"
+        ],
+        "remaining": 2,
+        "bytes": "AA 02",
+        "printed": 1
+      },
+      {
+        "frames": [
+          "AA 02 03 00 65 60"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      },
+      {
+        "frames": [],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      }
+    ],
+    [
+      {
+        "frames": [],
+        "remaining": 2,
+        "bytes": "AA 01",
+        "printed": 0
+      },
+      {
+        "frames": [],
+        "remaining": 5,
+        "bytes": "AA 01 03 00 64",
+        "printed": 0
+      },
+      {
+        "frames": [
+          "AA 01 03 00 64 5F"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 1
+      },
+      {
+        "frames": [
+          "AA 02 03 00 65 60"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      },
+      {
+        "frames": [],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      }
+    ]
+  ],
+  "expected_groups": [
+    [
+      {
+        "frames": [],
+        "remaining": 2,
+        "bytes": "AA 01",
+        "printed": 0
+      },
+      {
+        "frames": [],
+        "remaining": 5,
+        "bytes": "AA 01 03 00 64",
+        "printed": 0
+      },
+      {
+        "frames": [
+          "AA 01 03 00 64 5F"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 1
+      }
+    ],
+    [
+      {
+        "frames": [
+          "AA 01 03 00 64 5F",
+          "AA 02 03 00 65 60"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      },
+      {
+        "frames": [],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      }
+    ],
+    [
+      {
+        "frames": [
+          "AA 01 03 00 64 5F"
+        ],
+        "remaining": 2,
+        "bytes": "AA 02",
+        "printed": 1
+      },
+      {
+        "frames": [
+          "AA 02 03 00 65 60"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      },
+      {
+        "frames": [],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      }
+    ],
+    [
+      {
+        "frames": [],
+        "remaining": 2,
+        "bytes": "AA 01",
+        "printed": 0
+      },
+      {
+        "frames": [],
+        "remaining": 5,
+        "bytes": "AA 01 03 00 64",
+        "printed": 0
+      },
+      {
+        "frames": [
+          "AA 01 03 00 64 5F"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 1
+      },
+      {
+        "frames": [
+          "AA 02 03 00 65 60"
+        ],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      },
+      {
+        "frames": [],
+        "remaining": 0,
+        "bytes": "",
+        "printed": 2
+      }
+    ]
+  ],
+  "diagnostic": {
+    "remainingAfter12": 6,
+    "framesAfter12": 1,
+    "remainingAfterZero": 0,
+    "framesAfterZero": 2,
+    "inputsUnchanged": true,
+    "sameList": true,
+    "captured": "\r\ndiagnostic\r\n输入：combined\r\n完整帧1：AA 01 03 00 64 5F \r\n缓冲剩余数量：6\r\n缓冲剩余字节：AA 02 03 00 65 60 \r\n本组已输出帧数：1\r\n输入：zero\r\n完整帧2：AA 02 03 00 65 60 \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n"
+  },
+  "hashes_before_and_after": {
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-042-fixed-frame\\Task042Exercise.cs": "182dd9feea01fc87037ebc1c7ade8b34179ee39f7238ec8461c1ec1854e9d736",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj": "8048b35cc22c40a1f064a5420a31ab13cc5aef76512c88e5922f6bb9409bc214",
+    "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "fa75a61372c05f691133243044fce1366fdfe673a1578a300b678c3ac2333775"
+  },
+  "all_passed": false,
+  "interpretation": "B is delayed until a zero-count call; it is not a duplicate of an already emitted frame. At completion of nonzero A+B input the whole-input path emits one frame, while the split-input path emits two."
+}

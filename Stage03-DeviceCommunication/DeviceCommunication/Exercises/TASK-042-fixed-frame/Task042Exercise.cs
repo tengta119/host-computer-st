@@ -46,13 +46,26 @@ namespace DeviceCommunication.Exercises.Task042
 
         private void ProcessBuffer()
         {
-            // TODO 1：先用 if 判断 _receivedBytes.Count 是否小于 6，分别输出“继续等待”或“已经够一帧”，运行先观察第一段的 2 个字节。
-
-            // TODO 2a：缓冲足够时，新建 6 个位置的 byte 数组，把缓冲最前面的 6 个字节按顺序复制进去。
-
-            // TODO 2b：复制完成后，只移除缓冲开头已经取出的 6 个字节，并调用 PrintFrame 输出刚复制的数组，保留后面的字节。
-
-            // TODO 2c：用 while 重复检查剩余数量，每次取出一帧后继续处理，直到不足 6 个字节，避免同一帧重复输出。
+            // TOD 1：先用 if 判断 _receivedBytes.Count 是否小于 6，分别输出“继续等待”或“已经够一帧”，运行先观察第一段的 2 个字节。
+            if (_receivedBytes.Count < 6)
+            {
+                Console.WriteLine("继续等待");
+                return;
+            }
+            // TOD 2a：缓冲足够时，新建 6 个位置的 byte 数组，把缓冲最前面的 6 个字节按顺序复制进去。
+            byte[] data = new byte[6];
+            for (int i = 0; i < 6; i++)
+            {
+                data[i] = _receivedBytes[i];
+            }
+            // TOD 2b：复制完成后，只移除缓冲开头已经取出的 6 个字节，并调用 PrintFrame 输出刚复制的数组，保留后面的字节。
+            _receivedBytes.RemoveRange(0, 6);
+            PrintFrame(data);
+            // TOD 2c：用 while 重复检查剩余数量，每次取出一帧后继续处理，直到不足 6 个字节，避免同一帧重复输出。
+            while (_receivedBytes.Count >= 6)
+            {
+                ProcessBuffer();
+            }
         }
 
         private void AppendReceivedBytes(byte[] data, int bytesRead)

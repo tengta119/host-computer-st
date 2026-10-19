@@ -1,9 +1,10 @@
 # TASK-042：按明确规则取出完整数据帧
 
 - 阶段：第三阶段：设备通信（串口准备）。
-- 状态：🟡 进行中
+- 状态：✅ 已通关
 - 创建日期：2026-10-19。
 - 开始日期：2026-10-19。
+- 通关日期：2026-10-19。
 - 计划来源：[学习计划](../plan.md)「四、第三阶段：设备通信」中的明确协议后组包、半包保留、连续多包逐个取出。
 - 选择依据：TASK-041已验证分批有效字节可以保留在同一列表中，接下来需要判断是否已收齐、取出完整部分并保留后面尚未收齐的部分。
 - 项目：复用[DeviceCommunication.csproj](../../Stage03-DeviceCommunication/DeviceCommunication/DeviceCommunication.csproj)，不新增依赖。
@@ -87,7 +88,7 @@ PrintFrame、ProcessBuffer、ReceiveChunk、PrintBufferState和StartScenario都�
 | 位置 | 当前事实与用途 |
 | :--- | :--- |
 | 专属目录Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-042-fixed-frame/ | 已创建，本题源码集中在此目录，未搬动旧作品。 |
-| [Task042Exercise.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-042-fixed-frame/Task042Exercise.cs) | 已提供共享缓冲、四组样例及有效追加、输入连接、观察/打印辅助，ProcessBuffer的判断和完整取帧实现留TODO。 |
+| [Task042Exercise.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-042-fixed-frame/Task042Exercise.cs) | 学员已自主把重复处理条件修正为Count >= 6，四组实际运行与全部DoD通过，方法自调用结构保留，本轮源码未改。 |
 | [Program.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Program.cs) | 共享入口的必要例外，仅将当前练习类改为Task042Exercise，保留Hello, World!输出。 |
 
 Program.cs用new Task042Exercise()创建本次练习对象，exercise指向它，exercise.Run()顺序运行四组场景；_receivedBytes字段由该对象保存，与TASK-041的同一列表关系一致。
@@ -120,19 +121,63 @@ if读取括号里的比较结果，当前Count小于6时执行第一组输出，
 dotnet run --project .\Stage03-DeviceCommunication\DeviceCommunication\DeviceCommunication.csproj
 ```
 
-当前ProcessBuffer尚未实现，运行只显示各输入后的累计缓冲和帧数0；首步完成后，场景一第一个输入应先显示继续等待，再看到缓冲剩余数量2和AA 01。
-此时后续段仍会累积到5和6，所有组也仍没有完整帧输出，这是判断观察阶段，不能据此认为组包已完成；继续完成TODO 2后才应消费完整部分并保留尾部。
+开启时ProcessBuffer未实现、首次审查存在恰好6的边界遗漏；当前学员已自主修正为>=6，连续两帧当次取完、零数量不新增帧，全部验收通过，见最终复查。
 必要讲解见[字节问答Q4](../questions/csharp-bytes.md#q4task-042-怎样判断收齐一帧并把它从缓冲中取出来)。
 
 完成后说“检查TASK-042”即可，不额外要求抄写运行报告或口试。
 
 ## 验收标准（DoD）
 
-- [ ] 帧A按2/3/1分段输入，累计不足6字节时全部保留且不输出完整帧，收齐时恰好输出完整帧A一次并从缓冲移除。
-- [ ] 一次收到A+B时依次输出两帧且缓冲为空；一次收到A加B前2字节时只输出A、保留AA 02，补齐后输出B，输入数组保持原样。
-- [ ] 同一A+B数据整段输入和不同分段输入时，输出的帧数量、字节和顺序完全一致，每帧仅输出一次；数量0不会再次输出已处理的帧。
+- [x] 帧A按2/3/1分段输入，累计不足6字节时全部保留且不输出完整帧，收齐时恰好输出完整帧A一次并从缓冲移除。
+- [x] 一次收到A+B时依次输出两帧且缓冲为空；一次收到A加B前2字节时只输出A、保留AA 02，补齐后输出B，输入数组保持原样。
+- [x] 同一A+B数据整段输入和不同分段输入时，输出的帧数量、字节和顺序完全一致，每帧仅输出一次；数量0不会再次输出已处理的帧。
 
 ## 验收记录与掌握边界
+
+### 2026-10-19最终复查
+
+学员已自主将while条件从Count > 6改为Count >= 6，本轮仅运行验收与同步记录，没有修改学员源码、入口或项目文件。
+实际执行`python .\Stage03-DeviceCommunication\DeviceCommunication\Exercises\TASK-042-fixed-frame\Verification\review_task042_final.py`，退出0；[最终脚本](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-042-fixed-frame/Verification/review_task042_final.py)与[完整运行证据](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-042-fixed-frame/Verification/review-02-final.json)保存本轮四次实际命令、输出、逐输入状态和哈希，首次失败证据保留。
+
+| 验收项 | 本次证据 | 结论 |
+| :--- | :--- | :--- |
+| DoD1 | A分2/3/1到达时前两段不输出，收齐后恰好输出A一次、缓冲0。 | 通过。 |
+| DoD2 | 12字节A+B输入当次输出两帧、缓冲0；8/4输入先输出A并留AA 02，补齐后输出B，原输入数组不变。 | 通过。 |
+| DoD3 | A+B整段、8/4、2/3/1/6分段结果均为A/B各一次且顺序一致，后续零数量均不新增或补输出帧。 | 通过。 |
+
+两个项目均构建0警告/0错误、运行退出0，八项检查全部通过；诊断状态由此前12字节后剩6/帧数1，变为剩0/帧数2，零数量后仍为剩0/帧数2。
+三个输入文件审查前后SHA-256一致，同一列表身份、数组保护和有效数据范围保持；临时诊断项目已自动清理。
+三个DoD全部勾选，TASK-042为✅ 已通关；Q4按本题不足一帧等待、逐项复制、RemoveRange消费、相等边界与分段一致的自主应用范围标已掌握，打印/计数及样例骨架仍不计自主设计。
+方法自调用的现有结构没有在本轮改写，先前结构建议不作为新增验收门槛，不将本题四组结果扩大为任意噪声或其他协议的可靠性证据。
+错题本对应边界条目标记已复查通过；按计划只创建下一张[TASK-043：跳过无效开头并恢复取帧](./TASK-043.md)，状态⚪ 未开始，未准备源码或切换入口，第三阶段仍进行中。
+
+### 2026-10-19首次审查（历史）
+
+状态仍为🟡 进行中，DoD1通过、DoD2/3未通过，不创建TASK-043。
+实际执行`python .\Stage03-DeviceCommunication\DeviceCommunication\Exercises\TASK-042-fixed-frame\Verification\review_task042.py`，审查脚本退出0，表示已完成检查，不表示功能全部通过；[脚本](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-042-fixed-frame/Verification/review_task042.py)与[运行证据](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-042-fixed-frame/Verification/review-2026-10-19.json)保存在本题独立目录。
+真实入口与临时诊断项目均构建0警告/0错误、运行退出0；八项输出/状态/保护检查六项通过、两项未通过，三个输入文件哈希不变，本轮未修改学员源码、入口或项目文件。
+
+| 验收项 | 实际证据 | 结论 |
+| :--- | :--- | :--- |
+| DoD1 | 帧A分2/3/1输入时，前两段留下AA 01及AA 01 03 00 64，不输出帧；第三段输出完整A一次、缓冲剩0。 | 通过。 |
+| DoD2 | A加B前2字节的8/4输入正确保留AA 02并补齐B，输入数组不变；但一次输入12字节A+B后仅输出A，缓冲剩完整B的6字节、帧数1。 | 未通过，连续帧未在本次全部取出。 |
+| DoD3 | A+B按2/3/1/6分段时收齐即输出两帧；整段12字节时只输出一帧，直到后续数量0调用才补输出B，同样有效数据输入完成时结果不一致。 | 未通过。 |
+
+没有发现已经输出的A/B再次重复输出，四组最终都能得到各自预期的帧内容；当前问题是第二帧被延后到零数量调用处理，不能把它写成重复帧错误。
+原因可直接对应源码：ProcessBuffer先复制、移除和打印第一帧，12字节因此剩6；后面的while使用Count > 6，6 > 6为false，完整B被留下，下一次调用才从方法开头继续处理。
+首个修复只修改这条边界条件：
+
+```csharp
+while (_receivedBytes.Count >= 6)
+```
+
+本题6个字节已经是一整帧，因此剩余数量恰好6也应继续处理；少于6时才等待，修改后再实际运行四组，预期12字节一次输入当场输出A/B、缓冲0，后续零数量不新增帧。
+这是待学员修改与验证的核心条件，本轮未代改，也没有把预期记为修复后的运行结果。
+当前while内部再次调用ProcessBuffer属于同一个方法再次进入自己；把复制/移除/打印组织在while的循环体内可以更直接地表达每轮取一帧，这是结构建议，不新增本次DoD门槛，先完成恰好6的边界修复。
+不足6返回、new byte[6]逐项复制、RemoveRange只移除已取部分、PrintFrame连接与尾部保留的局部自主能力已经验证，予以保留；Q4整体待复习，原Q1/Q2/Q3不受影响。
+已将本次实际边界错误增量记入错题本，不推测学员编写动机，不要求机械运行报告。
+
+### 开启时的历史记录
 
 - 2026-10-19已准备独立源码、四组输入与实际入口，复用已验证的有效追加，判断、复制/移除/反复提取与对照留给学员，三个DoD未勾选。
 - 实际执行`dotnet build .\Stage03-DeviceCommunication\DeviceCommunication\DeviceCommunication.csproj --nologo`，退出0，0警告/0错误。
