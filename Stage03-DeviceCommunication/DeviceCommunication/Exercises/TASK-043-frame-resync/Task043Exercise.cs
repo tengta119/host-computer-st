@@ -52,18 +52,36 @@ namespace DeviceCommunication.Exercises.Task043
             StartScenario("场景七：空缓冲收到零数量");
             ReceiveChunk(noiseOnly, 0, "没有新字节");
 
-            // TODO 3：实现恢复处理后运行七组，核对短无效输入清空、合法半帧保留、内部AA原样输出与零数量安全。
+            // TOD 3：实现恢复处理后运行七组，核对短无效输入清空、合法半帧保留、内部AA原样输出与零数量安全。
         }
 
         private void ProcessBuffer()
         {
-            // TODO 1：先判断 Count 是否为 0，为 0 时显示“缓冲为空”并返回，否则输出当前首字节的两位十六进制。
-
-            // TODO 2a：继续实现时，用循环处理非空缓冲，每轮只判断当前下标 0 的字节，避免空列表读取下标 0。
-
-            // TODO 2b：当前首字节不是 0xAA 时，只删除这一项，再回到循环检查新的首字节，短无效输入也要能清理。
-
-            // TODO 2c：首字节为 0xAA 但不足 6 字节时，保留并停止本次处理；足够时调用 ExtractOneFrame，再继续检查剩余内容。
+            // TOD 1：先判断 Count 是否为 0，为 0 时显示“缓冲为空”并返回，否则输出当前首字节的两位十六进制。
+            if (_receivedBytes.Count == 0)
+            {
+                Console.WriteLine("缓冲为空");
+                return;
+            }
+            // TOD 2：列表还有字节时，查看第一个字节 _receivedBytes[0]；不是 0xAA 就删掉它，再检查新的第一个字节。
+            //TOD 3 在同一个循环里，遇到 0xAA 后，不足 6 字节就保留并停止本次处理；足够时调用 ExtractOneFrame，取完继续检查剩余内容。
+            while (_receivedBytes.Count > 0)
+            {
+                if (_receivedBytes[0] != 0xAA)
+                {
+                    _receivedBytes.RemoveAt(0);
+                    continue;
+                }
+                if (_receivedBytes.Count < 6)
+                {
+                    break;
+                }
+                if (_receivedBytes.Count >= 6 && _receivedBytes[0] == 0xAA)
+                {
+                    ExtractOneFrame();
+                }
+            }
+            
         }
 
         private void ExtractOneFrame()

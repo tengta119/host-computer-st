@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-19",
+  "build": {
+    "command": "dotnet build .\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj --nologo",
+    "exit_code": 0,
+    "warnings": 0,
+    "errors": 0,
+    "output": "已成功生成。\n    0 个警告\n    0 个错误"
+  },
+  "run": {
+    "command": [
+      "dotnet",
+      "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll"
+    ],
+    "timeout_seconds": 4,
+    "timed_out": true,
+    "terminated_by_reviewer": true,
+    "return_code_after_termination": 1,
+    "stdout": "Hello, World!\r\nTASK-043：跳过无效开头并恢复取帧\r\n\r\n场景一：只有两个无效字节\r\n输入：收到99 88\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲为空\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：0\r\n\r\n场景二：无效前导后接完整A\r\n输入：收到99 88和完整A\r\n",
+    "stderr": ""
+  },
+  "checks": {
+    "noise_only_cleared": true,
+    "noise_then_zero_no_frames": true,
+    "prefix_then_complete_a_finishes": false,
+    "source_and_entry_unchanged": true
+  },
+  "sha256_before": {
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-043-frame-resync\\Task043Exercise.cs": "c3fabd1de990fdc2372f5c66d55dd88dc7bb6489bf03c1d9e7bb600d0f729589",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "d44edace45ab65406700dbfaf4d8a17f2d6beb5e0045144a480ffd245a1e6e98"
+  },
+  "sha256_after": {
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-043-frame-resync\\Task043Exercise.cs": "c3fabd1de990fdc2372f5c66d55dd88dc7bb6489bf03c1d9e7bb600d0f729589",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "d44edace45ab65406700dbfaf4d8a17f2d6beb5e0045144a480ffd245a1e6e98"
+  },
+  "dod": {
+    "1": "failed: complete A not output; input-array preservation not runtime-verified",
+    "2": "failed: noise-only clears, legal half-frame preservation blocked by AA loop",
+    "3": "failed: deadlock at AA; later scenarios not reached"
+  },
+  "student_source_modified": false
+}

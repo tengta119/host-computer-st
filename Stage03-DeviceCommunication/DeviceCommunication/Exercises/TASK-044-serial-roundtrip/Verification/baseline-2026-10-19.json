@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-19",
+  "old_cs_sha256": {
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-039-byte-basics\\Task039Exercise.cs": "a892acccf72ffb2cae32b3d86c230a069454beb0f8e6f675e9bb0ce6d425d5ed",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-040-valid-bytes\\Task040Exercise.cs": "8a90146eff02f49c4bcb720e6efe28b7f0e8dfcfc35129c353ecb9ac08fa00ff",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-041-receive-buffer\\Task041Exercise.cs": "be5d07ee9c8a348c16abfd8a43a1f74059a52c921b84f0a9562eff7928e1b2c4",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-042-fixed-frame\\Task042Exercise.cs": "9e07493bdc8ec4e291e3d4de24fb95ae3929f769e07a3d0c53171d278543efad",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-043-frame-resync\\Task043Exercise.cs": "08cbe41f5d64f3c7e20f542831a2a08bdb16d21a315a9adad16ffbbc8955a1e0"
+  },
+  "observed_ports": [
+    "COM5",
+    "COM6",
+    "COM7"
+  ],
+  "port_kind": "Bluetooth serial ports; no null-modem pair observed",
+  "user_choice": "local virtual serial port pair; no physical device"
+}

@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-19",
+  "build": {
+    "command": "dotnet build .\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj --nologo",
+    "exit_code": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "runs": [
+    {
+      "command": [
+        "dotnet",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll",
+        "--ports"
+      ],
+      "stdin": "",
+      "exit_code": 0,
+      "stdout": "Hello, World!\r\nTASK-044：打通串口收发并解析设备读数\r\n系统当前串口：COM5、COM7、COM6\r\n端口列出来不代表互相连接，请使用已创建的虚拟串口对，两个程序各选一端。\r\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll"
+      ],
+      "stdin": "\n",
+      "exit_code": 0,
+      "stdout": "Hello, World!\r\nTASK-044：打通串口收发并解析设备读数\r\n系统当前串口：COM5、COM7、COM6\r\n端口列出来不代表互相连接，请使用已创建的虚拟串口对，两个程序各选一端。\r\n输入你的程序要用的端口名，没有准备好就直接回车退出：尚未选择串口，本次没有打开任何端口。\r\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll",
+        "--port",
+        "COM254"
+      ],
+      "stdin": "o\ns\nr\nc\nq\n",
+      "exit_code": 0,
+      "stdout": "Hello, World!\r\nTASK-044：打通串口收发并解析设备读数\r\n系统当前串口：COM5、COM7、COM6\r\n端口列出来不代表互相连接，请使用已创建的虚拟串口对，两个程序各选一端。\r\n当前选择：COM254，115200 / 8 / 无校验 / 1停止位。\r\no 打开；s 发送请求；r 读取当前收到的数据；c 关闭；q 退出。\r\n操作：TODO 1：尚未实现打开端口。\r\n操作：请先输入 o 打开串口。\r\n操作：请先输入 o 打开串口。\r\n操作：端口当前未打开。\r\n操作：",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dotnet",
+        "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll",
+        "--simulator",
+        "COM254"
+      ],
+      "stdin": "",
+      "exit_code": 0,
+      "stdout": "Hello, World!\r\nTASK-044：打通串口收发并解析设备读数\r\n系统当前串口：COM5、COM7、COM6\r\n端口列出来不代表互相连接，请使用已创建的虚拟串口对，两个程序各选一端。\r\n模拟设备失败：Could not find file 'COM254'.\r\n",
+      "stderr": ""
+    }
+  ],
+  "provided_buffer_diagnostic": {
+    "command": [
+      "dotnet",
+      "run",
+      "--project",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task044-scaffold-3tqfqcvk\\Check.csproj",
+      "--verbosity",
+      "quiet"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"allPassed\":true,\"checks\":[{\"passed\":true,\"validCount\":2,\"actualFrames\":0,\"remaining\":\"\"},{\"passed\":true,\"validCount\":3,\"actualFrames\":0,\"remaining\":\"AA01\"},{\"passed\":true,\"validCount\":4,\"actualFrames\":1,\"remaining\":\"\"},{\"passed\":true,\"validCount\":8,\"actualFrames\":2,\"remaining\":\"AA\"},{\"passed\":true,\"validCount\":5,\"actualFrames\":3,\"remaining\":\"\"},{\"passed\":true,\"validCount\":0,\"actualFrames\":3,\"remaining\":\"\"}],\"stdout\":\"\\u672C\\u6B21\\u5B9E\\u9645\\u6536\\u5230\\uFF1A99 88 \\r\\n\\u672C\\u6B21\\u6709\\u6548\\u6570\\u91CF\\uFF1A2\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\uFF1A\\r\\n\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\uFF0C\\u5DF2\\u53D6\\u5E27\\u6570\\uFF1A0\\r\\n\\u672C\\u6B21\\u5B9E\\u9645\\u6536\\u5230\\uFF1A77 AA 01 \\r\\n\\u672C\\u6B21\\u6709\\u6548\\u6570\\u91CF\\uFF1A3\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\uFF1AAA 01 \\r\\n\\u5269\\u4F59\\u6570\\u91CF\\uFF1A2\\uFF0C\\u5DF2\\u53D6\\u5E27\\u6570\\uFF1A0\\r\\n\\u672C\\u6B21\\u5B9E\\u9645\\u6536\\u5230\\uFF1A03 00 FA 5F \\r\\n\\u672C\\u6B21\\u6709\\u6548\\u6570\\u91CF\\uFF1A4\\r\\n\\u5B8C\\u6574\\u5E271\\uFF1AAA 01 03 00 FA 5F \\r\\nTODO 5\\uFF1A\\u5F53\\u524D\\u53EA\\u8F93\\u51FA\\u5B8C\\u6574\\u5E27\\uFF0C\\u8FD8\\u6CA1\\u6709\\u8BA1\\u7B97\\u8BBE\\u5907\\u8BFB\\u6570\\u3002\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\uFF1A\\r\\n\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\uFF0C\\u5DF2\\u53D6\\u5E27\\u6570\\uFF1A1\\r\\n\\u672C\\u6B21\\u5B9E\\u9645\\u6536\\u5230\\uFF1AAA 01 03 00 FA 5F 99 AA \\r\\n\\u672C\\u6B21\\u6709\\u6548\\u6570\\u91CF\\uFF1A8\\r\\n\\u5B8C\\u6574\\u5E272\\uFF1AAA 01 03 00 FA 5F \\r\\nTODO 5\\uFF1A\\u5F53\\u524D\\u53EA\\u8F93\\u51FA\\u5B8C\\u6574\\u5E27\\uFF0C\\u8FD8\\u6CA1\\u6709\\u8BA1\\u7B97\\u8BBE\\u5907\\u8BFB\\u6570\\u3002\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\uFF1AAA \\r\\n\\u5269\\u4F59\\u6570\\u91CF\\uFF1A1\\uFF0C\\u5DF2\\u53D6\\u5E27\\u6570\\uFF1A2\\r\\n\\u672C\\u6B21\\u5B9E\\u9645\\u6536\\u5230\\uFF1A02 03 01 04 60 \\r\\n\\u672C\\u6B21\\u6709\\u6548\\u6570\\u91CF\\uFF1A5\\r\\n\\u5B8C\\u6574\\u5E273\\uFF1AAA 02 03 01 04 60 \\r\\nTODO 5\\uFF1A\\u5F53\\u524D\\u53EA\\u8F93\\u51FA\\u5B8C\\u6574\\u5E27\\uFF0C\\u8FD8\\u6CA1\\u6709\\u8BA1\\u7B97\\u8BBE\\u5907\\u8BFB\\u6570\\u3002\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\uFF1A\\r\\n\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\uFF0C\\u5DF2\\u53D6\\u5E27\\u6570\\uFF1A3\\r\\n\\u672C\\u6B21\\u5B9E\\u9645\\u6536\\u5230\\uFF1A\\r\\n\\u672C\\u6B21\\u6709\\u6548\\u6570\\u91CF\\uFF1A0\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\uFF1A\\r\\n\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\uFF0C\\u5DF2\\u53D6\\u5E27\\u6570\\uFF1A3\\r\\n\"}\r\n",
+    "stderr": "",
+    "harness_source": "\nusing System;\nusing System.Collections.Generic;\nusing System.IO;\nusing System.Linq;\nusing System.Reflection;\nusing System.Text.Json;\nusing DeviceCommunication.Exercises.Task044;\nTask044Exercise exercise = new Task044Exercise();\nType type = typeof(Task044Exercise);\nBindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;\nMethodInfo receive = type.GetMethod(\"HandleReceivedBytes\", flags)!;\nFieldInfo bufferField = type.GetField(\"_receivedBytes\", flags)!;\nFieldInfo countField = type.GetField(\"_printedFrameCount\", flags)!;\nList<byte> originalBuffer = (List<byte>)bufferField.GetValue(exercise)!;\nTextWriter realOutput = Console.Out;\nStringWriter captured = new StringWriter();\nConsole.SetOut(captured);\nList<object> checks = new List<object>();\nbool allPassed = true;\nvoid Check(byte[] input, int validCount, byte[] expected, int frames)\n{\n    byte[] original = (byte[])input.Clone();\n    receive.Invoke(exercise, new object[] { input, validCount });\n    List<byte> actual = (List<byte>)bufferField.GetValue(exercise)!;\n    int actualFrames = (int)countField.GetValue(exercise)!;\n    bool passed = input.SequenceEqual(original) && Object.ReferenceEquals(actual, originalBuffer)\n        && actual.SequenceEqual(expected) && actualFrames == frames;\n    allPassed = allPassed && passed;\n    checks.Add(new { passed, validCount, actualFrames, remaining = Convert.ToHexString(actual.ToArray()) });\n}\nCheck(new byte[] { 0x99, 0x88 }, 2, Array.Empty<byte>(), 0);\nCheck(new byte[] { 0x77, 0xAA, 0x01 }, 3, new byte[] { 0xAA, 0x01 }, 0);\nCheck(new byte[] { 0x03, 0x00, 0xFA, 0x5F, 0xEE }, 4, Array.Empty<byte>(), 1);\nCheck(new byte[] { 0xAA, 0x01, 0x03, 0x00, 0xFA, 0x5F, 0x99, 0xAA }, 8, new byte[] { 0xAA }, 2);\nCheck(new byte[] { 0x02, 0x03, 0x01, 0x04, 0x60 }, 5, Array.Empty<byte>(), 3);\nCheck(new byte[] { 0xEE }, 0, Array.Empty<byte>(), 3);\nConsole.SetOut(realOutput);\nConsole.WriteLine(JsonSerializer.Serialize(new { allPassed, checks, stdout = captured.ToString() }));\nreturn allPassed ? 0 : 1;\n",
+    "result": {
+      "allPassed": true,
+      "checks": [
+        {
+          "passed": true,
+          "validCount": 2,
+          "actualFrames": 0,
+          "remaining": ""
+        },
+        {
+          "passed": true,
+          "validCount": 3,
+          "actualFrames": 0,
+          "remaining": "AA01"
+        },
+        {
+          "passed": true,
+          "validCount": 4,
+          "actualFrames": 1,
+          "remaining": ""
+        },
+        {
+          "passed": true,
+          "validCount": 8,
+          "actualFrames": 2,
+          "remaining": "AA"
+        },
+        {
+          "passed": true,
+          "validCount": 5,
+          "actualFrames": 3,
+          "remaining": ""
+        },
+        {
+          "passed": true,
+          "validCount": 0,
+          "actualFrames": 3,
+          "remaining": ""
+        }
+      ],
+      "stdout": "本次实际收到：99 88 \r\n本次有效数量：2\r\n缓冲剩余：\r\n剩余数量：0，已取帧数：0\r\n本次实际收到：77 AA 01 \r\n本次有效数量：3\r\n缓冲剩余：AA 01 \r\n剩余数量：2，已取帧数：0\r\n本次实际收到：03 00 FA 5F \r\n本次有效数量：4\r\n完整帧1：AA 01 03 00 FA 5F \r\nTODO 5：当前只输出完整帧，还没有计算设备读数。\r\n缓冲剩余：\r\n剩余数量：0，已取帧数：1\r\n本次实际收到：AA 01 03 00 FA 5F 99 AA \r\n本次有效数量：8\r\n完整帧2：AA 01 03 00 FA 5F \r\nTODO 5：当前只输出完整帧，还没有计算设备读数。\r\n缓冲剩余：AA \r\n剩余数量：1，已取帧数：2\r\n本次实际收到：02 03 01 04 60 \r\n本次有效数量：5\r\n完整帧3：AA 02 03 01 04 60 \r\nTODO 5：当前只输出完整帧，还没有计算设备读数。\r\n缓冲剩余：\r\n剩余数量：0，已取帧数：3\r\n本次实际收到：\r\n本次有效数量：0\r\n缓冲剩余：\r\n剩余数量：0，已取帧数：3\r\n"
+    }
+  },
+  "checks": {
+    "ports_listing_exits_zero": true,
+    "empty_port_does_not_open": true,
+    "learner_menu_is_honest_placeholder": true,
+    "simulator_missing_port_reports_failure": true,
+    "provided_buffer_six_cases_passed": true,
+    "old_task_sources_unchanged": true
+  },
+  "actual_serial_pair_created": false,
+  "serial_roundtrip_verified": false,
+  "learner_todos_completed": false,
+  "dod_accepted": false
+}

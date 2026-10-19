@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-19",
+  "command": [
+    "dotnet",
+    "run",
+    "--project",
+    "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task043-input-check-ahfl1mcw\\InputCheck.csproj",
+    "--verbosity",
+    "quiet"
+  ],
+  "harness_source": "\nusing System;\nusing System.Collections.Generic;\nusing System.IO;\nusing System.Linq;\nusing System.Reflection;\nusing System.Text.Json;\nusing DeviceCommunication.Exercises.Task043;\n\nTask043Exercise exercise = new Task043Exercise();\nType type = typeof(Task043Exercise);\nBindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;\nMethodInfo receive = type.GetMethod(\"ReceiveChunk\", flags)!;\nFieldInfo bufferField = type.GetField(\"_receivedBytes\", flags)!;\nFieldInfo countField = type.GetField(\"_printedFrameCount\", flags)!;\nList<byte> originalBuffer = (List<byte>)bufferField.GetValue(exercise)!;\nTextWriter realOutput = Console.Out;\nStringWriter capturedOutput = new StringWriter();\nConsole.SetOut(capturedOutput);\nList<object> checks = new List<object>();\nbool allPassed = true;\n\nvoid Check(byte[] input, int validCount, byte[] expectedBuffer, int expectedFrames, string name)\n{\n    byte[] originalInput = (byte[])input.Clone();\n    receive.Invoke(exercise, new object[] { input, validCount, name });\n    List<byte> buffer = (List<byte>)bufferField.GetValue(exercise)!;\n    int frameCount = (int)countField.GetValue(exercise)!;\n    bool inputUnchanged = input.SequenceEqual(originalInput);\n    bool sameList = Object.ReferenceEquals(buffer, originalBuffer);\n    bool stateMatches = buffer.SequenceEqual(expectedBuffer) && frameCount == expectedFrames;\n    allPassed = allPassed && inputUnchanged && sameList && stateMatches;\n    checks.Add(new { name, validCount, inputUnchanged, sameList, stateMatches, frameCount,\n        actualBuffer = Convert.ToHexString(buffer.ToArray()), expectedBuffer = Convert.ToHexString(expectedBuffer) });\n}\n\nbyte[] first = new byte[] { 0x77, 0xAA, 0x01, 0xEE };\nCheck(first, 3, new byte[] { 0xAA, 0x01 }, 0, \"noise and partial A; trailing EE excluded\");\nCheck(new byte[] { 0x03, 0x00, 0x64, 0x5F, 0xEE }, 4, Array.Empty<byte>(), 1, \"complete A; trailing EE excluded\");\nCheck(new byte[] { 0xAA, 0x02, 0x03, 0x00, 0x65, 0x60, 0x99, 0xAA, 0x03, 0xAA, 0x00, 0x66, 0x61, 0xEE },\n    13, Array.Empty<byte>(), 3, \"B then noise then C; trailing EE excluded\");\nCheck(first, 0, Array.Empty<byte>(), 3, \"same original array with zero valid bytes\");\nCheck(new byte[] { 0x99, 0x88 }, 2, Array.Empty<byte>(), 3, \"noise only\");\nCheck(new byte[] { 0xAA, 0x03, 0xAA, 0x00, 0x66, 0x61 }, 6, Array.Empty<byte>(), 4, \"C again after clearing noise\");\nConsole.SetOut(realOutput);\nConsole.WriteLine(JsonSerializer.Serialize(new { allPassed, checks, capturedOutput = capturedOutput.ToString() }));\nreturn allPassed ? 0 : 1;\n",
+  "project_source": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup><ItemGroup><Reference Include=\"DeviceCommunication\"><HintPath>D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll</HintPath></Reference></ItemGroup></Project>",
+  "exit_code": 0,
+  "stdout": "{\"allPassed\":true,\"checks\":[{\"name\":\"noise and partial A; trailing EE excluded\",\"validCount\":3,\"inputUnchanged\":true,\"sameList\":true,\"stateMatches\":true,\"frameCount\":0,\"actualBuffer\":\"AA01\",\"expectedBuffer\":\"AA01\"},{\"name\":\"complete A; trailing EE excluded\",\"validCount\":4,\"inputUnchanged\":true,\"sameList\":true,\"stateMatches\":true,\"frameCount\":1,\"actualBuffer\":\"\",\"expectedBuffer\":\"\"},{\"name\":\"B then noise then C; trailing EE excluded\",\"validCount\":13,\"inputUnchanged\":true,\"sameList\":true,\"stateMatches\":true,\"frameCount\":3,\"actualBuffer\":\"\",\"expectedBuffer\":\"\"},{\"name\":\"same original array with zero valid bytes\",\"validCount\":0,\"inputUnchanged\":true,\"sameList\":true,\"stateMatches\":true,\"frameCount\":3,\"actualBuffer\":\"\",\"expectedBuffer\":\"\"},{\"name\":\"noise only\",\"validCount\":2,\"inputUnchanged\":true,\"sameList\":true,\"stateMatches\":true,\"frameCount\":3,\"actualBuffer\":\"\",\"expectedBuffer\":\"\"},{\"name\":\"C again after clearing noise\",\"validCount\":6,\"inputUnchanged\":true,\"sameList\":true,\"stateMatches\":true,\"frameCount\":4,\"actualBuffer\":\"\",\"expectedBuffer\":\"\"}],\"capturedOutput\":\"\\u8F93\\u5165\\uFF1Anoise and partial A; trailing EE excluded\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u6570\\u91CF\\uFF1A2\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u5B57\\u8282\\uFF1AAA 01 \\r\\n\\u672C\\u7EC4\\u5DF2\\u8F93\\u51FA\\u5E27\\u6570\\uFF1A0\\r\\n\\u8F93\\u5165\\uFF1Acomplete A; trailing EE excluded\\r\\n\\u5B8C\\u6574\\u5E271\\uFF1AAA 01 03 00 64 5F \\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u5B57\\u8282\\uFF1A\\r\\n\\u672C\\u7EC4\\u5DF2\\u8F93\\u51FA\\u5E27\\u6570\\uFF1A1\\r\\n\\u8F93\\u5165\\uFF1AB then noise then C; trailing EE excluded\\r\\n\\u5B8C\\u6574\\u5E272\\uFF1AAA 02 03 00 65 60 \\r\\n\\u5B8C\\u6574\\u5E273\\uFF1AAA 03 AA 00 66 61 \\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u5B57\\u8282\\uFF1A\\r\\n\\u672C\\u7EC4\\u5DF2\\u8F93\\u51FA\\u5E27\\u6570\\uFF1A3\\r\\n\\u8F93\\u5165\\uFF1Asame original array with zero valid bytes\\r\\n\\u7F13\\u51B2\\u4E3A\\u7A7A\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u5B57\\u8282\\uFF1A\\r\\n\\u672C\\u7EC4\\u5DF2\\u8F93\\u51FA\\u5E27\\u6570\\uFF1A3\\r\\n\\u8F93\\u5165\\uFF1Anoise only\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u5B57\\u8282\\uFF1A\\r\\n\\u672C\\u7EC4\\u5DF2\\u8F93\\u51FA\\u5E27\\u6570\\uFF1A3\\r\\n\\u8F93\\u5165\\uFF1AC again after clearing noise\\r\\n\\u5B8C\\u6574\\u5E274\\uFF1AAA 03 AA 00 66 61 \\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u6570\\u91CF\\uFF1A0\\r\\n\\u7F13\\u51B2\\u5269\\u4F59\\u5B57\\u8282\\uFF1A\\r\\n\\u672C\\u7EC4\\u5DF2\\u8F93\\u51FA\\u5E27\\u6570\\uFF1A4\\r\\n\"}\r\n",
+  "stderr": "",
+  "observed": {
+    "allPassed": true,
+    "checks": [
+      {
+        "name": "noise and partial A; trailing EE excluded",
+        "validCount": 3,
+        "inputUnchanged": true,
+        "sameList": true,
+        "stateMatches": true,
+        "frameCount": 0,
+        "actualBuffer": "AA01",
+        "expectedBuffer": "AA01"
+      },
+      {
+        "name": "complete A; trailing EE excluded",
+        "validCount": 4,
+        "inputUnchanged": true,
+        "sameList": true,
+        "stateMatches": true,
+        "frameCount": 1,
+        "actualBuffer": "",
+        "expectedBuffer": ""
+      },
+      {
+        "name": "B then noise then C; trailing EE excluded",
+        "validCount": 13,
+        "inputUnchanged": true,
+        "sameList": true,
+        "stateMatches": true,
+        "frameCount": 3,
+        "actualBuffer": "",
+        "expectedBuffer": ""
+      },
+      {
+        "name": "same original array with zero valid bytes",
+        "validCount": 0,
+        "inputUnchanged": true,
+        "sameList": true,
+        "stateMatches": true,
+        "frameCount": 3,
+        "actualBuffer": "",
+        "expectedBuffer": ""
+      },
+      {
+        "name": "noise only",
+        "validCount": 2,
+        "inputUnchanged": true,
+        "sameList": true,
+        "stateMatches": true,
+        "frameCount": 3,
+        "actualBuffer": "",
+        "expectedBuffer": ""
+      },
+      {
+        "name": "C again after clearing noise",
+        "validCount": 6,
+        "inputUnchanged": true,
+        "sameList": true,
+        "stateMatches": true,
+        "frameCount": 4,
+        "actualBuffer": "",
+        "expectedBuffer": ""
+      }
+    ],
+    "capturedOutput": "输入：noise and partial A; trailing EE excluded\r\n缓冲剩余数量：2\r\n缓冲剩余字节：AA 01 \r\n本组已输出帧数：0\r\n输入：complete A; trailing EE excluded\r\n完整帧1：AA 01 03 00 64 5F \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：1\r\n输入：B then noise then C; trailing EE excluded\r\n完整帧2：AA 02 03 00 65 60 \r\n完整帧3：AA 03 AA 00 66 61 \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：3\r\n输入：same original array with zero valid bytes\r\n缓冲为空\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：3\r\n输入：noise only\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：3\r\n输入：C again after clearing noise\r\n完整帧4：AA 03 AA 00 66 61 \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：4\r\n"
+  },
+  "sha256_before": {
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-043-frame-resync\\Task043Exercise.cs": "08cbe41f5d64f3c7e20f542831a2a08bdb16d21a315a9adad16ffbbc8955a1e0",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "d44edace45ab65406700dbfaf4d8a17f2d6beb5e0045144a480ffd245a1e6e98",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll": "ca66d10486b1412b35760d782468dc2102a13d2bb4d1255dd7b3d4a81e7754c1"
+  },
+  "sha256_after": {
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-043-frame-resync\\Task043Exercise.cs": "08cbe41f5d64f3c7e20f542831a2a08bdb16d21a315a9adad16ffbbc8955a1e0",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "d44edace45ab65406700dbfaf4d8a17f2d6beb5e0045144a480ffd245a1e6e98",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll": "ca66d10486b1412b35760d782468dc2102a13d2bb4d1255dd7b3d4a81e7754c1"
+  },
+  "source_entry_and_dll_unchanged": true
+}

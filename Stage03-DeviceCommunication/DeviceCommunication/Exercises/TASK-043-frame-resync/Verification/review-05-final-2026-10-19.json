@@ -1,0 +1,282 @@
+{
+  "date": "2026-10-19",
+  "source_snapshot": "using System;\nusing System.Collections.Generic;\n\nnamespace DeviceCommunication.Exercises.Task043\n{\n    public class Task043Exercise\n    {\n        private List<byte> _receivedBytes = new List<byte>();\n        private int _printedFrameCount = 0;\n\n        public void Run()\n        {\n            Console.WriteLine(\"TASK-043：跳过无效开头并恢复取帧\");\n\n            byte[] noiseOnly = new byte[] { 0x99, 0x88 };\n            byte[] prefixAndA = new byte[] { 0x99, 0x88, 0xAA, 0x01, 0x03, 0x00, 0x64, 0x5F };\n            byte[] noiseAndPrefix = new byte[] { 0x77, 0xAA, 0x01 };\n            byte[] restOfA = new byte[] { 0x03, 0x00, 0x64, 0x5F, 0xEE };\n            byte[] aNoiseB = new byte[] { 0xAA, 0x01, 0x03, 0x00, 0x64, 0x5F, 0x99, 0xAA, 0x02, 0x03, 0x00, 0x65, 0x60 };\n            byte[] frameC = new byte[] { 0xAA, 0x03, 0xAA, 0x00, 0x66, 0x61 };\n            byte[] aFirst = new byte[] { 0xAA, 0x01 };\n            byte[] aRestNoiseBHead = new byte[] { 0x03, 0x00, 0x64, 0x5F, 0x99, 0xAA };\n            byte[] bRest = new byte[] { 0x02, 0x03, 0x00, 0x65, 0x60 };\n\n            StartScenario(\"场景一：只有两个无效字节\");\n            ReceiveChunk(noiseOnly, 2, \"收到99 88\");\n            ReceiveChunk(noiseOnly, 0, \"本次有效数量0\");\n\n            StartScenario(\"场景二：无效前导后接完整A\");\n            ReceiveChunk(prefixAndA, 8, \"收到99 88和完整A\");\n            ReceiveChunk(noiseOnly, 0, \"本次有效数量0\");\n\n            StartScenario(\"场景三：无效前导后先留合法半帧，再补齐\");\n            ReceiveChunk(noiseAndPrefix, 3, \"收到77 AA 01\");\n            ReceiveChunk(restOfA, 4, \"收到A剩余4字节\");\n            ReceiveChunk(noiseOnly, 0, \"本次有效数量0\");\n\n            StartScenario(\"场景四：两帧之间有无效字节\");\n            ReceiveChunk(aNoiseB, 13, \"一次收到A、99和B\");\n            ReceiveChunk(noiseOnly, 0, \"本次有效数量0\");\n\n            StartScenario(\"场景五：完整帧内部也有AA\");\n            ReceiveChunk(frameC, 6, \"收到完整C\");\n            ReceiveChunk(noiseOnly, 0, \"本次有效数量0\");\n\n            StartScenario(\"场景六：同样的A、99和B分段到达\");\n            ReceiveChunk(aFirst, 2, \"收到A前2字节\");\n            ReceiveChunk(aRestNoiseBHead, 6, \"收到A尾部、99和B的AA\");\n            ReceiveChunk(bRest, 5, \"收到B剩余5字节\");\n            ReceiveChunk(noiseOnly, 0, \"本次有效数量0\");\n\n            StartScenario(\"场景七：空缓冲收到零数量\");\n            ReceiveChunk(noiseOnly, 0, \"没有新字节\");\n\n            // TODO 3：实现恢复处理后运行七组，核对短无效输入清空、合法半帧保留、内部AA原样输出与零数量安全。\n        }\n\n        private void ProcessBuffer()\n        {\n            // TOD 1：先判断 Count 是否为 0，为 0 时显示“缓冲为空”并返回，否则输出当前首字节的两位十六进制。\n            if (_receivedBytes.Count == 0)\n            {\n                Console.WriteLine(\"缓冲为空\");\n                return;\n            }\n            // TODO 2：列表还有字节时，查看第一个字节 _receivedBytes[0]；不是 0xAA 就删掉它，再检查新的第一个字节。\n            //TODO 3 在同一个循环里，遇到 0xAA 后，不足 6 字节就保留并停止本次处理；足够时调用 ExtractOneFrame，取完继续检查剩余内容。\n            while (_receivedBytes.Count > 0)\n            {\n                if (_receivedBytes[0] != 0xAA)\n                {\n                    _receivedBytes.RemoveAt(0);\n                    continue;\n                }\n                if (_receivedBytes.Count < 6)\n                {\n                    break;\n                }\n                if (_receivedBytes.Count >= 6 && _receivedBytes[0] == 0xAA)\n                {\n                    ExtractOneFrame();\n                }\n            }\n            \n        }\n\n        private void ExtractOneFrame()\n        {\n            // 这里复用 TASK-042 已验证的六字节复制、移除和打印，调用前由 ProcessBuffer 确认首字节为 AA 且数量至少为 6。\n            byte[] frame = new byte[6];\n            for (int i = 0; i < 6; i++)\n            {\n                frame[i] = _receivedBytes[i];\n            }\n            _receivedBytes.RemoveRange(0, 6);\n            PrintFrame(frame);\n        }\n\n        private void AppendReceivedBytes(byte[] data, int bytesRead)\n        {\n            for (int i = 0; i < bytesRead; i++)\n            {\n                _receivedBytes.Add(data[i]);\n            }\n        }\n\n        private void ReceiveChunk(byte[] data, int bytesRead, string label)\n        {\n            Console.WriteLine(\"输入：\" + label);\n            AppendReceivedBytes(data, bytesRead);\n            ProcessBuffer();\n            PrintBufferState();\n        }\n\n        private void StartScenario(string label)\n        {\n            _receivedBytes.Clear();\n            _printedFrameCount = 0;\n            Console.WriteLine();\n            Console.WriteLine(label);\n        }\n\n        private void PrintFrame(byte[] frame)\n        {\n            _printedFrameCount = _printedFrameCount + 1;\n            Console.Write(\"完整帧\" + _printedFrameCount + \"：\");\n            for (int i = 0; i < frame.Length; i++)\n            {\n                Console.Write(frame[i].ToString(\"X2\") + \" \");\n            }\n            Console.WriteLine();\n        }\n\n        private void PrintBufferState()\n        {\n            Console.WriteLine(\"缓冲剩余数量：\" + _receivedBytes.Count);\n            Console.Write(\"缓冲剩余字节：\");\n            for (int i = 0; i < _receivedBytes.Count; i++)\n            {\n                Console.Write(_receivedBytes[i].ToString(\"X2\") + \" \");\n            }\n            Console.WriteLine();\n            Console.WriteLine(\"本组已输出帧数：\" + _printedFrameCount);\n        }\n    }\n}\n",
+  "build": {
+    "command": [
+      "dotnet",
+      "build",
+      "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\DeviceCommunication.csproj",
+      "--nologo"
+    ],
+    "exit_code": 0,
+    "stdout": "  正在确定要还原的项目…\r\n  所有项目均是最新的，无法还原。\r\n  DeviceCommunication -> D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.69\r\n",
+    "stderr": ""
+  },
+  "run": {
+    "command": [
+      "dotnet",
+      "D:\\host-computer-st\\Stage03-DeviceCommunication\\DeviceCommunication\\bin\\Debug\\net10.0\\DeviceCommunication.dll"
+    ],
+    "timed_out": false,
+    "timeout_seconds": 4,
+    "terminated_by_reviewer": false,
+    "exit_code": 0,
+    "stdout": "Hello, World!\r\nTASK-043：跳过无效开头并恢复取帧\r\n\r\n场景一：只有两个无效字节\r\n输入：收到99 88\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：0\r\n输入：本次有效数量0\r\n缓冲为空\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：0\r\n\r\n场景二：无效前导后接完整A\r\n输入：收到99 88和完整A\r\n完整帧1：AA 01 03 00 64 5F \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：1\r\n输入：本次有效数量0\r\n缓冲为空\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：1\r\n\r\n场景三：无效前导后先留合法半帧，再补齐\r\n输入：收到77 AA 01\r\n缓冲剩余数量：2\r\n缓冲剩余字节：AA 01 \r\n本组已输出帧数：0\r\n输入：收到A剩余4字节\r\n完整帧1：AA 01 03 00 64 5F \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：1\r\n输入：本次有效数量0\r\n缓冲为空\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：1\r\n\r\n场景四：两帧之间有无效字节\r\n输入：一次收到A、99和B\r\n完整帧1：AA 01 03 00 64 5F \r\n完整帧2：AA 02 03 00 65 60 \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n输入：本次有效数量0\r\n缓冲为空\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n\r\n场景五：完整帧内部也有AA\r\n输入：收到完整C\r\n完整帧1：AA 03 AA 00 66 61 \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：1\r\n输入：本次有效数量0\r\n缓冲为空\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：1\r\n\r\n场景六：同样的A、99和B分段到达\r\n输入：收到A前2字节\r\n缓冲剩余数量：2\r\n缓冲剩余字节：AA 01 \r\n本组已输出帧数：0\r\n输入：收到A尾部、99和B的AA\r\n完整帧1：AA 01 03 00 64 5F \r\n缓冲剩余数量：1\r\n缓冲剩余字节：AA \r\n本组已输出帧数：1\r\n输入：收到B剩余5字节\r\n完整帧2：AA 02 03 00 65 60 \r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n输入：本次有效数量0\r\n缓冲为空\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：2\r\n\r\n场景七：空缓冲收到零数量\r\n输入：没有新字节\r\n缓冲为空\r\n缓冲剩余数量：0\r\n缓冲剩余字节：\r\n本组已输出帧数：0\r\n",
+    "stderr": ""
+  },
+  "checkpoints": [
+    {
+      "number": 1,
+      "expected": [
+        0,
+        "",
+        0
+      ],
+      "actual": [
+        0,
+        "",
+        0
+      ],
+      "passed": true
+    },
+    {
+      "number": 2,
+      "expected": [
+        0,
+        "",
+        0
+      ],
+      "actual": [
+        0,
+        "",
+        0
+      ],
+      "passed": true
+    },
+    {
+      "number": 3,
+      "expected": [
+        0,
+        "",
+        1
+      ],
+      "actual": [
+        0,
+        "",
+        1
+      ],
+      "passed": true
+    },
+    {
+      "number": 4,
+      "expected": [
+        0,
+        "",
+        1
+      ],
+      "actual": [
+        0,
+        "",
+        1
+      ],
+      "passed": true
+    },
+    {
+      "number": 5,
+      "expected": [
+        2,
+        "AA 01",
+        0
+      ],
+      "actual": [
+        2,
+        "AA 01",
+        0
+      ],
+      "passed": true
+    },
+    {
+      "number": 6,
+      "expected": [
+        0,
+        "",
+        1
+      ],
+      "actual": [
+        0,
+        "",
+        1
+      ],
+      "passed": true
+    },
+    {
+      "number": 7,
+      "expected": [
+        0,
+        "",
+        1
+      ],
+      "actual": [
+        0,
+        "",
+        1
+      ],
+      "passed": true
+    },
+    {
+      "number": 8,
+      "expected": [
+        0,
+        "",
+        2
+      ],
+      "actual": [
+        0,
+        "",
+        2
+      ],
+      "passed": true
+    },
+    {
+      "number": 9,
+      "expected": [
+        0,
+        "",
+        2
+      ],
+      "actual": [
+        0,
+        "",
+        2
+      ],
+      "passed": true
+    },
+    {
+      "number": 10,
+      "expected": [
+        0,
+        "",
+        1
+      ],
+      "actual": [
+        0,
+        "",
+        1
+      ],
+      "passed": true
+    },
+    {
+      "number": 11,
+      "expected": [
+        0,
+        "",
+        1
+      ],
+      "actual": [
+        0,
+        "",
+        1
+      ],
+      "passed": true
+    },
+    {
+      "number": 12,
+      "expected": [
+        2,
+        "AA 01",
+        0
+      ],
+      "actual": [
+        2,
+        "AA 01",
+        0
+      ],
+      "passed": true
+    },
+    {
+      "number": 13,
+      "expected": [
+        1,
+        "AA",
+        1
+      ],
+      "actual": [
+        1,
+        "AA",
+        1
+      ],
+      "passed": true
+    },
+    {
+      "number": 14,
+      "expected": [
+        0,
+        "",
+        2
+      ],
+      "actual": [
+        0,
+        "",
+        2
+      ],
+      "passed": true
+    },
+    {
+      "number": 15,
+      "expected": [
+        0,
+        "",
+        2
+      ],
+      "actual": [
+        0,
+        "",
+        2
+      ],
+      "passed": true
+    },
+    {
+      "number": 16,
+      "expected": [
+        0,
+        "",
+        0
+      ],
+      "actual": [
+        0,
+        "",
+        0
+      ],
+      "passed": true
+    }
+  ],
+  "frames": [
+    "AA 01 03 00 64 5F",
+    "AA 01 03 00 64 5F",
+    "AA 01 03 00 64 5F",
+    "AA 02 03 00 65 60",
+    "AA 03 AA 00 66 61",
+    "AA 01 03 00 64 5F",
+    "AA 02 03 00 65 60"
+  ],
+  "expected_frames": [
+    "AA 01 03 00 64 5F",
+    "AA 01 03 00 64 5F",
+    "AA 01 03 00 64 5F",
+    "AA 02 03 00 65 60",
+    "AA 03 AA 00 66 61",
+    "AA 01 03 00 64 5F",
+    "AA 02 03 00 65 60"
+  ],
+  "frame_sequence_passed": true,
+  "source_sha256_before": {
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-043-frame-resync\\Task043Exercise.cs": "08cbe41f5d64f3c7e20f542831a2a08bdb16d21a315a9adad16ffbbc8955a1e0",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "d44edace45ab65406700dbfaf4d8a17f2d6beb5e0045144a480ffd245a1e6e98"
+  },
+  "source_sha256_after": {
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Exercises\\TASK-043-frame-resync\\Task043Exercise.cs": "08cbe41f5d64f3c7e20f542831a2a08bdb16d21a315a9adad16ffbbc8955a1e0",
+    "Stage03-DeviceCommunication\\DeviceCommunication\\Program.cs": "d44edace45ab65406700dbfaf4d8a17f2d6beb5e0045144a480ffd245a1e6e98"
+  },
+  "source_and_entry_unchanged": true,
+  "all_runtime_checks_passed": true
+}

@@ -4,6 +4,22 @@
 
 <!-- 发生错误后追加：情况与证据、根因、修复线索、复查点及状态。 -->
 
+## TASK-043：取帧放在循环外，取完后没有继续处理剩余缓冲
+
+- 2026-10-19最终复查通过：学员自主把不足6等待判断移到取帧前、非AA删除之后，七组16个检查点和6组输入保护全部通过，场景六取A后清99、只留AA，补齐后输出B，所有零数量不新增帧，无死循环或重复输出；教练未改实现，见[最终证据](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-043-frame-resync/Verification/review-05-final-2026-10-19.json)，下方失败和修复线索均为历史。
+- 2026-10-19第四版复查：七组正常退出0，16个检查点15符合/1不符合，DoD2/3通过、1未通过；唯一不符合是场景六取A后剩99 AA两项，Count < 6在取帧之后立即break使99未及时清理，见[第四版证据](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-043-frame-resync/Verification/review-04-2026-10-19.json)。
+- 当前修复线索：把已有不足6判断整体移到取帧if之前、非AA删除分支之后，保证取完A后还能回到下一轮先删99，再只保留AA；当前半帧等待、完整帧输出、内部AA和零数量已通过，教练未代改实现，下方第三版卡住为历史。
+- 2026-10-19第三版复查：取帧已移入while，完整A当次输出正确；当前缺少AA开头不足6的退出分支，AA 01既不删除也不取帧，循环4秒不返回后教练终止，见[第三版证据](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-043-frame-resync/Verification/review-03-2026-10-19.json)。
+- 当前修复线索：在非AA删除分支之后、取帧判断之前补Count < 6时break，让半帧保留且本次方法能返回，下一次追加才能执行；DoD1无法完整验证、2/3未通过，三个均未勾，旧版半帧通过保留为历史，教练未代改实现。
+- 2026-10-19同轮更新后复跑：学员新增break已消除死循环，七组正常退出0；但场景四首次取A后剩99和完整B共7字节，B延后到零数量，场景六第二段剩99 AA而非AA，最新根因是循环外只取一帧，取完不再回到循环，见[最新证据](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-043-frame-resync/Verification/review-02-2026-10-19.json)，下方卡住为旧版历史。
+- 最新修复线索：把数量判断/取帧放进现有while，只在合法AA开头但不足6时break等待，完整帧取出后继续检查剩余字节；DoD2已通过、1/3未通过，教练未代改实现。
+- 状态：✅ 已通关。
+- 情况与证据：2026-10-19构建成功，场景一99 88清空且后续零数量安全；场景二收到99 88和完整A后没有输出，4秒仍未返回，由教练终止，见[首次审查证据](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-043-frame-resync/Verification/review-01-2026-10-19.json)。
+- 根因：while内只处理非AA删除，遇AA时既不改变列表也不退出，Count > 0一直成立；等待/取帧代码放在while外，无法执行到，只记录可见代码结构与运行现象，不推测编写动机。
+- 修复线索：遇AA后的等待和取帧放进现有while，少于6保留并停止，至少6取一帧后继续检查剩余内容，核心修改由学员完成。
+- 复查点：场景二立即输出A/剩0，场景三先留AA 01再补齐A，帧间99清理、C内部AA原样保留、分段一致和零数量安全均通过，无死循环或重复输出。
+- 掌握边界：短无效输入的非空保护、RemoveAt(0)与continue已有局部运行证据，TASK-042已有能力保持；此前教练TODO重复与用语难懂另记教学反馈，不归为学员错误，本轮未代改源码。
+
 ## TASK-042：完整帧循环遗漏恰好6字节的边界
 
 - 2026-10-19最终复查：学员自主修正为Count >= 6，八项检查全部通过，12字节当次输出A/B并剩0，零数量后仍为2帧/剩0，2/3/1与8/4及输入保护均保持；本轮源码未改，见[最终证据](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-042-fixed-frame/Verification/review-02-final.json)，下方失败为首次历史。
