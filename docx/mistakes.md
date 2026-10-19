@@ -4,6 +4,16 @@
 
 <!-- 发生错误后追加：情况与证据、根因、修复线索、复查点及状态。 -->
 
+## TASK-044：用整数除法计算温度，再用F1补显示
+
+- 状态：✅ 已通关。
+- 2026-10-19按用户静态口径复查通过：学员已将原始值保存在int rawValue，再用double temperature = rawValue / 10.0，教练仅补原始值与温度显示；小数丢失问题从源码上已修正，未运行或测试，见[最终静态记录](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-044-serial-roundtrip/Verification/static-review-final-2026-10-19.md)，下方错误和待修线索为历史，不声称串口实际结果已验证。
+- 情况与证据：2026-10-19按用户要求仅静态审查，PrintReading第168行用int value = (frame[3] * 256 + frame[4]) / 10，第169行对value用F1显示；原始256按C#整数除法得到25而不是25.6，且未单独输出原始值，见[静态记录](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-044-serial-roundtrip/Verification/static-review-2026-10-19.md)，未把推导当作实际运行。
+- 根因：换算时两边都是整数，除法在格式化之前已丢掉小数，F1只改变显示形式；只记录可见表达式，不推测编写动机。
+- 修复线索：int变量先保留两字节合成的原始值，double变量保存原始值除以10.0的温度，分别显示两者，核心修改由学员完成。
+- 复查点：源码中原始值与温度分开、温度计算为浮点除法、F1用于温度；01 00应对应原始256和25.6℃，是否运行仍按用户届时要求执行，不安排本轮测试。
+- 掌握边界：Open/Write/Read返回有效数量/Close+Clear的源码连接静态合理，但本轮未运行验证，不新增串口自主掌握，TASK-039至043已有能力保持，教练骨架或讲解反馈不归为学员错误。
+
 ## TASK-043：取帧放在循环外，取完后没有继续处理剩余缓冲
 
 - 2026-10-19最终复查通过：学员自主把不足6等待判断移到取帧前、非AA删除之后，七组16个检查点和6组输入保护全部通过，场景六取A后清99、只留AA，补齐后输出B，所有零数量不新增帧，无死循环或重复输出；教练未改实现，见[最终证据](../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-043-frame-resync/Verification/review-05-final-2026-10-19.json)，下方失败和修复线索均为历史。

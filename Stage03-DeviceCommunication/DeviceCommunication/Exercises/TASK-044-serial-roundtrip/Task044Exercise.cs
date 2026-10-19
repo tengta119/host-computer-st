@@ -99,7 +99,7 @@ namespace DeviceCommunication.Exercises.Task044
             }
             finally
             {
-                // 教练提供退出时的最后清理，避免练习中途退出仍占用串口，不代替 TODO 4 的主动关闭验证。
+                // 教练提供退出时的最后清理，避免练习中途退出仍占用串口，不代替 TOD 4 的主动关闭验证。
                 _port.Dispose();
                 _receivedBytes.Clear();
             }
@@ -112,8 +112,9 @@ namespace DeviceCommunication.Exercises.Task044
                 Console.WriteLine("这个端口已经打开。");
                 return;
             }
-            // TODO 1：调用 _port.Open() 打开已选择的端口，成功后打印端口名和 _port.IsOpen，失败交给菜单的 catch 显示。
-            Console.WriteLine("TODO 1：尚未实现打开端口。");
+            // TOD 1：调用 _port.Open() 打开已选择的端口，成功后打印端口名和 _port.IsOpen，失败交给菜单的 catch 显示。
+            _port.Open();
+            Console.WriteLine("已打开：" + _port.PortName + "，状态：" + _port.IsOpen);
         }
 
         private void SendRequest()
@@ -124,8 +125,9 @@ namespace DeviceCommunication.Exercises.Task044
                 return;
             }
             byte[] request = new byte[] { 0x55, 0x01 };
-            // TODO 2：调用 _port.Write(request, 0, request.Length) 发送这两个原始字节，然后调用 PrintBytes 显示已发送内容。
-            Console.WriteLine("TODO 2：尚未发送请求，待发送字节数：" + request.Length);
+            // TOD 2：调用 _port.Write(request, 0, request.Length) 发送这两个原始字节，然后调用 PrintBytes 显示已发送内容。
+            _port.Write(request, 0, request.Length);
+            PrintBytes("已发送：", request, request.Length);
         }
 
         private void ReceiveAvailable()
@@ -141,8 +143,9 @@ namespace DeviceCommunication.Exercises.Task044
                 return;
             }
             byte[] data = new byte[256];
-            // TODO 3：用 _port.Read(data, 0, data.Length) 的返回值保存本次有效数量，再调用 HandleReceivedBytes(data, 有效数量)。
-            Console.WriteLine("TODO 3：尚未读取数据，接收数组容量：" + data.Length);
+            // TOD 3：用 _port.Read(data, 0, data.Length) 的返回值保存本次有效数量，再调用 HandleReceivedBytes(data, 有效数量)。
+            int bytesRead = _port.Read(data, 0, data.Length);
+            HandleReceivedBytes(data, bytesRead);
         }
 
         private void ClosePort()
@@ -152,14 +155,19 @@ namespace DeviceCommunication.Exercises.Task044
                 Console.WriteLine("端口当前未打开。");
                 return;
             }
-            // TODO 4：调用 _port.Close() 主动关闭，再清空 _receivedBytes，打印关闭状态，重新 o 打开后核对不会混入旧半帧。
-            Console.WriteLine("TODO 4：尚未实现主动关闭与清理旧半帧。");
+            // TOD 4：调用 _port.Close() 主动关闭，再清空 _receivedBytes，打印关闭状态，重新 o 打开后核对不会混入旧半帧。
+            _port.Close();
+            _receivedBytes.Clear();
+            Console.WriteLine(_port.PortName + "当前串口已关闭");
         }
 
         private void PrintReading(byte[] frame)
         {
-            // TODO 5：读取 frame[1] 为设备编号，用 frame[3] * 256 + frame[4] 得到原始值，再除以 10.0，打印编号、原始值和一位小数温度。
-            Console.WriteLine("TODO 5：当前只输出完整帧，还没有计算设备读数。");
+            // TOD 5：读取 frame[1] 为设备编号，用 frame[3] * 256 + frame[4] 得到原始值，再除以 10.0，打印编号、原始值和一位小数温度。
+            byte id = frame[1];
+            int rawValue = frame[3] * 256 + frame[4];
+            double temperature = rawValue / 10.0;
+            Console.WriteLine("设备Id:" + id + ", 原始值:" + rawValue + ", 温度:" + temperature.ToString("F1") + "℃");
         }
 
         private void HandleReceivedBytes(byte[] data, int bytesRead)
