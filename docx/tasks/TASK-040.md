@@ -1,9 +1,10 @@
 # TASK-040：只处理接收数组中的有效字节
 
 - 阶段：第三阶段：设备通信（串口准备）。
-- 状态：🟡 进行中
+- 状态：✅ 已通关
 - 创建日期：2026-10-19。
 - 开始日期：2026-10-19。
+- 通关日期：2026-10-19。
 - 计划来源：[学习计划](../plan.md)「四、第三阶段：设备通信」中的数组容量与本次实际读取长度。
 - 选择依据：TASK-039已验证字节数组、Length和按下标遍历；下一步需要区分数组里能放多少字节与本次真正收到多少字节，为后续读取和缓冲做准备。
 - 项目：复用现有[DeviceCommunication.csproj](../../Stage03-DeviceCommunication/DeviceCommunication/DeviceCommunication.csproj)，不新增依赖。
@@ -67,7 +68,7 @@ Task040Exercise是教练新建的练习类，Program.cs用new Task040Exercise()�
 | 位置 | 当前事实与用途 |
 | :--- | :--- |
 | 专属目录Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-040-valid-bytes/ | 已创建，仅存放本题代码，不搬动TASK-039成果。 |
-| [Task040Exercise.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-040-valid-bytes/Task040Exercise.cs) | 已创建普通类、Run、8元素数组、模拟数量6、PrintReceivedBytes方法签名与调用，TODO 1至3留给学员。 |
+| [Task040Exercise.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-040-valid-bytes/Task040Exercise.cs) | 学员已完成长度/数量输出与按bytesRead遍历，教练仅把循环中的Write改为WriteLine，当前实际验收通过，原TODO注释保留。 |
 | [Program.cs](../../Stage03-DeviceCommunication/DeviceCommunication/Program.cs) | 共享入口的必要例外，只把当前练习类连接改为Task040Exercise，保留原Hello, World!输出。 |
 
 | 当前TODO | 对应实践与DoD | 完成后的可观察结果 |
@@ -90,18 +91,38 @@ Console.WriteLine("本次有效数量：" + bytesRead);
 dotnet run --project .\Stage03-DeviceCommunication\DeviceCommunication\DeviceCommunication.csproj
 ```
 
-未完成TODO时当前骨架只输出Hello, World!和任务标题；完成首步后，预期再显示数组长度8、本次有效数量6，暂时没有字节行。
+开启时未完成TODO的骨架只输出Hello, World!和任务标题；本次提交已输出8,6及有效字节行，实际结果见下方验收记录。
 补充说明见[字节问答Q2](../questions/csharp-bytes.md#q2task-040-数组有8个位置为什么本次只处理前6个)。
 
 完成后说“检查TASK-040”即可，不额外要求抄写运行报告或口试。
 
 ## 验收标准（DoD）
 
-- [ ] 同一8元素数组、bytesRead为6时，实际显示数组长度8与有效数量6，按有效数量遍历出下标0～5及AA、01、03、00、64、5F对应的十进制和两位十六进制，不输出后两位置。
-- [ ] 数组及其中元素保持不变，bytesRead为3时实际只显示前三个有效字节，遍历依据为有效数量，未通过清零、删元素或写死输出实现。
-- [ ] bytesRead为0时不输出任何字节行、不越界；恢复6后仍正确输出原始六字节，不沿用上次3或0的结果。
+- [x] 同一8元素数组、bytesRead为6时，实际显示数组长度8与有效数量6，按有效数量遍历出下标0～5及AA、01、03、00、64、5F对应的十进制和两位十六进制，不输出后两位置。
+- [x] 数组及其中元素保持不变，bytesRead为3时实际只显示前三个有效字节，遍历依据为有效数量，未通过清零、删元素或写死输出实现。
+- [x] bytesRead为0时不输出任何字节行、不越界；恢复6后仍正确输出原始六字节，不沿用上次3或0的结果。
 
 ## 验收记录与掌握边界
+
+### 2026-10-19实际审查与教练收尾
+
+学员已自主实现receiveBuffer.Length与bytesRead输出，以及for条件i < bytesRead、下标/十进制/X2输出。
+首次构建0警告/0错误、运行退出0，但循环内使用Console.Write，六条记录连在同一行，尚未满足DoD1逐行显示要求；[修正前证据](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-040-valid-bytes/Verification/review-2026-10-19-before.json)保存原始源码、哈希、命令和实际输出。
+依据用户既有低影响收尾授权，教练只把该处Console.Write改为Console.WriteLine，没有修改循环条件、数组、模拟数量或其他学员实现，换行协助不计学员自主掌握。
+实际执行`python .\Stage03-DeviceCommunication\DeviceCommunication\Exercises\TASK-040-valid-bytes\Verification\review_task040.py`，退出0；[最终证据](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-040-valid-bytes/Verification/review-2026-10-19-final.json)保存真实入口与临时诊断项目的构建、运行、输出和源码保护结果，[审查脚本](../../Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-040-valid-bytes/Verification/review_task040.py)保存在本题独立目录。
+
+| 验收项 | 实际运行证据 | 最终结论 |
+| :--- | :--- | :--- |
+| DoD1 | 当前原项目显示8,6，随后六行依次为0,170,AA至5,95,5F，其中3,0,00保留，没有EE/FF。 | 通过，逐行显示由教练收尾。 |
+| DoD2 | 临时诊断项目调用学员原方法，同一个练习对象和同一个8元素数组依次传入6、3、0、6，数量3时只有下标0～2三行，数组内容未变。 | 通过。 |
+| DoD3 | 同一进程中数量0只显示8,0，没有字节行；随后恢复6输出六行，数组前后逐项相等，不残留前次数量。 | 通过。 |
+
+最终原项目与诊断项目均构建0警告/0错误、运行退出0，五项输出与输入保护检查全通过；诊断入口由教练提供并调用原私有方法，没有改写学员源码来切换数量，也不冒充学员此前已运行这些历史场景。
+Program.cs与项目文件哈希不变，源码差异校验确认只有Write→WriteLine这一处格式修改，临时项目已自动清理。
+三个DoD全部勾选，TASK-040为✅ 已通关；字节Q2按学员自主输出两种数量、有效范围遍历与保留00的实践范围标已掌握，人工数量仍不等于真实串口读取。
+未观察到新的典型认知错误，不新增错题；只创建下一张[TASK-041：保留分批收到的有效字节](./TASK-041.md)，状态⚪ 未开始，未准备新源码或切换入口。
+
+### 开启时的历史记录
 
 - 2026-10-19已创建Task040Exercise.cs并连接实际入口，教练提供样例、数量、方法签名和调用，核心输出、遍历与修改对照尚待学员完成，三个DoD均未勾选。
 - 实际执行`dotnet build .\Stage03-DeviceCommunication\DeviceCommunication\DeviceCommunication.csproj --nologo`，退出0，0警告/0错误。

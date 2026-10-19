@@ -19,8 +19,12 @@ namespace DeviceCommunication.Exercises.Task040
         private void PrintReceivedBytes(byte[] receiveBuffer, int bytesRead)
         {
             // TODO 1：在这里分别输出 receiveBuffer.Length 和 bytesRead，先运行观察数组长度为 8、本次有效数量为 6。
-
+            Console.WriteLine(receiveBuffer.Length + "," + bytesRead);
             // TODO 2：按本次有效数量遍历，每行输出下标、十进制值和两位大写十六进制，保留有效位置里的 00。
+            for (int i = 0; i < bytesRead; i++)
+            {
+                Console.WriteLine(i + "," + receiveBuffer[i] + "," + receiveBuffer[i].ToString("X2"));
+            }
         }
     }
 }

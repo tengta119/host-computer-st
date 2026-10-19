@@ -1,6 +1,6 @@
-﻿using DeviceCommunication.Exercises.Task040;
+﻿using DeviceCommunication.Exercises.Task041;
 
 Console.WriteLine("Hello, World!");
 
-Task040Exercise exercise = new Task040Exercise();
+Task041Exercise exercise = new Task041Exercise();
 exercise.Run();
