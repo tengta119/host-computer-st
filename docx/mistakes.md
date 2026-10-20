@@ -1,5 +1,16 @@
 # 典型错误与复查
 
+## TASK-048：等待结束日志重新读取当前连接，未用等待快照
+
+- 2026-10-20最终源码复查通过：学员已将等待结束日志第三/四实参改为waitingSessionId/waitingPortName，message保留，核心归属问题已修复，三个DoD静态通过、TASK-048✅ 已通关；本轮未改源码或运行测试，以下待修结论为此前历史。
+
+- 情况与证据：2026-10-20仅静态审查，EndWaiting第117/118行已保存等待编号/端口，第131行却把_connection.CurrentSessionId和_connection.PortName传给日志；旧等待清理分支下可能把旧记录标成新连接，见[审查记录](../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Verification/static-review-2026-10-20.md)，未运行重现场景。
+- 根因：可见调用没有使用已保存的waitingSessionId/waitingPortName；当前连接信息与原等待所属信息在旧等待分支下可能不同，不推测学员编写动机。
+- 修复线索：日志第三、第四个实参使用已保存的两个局部值，不改原等待结束或串口关闭流程。
+- 复查点：等待结束说明使用message，归属使用等待快照，清理结果继续使用oldSessionId/oldPortName；有效字节、200条上限和窗口线程保护保留，按用户偏好只查源码。
+- 状态与边界：本条待修，TASK-048🟡 进行中，DoD1/2静态通过、3待修；两处文案由教练直接收尾，不计学员认知错题，Q6待复习，旧能力保持。
+
+
 ## TASK-047：检查了加和却漏掉原始值范围
 
 - 2026-10-20最终源码复查通过：学员补int原始值合成与大于1000拒绝，0/1000保留，三个DoD静态通过、TASK-047✅ 已通关；未构建/运行/测试，教练只清一处旧提示，本条范围漏检已修复，以下待修状态为原审查历史。

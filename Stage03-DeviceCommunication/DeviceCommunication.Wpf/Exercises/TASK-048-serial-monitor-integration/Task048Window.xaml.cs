@@ -61,13 +61,15 @@ namespace DeviceCommunication.Wpf.Exercises.Task048
                 _connection.Open(portName);
                 RefreshConnectionControls();
                 OperationText.Text = "已连接：" + portName;
-                // TODO 3：调用RecordStatus记录连接成功，传入当前连接编号和portName，不把连接成功写成收到数据。
+                // TOD 3：调用RecordStatus记录连接成功，传入当前连接编号和portName，不把连接成功写成收到数据。
+                RecordStatus("连接成功", OperationText.Text, _connection.CurrentSessionId, portName);
             }
             catch (Exception exception)
             {
                 OperationText.Text = "连接失败：" + exception.Message;
                 RefreshConnectionControls();
-                // TODO 3：调用RecordStatus记录连接失败及OperationText.Text，保留尝试打开的portName。
+                // TOD 3：调用RecordStatus记录连接失败及OperationText.Text，保留尝试打开的portName。
+                RecordStatus("连接失败", OperationText.Text, _connection.CurrentSessionId, portName);
             }
         }
 
@@ -125,19 +127,14 @@ namespace DeviceCommunication.Wpf.Exercises.Task048
             RefreshConnectionControls();
             if (wasWaiting)
             {
-                // TODO 3：调用RecordStatus记录等待结束及message，使用上面保存的waitingSessionId和waitingPortName，不使用已经清空的字段。
+                // TOD 3：调用RecordStatus记录等待结束及message，使用上面保存的waitingSessionId和waitingPortName，不使用已经清空的字段。
+                RecordStatus("等待结束", message, waitingSessionId, waitingPortName);
             }
             
         }
 
         private void CheckResponseTimeout(object? sender, EventArgs e)
         {
-
-
-
-
-
-
             if (_isClosing || !_waitingForResponse)
             {
                 return;
@@ -182,7 +179,8 @@ namespace DeviceCommunication.Wpf.Exercises.Task048
             {
                 RefreshConnectionControls();
                 OperationText.Text = result;
-                // TODO 3：调用RecordStatus记录连接清理及result，使用oldSessionId和oldPortName，让清理结果仍属于被关闭的连接。
+                // TOD 3：调用RecordStatus记录连接清理及result，使用oldSessionId和oldPortName，让清理结果仍属于被关闭的连接。
+                RecordStatus("连接清理", OperationText.Text, oldSessionId, oldPortName);
             }
         }
 
@@ -212,8 +210,14 @@ namespace DeviceCommunication.Wpf.Exercises.Task048
             {
                 return;
             }
-            // TODO 1：把entry追加到_communicationLogs，数量超过MaximumLogCount时从下标0删除最旧条目，再更新LogCountText显示当前数量。
+            // TOD 1：把entry追加到_communicationLogs，数量超过MaximumLogCount时从下标0删除最旧条目，再更新LogCountText显示当前数量。
             // 构造方法已写入一条真实的窗口就绪记录，完成这里后启动窗口即可先看到这一行，不需要连接串口。
+            _communicationLogs.Add(entry);
+            while (_communicationLogs.Count > MaximumLogCount)
+            {
+                _communicationLogs.RemoveAt(0);
+            }
+            LogCountText.Text = "当前日志数量：" +  _communicationLogs.Count;
         }
 
         private void RecordStatus(string category, string message, int sessionId, string portName)

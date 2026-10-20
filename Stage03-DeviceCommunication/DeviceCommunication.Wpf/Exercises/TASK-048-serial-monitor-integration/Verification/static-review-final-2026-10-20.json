@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-20",
+  "mode": "static-source-only",
+  "build_run_tests_performed": false,
+  "status": "passed",
+  "dod": {
+    "1": "static-pass",
+    "2": "static-pass",
+    "3": "static-pass"
+  },
+  "source_changed_by_coach": false,
+  "learner_fix": "EndWaiting now logs message with captured waitingSessionId/waitingPortName.",
+  "source_hashes": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Window.xaml.cs": "51103d512730871fb83f2acd72f29b9873b891176fb0fefe5bf473d84cd1708a",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048SerialConnection.cs": "46cc9bb9883400c3a627ee56f48a70aea19bf5fb7f9e4ecfb13da1fe21889868",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Protocol.cs": "6ee631960d04763640cdb4136acd14ba953f6da1f140ad1e8f91727944b5c45c",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048LogEntry.cs": "24e02c2e593cae0f98029728572806d81464395e3eaa96649df1d724b4bad1d9",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Window.xaml": "2dfa502709ae56df717784bf8670984c5e0439b90603c1b6559ce975b64bdd1a",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "577ceb1a7adc6827468951043b2dc1d924e483dde0d986a3888a6cd3695fd2c5"
+  },
+  "unchanged_since_prior_review": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Window.xaml.cs": false,
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048SerialConnection.cs": true,
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Protocol.cs": true,
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048LogEntry.cs": true,
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Window.xaml": true,
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": true
+  },
+  "actual_serial_validation_performed": false
+}

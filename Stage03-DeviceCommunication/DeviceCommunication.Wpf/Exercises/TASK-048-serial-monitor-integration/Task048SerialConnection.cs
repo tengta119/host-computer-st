@@ -278,8 +278,17 @@ namespace DeviceCommunication.Wpf.Exercises.Task048
             {
                 throw new ArgumentOutOfRangeException("count");
             }
-            // TODO 2：新建长度为count的byte数组，只复制data中下标0到count-1的字节，用FormatBytes得到文字，再把含count和文字的Task048LogEntry加入logs。
+            // TOD 2：新建长度为count的byte数组，只复制data中下标0到count-1的字节，用FormatBytes得到文字，再把含count和文字的Task048LogEntry加入logs。
             // 例如data有256个位置但count是2，日志只能保存两个字节，不能遍历到data.Length。
+            byte[] logBytes = new byte[count];
+            for (int i = 0; i < count; i++)
+            {
+                logBytes[i] = data[i];
+            }
+
+            string formatBytes = FormatBytes(logBytes);
+            Task048LogEntry entry = new Task048LogEntry(sessionId, portName, category, count, formatBytes, message);
+            logs.Add(entry);
         }
 
         private string FormatBytes(byte[] bytes)

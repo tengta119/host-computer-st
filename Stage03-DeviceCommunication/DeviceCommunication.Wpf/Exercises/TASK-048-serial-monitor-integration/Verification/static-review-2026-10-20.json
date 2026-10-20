@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-20",
+  "mode": "static-source-only",
+  "build_run_tests_performed": false,
+  "status": "in-progress",
+  "dod": {
+    "1": "static-pass-after-wording-fix",
+    "2": "static-pass",
+    "3": "failed-waiting-log-context"
+  },
+  "coach_changes": [
+    "EndWaiting log message now uses reason parameter instead of stale OperationText",
+    "Cleanup log category corrected to connection cleanup"
+  ],
+  "remaining_issue": "EndWaiting log uses current connection instead of captured waitingSessionId/waitingPortName.",
+  "source_hashes_before": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Window.xaml.cs": "8d1dcc42a9fd8ca2c935ac8237724092290cccff9b91015b24539b4eaa762e45",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048SerialConnection.cs": "46cc9bb9883400c3a627ee56f48a70aea19bf5fb7f9e4ecfb13da1fe21889868",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Protocol.cs": "6ee631960d04763640cdb4136acd14ba953f6da1f140ad1e8f91727944b5c45c",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048LogEntry.cs": "24e02c2e593cae0f98029728572806d81464395e3eaa96649df1d724b4bad1d9",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Window.xaml": "2dfa502709ae56df717784bf8670984c5e0439b90603c1b6559ce975b64bdd1a",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "577ceb1a7adc6827468951043b2dc1d924e483dde0d986a3888a6cd3695fd2c5"
+  },
+  "source_hashes_after": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Window.xaml.cs": "3d39d8500694c455798da8a70e1eca1b2d3561249655fc6d6a701f3d2dbace31",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048SerialConnection.cs": "46cc9bb9883400c3a627ee56f48a70aea19bf5fb7f9e4ecfb13da1fe21889868",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Protocol.cs": "6ee631960d04763640cdb4136acd14ba953f6da1f140ad1e8f91727944b5c45c",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048LogEntry.cs": "24e02c2e593cae0f98029728572806d81464395e3eaa96649df1d724b4bad1d9",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Task048Window.xaml": "2dfa502709ae56df717784bf8670984c5e0439b90603c1b6559ce975b64bdd1a",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "577ceb1a7adc6827468951043b2dc1d924e483dde0d986a3888a6cd3695fd2c5"
+  }
+}
