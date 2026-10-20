@@ -37,7 +37,7 @@ namespace TcpUdp.Wpf.Exercises.Task050
             _ready = true;
             RefreshControls();
             RefreshPresentation();
-            RecordLog("窗口", "窗口已就绪，先完成TODO 1连接模拟器。");
+            RecordLog("窗口", "窗口已就绪，连接模拟器后开始通信。");
         }
 
         private async void ConnectClick(object sender, RoutedEventArgs e)
@@ -89,15 +89,14 @@ namespace TcpUdp.Wpf.Exercises.Task050
 
         private async Task ConnectCoreAsync(string host, int port, CancellationToken token)
         {
-            // TODO 1：await _connection.ConnectAsync(host, port, token)，移除下一行占位，成功显示和错误处理已由外层提供。
-            await Task.CompletedTask;
+            // TOD 1：await _connection.ConnectAsync(host, port, token)，移除下一行占位，成功显示和错误处理已由外层提供。
+            await _connection.ConnectAsync(host, port, token);
         }
 
         private async Task<string?> SendCoreAsync(string command, CancellationToken token)
         {
-            // TODO 2a：return await _connection.RequestAsync(command, token)，替换下面两行占位，不再直接操作Socket或重复解析字节。
-            await Task.CompletedTask;
-            return null;
+            // TOD 2a：return await _connection.RequestAsync(command, token)，替换下面两行占位，不再直接操作Socket或重复解析字节。
+            return await _connection.RequestAsync(command, token);
         }
 
         private async void ReadClick(object sender, RoutedEventArgs e)
@@ -201,8 +200,16 @@ namespace TcpUdp.Wpf.Exercises.Task050
 
         private void DisplayDeviceState(string state)
         {
-            // TODO 2b：把已由完整回复确认的state显示到DeviceStatusText，RUNNING显示运行、STOPPED显示停止，并更新OperationText。
-            OperationText.Text = "收到有效设备确认，状态显示待完成（TODO 2b）。";
+            // TOD 2b：把已由完整回复确认的state显示到DeviceStatusText，RUNNING显示运行、STOPPED显示停止，并更新OperationText。
+            if (state == "RUNNING")
+            {
+                DeviceStatusText.Text = "运行";
+            }
+            else
+            {
+                DeviceStatusText.Text = "停止";
+            }
+            OperationText.Text = "设备已确认当前状态：" + DeviceStatusText.Text + "。";
         }
 
         private void ApplyTemperature(string reply)
@@ -212,9 +219,11 @@ namespace TcpUdp.Wpf.Exercises.Task050
             {
                 throw new InvalidDataException("温度回复不是约定的有限小数：" + reply);
             }
-            // TODO 3：创建Task050Reading，将ReceivedAt设为DateTime.Now、Temperature设为temperature，再加入_history。
-            // TODO 3：完成后把下一行改为实际读取成功提示，历史变化会自动刷新已有的表格、最新值、曲线和报警。
-            OperationText.Text = "温度已解析，历史追加待完成（TODO 3）。";
+            // TOD 3：创建Task050Reading，将ReceivedAt设为DateTime.Now、Temperature设为temperature，再加入_history。
+            // TOD 3：完成后把下一行改为实际读取成功提示，历史变化会自动刷新已有的表格、最新值、曲线和报警。
+            Task050Reading reading = new Task050Reading{ReceivedAt = DateTime.Now, Temperature = temperature};
+            _history.Add(reading);
+            OperationText.Text = "温度已解析，历史追加完成";
         }
 
         private void StartCollectionClick(object sender, RoutedEventArgs e)
@@ -223,8 +232,12 @@ namespace TcpUdp.Wpf.Exercises.Task050
             {
                 return;
             }
-            // TODO 4：将_collecting设为true，递增_collectionGeneration，启动_pollingTimer，调用RefreshControls并更新OperationText。
-            OperationText.Text = "TODO 4尚未开始采集。";
+            // TOD 4：将_collecting设为true，递增_collectionGeneration，启动_pollingTimer，调用RefreshControls并更新OperationText。
+            _collecting = true;
+            _collectionGeneration = _collectionGeneration + 1;
+            _pollingTimer.Start();
+            RefreshControls();
+            OperationText.Text = "开始采集";
         }
 
         private void StopCollectionClick(object sender, RoutedEventArgs e)

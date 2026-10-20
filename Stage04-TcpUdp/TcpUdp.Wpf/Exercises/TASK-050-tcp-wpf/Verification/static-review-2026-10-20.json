@@ -1,0 +1,41 @@
+{
+  "recorded_at": "2026-10-20T16:58:11.948758+08:00",
+  "scope": "仅静态源码审查和文案收尾，本轮不构建/运行/测试。",
+  "dod": [
+    {
+      "id": 1,
+      "result": "通过（静态）"
+    },
+    {
+      "id": 2,
+      "result": "通过（静态）"
+    },
+    {
+      "id": 3,
+      "result": "通过（静态）"
+    }
+  ],
+  "learner_core_methods_unchanged": true,
+  "learner_core_method_hashes": {
+    "ConnectCoreAsync": "9edd8e963943a2a2e3a71a4ca5d5f6c09fd3ebc5fd5aebd7b2cc27d06689ab23",
+    "SendCoreAsync": "b88b1d13bbc01770f1996fea47e7688f2469d98c4b0bca2ee590f8467bb01c18",
+    "ApplyTemperature": "c71f00ebe6b7e090b54a3b8c3718d5da0c8563076e30c5963b37fe40160af216",
+    "StartCollectionClick": "29d1dcd21d24e6911fe5ed92d5fd4ec779a966f60443a0e936f98f957f130e9c"
+  },
+  "only_documented_text_changes": true,
+  "source_hashes_after": {
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Chart.cs": "99e12912b4de02080b49e7a66f131335addf6364471ad2d963b1a66348938b9a",
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Reading.cs": "fd754b829a686e292cab290eeca11666733f7d011f83c8b2e9f2424a6729255a",
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050TcpConnection.cs": "e8344da0e811d0e51e494f744e777874a06400df26899d0641d746a6ae5ed4b9",
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Window.xaml.cs": "85f3de5a965e729ebc69bb233c1d5210954651068a1d523692b93404e585eddf",
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Window.xaml": "a388af16fb67ab01582fe1f1861cb90f664ea59d1c0179b8cae4a2cccaa10323",
+    "Stage04-TcpUdp/TcpUdp.Wpf/App.xaml": "648d221c002842a5e41c1dfe0efa5ba548d33a95b6d945e533062a78ef4af21f",
+    "Stage04-TcpUdp/TcpUdp.Wpf/TcpUdp.Wpf.csproj": "d93721577de96cf529cbaa84745b1079c8c053459a60eea98e35f56f00569727",
+    "Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049LineBuffer.cs": "c85507fe78d3c2192b45cecb83210bc6d1af6637eec3a2eb9fa120dd19bfb64a"
+  },
+  "changed_sources": [
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Window.xaml.cs",
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Window.xaml"
+  ],
+  "end_to_end_runtime": "本轮未验证"
+}

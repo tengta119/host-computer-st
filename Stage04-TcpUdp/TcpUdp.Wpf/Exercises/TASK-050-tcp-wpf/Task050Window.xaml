@@ -46,7 +46,7 @@
                     <TextBlock x:Name="CollectionText" Text="采集已停止" Margin="0,0,24,6" />
                     <TextBlock x:Name="LatestText" Text="最新温度：—" FontWeight="Bold" />
                 </WrapPanel>
-                <TextBlock x:Name="OperationText" Text="先完成TODO 1，观察两端连接。" TextWrapping="Wrap" />
+                <TextBlock x:Name="OperationText" Text="连接模拟器后读取温度或查询设备状态。" TextWrapping="Wrap" />
             </StackPanel>
         </Border>
         <Grid Grid.Row="2" Margin="0,0,0,12">
