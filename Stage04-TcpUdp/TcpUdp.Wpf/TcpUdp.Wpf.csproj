@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049LineBuffer.cs" Link="Exercises/TASK-050-tcp-wpf/Reuse/Task049LineBuffer.cs" />
+    <Compile Remove="Exercises/TASK-050-tcp-wpf/Verification/**/*.cs" />
+  </ItemGroup>
+</Project>

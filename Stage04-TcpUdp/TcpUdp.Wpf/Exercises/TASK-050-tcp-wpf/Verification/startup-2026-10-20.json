@@ -1,0 +1,65 @@
+{
+  "recorded_at": "2026-10-20T15:49:28.421892+08:00",
+  "scope": "教练骨架构建、真实窗口显示/布局/关闭、样例注入及通信辅助测试，不计学员TODO通过。",
+  "build": {
+    "command": [
+      "dotnet",
+      "build",
+      "D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp.Wpf\\TcpUdp.Wpf.csproj",
+      "--nologo",
+      "--output",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task050-startup-n3uqbwsx\\app"
+    ],
+    "exit_code": 0,
+    "stdout": "  正在确定要还原的项目…\r\n  所有项目均是最新的，无法还原。\r\n  TcpUdp.Wpf -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task050-startup-n3uqbwsx\\app\\TcpUdp.Wpf.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.97\r\n"
+  },
+  "startup": {
+    "command": [
+      "dotnet",
+      "run",
+      "--project",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task050-startup-n3uqbwsx\\host\\Review.csproj",
+      "--verbosity",
+      "quiet",
+      "--",
+      "D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp.Wpf\\Exercises\\TASK-050-tcp-wpf\\Verification"
+    ],
+    "exit_code": 0,
+    "stdout": "[模拟器] 正在监听 127.0.0.1:58911，每条命令和回复以 LF 结束。\r\n[模拟器] 已启用回复分段观察：先写前 2 字节，等待 150 毫秒，再写其余字节。\r\n[模拟器] 网络接收分段可能与上述写入分段不同，客户端仍必须以 LF 判断完整回复。\r\n[模拟器] 接受连接：127.0.0.1:58912。\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 回复：35.6\r\n[模拟器] 请求：START_DEVICE\r\n[模拟器] 回复：OK\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：RUNNING\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:58913。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：RUNNING\r\n[模拟器] 请求：STOP_DEVICE\r\n[模拟器] 回复：OK\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 已停止监听并释放连接资源。\r\nPREPARATION_RESULT={\"passed\":23,\"checks\":[\"\\u771F\\u5B9E\\u7A97\\u53E3\\u5DF2\\u52A0\\u8F7D\",\"\\u521D\\u59CB\\u672A\\u8FDE\\u63A5\\u4E0E\\u64CD\\u4F5C\\u7981\\u7528\",\"\\u672A\\u5B9E\\u73B0TODO1\\u4E0D\\u865A\\u62A5\\u8FDE\\u63A5\",\"\\u663E\\u793A\\u652F\\u6301\\u53EF\\u5448\\u73B0\\u5355\\u70B9\\u6E29\\u5EA6\\u4E0E\\u62A5\\u8B66\",\"\\u5386\\u53F2\\u8868\\u683C\\u7ED1\\u5B9A\\u540C\\u4E00\\u96C6\\u5408\",\"\\u9608\\u503C\\u652F\\u6301\\u91CD\\u65B0\\u5224\\u65AD\\u5DF2\\u6709\\u6E29\\u5EA6\",\"\\u975E\\u6CD5\\u9608\\u503C\\u88AB\\u62D2\\u7EDD\",\"\\u6559\\u7EC3\\u65E5\\u5FD7\\u652F\\u6301\\u9650\\u5236200\\u6761\",\"\\u9ED8\\u8BA4\\u5C3A\\u5BF8\\u63A7\\u4EF6\\u5747\\u5728\\u5BA2\\u6237\\u533A\\u5185\",\"\\u9ED8\\u8BA4\\u5C3A\\u5BF8\\u8868\\u683C\\u65E5\\u5FD7\\u548C\\u66F2\\u7EBF\\u6709\\u53EF\\u7528\\u9AD8\\u5EA6\",\"\\u6700\\u5C0F\\u5C3A\\u5BF8\\u63A7\\u4EF6\\u5747\\u5728\\u5BA2\\u6237\\u533A\\u5185\",\"\\u6700\\u5C0F\\u5C3A\\u5BF8\\u8868\\u683C\\u65E5\\u5FD7\\u548C\\u66F2\\u7EBF\\u6709\\u53EF\\u7528\\u9AD8\\u5EA6\",\"\\u6E05\\u7A7A\\u652F\\u6301\\u6062\\u590D\\u7A7A\\u5386\\u53F2\",\"\\u65E0\\u83DC\\u5355\\u8FDE\\u63A5\\u8F85\\u52A9\\u5B9E\\u9645\\u8FDE\\u63A5\\u6A21\\u62DF\\u5668\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u53D6\\u5F97\\u5206\\u6BB5\\u5199\\u5165\\u7684\\u5B8C\\u6574\\u6E29\\u5EA6\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u53D6\\u5F97\\u542F\\u52A8\\u786E\\u8BA4\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u67E5\\u8BE2\\u771F\\u5B9E\\u8FD0\\u884C\\u72B6\\u6001\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u5173\\u95ED\\u540E\\u53EF\\u624B\\u52A8\\u91CD\\u8FDE\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u505C\\u6B62\\u8BBE\\u5907\",\"\\u5173\\u95ED\\u7A97\\u53E3\\u53D6\\u6D88\\u6559\\u7EC3\\u8FDE\\u63A5\\u8F85\\u52A9\\u7684\\u672A\\u5B8C\\u6210\\u63A5\\u6536\",\"\\u5173\\u95ED\\u7A97\\u53E3\\u505C\\u6B62\\u5B9A\\u65F6\\u5668\",\"\\u5173\\u95ED\\u540E\\u65E7\\u8FDE\\u63A5\\u7ED3\\u679C\\u88AB\\u62D2\\u7EDD\",\"\\u7A97\\u53E3\\u5DF2\\u5B9E\\u9645\\u5173\\u95ED\"],\"failure\":null,\"injectedHistoryRows\":3,\"learnerTodosVerified\":false}\r\n",
+    "stderr": "",
+    "result": {
+      "passed": 23,
+      "checks": [
+        "真实窗口已加载",
+        "初始未连接与操作禁用",
+        "未实现TODO1不虚报连接",
+        "显示支持可呈现单点温度与报警",
+        "历史表格绑定同一集合",
+        "阈值支持重新判断已有温度",
+        "非法阈值被拒绝",
+        "教练日志支持限制200条",
+        "默认尺寸控件均在客户区内",
+        "默认尺寸表格日志和曲线有可用高度",
+        "最小尺寸控件均在客户区内",
+        "最小尺寸表格日志和曲线有可用高度",
+        "清空支持恢复空历史",
+        "无菜单连接辅助实际连接模拟器",
+        "无菜单辅助取得分段写入的完整温度",
+        "无菜单辅助取得启动确认",
+        "无菜单辅助查询真实运行状态",
+        "无菜单辅助关闭后可手动重连",
+        "无菜单辅助停止设备",
+        "关闭窗口取消教练连接辅助的未完成接收",
+        "关闭窗口停止定时器",
+        "关闭后旧连接结果被拒绝",
+        "窗口已实际关闭"
+      ],
+      "failure": null,
+      "injectedHistoryRows": 3,
+      "learnerTodosVerified": false
+    }
+  },
+  "preserved_file_count": 193,
+  "previous_work_unchanged": true,
+  "learner_dod_accepted": false
+}

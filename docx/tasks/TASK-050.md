@@ -1,11 +1,11 @@
 # TASK-050：把TCP读数和设备控制接入WPF监控
 
 - 阶段：第四阶段：TCP/UDP（WPF监控接入）。
-- 状态：⚪ 未开始
+- 状态：🟡 进行中
 - 创建日期：2026-10-20。
 - 计划来源：[第四阶段计划](../plan.md)“把网络结果接入已有WPF监控能力”及实践顺序第2项。
 - 选择依据：[TASK-049](./TASK-049.md)已按静态源码口径通关，连接、发送与LF解析路径完整，下一步将同一通信流程接到窗口，复用已有WPF绑定、历史、曲线、报警和采集启停经验，不再重复控制台收发或另拆字段小题。
-- 本次只创建任务卡，尚未创建WPF工程、任务源码或运行入口，不启动实践，不预设学习时长。
+- 开启日期：2026-10-20，用户明确要求“开启task50”；本题独立WPF工程与骨架现已准备，初次只建卡的安排保留为历史，不预设学习时长。
 
 ## 要完成的一个完整功能
 
@@ -31,3 +31,31 @@
 ## 当前证据
 
 本卡尚未开始，无本题源码、构建或运行结果，三个DoD均未勾选；TASK-049的静态通关和教练辅助的历史局部检查均不作为本题证据。
+
+## 2026-10-20 实际开启与任务骨架
+
+上节“尚未开始”是初次建卡时的历史，当前状态为🟡 进行中。
+已创建独立项目[TcpUdp.Wpf.csproj](../../Stage04-TcpUdp/TcpUdp.Wpf/TcpUdp.Wpf.csproj)，目标net10.0-windows，不增加第三方依赖；共享[App.xaml](../../Stage04-TcpUdp/TcpUdp.Wpf/App.xaml)只负责指向本题窗口，[阶段解决方案](../../Stage04-TcpUdp/TcpUdp.slnx)增量加入新项目，旧入口不变。
+本题专属目录为Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/，包含[窗口布局](../../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Window.xaml)、[窗口后台](../../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Window.xaml.cs)、[连接辅助](../../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050TcpConnection.cs)、[数据类](../../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Reading.cs)、[绘图辅助](../../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Task050Chart.cs)和[运行说明](../../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/RUN-GUIDE.md)。
+项目只链接编译已有Task049LineBuffer.cs，未改动它；设备模拟器继续运行TASK-049控制台中的Task049Simulator，不创建新协议或重复模拟器。
+连接辅助由教练整理原TcpClient/NetworkStream收发，提供3秒保护；窗口提供串行请求、取消、连接编号、采集轮次保护、日志上限、表格绑定、绘图和阈值显示，不计这些骨架为学员独立设计。
+
+| TODO | 实际位置、核心动作与可观察结果 | 对应DoD |
+| --- | --- | --- |
+| 1 | ConnectCoreAsync等待_connection.ConnectAsync，替换占位后，点连接能在两端看到成功。 | 1、3 |
+| 2a、2b | SendCoreAsync等待并返回RequestAsync的完整回复，DisplayDeviceState把确认后的state显示到DeviceStatusText和OperationText。 | 1 |
+| 3 | ApplyTemperature创建含接收时间和temperature的Task050Reading并加入_history，集合变化自动刷新表格、最新值、曲线和报警。 | 2 |
+| 4 | StartCollectionClick连接_collecting、轮次编号、定时器Start和状态刷新，停止/断开/关窗的安全停止已提供。 | 2、3 |
+
+首个动作只完成ConnectCoreAsync中的TODO 1，代码与具体对象解释先见运行说明；初始骨架会明确提示尚未连接，不将可启动窗口当作已完成通信。
+运行时先在一个终端执行dotnet run --no-build --project .\Stage04-TcpUdp\TcpUdp\TcpUdp.csproj -- --simulator，再构建dotnet build .\Stage04-TcpUdp\TcpUdp.Wpf\TcpUdp.Wpf.csproj --nologo并运行dotnet run --no-build --project .\Stage04-TcpUdp\TcpUdp.Wpf\TcpUdp.Wpf.csproj，两个终端均从工作区根目录执行。
+待四组TODO完成后提交源码并说“审查TASK-050”；本轮不创建TASK-051，三个DoD仍未勾选。
+
+## 2026-10-20 骨架准备验证
+
+实际执行dotnet build Stage04-TcpUdp/TcpUdp.Wpf/TcpUdp.Wpf.csproj --nologo，退出0、0警告/0错误。
+实际执行python .\Stage04-TcpUdp\TcpUdp.Wpf\Exercises\TASK-050-tcp-wpf\Verification\verify_startup.py，最终退出0，临时输出构建0警告/0错误、23项教练准备检查全部通过，193个旧源码文件哈希不变，结果见[startup-2026-10-20.json](../../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Verification/startup-2026-10-20.json)。
+检查覆盖真实窗口Show与关闭、初始按钮和占位反馈、默认/最小尺寸、注入样例的表格/曲线/阈值显示、日志200条上限、通信辅助与模拟器的分段回复/状态/重连、关闭时取消未完成读取与旧结果拒绝。
+已查看[最小尺寸截图](../../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Verification/startup-minimum-2026-10-20.png)，三条历史与日志是教练注入的布局样例，通信检查直接调用教练提供的辅助，不执行或验收学员四组TODO，不计完整任务联调通过。
+准备过程中修正了教练验证脚本的工作区定位，并将按钮样式放回任务窗口，使直接显示窗口与正常启动一致；一次验证宿主错误清空StartupUri的失败已保存为[startup-host-before-fix-2026-10-20.json](../../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/Verification/startup-host-before-fix-2026-10-20.json)，最终验证已通过，不归为学员错误。
+验证仅创建并关闭自己的临时窗口与本机模拟器，没有停止用户原有程序，旧串口与WPF作品保持，原问答和已验证能力范围不变。

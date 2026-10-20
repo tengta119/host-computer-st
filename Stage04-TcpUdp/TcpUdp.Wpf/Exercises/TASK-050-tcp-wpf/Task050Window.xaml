@@ -1,0 +1,98 @@
+<Window x:Class="TcpUdp.Wpf.Exercises.Task050.Task050Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TASK-050 · TCP设备监控" Width="1180" Height="900"
+        MinWidth="1060" MinHeight="820" Background="#F4F6F8">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="Margin" Value="0,0,8,6" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="190" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="TCP 设备监控" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" />
+            <WrapPanel>
+                <TextBlock Text="地址" VerticalAlignment="Center" Margin="0,0,8,6" />
+                <TextBox x:Name="HostInput" Text="127.0.0.1" Width="160" Padding="6" Margin="0,0,12,6" />
+                <TextBlock Text="端口" VerticalAlignment="Center" Margin="0,0,8,6" />
+                <TextBox x:Name="PortInput" Text="5000" Width="80" Padding="6" Margin="0,0,12,6" />
+                <Button x:Name="ConnectButton" Content="连接" Click="ConnectClick" />
+                <Button x:Name="DisconnectButton" Content="断开" Click="DisconnectClick" />
+                <TextBlock x:Name="ConnectionText" Text="未连接" VerticalAlignment="Center" Margin="4,0,0,6" />
+            </WrapPanel>
+            <WrapPanel Margin="0,4,0,0">
+                <Button x:Name="ReadButton" Content="读温度" Click="ReadClick" />
+                <Button x:Name="StartDeviceButton" Content="启动远端设备" Click="StartDeviceClick" />
+                <Button x:Name="StopDeviceButton" Content="停止远端设备" Click="StopDeviceClick" />
+                <Button x:Name="StatusButton" Content="查询设备状态" Click="StatusClick" />
+                <Button x:Name="StartCollectionButton" Content="开始采集" Click="StartCollectionClick" />
+                <Button x:Name="StopCollectionButton" Content="停止采集" Click="StopCollectionClick" />
+                <Button x:Name="ClearButton" Content="清空历史" Click="ClearHistoryClick" />
+            </WrapPanel>
+        </StackPanel>
+        <Border Grid.Row="1" Background="White" Padding="12" Margin="0,8,0,12" CornerRadius="6">
+            <StackPanel>
+                <WrapPanel>
+                    <TextBlock Text="设备状态：" FontWeight="Bold" />
+                    <TextBlock x:Name="DeviceStatusText" Text="未知（连接后查询）" Margin="0,0,24,6" />
+                    <TextBlock x:Name="CollectionText" Text="采集已停止" Margin="0,0,24,6" />
+                    <TextBlock x:Name="LatestText" Text="最新温度：—" FontWeight="Bold" />
+                </WrapPanel>
+                <TextBlock x:Name="OperationText" Text="先完成TODO 1，观察两端连接。" TextWrapping="Wrap" />
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="2" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Background="White" Padding="12" Margin="0,0,12,0" CornerRadius="6">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                    <TextBlock x:Name="HistoryCountText" Text="有效温度历史：0条" FontWeight="Bold" Margin="0,0,0,8" />
+                    <DataGrid x:Name="HistoryGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="接收时间" Binding="{Binding ReceivedAt, StringFormat=HH:mm:ss.fff}" Width="*" />
+                            <DataGridTextColumn Header="温度 / ℃" Binding="{Binding Temperature, StringFormat=F1}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+            <Border Grid.Column="1" Background="White" Padding="12" CornerRadius="6">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                    <WrapPanel>
+                        <TextBlock Text="报警阈值 / ℃" VerticalAlignment="Center" Margin="0,0,8,6" />
+                        <TextBox x:Name="ThresholdInput" Text="35" Width="70" Padding="5" Margin="0,0,8,6" />
+                        <Button Content="应用阈值" Click="ApplyThresholdClick" />
+                    </WrapPanel>
+                    <TextBlock x:Name="AlarmText" Grid.Row="1" Text="暂无温度，尚未判断报警。" TextWrapping="Wrap" Margin="0,0,0,6" />
+                    <Canvas x:Name="ChartCanvas" Grid.Row="2" MinHeight="125" ClipToBounds="True" Background="#F8FAFC" SizeChanged="ChartSizeChanged" />
+                    <TextBlock Grid.Row="3" Text="蓝线：最新最多30条；红线：报警阈值。" Foreground="#64748B" Margin="0,6,0,0" TextWrapping="Wrap" />
+                </Grid>
+            </Border>
+        </Grid>
+        <Border Grid.Row="3" Background="White" Padding="12" CornerRadius="6">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                <TextBlock Text="通信记录 · 最近200条" FontWeight="Bold" Margin="0,0,0,8" />
+                <DataGrid x:Name="LogGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="时间" Binding="{Binding Time, StringFormat=HH:mm:ss.fff}" Width="110" />
+                        <DataGridTextColumn Header="类别" Binding="{Binding Kind}" Width="90" />
+                        <DataGridTextColumn Header="内容" Binding="{Binding Details}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+        <TextBlock Grid.Row="4" Text="设备启停发送远端命令；采集启停控制本地查询。骨架支持不等于TODO已验收。" TextWrapping="Wrap" Foreground="#64748B" Margin="0,10,0,0" />
+    </Grid>
+</Window>

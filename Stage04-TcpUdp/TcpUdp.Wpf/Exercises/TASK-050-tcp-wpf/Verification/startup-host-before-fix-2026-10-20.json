@@ -1,0 +1,35 @@
+{
+  "recorded_at": "2026-10-20T15:48:36.962217+08:00",
+  "scope": "教练骨架构建、真实窗口显示/布局/关闭、样例注入及通信辅助测试，不计学员TODO通过。",
+  "build": {
+    "command": [
+      "dotnet",
+      "build",
+      "D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp.Wpf\\TcpUdp.Wpf.csproj",
+      "--nologo",
+      "--output",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task050-startup-56qhkiqf\\app"
+    ],
+    "exit_code": 0,
+    "stdout": "  正在确定要还原的项目…\r\n  所有项目均是最新的，无法还原。\r\n  TcpUdp.Wpf -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task050-startup-56qhkiqf\\app\\TcpUdp.Wpf.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.73\r\n"
+  },
+  "startup": {
+    "command": [
+      "dotnet",
+      "run",
+      "--project",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task050-startup-56qhkiqf\\host\\Review.csproj",
+      "--verbosity",
+      "quiet",
+      "--",
+      "D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp.Wpf\\Exercises\\TASK-050-tcp-wpf\\Verification"
+    ],
+    "exit_code": 3762504530,
+    "stdout": "",
+    "stderr": "Unhandled exception. System.ArgumentNullException: Value cannot be null. (Parameter 'value')\r\n   at System.ArgumentNullException.Throw(String paramName)\r\n   at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)\r\n   at System.Windows.Application.set_StartupUri(Uri value)\r\n   at StartupReview.Main(String[] args) in C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task050-startup-56qhkiqf\\host\\Program.cs:line 60\r\n",
+    "result": null
+  },
+  "preserved_file_count": 193,
+  "previous_work_unchanged": true,
+  "learner_dod_accepted": false
+}

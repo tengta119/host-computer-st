@@ -1,0 +1,182 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Reflection;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using TcpUdp.Exercises.Task049;
+using TcpUdp.Wpf.Exercises.Task050;
+
+public static class StartupReview
+{
+    private static readonly List<string> Checks = new List<string>();
+    private static void Check(string name, bool condition)
+    {
+        if (!condition) throw new Exception(name);
+        Checks.Add(name);
+    }
+    private static T Field<T>(object target, string name)
+    {
+        return (T)target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(target)!;
+    }
+    private static object? Call(object target, string name, params object[] args)
+    {
+        return target.GetType().GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(target, args);
+    }
+    private static void Click(Task050Window window, string name)
+    {
+        ((Button)window.FindName(name)).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+    }
+    private static int FreePort()
+    {
+        TcpListener listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        listener.Stop();
+        return port;
+    }
+    private static bool InsideContent(Task050Window window, string name)
+    {
+        FrameworkElement child = (FrameworkElement)window.FindName(name);
+        FrameworkElement content = (FrameworkElement)window.Content;
+        Rect rect = child.TransformToAncestor(content).TransformBounds(new Rect(0, 0, child.ActualWidth, child.ActualHeight));
+        return child.ActualWidth > 0 && child.ActualHeight > 0 && rect.Left >= -1 && rect.Top >= -1 && rect.Right <= content.ActualWidth + 1 && rect.Bottom <= content.ActualHeight + 1;
+    }
+
+    [STAThread]
+    public static void Main(string[] args)
+    {
+        Application app = new Application();
+        app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        Task050Window window = new Task050Window();
+        window.Left = -20000;
+        window.Top = -20000;
+        window.Show();
+        app.Dispatcher.BeginInvoke(new Action(async () =>
+        {
+            string? failure = null;
+            try
+            {
+                window.UpdateLayout();
+                Check("真实窗口已加载", window.IsLoaded);
+                Check("初始未连接与操作禁用", ((Button)window.FindName("ConnectButton")).IsEnabled && !((Button)window.FindName("ReadButton")).IsEnabled);
+                Click(window, "ConnectButton");
+                Check("未实现TODO1不虚报连接", !Field<Task050TcpConnection>(window, "_connection").IsConnected && ((TextBlock)window.FindName("OperationText")).Text.Contains("TODO 1"));
+                Click(window, "DisconnectButton");
+
+                // 直接注入布局样例，不调用学员ApplyTemperature，不把显示验证当作学员实现。
+                ObservableCollection<Task050Reading> history = Field<ObservableCollection<Task050Reading>>(window, "_history");
+                history.Add(new Task050Reading { ReceivedAt = DateTime.Now, Temperature = 35.6 });
+                window.UpdateLayout();
+                Check("显示支持可呈现单点温度与报警", ((TextBlock)window.FindName("LatestText")).Text.Contains("35.6") && ((TextBlock)window.FindName("AlarmText")).Text == "温度超过阈值，报警。");
+                history.Add(new Task050Reading { ReceivedAt = DateTime.Now, Temperature = 34.8 });
+                history.Add(new Task050Reading { ReceivedAt = DateTime.Now, Temperature = 36.2 });
+                window.UpdateLayout();
+                Check("历史表格绑定同一集合", Object.ReferenceEquals(((DataGrid)window.FindName("HistoryGrid")).ItemsSource, history) && history.Count == 3);
+                ((TextBox)window.FindName("ThresholdInput")).Text = "40";
+                Call(window, "ApplyThresholdClick", window, new RoutedEventArgs());
+                Check("阈值支持重新判断已有温度", ((TextBlock)window.FindName("AlarmText")).Text == "温度未超过阈值。");
+                ((TextBox)window.FindName("ThresholdInput")).Text = "NaN";
+                Call(window, "ApplyThresholdClick", window, new RoutedEventArgs());
+                Check("非法阈值被拒绝", ((TextBlock)window.FindName("OperationText")).Text.Contains("0至100"));
+                ((TextBox)window.FindName("ThresholdInput")).Text = "35";
+                Call(window, "ApplyThresholdClick", window, new RoutedEventArgs());
+                for (int i = 0; i < 205; i++) Call(window, "RecordLog", "布局样例", "仅验证显示：127.0.0.1:5000，收到完整温度35.6，具体来源与操作保留。");
+                Check("教练日志支持限制200条", Field<ObservableCollection<Task050LogEntry>>(window, "_logs").Count == 200);
+                string[] controls = { "HostInput", "PortInput", "ConnectButton", "DisconnectButton", "ReadButton", "StartDeviceButton", "StopDeviceButton", "StatusButton", "StartCollectionButton", "StopCollectionButton", "ClearButton", "HistoryGrid", "ChartCanvas", "LogGrid", "OperationText" };
+                foreach (bool minimum in new bool[] { false, true })
+                {
+                    window.Width = minimum ? window.MinWidth : 1180;
+                    window.Height = minimum ? window.MinHeight : 900;
+                    window.UpdateLayout();
+                    await window.Dispatcher.InvokeAsync(new Action(() => { }), DispatcherPriority.ApplicationIdle);
+                    bool visible = true;
+                    foreach (string name in controls) visible = visible && InsideContent(window, name);
+                    Check(minimum ? "最小尺寸控件均在客户区内" : "默认尺寸控件均在客户区内", visible);
+                    Check(minimum ? "最小尺寸表格日志和曲线有可用高度" : "默认尺寸表格日志和曲线有可用高度", ((DataGrid)window.FindName("HistoryGrid")).ActualHeight > 140 && ((DataGrid)window.FindName("LogGrid")).ActualHeight > 90 && ((Canvas)window.FindName("ChartCanvas")).ActualHeight >= 125);
+                }
+                RenderTargetBitmap bitmap = new RenderTargetBitmap((int)window.ActualWidth, (int)window.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+                bitmap.Render(window);
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                using (FileStream output = File.Create(Path.Combine(args[0], "startup-minimum-2026-10-20.png"))) encoder.Save(output);
+                Click(window, "ClearButton");
+                Check("清空支持恢复空历史", history.Count == 0 && ((TextBlock)window.FindName("LatestText")).Text.Contains("—"));
+
+                int port = FreePort();
+                using (CancellationTokenSource simulatorStop = new CancellationTokenSource())
+                {
+                    Task049Simulator simulator = new Task049Simulator();
+                    Task server = simulator.RunAsync(port, true, simulatorStop.Token);
+                    Task050TcpConnection connection = new Task050TcpConnection();
+                    try
+                    {
+                        await connection.ConnectAsync("127.0.0.1", port, CancellationToken.None);
+                        Check("无菜单连接辅助实际连接模拟器", connection.IsConnected);
+                        Check("无菜单辅助取得分段写入的完整温度", await connection.RequestAsync("GET_TEMP", CancellationToken.None) == "35.6");
+                        Check("无菜单辅助取得启动确认", await connection.RequestAsync("START_DEVICE", CancellationToken.None) == "OK");
+                        Check("无菜单辅助查询真实运行状态", await connection.RequestAsync("GET_STATUS", CancellationToken.None) == "RUNNING");
+                        connection.Close();
+                        await connection.ConnectAsync("127.0.0.1", port, CancellationToken.None);
+                        Check("无菜单辅助关闭后可手动重连", await connection.RequestAsync("GET_STATUS", CancellationToken.None) == "RUNNING");
+                        Check("无菜单辅助停止设备", await connection.RequestAsync("STOP_DEVICE", CancellationToken.None) == "OK" && await connection.RequestAsync("GET_STATUS", CancellationToken.None) == "STOPPED");
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        simulatorStop.Cancel();
+                        await server;
+                    }
+                }
+
+                TcpListener silentPeer = new TcpListener(IPAddress.Loopback, 0);
+                silentPeer.Start();
+                try
+                {
+                    int silentPort = ((IPEndPoint)silentPeer.LocalEndpoint).Port;
+                    Task<TcpClient> accepting = silentPeer.AcceptTcpClientAsync();
+                    Task050TcpConnection connection = Field<Task050TcpConnection>(window, "_connection");
+                    CancellationTokenSource session = new CancellationTokenSource();
+                    typeof(Task050Window).GetField("_sessionSource", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(window, session);
+                    await connection.ConnectAsync("127.0.0.1", silentPort, session.Token);
+                    using (TcpClient peer = await accepting)
+                    {
+                        CancellationToken token = session.Token;
+                        Task<string> waiting = connection.RequestAsync("GET_TEMP", token);
+                        window.Close();
+                        bool stopped = false;
+                        try { await waiting; }
+                        catch (OperationCanceledException) { stopped = true; }
+                        catch (IOException) { stopped = true; }
+                        catch (ObjectDisposedException) { stopped = true; }
+                        Check("关闭窗口取消教练连接辅助的未完成接收", stopped && token.IsCancellationRequested && !connection.IsConnected);
+                        Check("关闭窗口停止定时器", !Field<DispatcherTimer>(window, "_pollingTimer").IsEnabled);
+                        Check("关闭后旧连接结果被拒绝", !(bool)Call(window, "IsCurrentSession", Field<int>(window, "_sessionId"))!);
+                    }
+                }
+                finally
+                {
+                    silentPeer.Stop();
+                }
+                Check("窗口已实际关闭", !window.IsVisible);
+            }
+            catch (Exception exception)
+            {
+                failure = exception.ToString();
+                if (window.IsVisible) window.Close();
+            }
+            Console.WriteLine("PREPARATION_RESULT=" + JsonSerializer.Serialize(new { passed = Checks.Count, checks = Checks, failure, injectedHistoryRows = 3, learnerTodosVerified = false }));
+            app.Shutdown(failure == null ? 0 : 1);
+        }));
+        app.Run();
+    }
+}
