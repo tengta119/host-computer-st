@@ -52,7 +52,7 @@ TODO 2完成后再用模拟端2/3观察本次接收2/4字节与完整6字节有�
 - [x] 原TASK-047的字段/范围/校验、半帧/连续帧、无效候选恢复与合法数据内AA规则保持，只有有效读数更新历史/曲线/报警并结束等待，坏帧等待到有效回复或3秒超时，之后可重新发送。
 - [x] 主动断开、端口失败、手动重连和窗口关闭的清理与日志归属一致，旧缓冲/通知不污染新连接，不重复登记，旧TASK-044至047成果保留；记录具体代码或获授权的运行证据，不伪造实际串口结果。
 
-## 当前证据与阶段边界
+## 骨架准备时的证据与阶段边界（历史）
 
 2026-10-20实际执行python .\Stage03-DeviceCommunication\DeviceCommunication.Wpf\Exercises\TASK-048-serial-monitor-integration\Verification\verify_startup.py，脚本使用临时--output目录构建新WPF源代码，0警告/0错误，未停止用户原有进程；临时窗口实际Show、日志最小尺寸检查和关闭均通过、退出0。
 已查看[最小布局](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Verification/startup-minimum-2026-10-20.png)，[准备记录](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Verification/startup-2026-10-20.json)保存真实命令/输出及48个既有文件哈希不变的结果。
@@ -75,3 +75,10 @@ DoD3未通过：EndWaiting已经保存waitingSessionId/waitingPortName，但日�
 学员已将等待结束日志改为使用message、waitingSessionId和waitingPortName，原有效字节复制、200条上限、协议/显示/等待与连接清理保持，三个DoD按静态源码口径全部通过、勾选已同步。
 [最终记录](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Verification/static-review-final-2026-10-20.md)与[本轮源码哈希](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/Verification/static-review-final-2026-10-20.json)已保存，本轮未改源码、构建、运行或测试；上一轮两处文案由教练协助，不冒充学员独立掌握，原待修结论保留为历史。
 当前串口源码任务已收尾，实际串口联调未验证，阶段整体仍进行中，详见[阶段源码覆盖核对](../notes/serial-stage-source-check.md)；不自动生成TASK-049或开启下一阶段，WPF继续TASK-048，后续实际收尾可合并本题，Q6待复习和统计保持。
+
+## 2026-10-20 用户选择阶段收尾并开启第四阶段（最新）
+
+用户随后明确要求“把第三阶段标记为完成，并开启第四阶段”，据此将第三阶段更新为✅ 已通关，按已通过的源码范围收尾，TASK-048维持✅ 已通关。
+第四阶段TCP/UDP已按用户明确选择开启，首个任务为TASK-049，状态🟡 进行中，前文阶段仍进行中、不创建下一任务及WPF继续TASK-048的安排保留为当时历史。
+实际串口联调仍未验证，本次未新增串口运行证据，不把阶段状态调整计为学员实测能力，也不新增勾选未运行场景。
+原第三阶段代码与历史审查记录保留，Q6继续待复习，既有自主实践能力及问答统计不变；若后续需要串口实测，仍可在本题合并收尾。

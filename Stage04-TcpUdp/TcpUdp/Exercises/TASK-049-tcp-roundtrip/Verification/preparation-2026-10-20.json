@@ -1,0 +1,154 @@
+{
+  "recorded_at": "2026-10-20T12:01:52.990146+08:00",
+  "scope": "只验证教练提供的骨架入口及TCP模拟器，未实现或验收学员TODO。",
+  "command": "python .\\Stage04-TcpUdp\\TcpUdp\\Exercises\\TASK-049-tcp-roundtrip\\Verification\\verify_preparation.py",
+  "passed": 25,
+  "total": 25,
+  "checks": [
+    {
+      "name": "帮助入口正常退出",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "未实现连接时如实显示占位并安全退出",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "人工观察如实显示尚未完成而非虚报通过",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "过多观察入口参数被拒绝",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "无效端口被拒绝",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器命令GET_TEMP=>35.6",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器命令GET_STATUS=>STOPPED",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器命令START_DEVICE=>OK",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器命令GET_STATUS=>RUNNING",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器命令STOP_DEVICE=>OK",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器命令GET_STATUS=>STOPPED",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器命令PING=>PONG",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器命令UNKNOWN=>ERR_UNKNOWN_COMMAND",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器命令<空行>=>ERR_EMPTY_COMMAND",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "没有LF的命令片段不提前回复",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器合并分批命令",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器逐条处理同批命令",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "256字节命令长度边界仍被解析",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "重连前启动设备",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟设备状态跨连接保留",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器拒绝257字节并关闭该连接",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器拒绝非ASCII并关闭该连接",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器拒绝CR并关闭该连接",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "非法输入后仍可重新连接查询",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "模拟器两次写入模式得到完整温度",
+      "passed": true,
+      "detail": {
+        "actual_read_sizes": [
+          2,
+          3
+        ],
+        "note": "不要求网络读取批次等于写入批次。"
+      }
+    }
+  ],
+  "simulators": [
+    {
+      "command": "dotnet D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp\\bin\\Debug\\net10.0\\TcpUdp.dll --simulator 63775",
+      "stop": "验证脚本终止自己创建的进程，未验证交互式Ctrl+C。",
+      "stdout": "[模拟器] 正在监听 127.0.0.1:63775，每条命令和回复以 LF 结束。\r\n[模拟器] 接受连接：127.0.0.1:63777。\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 回复：35.6\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 请求：START_DEVICE\r\n[模拟器] 回复：OK\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：RUNNING\r\n[模拟器] 请求：STOP_DEVICE\r\n[模拟器] 回复：OK\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 请求：PING\r\n[模拟器] 回复：PONG\r\n[模拟器] 请求：UNKNOWN\r\n[模拟器] 回复：ERR_UNKNOWN_COMMAND\r\n[模拟器] 请求：<空行>。\r\n[模拟器] 回复：ERR_EMPTY_COMMAND\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 回复：35.6\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 回复：35.6\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 请求：AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n[模拟器] 回复：ERR_UNKNOWN_COMMAND\r\n[模拟器] 请求：START_DEVICE\r\n[模拟器] 回复：OK\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:63778。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：RUNNING\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:63779。\r\n[模拟器] 命令超过 256 字节上限，关闭当前连接后继续监听。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:63780。\r\n[模拟器] 非法命令字节 0x80，关闭当前连接后继续监听。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:63781。\r\n[模拟器] 非法命令字节 0x0D，关闭当前连接后继续监听。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:63782。\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 回复：35.6\r\n[模拟器] 对端已断开。\r\n",
+      "stderr": ""
+    },
+    {
+      "command": "dotnet D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp\\bin\\Debug\\net10.0\\TcpUdp.dll --simulator 63783 split",
+      "stop": "验证脚本终止自己创建的进程，未验证交互式Ctrl+C。",
+      "stdout": "[模拟器] 正在监听 127.0.0.1:63783，每条命令和回复以 LF 结束。\r\n[模拟器] 已启用回复分段观察：先写前 2 字节，等待 150 毫秒，再写其余字节。\r\n[模拟器] 网络接收分段可能与上述写入分段不同，客户端仍必须以 LF 判断完整回复。\r\n[模拟器] 接受连接：127.0.0.1:63785。\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 回复：35.6\r\n[模拟器] 对端已断开。\r\n",
+      "stderr": ""
+    }
+  ]
+}
