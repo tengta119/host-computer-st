@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-20",
+  "mode": "static-source-only",
+  "build_run_tests_performed": false,
+  "status": "in-progress",
+  "dod": {
+    "1": "failed",
+    "2": "static-pass",
+    "3": "static-pass"
+  },
+  "source_hashes_before": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml.cs": "be9ca6e5a48aaf264c06d33e9d0269bef2c2ab77f486750b1912bd942d46b014",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046SerialConnection.cs": "131147cc53f9626517a4acdd96a37e862264d1822e5663d5e37e598e4a5b42f7",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml": "3916e45eb179339abed56c96858296f0f4271afc99bfdd421fd2f7c65fd59d35",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "6b6c597c9149f5b2c6d9747c27da6bcfee26b3337ec94fb339bf9e43c0e31611",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-045-serial-monitor/Task045Reading.cs": "a68f3f33a02c11d887452501735970b4a73b541423ef03fa3b985404c862d412"
+  },
+  "source_hashes_after": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml.cs": "a6b955b492e3f2d2682fa1da9ba9302a30be2edbe62c7b9fb8b9d909acc2e9fa",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046SerialConnection.cs": "131147cc53f9626517a4acdd96a37e862264d1822e5663d5e37e598e4a5b42f7",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml": "3916e45eb179339abed56c96858296f0f4271afc99bfdd421fd2f7c65fd59d35",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "6b6c597c9149f5b2c6d9747c27da6bcfee26b3337ec94fb339bf9e43c0e31611",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-045-serial-monitor/Task045Reading.cs": "a68f3f33a02c11d887452501735970b4a73b541423ef03fa3b985404c862d412"
+  },
+  "coach_change": "Only corrected one status message in the old-session branch; core implementation preserved."
+}

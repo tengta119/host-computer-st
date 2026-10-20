@@ -119,3 +119,111 @@ _timeoutTimer是WPF的DispatcherTimer对象，Start之后每隔约200毫秒安�
 接收错误时使用BelongsToCurrentConnection核对编号即可，不能同时要求IsOpen为true，否则已经失效的当前端口恰好会被当作无须处理；这些编号保护由教练提供，旧连接的排队读数或错误不能影响重连后的窗口。
 没有请求编号就无法严格匹配迟到回复，当前仅约定同一连接一次等待、下一条发送后完整读数算响应；虚拟对端退出不一定令本端IsOpen变false，此时通常靠无回复超时发现问题。
 具体对象、最小秒表示例、四个TODO和运行步骤先读实际运行说明，当前仅有骨架启动/关闭证据，未验证学员超时或重连，不扩大既有掌握范围。
+
+
+### TODO 2里的“Reset、清除标记和编号”具体写什么
+
+2026-10-19用户指出这三个动作的含义不清，原注释没有把动作对应到具体字段，现补下面三行说明，不把教练表达不清记为学员错误。
+
+```csharp
+_requestWatch.Reset();
+_waitingForResponse = false;
+_waitingSessionId = -1;
+```
+
+_requestWatch是保存本次等待时长的秒表对象，Reset是.NET提供的方法；例如已经计了1.8秒，调用后停止计时并变回0秒。
+_waitingForResponse是教练起名的bool字段，true表示现在正在等回复，赋false表示这次已经不等了；不是删掉这个变量，RefreshConnectionControls会据此在串口仍连接时恢复发送按钮。
+_waitingSessionId是教练起名的int字段，例如等待开始时保存连接编号5，结束时赋-1表示现在没有哪次连接正在等待；-1只是本题选的标记值，不是C#特殊指令，也不会改变_connection.CurrentSessionId或断开端口。
+已经写的_timeoutTimer.Stop()停止定时检查，_requestWatch.Reset()停止并归零秒表，这两个对象负责的事情不同；其后还需要显示message和刷新按钮，才会让界面反映新的等待状态。
+与结束时的false相对应，BeginWaiting要把_waitingForResponse设成true并刷新按钮，当前学员代码已记录编号/时间并启动两对象，但这两处尚未连接，本轮只解释和改注释，保留学员已有实现。
+
+本次说明并入串口Q4，仍待复习，TASK-046继续🟡 进行中，未构建、运行、测试或变更DoD。
+
+
+### TODO 3每次检查到底做什么
+
+CheckResponseTimeout是教练命名的普通方法，_timeoutTimer启动后会反复安排它执行；每次进来先判断这次等待是否还需要处理，最后才看是否已等够3秒。
+原注释把多个判断挤成一句，现改成下面这些具体情况；命中需要结束本次检查的分支后写return，只离开本次方法，不关闭整个程序。
+
+| 按顺序检查的代码 | 现在是什么情况 | 应做什么 |
+| --- | --- | --- |
+| `_isClosing || !_waitingForResponse` | 窗口已开始关闭，或者当前根本没在等回复。 | 直接return。 |
+| `!_connection.BelongsToCurrentConnection(_waitingSessionId)` | 记录的等待不属于现在保留的连接。 | EndWaiting说明原连接已结束，然后return。 |
+| `!_connection.IsConnected` | 等待仍属于这次连接，但端口已经不处于打开状态。 | RecoverConnection说明端口失效，然后return。 |
+| `_requestWatch.Elapsed >= _responseTimeout` | 当前连接仍打开，但已经等了至少3秒，没有结束等待。 | EndWaiting显示响应超时，然后return，保留串口连接以便重发。 |
+| 上面都不满足。 | 仍在等待，并且还没到3秒。 | 显示已等待时长，等下一次检查。 |
+
+例如_waitingSessionId是5，而当前_connection.CurrentSessionId已经是7，就说明等待记录还留在上一次连接5；结束这份等待记录即可，不要为连接5调用RecoverConnection把现在的连接7也关掉。
+BelongsToCurrentConnection和IsConnected是教练提供的两个检查，前者确认等待编号对应当前保留的端口对象，后者确认这个端口是否仍打开，因此先后两步分别处理“等待过期”和“当前端口失效”。
+EndWaiting只清等待和更新显示，不关闭串口；RecoverConnection用于要释放连接的情况，这两个方法不是同一用途。
+当前源码BeginWaiting尚未把_waitingForResponse设为true或刷新按钮，如果直接加第一个判断，每次检查都会因false返回；开始时需要设true并刷新，结束时设false并刷新，才能让整个等待流程连接起来。
+本轮只澄清注释和说明，保留学员已有实现，未构建/运行/测试或改变任务验收，Q4仍待复习，不记学员错题。
+
+
+### 怎样写“窗口已关闭，或者现在没在等回复”的判断
+
+在CheckResponseTimeout里写下面这个判断，成立就直接结束本次检查。
+
+```csharp
+if (_isClosing || !_waitingForResponse)
+{
+    return;
+}
+```
+
+_isClosing和_waitingForResponse都是教练在当前窗口类里定义的bool字段，不是WPF自动维护的属性。
+_isClosing为true时跳过检查；当前代码在OnClosed中将它设为true，准确说表示窗口已经关闭，原说明“正在关闭”是对这个收尾标记的宽泛描述。
+_waitingForResponse为true表示正在等待回复，前面的!是C#取反运算符，因此!_waitingForResponse在该字段为false时成立，表示现在没有在等待。
+||是C#的“或者”，左右两个条件只要任意一个为true，就进入花括号执行return；return只退出这一次CheckResponseTimeout，不退出程序。
+开始等待时必须在BeginWaiting将_waitingForResponse赋true，结束时EndWaiting赋false，判断本身只读取字段，不会自动替你进入等待。
+2026-10-19本轮只补说明，未修改学员代码或运行，Q4仍待复习，任务与DoD保持。
+
+
+### TODO 4怎样结束等待、释放连接并显示原因
+
+2026-10-19用户询问TODO 4如何完成，当前源码已有EndWaiting和Close的try框架，但catch仍Console.WriteLine后throw，finally为空；这里给针对该方法的参考写法并解释，不直接替换学员源码。
+RecoverConnection是教练命名的普通方法，当前目标是把失败的连接收拾好，允许用户之后点击连接；它没有调用Open，不会自动重新连接，因此原“开始重新连接”的提示不符合实际行为。
+reason是调用者传入的说明，例如“发送失败：……”或“已主动断开连接。”，显示时要保留它，关闭端口又报错时再追加关闭错误。
+
+```csharp
+private void RecoverConnection(string reason)
+{
+    string result = reason;
+    EndWaiting(reason);
+
+    try
+    {
+        _connection.Close();
+    }
+    catch (Exception exception)
+    {
+        result = reason + "；关闭串口时发生错误：" + exception.Message;
+    }
+    finally
+    {
+        RefreshConnectionControls();
+        OperationText.Text = result;
+    }
+}
+```
+
+EndWaiting(reason)先结束这次等待并显示传入原因，后面的Close负责让旧端口退出当前连接、清掉旧缓冲并释放资源。
+result是方法里新建的普通字符串变量，先保存原原因；Close成功时保持不变，Close失败时追加异常的Message，避免用关闭错误覆盖最初的发送或接收错误。
+catch接住这里的关闭异常后把原因留在界面即可，原来的throw会继续向外抛异常，不符合这条“显示错误后允许手动重连”的处理路径；WPF程序也不应只靠Console.WriteLine给用户看错误。
+finally在Close正常结束或catch处理关闭异常后都会执行，RefreshConnectionControls读取关闭后的实际连接状态以刷新按钮，OperationText.Text再显示最终原因。
+EndWaiting中的刷新发生在Close之前，finally中的刷新发生在Close之后，因此这里最后一次刷新用于把按钮改为允许重新连接。
+本轮只提供针对TODO 4的示例说明，学员源文件未改，未构建/运行/测试，TASK-046继续🟡 进行中，DoD不变，Q4仍待复习，不将提供的参考代码算学员自主掌握。
+
+
+### 2026-10-20 TASK-046静态审查
+
+当前BeginWaiting尚未把_waitingForResponse设为true，源码中该字段从初始false开始只会再被赋false，因此定时检查总会直接返回，重复发送也不会被挡住；开始方法还要刷新按钮及等待提示。
+CheckResponseTimeout当前在BelongsToCurrentConnection返回true时结束等待，方向相反，应该在等待不属于当前连接时才清理旧等待；这会在入口修好后立即暴露为第一次检查就结束正常等待，不能只修前一处。
+EndWaiting、RecoverConnection和关闭保护源码路径保留，DoD1未通过、2/3静态通过，TASK-046仍🟡 进行中；教练仅修一处提示，不代改核心，未构建/运行/测试，详见本题Verification/static-review-2026-10-20.md，Q4仍待复习，不新增掌握。
+
+
+### 2026-10-20 TASK-046最终静态复查通过
+
+学员已补BeginWaiting的true等待标记，并将旧连接检查改为!BelongsToCurrentConnection，原等待入口与条件方向问题已修复；教练只补等待提示、调用已有按钮刷新和清理旧占位文案。
+三个DoD按静态源码口径通过，状态✅ 已通关，本轮未构建/运行/测试，不声称真实超时、重连或并发关闭已验证；RecoverConnection参考示例的使用与显示协助不计独立设计能力，Q4继续待复习，27分类/74条、待复习38/已掌握36保持。
+下一张TASK-047仅建未开始卡，准备补字段/校验与坏帧恢复，第三阶段仍进行中，当前入口仍TASK-046，之前失败与待修说明均保留为历史。

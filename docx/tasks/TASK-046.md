@@ -1,7 +1,7 @@
 # TASK-046：处理串口超时、断开与重新连接
 
 - 阶段：第三阶段：设备通信（通信稳定性）。
-- 状态：🟡 进行中
+- 状态：✅ 已通关
 - 创建日期：2026-10-19。
 - 开启日期：2026-10-19，用户明确要求“开启task046”。
 - 计划来源：[计划](../plan.md)第三阶段中超时、设备断开、恢复连接及窗口关闭后的正确收尾。
@@ -52,9 +52,9 @@ Task046SerialConnection复用上一题的串口/缓冲思路，直接引用Task0
 
 ## 验收标准（DoD）
 
-- [ ] 请求的等待、收到完整响应、超时和再次发送状态连接完整，等待期间不会并行重复发送造成响应混淆，半帧不冒充完整响应，超时不清掉其他连接的新状态。
-- [ ] 打开/发送/接收失败或连接失效后有明确原因和一致的按钮状态，旧资源能释放，条件恢复后可以手动重连并继续收到读数，历史与协议解析规则保持。
-- [ ] 主动断开、重连和窗口关闭能结束旧等待并丢弃旧连接通知，接收与关闭交错时有可追踪的清理路径，不重复回调或向已关闭窗口更新。
+- [x] 请求的等待、收到完整响应、超时和再次发送状态连接完整，等待期间不会并行重复发送造成响应混淆，半帧不冒充完整响应，超时不清掉其他连接的新状态。
+- [x] 打开/发送/接收失败或连接失效后有明确原因和一致的按钮状态，旧资源能释放，条件恢复后可以手动重连并继续收到读数，历史与协议解析规则保持。
+- [x] 主动断开、重连和窗口关闭能结束旧等待并丢弃旧连接通知，接收与关闭交错时有可追踪的清理路径，不重复回调或向已关闭窗口更新。
 
 后续审查沿用用户最近的源码偏好时，明确按静态代码路径验收，不虚构实际断开、超时或串口测试结果；需要实际联调时再按用户要求执行，完整阶段目标的证据边界保留。
 
@@ -62,4 +62,20 @@ Task046SerialConnection复用上一题的串口/缓冲思路，直接引用Task0
 
 2026-10-19实际执行dotnet build .\Stage03-DeviceCommunication\DeviceCommunication.Wpf\DeviceCommunication.Wpf.csproj --nologo，0警告/0错误；随后执行python .\Stage03-DeviceCommunication\DeviceCommunication.Wpf\Exercises\TASK-046-serial-recovery\Verification\verify_startup.py，构建和临时窗口宿主均退出0。
 教练仅检查本题窗口实际Show、最小尺寸渲染和关闭，已查看[最小布局](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Verification/startup-minimum-2026-10-19.png)，未打开串口、注入读数或测试学员TODO；[准备记录](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Verification/startup-2026-10-19.json)记录25个既有文件哈希不变。
-四个TODO尚未由学员完成，三个DoD未勾选，准备检查不计通信超时/重连的学员证据，第三阶段仍🟡 进行中，不创建下一任务。
+开启时四个TODO尚未完成、DoD未勾选，此为2026-10-19的骨架准备历史；当前结论以下方2026-10-20静态审查为准，准备检查不计通信超时/重连的学员证据。
+
+
+## 2026-10-20 静态审查：仍🟡 进行中
+
+按用户已有偏好只审源码，未构建/运行/测试；[审查记录](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Verification/static-review-2026-10-20.md)和[源码哈希](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Verification/static-review-2026-10-20.json)已保存。
+DoD1未通过：BeginWaiting缺少_waitingForResponse = true、按钮刷新与等待提示，导致检查始终提前返回；CheckResponseTimeout的BelongsToCurrentConnection分支缺少取反，补好入口后也会立即结束正常等待。
+DoD2/3按静态源码路径通过，已勾选，不声称实际拔线、超时、重连或并发关闭已验证；EndWaiting、RecoverConnection及关闭/旧通知保护保留，不要求重写。
+教练只直接纠正旧连接分支的一处提示，将“连接超时”改为“原连接已结束，取消本次等待。”，不代改两个核心问题；先修BeginWaiting，再改旧连接条件，仍不创建下一题，第三阶段未通关。
+
+
+## 2026-10-20 最终静态复查：✅ 已通关
+
+学员已自主补true等待标记并将旧连接条件改为取反，等待入口与3秒检查恢复连接；教练按已有低影响收尾授权只补RequestStatusText等待提示、调用现成按钮刷新并清理一处XAML旧骨架文案，保留学员核心实现。
+三个DoD按静态源码路径全部通过，勾选已同步，[最终记录](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Verification/static-review-final-2026-10-20.md)与[协助前后源码哈希](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Verification/static-review-final-2026-10-20.json)已保存，旧审查历史保持。
+本轮未构建、运行、测试或打开串口，不把静态通过扩大为真实超时/拔线/重连或并发验证，串口Q4继续待复习，不把教练示例或显示协助算作自主掌握。
+按计划仅创建[TASK-047：检查串口数据帧并从坏帧中恢复](./TASK-047.md)⚪ 未开始卡，未准备其源码或切换入口，当前WPF仍为TASK-046，第三阶段仍🟡 进行中。

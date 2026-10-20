@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-20",
+  "mode": "static-source-only",
+  "build_run_tests_performed": false,
+  "status": "passed",
+  "dod": {
+    "1": "static-pass",
+    "2": "static-pass",
+    "3": "static-pass"
+  },
+  "learner_fixes": [
+    "BeginWaiting sets waiting flag true",
+    "CheckResponseTimeout negates BelongsToCurrentConnection"
+  ],
+  "coach_changes": [
+    "BeginWaiting displays waiting in RequestStatusText",
+    "BeginWaiting calls existing RefreshConnectionControls",
+    "XAML initial OperationText removes stale scaffold wording"
+  ],
+  "source_hashes_before": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml.cs": "b897c29520617af0d22f28e2750a46cba95d348a1094593e15022e393601522d",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml": "3916e45eb179339abed56c96858296f0f4271afc99bfdd421fd2f7c65fd59d35",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046SerialConnection.cs": "131147cc53f9626517a4acdd96a37e862264d1822e5663d5e37e598e4a5b42f7",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "6b6c597c9149f5b2c6d9747c27da6bcfee26b3337ec94fb339bf9e43c0e31611",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-045-serial-monitor/Task045Reading.cs": "a68f3f33a02c11d887452501735970b4a73b541423ef03fa3b985404c862d412"
+  },
+  "source_hashes_after": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml.cs": "d2973600d1c0f3b0fad241dcb7ab04c1859ddf79706e00c1a71e16c44dab3db8",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046Window.xaml": "ecbe1332fc1c9ed173a19a3bdf48d78f926d6decb7394a7f0ef31b7948c5578c",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-046-serial-recovery/Task046SerialConnection.cs": "131147cc53f9626517a4acdd96a37e862264d1822e5663d5e37e598e4a5b42f7",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "6b6c597c9149f5b2c6d9747c27da6bcfee26b3337ec94fb339bf9e43c0e31611",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-045-serial-monitor/Task045Reading.cs": "a68f3f33a02c11d887452501735970b4a73b541423ef03fa3b985404c862d412"
+  },
+  "real_serial_operation_verified": false
+}

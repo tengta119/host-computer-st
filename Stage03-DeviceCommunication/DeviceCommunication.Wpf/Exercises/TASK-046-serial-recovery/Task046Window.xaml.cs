@@ -88,28 +88,82 @@ namespace DeviceCommunication.Wpf.Exercises.Task046
 
         private void BeginWaiting()
         {
-            // TODO 1：发送成功后记录CurrentSessionId和DateTime.Now，设置_waitingForResponse为true，重启_requestWatch并启动_timeoutTimer，然后刷新按钮和等待提示。
+            // TOD 1：发送成功后记录CurrentSessionId和DateTime.Now，设置_waitingForResponse为true，重启_requestWatch并启动_timeoutTimer，然后刷新按钮和等待提示。
             // _waitingSessionId保存本次连接编号，_requestSentAt保存发送成功的时间，说明见RUN-GUIDE.md的第一步。
-            OperationText.Text = "已发送55 01；TODO 1尚未接入等待状态。";
+            _waitingSessionId = _connection.CurrentSessionId;
+            _requestSentAt = DateTime.Now;
+            _requestWatch.Restart();
+            _timeoutTimer.Start();
+            _waitingForResponse = true;
+            RequestStatusText.Text = "正在等待响应，最多3秒。";
+            RefreshConnectionControls();
+            OperationText.Text = "已发送55 01；进入等待状态。";
         }
 
         private void EndWaiting(string message)
         {
-            // TODO 2：结束等待时停止_timeoutTimer、Reset秒表、清除等待标记与连接编号，把message显示到RequestStatusText，并刷新按钮。
+            // TOD 2：调用_timeoutTimer.Stop()和_requestWatch.Reset()，把_waitingForResponse设为false、_waitingSessionId设为-1，再把message显示到RequestStatusText并调用RefreshConnectionControls()。
             // 完整回复、超时、主动断开和异常都会调用此方法，这些出口共用一次清理。
+            _timeoutTimer.Stop();
+            _requestWatch.Reset();          // 秒表停止，并把已等待的时间归零。
+            _waitingForResponse = false;    // 表示现在不再等待回复。
+            _waitingSessionId = -1;         // 表示现在没有等待中的连接编号。
+            RequestStatusText.Text = message;
+            RefreshConnectionControls();
+            
         }
 
         private void CheckResponseTimeout(object? sender, EventArgs e)
         {
-            // TODO 3：不在等待或窗口已关闭时返回，旧连接的等待只结束旧等待，当前端口失效则走RecoverConnection，否则检查秒表是否已到_responseTimeout。
-            // 未到3秒可更新已等待秒数，到时调用EndWaiting显示超时，保留当前连接、历史和半帧，让用户能再次发送。
+            // TOD 3：每次定时检查按下面顺序处理，命中一个结束条件就return，不再继续检查后面的条件。
+            // _isClosing为true或_waitingForResponse为false时，直接return，因为现在没有需要继续检查的等待。
+            // BelongsToCurrentConnection(_waitingSessionId)为false时，调用EndWaiting说明原连接已结束，然后return，不关闭现在的新连接。
+            // 编号仍属于当前连接但IsConnected为false时，调用RecoverConnection说明端口失效，然后return。
+            // _requestWatch.Elapsed达到_responseTimeout时，调用EndWaiting显示响应超时，然后return，当前串口保持连接。
+            // 其余情况还没等够3秒，把已等待秒数显示到RequestStatusText，等待下一次检查。
+            if (_isClosing || !_waitingForResponse)
+            {
+                return;
+            }
+
+            if (!_connection.BelongsToCurrentConnection(_waitingSessionId))
+            {
+                EndWaiting("原连接已结束，取消本次等待。");
+                return;
+            }
+
+            if (!_connection.IsConnected)
+            {
+                RecoverConnection("端口失效");
+                return;
+            }
+
+            if (_requestWatch.Elapsed >= _responseTimeout)
+            {
+                EndWaiting("响应超时");
+                return;
+            }
+            RequestStatusText.Text = "正在等待";
         }
 
         private void RecoverConnection(string reason)
         {
-            // TODO 4：先EndWaiting，再关闭_connection，在finally中刷新按钮并显示reason；Close本身失败时也保留原原因并补充清理错误。
-            // 此方法同时处理主动断开、发送失败和当前连接的接收失败，关闭窗口另有教练提供的最终释放保护。
-            OperationText.Text = reason + "（TODO 4尚未接入连接清理。）";
+            string result = reason;
+            EndWaiting(reason);
+
+            try
+            {
+                _connection.Close();
+            }
+            catch (Exception exception)
+            {
+                result = reason + "；关闭串口时发生错误：" + exception.Message;
+            }
+            finally
+            {
+                RefreshConnectionControls();
+                OperationText.Text = result;
+            }
         }
 
         private void SerialReadingReceived(object? sender, Task045ReadingEventArgs e)
