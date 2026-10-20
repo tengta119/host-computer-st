@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-20",
+  "mode": "static-source-only",
+  "build_run_tests_performed": false,
+  "source_changed": false,
+  "status": "in-progress",
+  "dod": {
+    "1": "failed-missing-range-check",
+    "2": "static-pass",
+    "3": "failed-same-range-check"
+  },
+  "source_hashes": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047Protocol.cs": "c2f2a87e8fe1a9281c88012e2c45e4dc61f3fc6831b6ceb938963fb4002efd60",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047SerialConnection.cs": "c340e609f6b5a6698b684648521a546b6b3779057fcef736b4ada231dfd17758",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047Window.xaml.cs": "b36e7f9c0be6d5d8730565b17beff9d9b0a1838eac39986ec2f689201544c246",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047Window.xaml": "9a08b08b8268ed24ddc0db09c9b63ca681c0fd939e58d241c949f76b33aa1d62",
+    "Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-047-protocol-simulator/Task047Samples.cs": "cc48bba868b1965f820846c437b626d883185eedb4bc394e0f3bd9205c421f19",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "125be1d7a88e7431592c5faca4890829dd2a41863feefa80390bda0fa527cebf"
+  },
+  "counterexample_inferred_not_executed": {
+    "frame": "AA 01 03 03 E9 9A",
+    "raw_value": 1001,
+    "temperature": 100.1
+  }
+}

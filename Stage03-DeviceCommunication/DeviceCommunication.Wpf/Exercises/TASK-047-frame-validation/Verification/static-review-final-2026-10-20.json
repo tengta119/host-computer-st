@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-20",
+  "mode": "static-source-only",
+  "build_run_tests_performed": false,
+  "status": "passed",
+  "dod": {
+    "1": "static-pass",
+    "2": "static-pass",
+    "3": "static-pass"
+  },
+  "learner_fix": "Combined raw value and rejected values greater than 1000; included boundaries preserved.",
+  "coach_changes": [
+    "One stale XAML scaffold message replaced; no core code changes."
+  ],
+  "source_hashes_before": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047Protocol.cs": "0e8e2c4b82a77bf2bf76c620faac58fed374a87138c1617efbe082f10bec1b28",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047SerialConnection.cs": "c340e609f6b5a6698b684648521a546b6b3779057fcef736b4ada231dfd17758",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047Window.xaml.cs": "b36e7f9c0be6d5d8730565b17beff9d9b0a1838eac39986ec2f689201544c246",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047Window.xaml": "9a08b08b8268ed24ddc0db09c9b63ca681c0fd939e58d241c949f76b33aa1d62",
+    "Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-047-protocol-simulator/Task047Samples.cs": "cc48bba868b1965f820846c437b626d883185eedb4bc394e0f3bd9205c421f19",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "125be1d7a88e7431592c5faca4890829dd2a41863feefa80390bda0fa527cebf"
+  },
+  "source_hashes_after": {
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047Protocol.cs": "0e8e2c4b82a77bf2bf76c620faac58fed374a87138c1617efbe082f10bec1b28",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047SerialConnection.cs": "c340e609f6b5a6698b684648521a546b6b3779057fcef736b4ada231dfd17758",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047Window.xaml.cs": "b36e7f9c0be6d5d8730565b17beff9d9b0a1838eac39986ec2f689201544c246",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-047-frame-validation/Task047Window.xaml": "55ea1a5becd8d09e7f55e21dcf1fc8efb20ffe6d77c1ce4140051f0833e5a804",
+    "Stage03-DeviceCommunication/DeviceCommunication/Exercises/TASK-047-protocol-simulator/Task047Samples.cs": "cc48bba868b1965f820846c437b626d883185eedb4bc394e0f3bd9205c421f19",
+    "Stage03-DeviceCommunication/DeviceCommunication.Wpf/App.xaml": "125be1d7a88e7431592c5faca4890829dd2a41863feefa80390bda0fa527cebf"
+  },
+  "real_serial_validation_performed": false
+}

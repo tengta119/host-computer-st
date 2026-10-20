@@ -1,0 +1,18 @@
+{
+  "scope": "Coach-provided sample bytes only, not learner validation or serial execution.",
+  "checks": {
+    "fourteen_menu_samples": true,
+    "canonical_a": true,
+    "canonical_b": true,
+    "bad_checksum_only": true,
+    "illegal_fields_have_valid_checksums": true,
+    "illegal_fields_rejected": true,
+    "internal_aa_valid": true,
+    "overlapping_header_sample": true,
+    "boundary_frames_valid": true,
+    "long_noise_then_a": true
+  },
+  "all_passed": true,
+  "previous_file_count": 37,
+  "previous_work_unchanged": true
+}
