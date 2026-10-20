@@ -1,5 +1,15 @@
 # 典型错误与复查
 
+## TASK-051：心跳条件只看空闲时间，漏掉采集状态
+
+- 2026-10-20最终源码复查通过：学员已自主补idle >= HeartbeatIdle && !_collecting，采集中始终拒绝自动心跳，未采集且空闲达到2秒才允许，本条已修复，TASK-051三个DoD静态通过、✅ 已通关；本轮未改源码或运行测试，以下待修描述保留为历史，不扩大运行或自主掌握证据。
+
+- 情况与证据：2026-10-20静态审查，CanSendHeartbeat只有idle >= HeartbeatIdle，未检查_collecting，外层HeartbeatTick也没有排除采集，见[审查记录](../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-051-tcp-recovery/Verification/static-review-2026-10-20.md)，本轮未运行重现。
+- 根因：可见条件只表达空闲时间，未表达本题同时要求的未采集；_busy只能防止正在等待请求时再发请求，不能代替整个采集周期的状态，不推测学员编写动机。
+- 修复线索：当前正在采集时返回false，未采集时再按已有空闲时间判断，保留单一路径与PONG验证。
+- 复查点：_collecting为true时即使idle达到2秒也拒绝自动心跳，_collecting为false且idle达到2秒时才允许，低于2秒仍拒绝；按源码偏好复查。
+- 状态与边界：TASK-051🟡 进行中，DoD1/3静态通过、2待修；教练补日志和骨架取消检查不记入本条，不新增自主运行或全面掌握证据。
+
 ## TASK-048：等待结束日志重新读取当前连接，未用等待快照
 
 - 2026-10-20最终源码复查通过：学员已将等待结束日志第三/四实参改为waitingSessionId/waitingPortName，message保留，核心归属问题已修复，三个DoD静态通过、TASK-048✅ 已通关；本轮未改源码或运行测试，以下待修结论为此前历史。

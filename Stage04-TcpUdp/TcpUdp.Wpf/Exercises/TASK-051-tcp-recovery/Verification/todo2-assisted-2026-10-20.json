@@ -1,0 +1,47 @@
+{
+  "recorded_at": "2026-10-20T19:53:43.873555+08:00",
+  "scope": "Coach-assisted TODO 2 only; no whole-task acceptance or independent learner mastery.",
+  "build": {
+    "command": [
+      "dotnet",
+      "build",
+      "D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp.Wpf\\TcpUdp.Wpf.csproj",
+      "--nologo",
+      "--output",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task051-todo2-net7f70x\\app"
+    ],
+    "exit_code": 0,
+    "stdout": "  正在确定要还原的项目…\r\n  所有项目均是最新的，无法还原。\r\n  TcpUdp.Wpf -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task051-todo2-net7f70x\\app\\TcpUdp.Wpf.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:01.98\r\n"
+  },
+  "review": {
+    "command": [
+      "dotnet",
+      "run",
+      "--project",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task051-todo2-net7f70x\\host\\Review.csproj",
+      "--verbosity",
+      "quiet"
+    ],
+    "exit_code": 0,
+    "stdout": "TODO2_RESULT={\"checks\":[\"option_off_does_not_schedule\",\"no_connection_intent_does_not_schedule\",\"same_timer_scheduled_for_two_seconds\",\"next_attempt_message\",\"scheduling_does_not_connect_or_increment\",\"unchecking_cancels_timer\",\"failure_cleanup_busy_state_still_schedules\",\"no_immediate_tick\",\"real_delayed_tick_defers_busy_connection\",\"manual_disconnect_cancels_recovery\",\"five_attempt_cap_stops_recovery\",\"closed_window_cannot_restart_timer\"],\"failure\":null}\r\n",
+    "stderr": "",
+    "result": {
+      "checks": [
+        "option_off_does_not_schedule",
+        "no_connection_intent_does_not_schedule",
+        "same_timer_scheduled_for_two_seconds",
+        "next_attempt_message",
+        "scheduling_does_not_connect_or_increment",
+        "unchecking_cancels_timer",
+        "failure_cleanup_busy_state_still_schedules",
+        "no_immediate_tick",
+        "real_delayed_tick_defers_busy_connection",
+        "manual_disconnect_cancels_recovery",
+        "five_attempt_cap_stops_recovery",
+        "closed_window_cannot_restart_timer"
+      ],
+      "failure": null
+    }
+  },
+  "only_todo2_placeholder_changed": true
+}

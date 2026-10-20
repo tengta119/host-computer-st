@@ -1,0 +1,132 @@
+{
+  "recorded_at": "2026-10-20T20:33:11.693715+08:00",
+  "scope": "Coach simulator, CLI, incomplete scaffold and cancellation checks; not learner TODO or task acceptance.",
+  "commands": [
+    [
+      "dotnet",
+      "build",
+      "D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp\\TcpUdp.csproj",
+      "--nologo",
+      "--output",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\app"
+    ],
+    [
+      "dotnet",
+      "build",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\host\\Host.csproj",
+      "--nologo",
+      "--output",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture"
+    ],
+    [
+      "dotnet",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture\\Host.dll",
+      "server",
+      "52036",
+      "normal"
+    ],
+    [
+      "dotnet",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture\\Host.dll",
+      "server",
+      "52039",
+      "silent"
+    ],
+    [
+      "dotnet",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture\\Host.dll",
+      "server",
+      "52044",
+      "duplicate"
+    ],
+    [
+      "dotnet",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture\\Host.dll",
+      "server",
+      "52050",
+      "stale-first"
+    ],
+    [
+      "dotnet",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture\\Host.dll",
+      "server",
+      "52065",
+      "foreign-first"
+    ],
+    [
+      "dotnet",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture\\Host.dll",
+      "server",
+      "52068",
+      "wrong-id-first"
+    ],
+    [
+      "dotnet",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture\\Host.dll",
+      "server",
+      "52072",
+      "malformed-first"
+    ],
+    [
+      "dotnet",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture\\Host.dll",
+      "server",
+      "52077",
+      "close-tcp"
+    ]
+  ],
+  "build_exit_code": 0,
+  "build_stdout": "  正在确定要还原的项目…\r\n  所有项目均是最新的，无法还原。\r\n  TcpUdp -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\app\\TcpUdp.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.72\r\n",
+  "fixture_build_stdout": "  正在确定要还原的项目…\r\n  已还原 C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\host\\Host.csproj (用时 44 毫秒)。\r\n  Host -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task052-preparation-1okoqz5g\\fixture\\Host.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.92\r\n",
+  "scaffold_checks": [
+    "connect_stub",
+    "send_stub",
+    "receive_stub",
+    "udp_send_stub",
+    "filter_stub_rejects",
+    "external_cancel_before_send"
+  ],
+  "checks": [
+    "six_scaffold_checks",
+    "cli_--help",
+    "cli_--task052",
+    "cli_--task052_server_0",
+    "cli_--task052_server_5000_invalid",
+    "cli_--task052_udp_5000_START_DEVICE",
+    "cli_--task052_socket",
+    "normal_tcp_control_and_status",
+    "normal_udp_shared_running_state",
+    "normal_cancel_and_release",
+    "silent_tcp_control_and_status",
+    "silent_no_first_reply",
+    "silent_cancel_and_release",
+    "duplicate_tcp_control_and_status",
+    "duplicate_udp_shared_running_state",
+    "duplicate_fixture",
+    "duplicate_cancel_and_release",
+    "stale-first_tcp_control_and_status",
+    "stale-first_no_first_reply",
+    "old_reply_after_previous_deadline",
+    "stale-first_udp_shared_running_state",
+    "stale-first_cancel_and_release",
+    "foreign-first_tcp_control_and_status",
+    "wrong_source_port_fixture",
+    "foreign-first_udp_shared_running_state",
+    "foreign-first_cancel_and_release",
+    "wrong-id-first_tcp_control_and_status",
+    "wrong_id_fixture",
+    "wrong-id-first_udp_shared_running_state",
+    "wrong-id-first_cancel_and_release",
+    "malformed-first_tcp_control_and_status",
+    "overlength_fixture",
+    "invalid_value_fixture",
+    "malformed-first_udp_shared_running_state",
+    "malformed-first_cancel_and_release",
+    "tcp_eof_fault",
+    "close-tcp_cancel_and_release",
+    "protected_sources_unchanged"
+  ],
+  "protected_file_count": 193,
+  "protected_sources_unchanged": true,
+  "learner_dod_accepted": false
+}

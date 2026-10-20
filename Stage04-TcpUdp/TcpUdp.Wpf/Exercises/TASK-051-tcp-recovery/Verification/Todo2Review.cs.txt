@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using TcpUdp.Wpf.Exercises.Task051;
+
+public static class Todo2Review
+{
+    private static readonly List<string> Checks = new List<string>();
+    private static FieldInfo Member(string name) => typeof(Task051Window).GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!;
+    private static void Set(Task051Window w, string name, object value) => Member(name).SetValue(w, value);
+    private static T Get<T>(Task051Window w, string name) => (T)Member(name).GetValue(w)!;
+    private static void Call(Task051Window w, string name, params object[] args) => typeof(Task051Window).GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(w, args);
+    private static void Check(string name, bool condition)
+    {
+        if (!condition) throw new Exception(name);
+        Checks.Add(name);
+    }
+
+    [STAThread]
+    public static void Main()
+    {
+        Application app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        Task051Window w = new Task051Window { Left = -20000, Top = -20000 };
+        w.Show();
+        app.Dispatcher.BeginInvoke(new Action(async () =>
+        {
+            string? failure = null;
+            try
+            {
+                DispatcherTimer timer = Get<DispatcherTimer>(w, "_reconnectTimer");
+                CheckBox option = (CheckBox)w.FindName("AutoReconnectCheckBox");
+                Set(w, "_wantConnected", true);
+                Call(w, "ScheduleReconnect");
+                Check("option_off_does_not_schedule", !timer.IsEnabled);
+                option.IsChecked = true;
+                Set(w, "_wantConnected", false);
+                Call(w, "ScheduleReconnect");
+                Check("no_connection_intent_does_not_schedule", !timer.IsEnabled);
+                Set(w, "_wantConnected", true);
+                Set(w, "_reconnectAttempts", 2);
+                Call(w, "ScheduleReconnect");
+                Check("same_timer_scheduled_for_two_seconds", timer.IsEnabled && timer.Interval == TimeSpan.FromSeconds(2));
+                Check("next_attempt_message", ((TextBlock)w.FindName("RecoveryText")).Text == "2秒后进行第3/5次自动连接。");
+                Call(w, "ScheduleReconnect");
+                Check("scheduling_does_not_connect_or_increment", ReferenceEquals(timer, Get<DispatcherTimer>(w, "_reconnectTimer")) && Get<int>(w, "_reconnectAttempts") == 2 && !Get<bool>(w, "_busy"));
+                option.IsChecked = false;
+                Check("unchecking_cancels_timer", !timer.IsEnabled);
+                option.IsChecked = true;
+                Set(w, "_busy", true);
+                Call(w, "ScheduleReconnect");
+                Check("failure_cleanup_busy_state_still_schedules", timer.IsEnabled);
+                // A real timer tick must defer while busy; no network request is made in this check.
+                int ticks = 0;
+                EventHandler observer = (_, _) => ticks++;
+                timer.Tick += observer;
+                await Task.Delay(300);
+                Check("no_immediate_tick", ticks == 0);
+                await Task.Delay(2000);
+                timer.Tick -= observer;
+                Check("real_delayed_tick_defers_busy_connection", ticks == 1 && timer.IsEnabled && Get<int>(w, "_reconnectAttempts") == 2);
+                Set(w, "_busy", false);
+                Call(w, "DisconnectClick", w, new RoutedEventArgs());
+                Check("manual_disconnect_cancels_recovery", !timer.IsEnabled && !Get<bool>(w, "_wantConnected"));
+                Set(w, "_wantConnected", true);
+                Set(w, "_reconnectAttempts", 5);
+                Call(w, "ScheduleReconnect");
+                Check("five_attempt_cap_stops_recovery", !timer.IsEnabled && !Get<bool>(w, "_wantConnected"));
+                Set(w, "_wantConnected", true);
+                Set(w, "_reconnectAttempts", 0);
+                Call(w, "ScheduleReconnect");
+                w.Close();
+                Call(w, "ScheduleReconnect");
+                Check("closed_window_cannot_restart_timer", !timer.IsEnabled && Get<bool>(w, "_closing"));
+            }
+            catch (Exception ex) { failure = ex.ToString(); }
+            finally
+            {
+                if (w.IsLoaded) w.Close();
+                Console.WriteLine("TODO2_RESULT=" + JsonSerializer.Serialize(new { checks = Checks, failure }));
+                Environment.ExitCode = failure == null ? 0 : 1;
+                app.Shutdown();
+            }
+        }));
+        app.Run();
+    }
+}

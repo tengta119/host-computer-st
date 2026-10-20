@@ -1,12 +1,8 @@
 using TcpUdp.Wpf.Exercises.Task050;
-using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
-using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -347,8 +343,14 @@ namespace TcpUdp.Wpf.Exercises.Task051
 
         private string DescribeFailure(Exception exception)
         {
-            // TODO 1：区分Task051TimeoutException.Operation中的连接、业务请求、心跳，以及IOException/SocketException和InvalidDataException，返回明确原因。
-            return "通信失败（原因分类待完成）：" + exception.Message;
+            // TOD 1：区分Task051TimeoutException.Operation中的连接、业务请求、心跳，以及IOException/SocketException和InvalidDataException，返回明确原因。
+            if (exception is Task051TimeoutException)
+            {
+                Task051TimeoutException timeout = (Task051TimeoutException)exception;
+                return timeout.Operation + "等待超时，将结束旧连接。";
+            }
+            
+            return "其它异常：" + exception.Message;
         }
 
         private void ScheduleReconnect()
@@ -366,8 +368,9 @@ namespace TcpUdp.Wpf.Exercises.Task051
                 RefreshControls();
                 return;
             }
-            // TODO 2：已有入口检查和次数上限通过后，设置下一次等待提示并启动_reconnectTimer，不直接递归调用连接方法。
-            RecoveryText.Text = "自动重连调度待完成（TODO 2）。";
+            // TOD 2：已有入口检查和次数上限通过后，设置下一次等待提示并启动_reconnectTimer，不直接递归调用连接方法。
+            RecoveryText.Text = "2秒后进行第" + (_reconnectAttempts + 1) + "/" + MaximumReconnectAttempts + "次自动连接。";
+            _reconnectTimer.Start();
         }
 
         private async void ReconnectTick(object? sender, EventArgs e)
@@ -391,21 +394,34 @@ namespace TcpUdp.Wpf.Exercises.Task051
 
         private async Task QueryStateAfterConnectAsync(CancellationToken token)
         {
-            // TODO 3：await _connection.RequestAsync("GET_STATUS", token)，记录完整回复并用ApplyReply("GET_STATUS", reply)显示真实状态，移除占位。
-            // TODO 3：这里仍在连接步骤的忙状态内，不调用会被_busy拒绝的RunCommandAsync，不重发START_DEVICE/STOP_DEVICE或恢复采集。
-            await Task.CompletedTask;
+            // TOD 3：await _connection.RequestAsync("GET_STATUS", token)，记录完整回复并用ApplyReply("GET_STATUS", reply)显示真实状态，移除占位。
+            // TOD 3：这里仍在连接步骤的忙状态内，不调用会被_busy拒绝的RunCommandAsync，不重发START_DEVICE/STOP_DEVICE或恢复采集。
+            string requestAsync = await _connection.RequestAsync("GET_STATUS", token);
+            token.ThrowIfCancellationRequested();
+            RecordLog("完整回复", "GET_STATUS → " + requestAsync);
+            ApplyReply("GET_STATUS", requestAsync);
         }
 
         private bool CanSendHeartbeat()
         {
-            // TODO 4a：未采集且距离_lastActivity已至少HeartbeatIdle时返回true，否则返回false，真正发送仍走RunCommandAsync。
+            // TOD 4a：未采集且距离_lastActivity已至少HeartbeatIdle时返回true，否则返回false，真正发送仍走RunCommandAsync。
+            TimeSpan idle = DateTime.UtcNow - _lastActivity;
+            if (idle >= HeartbeatIdle && !_collecting)
+            {
+                return true;
+            }
+            
             return false;
         }
 
         private void ValidateHeartbeatReply(string reply)
         {
-            // TODO 4b：仅reply为PONG时正常返回，否则抛出InvalidDataException，替换下面的未完成占位。
-            throw new InvalidDataException("心跳回复验证待完成（TODO 4b）。");
+            // TOD 4b：仅reply为PONG时正常返回，否则抛出InvalidDataException，替换下面的未完成占位。
+            if (reply.Equals("PONG"))
+            {
+                return;
+            }
+            throw new InvalidDataException("心跳检测失败");
         }
 
         private async void HeartbeatTick(object? sender, EventArgs e)

@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-20",
+  "scope": "Final static source review only; no source edits, build, application execution or tests.",
+  "source_sha256": {
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-051-tcp-recovery/Task051Window.xaml.cs": "88c6e54250d86c6b0559bad6529522f85eb6681637bd9aadb4495c0ab2bafa29",
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-051-tcp-recovery/Task051TcpConnection.cs": "5b0704a9ce3d3b7983438e897f102d7c3c73104058cf8c7d15b9c73d59b2dccb",
+    "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-051-tcp-recovery/Task051Window.xaml": "556580f30c54d98cb75f36d3167e2069d9ff984cc32bc0f4d98b716a9b1658a9",
+    "Stage04-TcpUdp/TcpUdp.Wpf/App.xaml": "385a9edf108f82d618254c864723538e9b255c8ced428713e64b0acffd013ea2",
+    "Stage04-TcpUdp/TcpUdp.Wpf/TcpUdp.Wpf.csproj": "3c93f1ab4c3bc633de7465f341f35dac05bd69d619c8ca3027b507353e75b842"
+  }
+}

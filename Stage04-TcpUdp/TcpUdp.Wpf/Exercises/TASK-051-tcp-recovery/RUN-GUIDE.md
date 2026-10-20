@@ -77,6 +77,10 @@ _connection.IsConnected当前只表示辅助对象还保留着_stream，不是�
 
 ## TODO 2：安排下一次尝试，不在catch里无限重试
 
+2026-10-20按用户要求由教练补齐TODO 2，以下说明保留为代码阅读依据，本次协助不计学员自主实现。
+当前RecoveryText.Text显示下一次是第几次自动连接，_reconnectAttempts + 1只用于提示，不提前增加实际尝试次数。
+_reconnectTimer是窗口已有的.NET DispatcherTimer对象，调用它的Start()会开启已配置的2秒等待，到时由ReconnectTick检查状态并执行连接，当前方法不会立刻连接或阻塞窗口。
+
 失败处理会先清理旧连接，再调用ScheduleReconnect，当前方法已经检查窗口是否关闭、用户是否还希望保持连接、自动选项是否勾选以及是否已达到5次上限。
 这些检查之后，TODO 2要设置RecoveryText.Text为下一次等待说明，并启动同一个_reconnectTimer。
 _reconnectTimer是教练创建的DispatcherTimer对象，Interval已经设为2秒，Start会安排之后的通知，不是立即在当前方法里再连接一次。

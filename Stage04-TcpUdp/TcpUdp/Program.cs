@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TcpUdp.Exercises.Task049;
 using TcpUdp.Exercises.Task051;
+using TcpUdp.Exercises.Task052;
 
 namespace TcpUdp
 {
@@ -18,6 +19,10 @@ namespace TcpUdp
             Console.CancelKeyPress += HandleCancel;
             try
             {
+                if (args.Length > 0 && args[0] == "--task052")
+                {
+                    return await Task052Entry.RunAsync(args, Shutdown.Token);
+                }
                 if (args.Length > 0 && args[0] == "--task051-simulator")
                 {
                     int faultPort = 5000;
@@ -102,6 +107,7 @@ namespace TcpUdp
 
         private static void PrintHelp()
         {
+            Task052Entry.PrintHelp();
             Console.WriteLine("TASK-049：控制台上位机与TCP设备模拟器。");
             Console.WriteLine("--simulator [端口] [split]：运行教练提供的模拟器，默认端口5000。");
             Console.WriteLine("--client [端口]：运行待完成的上位机，默认端口5000。");

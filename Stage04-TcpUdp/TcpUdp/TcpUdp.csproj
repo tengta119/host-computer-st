@@ -5,4 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Exercises/TASK-052-socket-udp/Verification/**/*.cs" />
+  </ItemGroup>
 </Project>

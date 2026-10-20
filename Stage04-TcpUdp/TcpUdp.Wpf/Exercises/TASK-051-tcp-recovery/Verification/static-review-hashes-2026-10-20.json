@@ -1,0 +1,7 @@
+{
+  "scope": "Static source review only; no build, execution or tests in this review.",
+  "file": "Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-051-tcp-recovery/Task051Window.xaml.cs",
+  "before_sha256": "ee48d83ea311260b47b6b6117e2b44cec69ae848fca2c43be0877ddb3efa1f89",
+  "after_sha256": "b65325681be57de7be0a30ee0bc5fb06e18f0f0563a0c45da111499789837292",
+  "coach_change": "Added cancellation check after GET_STATUS await and before UI/log handling to fix a scaffold omission; added full-reply log; learner heartbeat condition unchanged."
+}
