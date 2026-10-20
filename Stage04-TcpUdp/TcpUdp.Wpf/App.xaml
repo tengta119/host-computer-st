@@ -1,6 +1,6 @@
 <Application x:Class="TcpUdp.Wpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="Exercises/TASK-050-tcp-wpf/Task050Window.xaml">
+             StartupUri="Exercises/TASK-051-tcp-recovery/Task051Window.xaml">
     <Application.Resources />
 </Application>

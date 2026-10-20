@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-10-20T17:38:25.750011+08:00",
+  "scope": "教练骨架窗口/布局、故障对端、超时分类辅助与取消/上限保护，不计学员TODO通过；未实际诱发连接建立超时。",
+  "build": {
+    "command": [
+      "dotnet",
+      "build",
+      "D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp.Wpf\\TcpUdp.Wpf.csproj",
+      "--nologo",
+      "--output",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task051-startup-hsh13969\\app"
+    ],
+    "exit_code": 0,
+    "stdout": "  正在确定要还原的项目…\r\n  所有项目均是最新的，无法还原。\r\n  TcpUdp.Wpf -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task051-startup-hsh13969\\app\\TcpUdp.Wpf.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.90\r\n"
+  },
+  "startup": {
+    "command": [
+      "dotnet",
+      "run",
+      "--project",
+      "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task051-startup-hsh13969\\host\\Review.csproj",
+      "--verbosity",
+      "quiet",
+      "--",
+      "D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp.Wpf\\Exercises\\TASK-051-tcp-recovery\\Verification"
+    ],
+    "exit_code": 0,
+    "stdout": "[TASK-051故障模式] normal\r\n[模拟器] 正在监听 127.0.0.1:63081，每条命令和回复以 LF 结束。\r\n[模拟器] 接受连接：127.0.0.1:63082。\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 回复：35.6\r\n[模拟器] 请求：START_DEVICE\r\n[模拟器] 回复：OK\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：RUNNING\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:63083。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：RUNNING\r\n[模拟器] 请求：STOP_DEVICE\r\n[模拟器] 回复：OK\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 已停止监听并释放连接资源。\r\n[TASK-051故障模式] silent-temp\r\n[模拟器] 正在监听 127.0.0.1:63084，每条命令和回复以 LF 结束。\r\n[模拟器] 接受连接：127.0.0.1:63085。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 本次故意不回复温度，连接仍保留。\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:63086。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 本次故意不回复温度，连接仍保留。\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 已停止监听并释放连接资源。\r\n[TASK-051故障模式] delay-temp\r\n[模拟器] 正在监听 127.0.0.1:63087，每条命令和回复以 LF 结束。\r\n[模拟器] 接受连接：127.0.0.1:63290。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 温度回复延迟4秒，用于观察迟到回复仍属于旧连接。\r\n[模拟器] 回复：35.6\r\n[模拟器] 当前连接发生 IO 错误：Unable to read data from the transport connection: 你的主机中的软件中止了一个已建立的连接。.\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:60179。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 已停止监听并释放连接资源。\r\n[TASK-051故障模式] silent-ping\r\n[模拟器] 正在监听 127.0.0.1:60181，每条命令和回复以 LF 结束。\r\n[模拟器] 接受连接：127.0.0.1:60182。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 请求：PING\r\n[模拟器] 本次故意不回复心跳，业务查询仍可回应。\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:60184。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 已停止监听并释放连接资源。\r\n[TASK-051故障模式] close-temp\r\n[模拟器] 正在监听 127.0.0.1:60185，每条命令和回复以 LF 结束。\r\n[模拟器] 接受连接：127.0.0.1:60186。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 请求：GET_TEMP\r\n[模拟器] 收到温度请求后主动关闭本次连接。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 接受连接：127.0.0.1:60187。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 对端已断开。\r\n[模拟器] 关闭当前连接。\r\n[模拟器] 已停止监听并释放连接资源。\r\nPREPARATION_RESULT={\"passed\":40,\"checks\":[\"\\u771F\\u5B9E\\u7A97\\u53E3\\u5DF2\\u52A0\\u8F7D\",\"\\u521D\\u59CB\\u672A\\u8FDE\\u63A5\\u4E0E\\u64CD\\u4F5C\\u7981\\u7528\",\"\\u521D\\u59CB\\u81EA\\u52A8\\u91CD\\u8FDE\\u548C\\u5FC3\\u8DF3\\u5747\\u672A\\u542F\\u52A8\",\"\\u5FC3\\u8DF3\\u5224\\u65ADTODO\\u4ECD\\u672A\\u5B9E\\u73B0\",\"\\u663E\\u793A\\u652F\\u6301\\u53EF\\u5448\\u73B0\\u5355\\u70B9\\u6E29\\u5EA6\\u4E0E\\u62A5\\u8B66\",\"\\u5386\\u53F2\\u8868\\u683C\\u7ED1\\u5B9A\\u540C\\u4E00\\u96C6\\u5408\",\"\\u9608\\u503C\\u652F\\u6301\\u91CD\\u65B0\\u5224\\u65AD\\u5DF2\\u6709\\u6E29\\u5EA6\",\"\\u975E\\u6CD5\\u9608\\u503C\\u88AB\\u62D2\\u7EDD\",\"\\u6559\\u7EC3\\u65E5\\u5FD7\\u652F\\u6301\\u9650\\u5236200\\u6761\",\"\\u9ED8\\u8BA4\\u5C3A\\u5BF8\\u63A7\\u4EF6\\u5747\\u5728\\u5BA2\\u6237\\u533A\\u5185\",\"\\u9ED8\\u8BA4\\u5C3A\\u5BF8\\u8868\\u683C\\u65E5\\u5FD7\\u548C\\u66F2\\u7EBF\\u6709\\u53EF\\u7528\\u9AD8\\u5EA6\",\"\\u6700\\u5C0F\\u5C3A\\u5BF8\\u63A7\\u4EF6\\u5747\\u5728\\u5BA2\\u6237\\u533A\\u5185\",\"\\u6700\\u5C0F\\u5C3A\\u5BF8\\u8868\\u683C\\u65E5\\u5FD7\\u548C\\u66F2\\u7EBF\\u6709\\u53EF\\u7528\\u9AD8\\u5EA6\",\"\\u6E05\\u7A7A\\u652F\\u6301\\u6062\\u590D\\u7A7A\\u5386\\u53F2\",\"\\u65E0\\u83DC\\u5355\\u8FDE\\u63A5\\u8F85\\u52A9\\u5B9E\\u9645\\u8FDE\\u63A5\\u6A21\\u62DF\\u5668\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u53D6\\u5F97\\u5B8C\\u6574\\u6E29\\u5EA6\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u53D6\\u5F97\\u542F\\u52A8\\u786E\\u8BA4\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u67E5\\u8BE2\\u771F\\u5B9E\\u8FD0\\u884C\\u72B6\\u6001\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u5173\\u95ED\\u540E\\u53EF\\u624B\\u52A8\\u91CD\\u8FDE\",\"\\u65E0\\u83DC\\u5355\\u8F85\\u52A9\\u505C\\u6B62\\u8BBE\\u5907\",\"silent-temp\\u4ECD\\u53EF\\u67E5\\u8BE2\\u8BBE\\u5907\\u72B6\\u6001\",\"silent-temp\\u8FD4\\u56DE\\u53EF\\u533A\\u5206\\u7684\\u6545\\u969C\",\"silent-temp\\u65E7\\u8FDF\\u5230\\u56DE\\u590D\\u4E0D\\u8FDB\\u5165\\u65B0\\u72B6\\u6001\\u67E5\\u8BE2\",\"\\u5916\\u90E8\\u53D6\\u6D88\\u4E0D\\u8BEF\\u8BB0\\u4E3A\\u8D85\\u65F6\",\"delay-temp\\u4ECD\\u53EF\\u67E5\\u8BE2\\u8BBE\\u5907\\u72B6\\u6001\",\"delay-temp\\u8FD4\\u56DE\\u53EF\\u533A\\u5206\\u7684\\u6545\\u969C\",\"delay-temp\\u65E7\\u8FDF\\u5230\\u56DE\\u590D\\u4E0D\\u8FDB\\u5165\\u65B0\\u72B6\\u6001\\u67E5\\u8BE2\",\"silent-ping\\u4ECD\\u53EF\\u67E5\\u8BE2\\u8BBE\\u5907\\u72B6\\u6001\",\"silent-ping\\u8FD4\\u56DE\\u53EF\\u533A\\u5206\\u7684\\u6545\\u969C\",\"silent-ping\\u65E7\\u8FDF\\u5230\\u56DE\\u590D\\u4E0D\\u8FDB\\u5165\\u65B0\\u72B6\\u6001\\u67E5\\u8BE2\",\"close-temp\\u4ECD\\u53EF\\u67E5\\u8BE2\\u8BBE\\u5907\\u72B6\\u6001\",\"close-temp\\u8FD4\\u56DE\\u53EF\\u533A\\u5206\\u7684\\u6545\\u969C\",\"close-temp\\u65E7\\u8FDF\\u5230\\u56DE\\u590D\\u4E0D\\u8FDB\\u5165\\u65B0\\u72B6\\u6001\\u67E5\\u8BE2\",\"\\u53D6\\u6D88\\u81EA\\u52A8\\u9009\\u9879\\u505C\\u6B62\\u6559\\u7EC3\\u6062\\u590D\\u5B9A\\u65F6\\u5668\",\"\\u4E94\\u6B21\\u4E0A\\u9650\\u4FDD\\u62A4\\u4E0D\\u518D\\u5B89\\u6392\\u8FDE\\u63A5\",\"\\u4E3B\\u52A8\\u65AD\\u5F00\\u505C\\u6B62\\u5168\\u90E8\\u6062\\u590D\\u610F\\u56FE\",\"\\u5173\\u95ED\\u7A97\\u53E3\\u53D6\\u6D88\\u6559\\u7EC3\\u8FDE\\u63A5\\u8F85\\u52A9\\u7684\\u672A\\u5B8C\\u6210\\u63A5\\u6536\",\"\\u5173\\u95ED\\u7A97\\u53E3\\u505C\\u6B62\\u5168\\u90E8\\u5B9A\\u65F6\\u5668\",\"\\u5173\\u95ED\\u540E\\u65E7\\u8FDE\\u63A5\\u7ED3\\u679C\\u88AB\\u62D2\\u7EDD\",\"\\u7A97\\u53E3\\u5DF2\\u5B9E\\u9645\\u5173\\u95ED\"],\"failure\":null,\"injectedHistoryRows\":3,\"learnerTodosVerified\":false}\r\n",
+    "stderr": "",
+    "result": {
+      "passed": 40,
+      "checks": [
+        "真实窗口已加载",
+        "初始未连接与操作禁用",
+        "初始自动重连和心跳均未启动",
+        "心跳判断TODO仍未实现",
+        "显示支持可呈现单点温度与报警",
+        "历史表格绑定同一集合",
+        "阈值支持重新判断已有温度",
+        "非法阈值被拒绝",
+        "教练日志支持限制200条",
+        "默认尺寸控件均在客户区内",
+        "默认尺寸表格日志和曲线有可用高度",
+        "最小尺寸控件均在客户区内",
+        "最小尺寸表格日志和曲线有可用高度",
+        "清空支持恢复空历史",
+        "无菜单连接辅助实际连接模拟器",
+        "无菜单辅助取得完整温度",
+        "无菜单辅助取得启动确认",
+        "无菜单辅助查询真实运行状态",
+        "无菜单辅助关闭后可手动重连",
+        "无菜单辅助停止设备",
+        "silent-temp仍可查询设备状态",
+        "silent-temp返回可区分的故障",
+        "silent-temp旧迟到回复不进入新状态查询",
+        "外部取消不误记为超时",
+        "delay-temp仍可查询设备状态",
+        "delay-temp返回可区分的故障",
+        "delay-temp旧迟到回复不进入新状态查询",
+        "silent-ping仍可查询设备状态",
+        "silent-ping返回可区分的故障",
+        "silent-ping旧迟到回复不进入新状态查询",
+        "close-temp仍可查询设备状态",
+        "close-temp返回可区分的故障",
+        "close-temp旧迟到回复不进入新状态查询",
+        "取消自动选项停止教练恢复定时器",
+        "五次上限保护不再安排连接",
+        "主动断开停止全部恢复意图",
+        "关闭窗口取消教练连接辅助的未完成接收",
+        "关闭窗口停止全部定时器",
+        "关闭后旧连接结果被拒绝",
+        "窗口已实际关闭"
+      ],
+      "failure": null,
+      "injectedHistoryRows": 3,
+      "learnerTodosVerified": false
+    }
+  },
+  "preserved_file_count": 198,
+  "previous_work_unchanged": true,
+  "learner_dod_accepted": false
+}

@@ -1,5 +1,7 @@
 # 上位机开发学习工作区
 
+2026-10-20 [TASK-051](./tasks/TASK-051.md)已按用户要求开启，状态🟡 进行中；独立Task051Window、带超时位置的通信辅助、五种故障对端与[运行说明](../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-051-tcp-recovery/RUN-GUIDE.md)已准备，正常监控复用TASK-050，四组核心TODO待完成。WPF/控制台构建0警告/0错误，40项窗口/辅助和4项入口准备检查通过，198个旧源码保持，共享入口仅必要增量；首步DescribeFailure分类超时，不将准备检查算学员DoD通过，不创建TASK-052，下方未开始为历史。
+
 2026-10-20 [TASK-050](./tasks/TASK-050.md)三个DoD按静态源码口径通过，状态✅ 已通关；四组核心实现完整，教练仅收尾运行/停止中文状态、确认说明与旧TODO 1提示，保留学员核心方法，本轮未构建/运行/测试，当前完整窗口/TCP联调未验证。仅创建[TASK-051：完善TCP超时、重连与心跳恢复](./tasks/TASK-051.md)⚪ 未开始卡片，未准备新源码或切换入口，第四阶段仍🟡 进行中，下方TASK-050进行中为历史。
 
 2026-10-20 [TASK-050](./tasks/TASK-050.md)已按用户要求开启，状态🟡 进行中；已创建Stage04-TcpUdp/TcpUdp.Wpf独立WPF项目、任务窗口/通信辅助/数据类/绘图与[运行说明](../Stage04-TcpUdp/TcpUdp.Wpf/Exercises/TASK-050-tcp-wpf/RUN-GUIDE.md)，只增量连接阶段解决方案，193个旧源码文件保持。构建0警告/0错误、23项教练准备检查通过，四组核心TODO留学员完成，首步ConnectCoreAsync接通连接，不把窗口/辅助验证当作DoD通过，不创建TASK-051，下方未开始为历史。

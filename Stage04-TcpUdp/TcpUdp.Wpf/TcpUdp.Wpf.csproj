@@ -9,5 +9,6 @@
   <ItemGroup>
     <Compile Include="../TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049LineBuffer.cs" Link="Exercises/TASK-050-tcp-wpf/Reuse/Task049LineBuffer.cs" />
     <Compile Remove="Exercises/TASK-050-tcp-wpf/Verification/**/*.cs" />
+    <Compile Remove="Exercises/TASK-051-tcp-recovery/Verification/**/*.cs" />
   </ItemGroup>
 </Project>

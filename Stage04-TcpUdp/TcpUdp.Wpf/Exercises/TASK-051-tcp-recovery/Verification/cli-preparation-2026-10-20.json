@@ -1,0 +1,41 @@
+{
+  "recorded_at": "2026-10-20T17:39:42.170906+08:00",
+  "scope": "只验证教练新增控制台入口，不测试学员TODO；验证后仅终止自己创建的模拟器进程。",
+  "build_command": [
+    "dotnet",
+    "build",
+    "D:\\host-computer-st\\Stage04-TcpUdp\\TcpUdp\\TcpUdp.csproj",
+    "--nologo",
+    "--output",
+    "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task051-cli-fgaz3csu"
+  ],
+  "build_exit_code": 0,
+  "build_stdout": "  正在确定要还原的项目…\r\n  所有项目均是最新的，无法还原。\r\n  TcpUdp -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task051-cli-fgaz3csu\\TcpUdp.dll\r\n\r\n已成功生成。\r\n    0 个警告\r\n    0 个错误\r\n\r\n已用时间 00:00:00.78\r\n",
+  "checks": [
+    {
+      "name": "帮助入口",
+      "passed": true
+    },
+    {
+      "name": "拒绝非法端口",
+      "passed": true
+    },
+    {
+      "name": "拒绝非法模式",
+      "passed": true
+    },
+    {
+      "name": "新命令行入口实际回复设备状态",
+      "passed": true
+    }
+  ],
+  "simulator_command": [
+    "dotnet",
+    "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task051-cli-fgaz3csu\\TcpUdp.dll",
+    "--task051-simulator",
+    "64841",
+    "normal"
+  ],
+  "simulator_stdout": "[TASK-051故障模式] normal\r\n[模拟器] 正在监听 127.0.0.1:64841，每条命令和回复以 LF 结束。\r\n[模拟器] 接受连接：127.0.0.1:64843。\r\n[模拟器] 请求：GET_STATUS\r\n[模拟器] 回复：STOPPED\r\n[模拟器] 对端已断开。\r\n",
+  "simulator_stderr": ""
+}
