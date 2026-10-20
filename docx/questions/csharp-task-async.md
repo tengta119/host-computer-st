@@ -60,6 +60,22 @@ Console.WriteLine("继续执行");
 
 该属性适合作为“无需等待、已成功完成”的任务返回值。TASK-004 原先用它保留可构建骨架，后来已经改为 Delay；复习不需要把当前代码改回 CompletedTask。
 
+### 2026-10-20：TASK-049中的这行有什么用？
+
+当前[SendRequestAsync](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049ClientExercise.cs)里，`await Task.CompletedTask;`后面仍然输出“TODO 2尚未发送请求”，所以这行没有发送TCP命令，也没有等待设备回复。
+`Task`是.NET提供的类，`CompletedTask`是它的静态属性，取得一个已经成功完成的任务；`await`是C#语法，这里检查到任务早已完成，便直接执行下一行。[Microsoft Learn：Task.CompletedTask](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.completedtask)
+
+```csharp
+Console.WriteLine("前面");
+await Task.CompletedTask;
+Console.WriteLine("后面");
+```
+
+运行这段会接着输出“前面”和“后面”，这一行本身不引入等待时间、不启动后台工作，也不强制切换线程。
+教练在未完成的async方法里放它作为占位，使骨架暂时没有真实异步操作时也不产生“async方法缺少await”的警告；没有它通常仍能编译，不能说async方法必须写这一行才合法。
+TODO 2接上真正的异步写入和读取后，移除这行占位及未实现提示，保留对实际收发操作的await，不需要在实际await旁边再留一个CompletedTask。
+本次只答疑和记录，不修改学员源码、不运行验收，Q3仍待复习，TASK-049状态与DoD保持，不因OpenAsync已有实现就认定已经验证连接能力。
+
 ## Q4：TASK-004 中两个 async 方法和两个 await 的执行顺序是什么？
 
 - 状态：待复习

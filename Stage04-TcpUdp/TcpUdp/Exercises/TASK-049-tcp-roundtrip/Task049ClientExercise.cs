@@ -78,6 +78,11 @@ namespace TcpUdp.Exercises.Task049
                         CloseConnection();
                         Console.WriteLine("接收或协议失败：" + exception.Message);
                     }
+                    catch (InvalidDataException exception)
+                    {
+                        CloseConnection();
+                        Console.WriteLine("回复不符合协议：" + exception.Message);
+                    }
                 }
             }
             finally
@@ -89,10 +94,12 @@ namespace TcpUdp.Exercises.Task049
         private async Task OpenAsync(string host, int port, CancellationToken cancellationToken)
         {
             CloseConnection();
-            // TODO 1：把new TcpClient()创建的对象保存到_client，await它的ConnectAsync(host, port, cancellationToken)，再把GetStream()结果保存到_stream。
-            // TODO 1：只有上述操作成功后才输出连接成功，当前这两行只是可编译的占位，完成时移除。
-            await Task.CompletedTask;
-            Console.WriteLine("TODO 1尚未连接模拟器。");
+            // TOD 1：把new TcpClient()创建的对象保存到_client，await它的ConnectAsync(host, port, cancellationToken)，再把GetStream()结果保存到_stream。
+            // TOD 1：只有上述操作成功后才输出连接成功，当前这两行只是可编译的占位，完成时移除。
+            _client = new TcpClient();
+            await _client.ConnectAsync(host, port, cancellationToken);
+            _stream = _client.GetStream();
+            Console.WriteLine("已连接模拟器：" + host + ":" + port);
         }
 
         private async Task<string?> SendRequestAsync(string command, CancellationToken cancellationToken)
@@ -102,11 +109,12 @@ namespace TcpUdp.Exercises.Task049
                 Console.WriteLine("请先连接模拟器。");
                 return null;
             }
-            // TODO 2：用Encoding.UTF8.GetBytes把command加一个LF换行变成byte[]，await _stream.WriteAsync发送完整数组，再return await ReadReplyAsync(cancellationToken)。
-            // TODO 2：发送日志放在WriteAsync成功之后，删除下面两行占位，不把写入成功显示成设备控制成功。
-            await Task.CompletedTask;
-            Console.WriteLine("TODO 2尚未发送请求。");
-            return null;
+            // TOD 2：用Encoding.UTF8.GetBytes把command加一个LF换行变成byte[]，await _stream.WriteAsync发送完整数组，再return await ReadReplyAsync(cancellationToken)。
+            // TOD 2：发送日志放在WriteAsync成功之后，删除下面两行占位，不把写入成功显示成设备控制成功。
+            byte[] data = Encoding.UTF8.GetBytes(command + "\n");
+            await _stream.WriteAsync(data, 0, data.Length, cancellationToken);
+            Console.WriteLine("发送请求成功");
+            return await ReadReplyAsync(cancellationToken);
         }
 
         // 教练提供单一路径的读取循环，新的消息边界判断由学员在Task049LineBuffer内完成。

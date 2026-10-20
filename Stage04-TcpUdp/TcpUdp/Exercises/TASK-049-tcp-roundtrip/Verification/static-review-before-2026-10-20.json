@@ -1,0 +1,26 @@
+[
+  {
+    "Path": "Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049ClientExercise.cs",
+    "Sha256": "24AAFEA53674F814B08DCA02964C66BB63F0B4C86EF49412ECB538A30BA02E44"
+  },
+  {
+    "Path": "Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049LineBuffer.cs",
+    "Sha256": "C85507FE78D3C2192B45CECB83210BC6D1AF6637EEC3A2EB9FA120DD19BFB64A"
+  },
+  {
+    "Path": "Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049Simulator.cs",
+    "Sha256": "1DE0026C8C54F1F1767A5BB03699A0E52DB3E97B9EF11141A408054CDD6DE64E"
+  },
+  {
+    "Path": "Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049BufferObservation.cs",
+    "Sha256": "35BC3C8E5B0518A804D96ED258F158BD9A3B247ED4495A8B04C08415C968C411"
+  },
+  {
+    "Path": "Stage04-TcpUdp/TcpUdp/Program.cs",
+    "Sha256": "518AA80FC4435BDA33B03DF13E71F07969BEE78B40153A1622B68FF478027747"
+  },
+  {
+    "Path": "Stage04-TcpUdp/TcpUdp/TcpUdp.csproj",
+    "Sha256": "CDD6F0B4E4B9C72196431282FC7F42508E52E0F6A10B88A948A157BBDABD220B"
+  }
+]

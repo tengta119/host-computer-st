@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-10-20T15:38:18.072453+08:00",
+  "scope": "静态源码审查，不构建/运行/测试。",
+  "dod": [
+    {
+      "id": 1,
+      "result": "通过（静态）"
+    },
+    {
+      "id": 2,
+      "result": "通过（静态）"
+    },
+    {
+      "id": 3,
+      "result": "通过（静态）"
+    }
+  ],
+  "coach_change": "仅新增InvalidDataException捕获、调用既有关闭和反馈，原用户核心方法不变。",
+  "only_documented_catch_block_changed": true,
+  "source_hashes": [
+    {
+      "path": "Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049ClientExercise.cs",
+      "before": "24aafea53674f814b08dca02964c66bb63f0b4c86ef49412ecb538a30ba02e44",
+      "after": "b25cb43969493e09d1011f1fbb766cda0c8938d811ec794a9aa9775f28799a7f"
+    },
+    {
+      "path": "Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049LineBuffer.cs",
+      "before": "c85507fe78d3c2192b45cecb83210bc6d1af6637eec3a2eb9fa120dd19bfb64a",
+      "after": "c85507fe78d3c2192b45cecb83210bc6d1af6637eec3a2eb9fa120dd19bfb64a"
+    },
+    {
+      "path": "Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049Simulator.cs",
+      "before": "1de0026c8c54f1f1767a5bb03699a0e52db3e97b9ef11141a408054cdd6de64e",
+      "after": "1de0026c8c54f1f1767a5bb03699a0e52db3e97b9ef11141a408054cdd6de64e"
+    },
+    {
+      "path": "Stage04-TcpUdp/TcpUdp/Exercises/TASK-049-tcp-roundtrip/Task049BufferObservation.cs",
+      "before": "35bc3c8e5b0518a804d96ed258f158bd9a3b247ed4495a8b04c08415c968c411",
+      "after": "35bc3c8e5b0518a804d96ed258f158bd9a3b247ed4495a8b04c08415c968c411"
+    },
+    {
+      "path": "Stage04-TcpUdp/TcpUdp/Program.cs",
+      "before": "518aa80fc4435bda33b03df13e71f07969bee78b40153a1622b68ff478027747",
+      "after": "518aa80fc4435bda33b03df13e71f07969bee78b40153a1622b68ff478027747"
+    },
+    {
+      "path": "Stage04-TcpUdp/TcpUdp/TcpUdp.csproj",
+      "before": "cdd6f0b4e4b9c72196431282fc7f42508e52e0f6a10b88a948a157bbdabd220b",
+      "after": "cdd6f0b4e4b9c72196431282fc7f42508e52e0f6a10b88a948a157bbdabd220b"
+    }
+  ],
+  "runtime_end_to_end": "未验证"
+}

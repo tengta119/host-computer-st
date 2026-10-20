@@ -22,16 +22,45 @@ namespace TcpUdp.Exercises.Task049
             {
                 throw new ArgumentOutOfRangeException("count");
             }
-            // TODO 3：把data中前count个有效字节追加到_bytes，不使用整个数组长度，也不先清空旧半条消息。
+            // TOD 3：把data中前count个有效字节追加到_bytes，不使用整个数组长度，也不先清空旧半条消息。
+            for (int i = 0; i < count; i++)
+            {
+                _bytes.Add(data[i]);
+            }
         }
 
         public bool TryTakeMessage(out string message)
         {
             message = String.Empty;
-            // TODO 4：找到第一个0x0A，未找到时保留半条并返回false，超过256字节仍无换行则抛出InvalidDataException。
-            // TODO 4：找到后拒绝空行和超过256字节的消息，复制换行之前的字节并用Encoding.UTF8.GetString解码到message。
-            // TODO 4：只移除这条消息及紧随它的一个LF，保留后面的数据并返回true，由调用方继续提取。
-            return false;
+            // TOD 4已按用户要求由教练补齐，每次只取第一个LF之前的一条消息。
+            int lineFeedIndex = _bytes.IndexOf(0x0A);
+            if (lineFeedIndex == -1)
+            {
+                if (_bytes.Count > MaxMessageLength)
+                {
+                    throw new InvalidDataException("消息超过256字节且尚未收到LF换行。");
+                }
+                return false;
+            }
+
+            if (lineFeedIndex == 0)
+            {
+                throw new InvalidDataException("收到空消息。");
+            }
+            if (lineFeedIndex > MaxMessageLength)
+            {
+                throw new InvalidDataException("消息超过256字节上限。");
+            }
+
+            byte[] messageBytes = new byte[lineFeedIndex];
+            for (int i = 0; i < lineFeedIndex; i++)
+            {
+                messageBytes[i] = _bytes[i];
+            }
+            message = Encoding.UTF8.GetString(messageBytes);
+            // 多移除的一个字节是当前消息的LF，后面的消息或半条继续保留。
+            _bytes.RemoveRange(0, lineFeedIndex + 1);
+            return true;
         }
 
         public void Clear()

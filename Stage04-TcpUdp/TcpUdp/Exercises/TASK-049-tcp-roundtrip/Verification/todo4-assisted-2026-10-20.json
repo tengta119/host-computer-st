@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-10-20T15:24:32.264807+08:00",
+  "scope": "教练完成TODO 4后的局部验证，不作为整题验收或学员自主掌握。",
+  "build_command": [
+    "dotnet",
+    "build",
+    "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task049-todo4-hhyetezd\\BufferReview.csproj",
+    "--nologo"
+  ],
+  "build_exit_code": 0,
+  "build_stdout": "  正在确定要还原的项目…\n  已还原 C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task049-todo4-hhyetezd\\BufferReview.csproj (用时 46 毫秒)。\n  BufferReview -> C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task049-todo4-hhyetezd\\bin\\Debug\\net10.0\\BufferReview.dll\n\n已成功生成。\n    0 个警告\n    0 个错误\n\n已用时间 00:00:01.69\n",
+  "run_command": [
+    "dotnet",
+    "C:\\Users\\lbwxxc\\AppData\\Local\\Temp\\task049-todo4-hhyetezd\\bin\\Debug\\net10.0\\BufferReview.dll"
+  ],
+  "run_exit_code": 0,
+  "run_stdout": "当前为骨架观察，未实现的TODO不会被报告为通过。\n只追加前2个有效字节后，期望剩余2，当前：2\n现在应依次取出35.6和OK，并保留ST两个字节。\n完整消息：35.6\n完整消息：OK\n期望剩余2，当前：2\n现在应只取出STOPPED。\n完整消息：STOPPED\n期望剩余0，当前：0\nCHECK_RESULT=[\"\\u7A7A\\u7F13\\u51B2\\u8FD4\\u56DEfalse\\u548C\\u7A7A\\u5B57\\u7B26\\u4E32\",\"\\u534A\\u6761\\u4FDD\\u7559\",\"\\u53D6\\u7B2C\\u4E00\\u6761\\u6E29\\u5EA6\\u5E76\\u4FDD\\u7559\\u540E\\u7EED\",\"\\u53D6\\u7B2C\\u4E8C\\u6761\\u786E\\u8BA4\\u5E76\\u4FDD\\u7559\\u534A\\u6761\",\"\\u672B\\u5C3E\\u534A\\u6761\\u7EE7\\u7EED\\u7B49\\u5F85\",\"\\u540E\\u7EED\\u8865\\u9F50\\u534A\\u6761\",\"\\u53D6\\u5B8C\\u540E\\u4E0D\\u4F1A\\u91CD\\u590D\\u8FD4\\u56DE\",\"\\u6709\\u6548\\u6570\\u91CF\\u548C\\u96F6\\u6570\\u91CF\\u4E0D\\u6DF7\\u5165\\u6570\\u7EC4\\u5C3E\\u90E8\",\"\\u6070\\u597D256\\u4E14\\u65E0LF\\u4ECD\\u7B49\\u5F85\",\"256\\u5B57\\u8282\\u52A0LF\\u5141\\u8BB8\\u53D6\\u51FA\",\"257\\u5B57\\u8282\\u65E0LF\\u62D2\\u7EDD\\u4E14\\u672A\\u6D88\\u8D39\",\"257\\u5B57\\u8282\\u5E26LF\\u62D2\\u7EDD\\u4E14\\u672A\\u6D88\\u8D39\",\"\\u7A7A\\u6D88\\u606F\\u62D2\\u7EDD\",\"\\u603B\\u7F13\\u51B2\\u8D85\\u8FC7256\\u4F46\\u6BCF\\u6761\\u5408\\u6CD5\\u4ECD\\u9010\\u6761\\u63D0\\u53D6\",\"\\u5148\\u53D6\\u5408\\u6CD5\\u524D\\u7F00\\u4E0D\\u88AB\\u540E\\u7EED\\u8D85\\u957F\\u8BEF\\u62D2\\u7EDD\",\"\\u540E\\u7EED\\u8D85\\u957F\\u5728\\u4E0B\\u4E00\\u6B21\\u63D0\\u53D6\\u62D2\\u7EDD\",\"\\u5B8C\\u6574\\u6D88\\u606F\\u540E\\u518D\\u89E3\\u7801\\u4E0D\\u7834\\u574F\\u8DE8\\u6279UTF8\\u5B57\\u7B26\",\"\\u6E05\\u7406\\u540E\\u6CA1\\u6709\\u65E7\\u534A\\u6761\"]\n",
+  "checks": [
+    "空缓冲返回false和空字符串",
+    "半条保留",
+    "取第一条温度并保留后续",
+    "取第二条确认并保留半条",
+    "末尾半条继续等待",
+    "后续补齐半条",
+    "取完后不会重复返回",
+    "有效数量和零数量不混入数组尾部",
+    "恰好256且无LF仍等待",
+    "256字节加LF允许取出",
+    "257字节无LF拒绝且未消费",
+    "257字节带LF拒绝且未消费",
+    "空消息拒绝",
+    "总缓冲超过256但每条合法仍逐条提取",
+    "先取合法前缀不被后续超长误拒绝",
+    "后续超长在下一次提取拒绝",
+    "完整消息后再解码不破坏跨批UTF8字符",
+    "清理后没有旧半条"
+  ],
+  "passed": 18,
+  "source_hashes": {
+    "Task049LineBuffer.cs": "914f5e42be9db4cbb081bec40960d3e8e0f07a7f5d256906dc9022e1fa12c0c6",
+    "Task049BufferObservation.cs": "35bc3c8e5b0518a804d96ed258f158bd9a3b247ed4495a8b04c08415c968c411",
+    "Task049ClientExercise.cs": "24aafea53674f814b08dca02964c66bb63f0b4c86ef49412ecb538a30ba02e44"
+  },
+  "sources_unchanged_during_verification": true
+}
