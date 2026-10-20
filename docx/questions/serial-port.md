@@ -279,3 +279,20 @@ continue是C#循环语句，跳过本轮下面的读数生成代码，回到whil
 学员已在IsValidFrame先合成int rawValue，再以rawValue > 1000拒绝超范围数据，0和1000仍合法；帧头、设备、命令、加和与坏候选恢复保持，三个DoD按静态源码路径通过，状态✅ 已通关。
 教练只清理一处XAML旧提示，没有代改核心，本轮未构建/运行/测试，不声称实际拒绝过样例8或验证串口联调；Q5仍待复习，27分类/75条、待复习39/已掌握36不变，旧待修记录为历史。
 下一张TASK-048仅建未开始卡，准备把原始收发/有效数量与拒绝原因连到监控日志，不切入口或自动开启，不宣称第三阶段通关。
+
+
+## Q6：TASK-048的一条日志怎样从串口进入窗口？
+
+- 日期：2026-10-20。
+- 状态：待复习。
+- 来源：TASK-048开启时先讲清日志对象、有效数量与窗口记录流程，不是学员已掌握或认知错误。
+- 关联：[TASK-048](../tasks/TASK-048.md)与[逐步运行说明](../../Stage03-DeviceCommunication/DeviceCommunication.Wpf/Exercises/TASK-048-serial-monitor-integration/RUN-GUIDE.md)。
+
+同一次Read拿到AA 01只应记录“接收2字节”，不能记作已得到温度；后续补03 00 FA A8后才组成有效六字节帧，产生25.0℃并结束等待，接收数量与一帧长度是不同含义。
+Task048LogEntry是教练新建的普通数据类，一条对象保存连接编号、端口、类别、实际数量、字节文字和说明，构造时读取电脑时间；_communicationLogs是窗口的ObservableCollection，已有ItemsSource指向它，TODO 1将entry加入后表格才出现行，并保留最近200条。
+串口辅助的AddByteLog接收data和count，TODO 2只复制下标0到count-1并使用已提供的FormatBytes，不能用数组256个位置的容量替代本次Read返回数量；条目保存文字，不保留可能复用的接收数组。
+Task048LogsEventArgs是教练新建的批量通知参数，PublishLogs在锁外发出LogsReceived，窗口SerialLogsReceived通过Dispatcher安排窗口线程执行，并再次检查连接编号，过期或关闭后的排队通知不会进入新连接。
+RecordStatus是窗口线程上的普通辅助，不再包装线程交接；TODO 3在连接成功/失败、等待结束与清理后调用，传入实际操作的信息，EndWaiting和RecoverConnection使用清理前保存的局部编号/端口，不能在Close改变编号之后才猜原连接。
+Task048Protocol把TASK-047相同条件整理为GetRejectionReason，空字符串表示合法，非空说明拒绝原因，串口辅助只走这一份判断，不为日志重复另一套解析；坏帧无读数通知，所以仍不结束等待。
+首步TODO 1完成后，重新打开窗口即可先看到真实的“窗口已就绪”行，不需要串口；教练准备截图中三条注入行只验证布局，三组TODO和任务DoD尚未完成，不计学员实现或实际串口联调。
+具体六个构造参数、200条上限、copy/FormatBytes及四个状态位置按运行说明逐处解释，现有事件/线程语法的复习边界保持，Q6待复习，不新增独立掌握。

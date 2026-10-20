@@ -1,0 +1,53 @@
+using System;
+using System.IO;
+using System.Reflection;
+using System.Collections.ObjectModel;
+using System.Text.Json;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using DeviceCommunication.Wpf.Exercises.Task048;
+
+public static class StartupReview
+{
+    [STAThread]
+    public static void Main(string[] args)
+    {
+        Application app = new Application();
+        app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        Task048Window window = new Task048Window();
+        window.Left = -20000;
+        window.Top = -20000;
+        window.Width = window.MinWidth;
+        window.Height = window.MinHeight;
+        window.Show();
+        window.UpdateLayout();
+        window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+        bool loaded = window.IsLoaded;
+        // 临时宿主直接填布局示例，不调用未完成的日志追加方法，不计为学员实现或真实串口证据。
+        FieldInfo field = typeof(Task048Window).GetField("_communicationLogs", BindingFlags.NonPublic | BindingFlags.Instance)!;
+        ObservableCollection<Task048LogEntry> rows = (ObservableCollection<Task048LogEntry>)field.GetValue(window)!;
+        rows.Add(new Task048LogEntry(1, "COM1", "接收", 6, "AA 01 03 00 FA A8", "布局示例：本次Read的原始字节，不代表每次接收都是一帧。"));
+        rows.Add(new Task048LogEntry(1, "COM1", "拒绝候选", 6, "AA 01 03 03 E9 9A", "布局示例：原始值1001超过1000，只删除首字节，继续寻找后续候选。"));
+        rows.Add(new Task048LogEntry(1, "COM1", "等待结束", 0, "", "布局示例：响应超时，可再次发送，连接保留。"));
+        ((TextBlock)window.FindName("LogCountText")).Text = "布局检查：3条示例";
+        window.UpdateLayout();
+        window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+        DataGrid logGrid = (DataGrid)window.FindName("CommunicationLogGrid");
+        bool logAreaVisible = logGrid.ActualHeight > 100 && logGrid.ActualWidth > 800;
+        RenderTargetBitmap bitmap = new RenderTargetBitmap((int)window.ActualWidth, (int)window.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+        bitmap.Render(window);
+        PngBitmapEncoder encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        using (FileStream output = File.Create(Path.Combine(args[0], "startup-minimum-2026-10-20.png")))
+        {
+            encoder.Save(output);
+        }
+        window.Close();
+        window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+        app.Shutdown();
+        Console.WriteLine(JsonSerializer.Serialize(new { loaded, closed = !window.IsVisible, logAreaVisible, layoutRowsInjected = 3, serialPortOpened = false, learnerTodosVerified = false }));
+    }
+}
