@@ -38,23 +38,30 @@ namespace TcpUdp.Exercises.Task052
             }
         }
 
-        public Task ConnectCoreAsync(Socket socket, IPEndPoint endpoint, CancellationToken token)
+        public async Task ConnectCoreAsync(Socket socket, IPEndPoint endpoint, CancellationToken token)
         {
-            // TODO 1：改成async Task方法，await socket.ConnectAsync(endpoint, token)，移除未完成异常。
-            return Task.FromException(new NotImplementedException("TODO 1：尚未连接Socket。"));
+            // TOD 1：改成async Task方法，await socket.ConnectAsync(endpoint, token)，移除未完成异常。
+            await socket.ConnectAsync(endpoint, token);
         }
 
-        public Task SendAllAsync(Socket socket, byte[] request, CancellationToken token)
+        public async Task SendAllAsync(Socket socket, byte[] request, CancellationToken token)
         {
-            // TODO 2：改成async Task方法，从offset=0开始循环，每次最多提供3字节给SendAsync，根据实际返回数量推进offset，直到发完。
-            // TODO 2：本题用Math.Min(3, request.Length - offset)限制每次提供的长度，返回数量小于等于0时抛IOException，不从头重发。
-            return Task.FromException(new NotImplementedException("TODO 2：尚未发送完整命令。"));
+            // TOD 2：改成async Task方法，从offset=0开始循环，每次最多提供3字节给SendAsync，根据实际返回数量推进offset，直到发完。
+            // TOD 2：本题用Math.Min(3, request.Length - offset)限制每次提供的长度，返回数量小于等于0时抛IOException，不从头重发。
+            int offset = 0;
+            while (offset < request.Length)
+            {
+                int count = Math.Min(3, request.Length - offset);
+                int sent = await socket.SendAsync(request.AsMemory(offset, count), SocketFlags.None, token);
+                if (sent <= 0) throw new IOException("Socket未能继续发送剩余命令。");
+                offset += sent;
+            }
         }
 
-        public Task<int> ReceiveCoreAsync(Socket socket, byte[] received, CancellationToken token)
+        public async Task<int> ReceiveCoreAsync(Socket socket, byte[] received, CancellationToken token)
         {
-            // TODO 3：改成async Task<int>方法，return await socket.ReceiveAsync(received.AsMemory(), SocketFlags.None, token)，外层只追加实际count。
-            return Task.FromException<int>(new NotImplementedException("TODO 3：尚未接收字节。"));
+            // TOD 3：改成async Task<int>方法，return await socket.ReceiveAsync(received.AsMemory(), SocketFlags.None, token)，外层只追加实际count。
+            return await socket.ReceiveAsync(received.AsMemory(), SocketFlags.None, token);
         }
     }
 }

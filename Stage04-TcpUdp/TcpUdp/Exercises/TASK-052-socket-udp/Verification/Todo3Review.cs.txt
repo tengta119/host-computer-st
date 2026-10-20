@@ -1,0 +1,62 @@
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.Json;
+using TcpUdp.Exercises.Task052;
+
+List<string> checks = new List<string>();
+void Check(string name, bool condition)
+{
+    if (!condition) throw new Exception(name);
+    checks.Add(name);
+}
+using CancellationTokenSource guard = new CancellationTokenSource(TimeSpan.FromSeconds(8));
+TcpListener listener = new TcpListener(IPAddress.Loopback, 0);
+listener.Start();
+try
+{
+    using Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+    Task<Socket> accept = listener.AcceptSocketAsync(guard.Token).AsTask();
+    await client.ConnectAsync(listener.LocalEndpoint, guard.Token);
+    using Socket peer = await accept;
+    Task052SocketExercise exercise = new Task052SocketExercise();
+    byte[] buffer = new byte[] { 99, 99, 99 };
+    Task<int> pending = exercise.ReceiveCoreAsync(client, buffer, guard.Token);
+    Check("receive_waits_for_data", !pending.IsCompleted);
+    // The peer sends two bytes, less than the caller's three-byte receive area.
+    using NetworkStream sender = new NetworkStream(peer, false);
+    await sender.WriteAsync(Encoding.ASCII.GetBytes("35"), guard.Token);
+    int first = await pending;
+    Check("returns_actual_count", first > 0 && first <= 2 && first < buffer.Length);
+    Check("writes_only_received_bytes", buffer.Take(first).SequenceEqual(Encoding.ASCII.GetBytes("35").Take(first)) && buffer.Skip(first).All(b => b == 99));
+    string collected = Encoding.ASCII.GetString(buffer, 0, first);
+    while (collected.Length < 2)
+    {
+        int count = await exercise.ReceiveCoreAsync(client, buffer, guard.Token);
+        Check("remaining_bytes_not_lost", count > 0);
+        collected += Encoding.ASCII.GetString(buffer, 0, count);
+    }
+    await sender.WriteAsync(Encoding.ASCII.GetBytes(".6\n"), guard.Token);
+    while (!collected.EndsWith('\n'))
+    {
+        int count = await exercise.ReceiveCoreAsync(client, buffer, guard.Token);
+        Check("fragment_count_in_range", count > 0 && count <= buffer.Length);
+        collected += Encoding.ASCII.GetString(buffer, 0, count);
+    }
+    Check("fragmented_bytes_preserved", collected == "35.6\n");
+    using (CancellationTokenSource cancel = new CancellationTokenSource(80))
+    {
+        bool cancelled = false;
+        try { await exercise.ReceiveCoreAsync(client, buffer, cancel.Token); }
+        catch (OperationCanceledException) { cancelled = true; }
+        Check("external_cancellation_propagates", cancelled);
+    }
+    peer.Shutdown(SocketShutdown.Send);
+    Check("eof_returns_zero", await exercise.ReceiveCoreAsync(client, buffer, guard.Token) == 0);
+    bool stubPreserved = false;
+    try { await exercise.SendAllAsync(client, new byte[1], guard.Token); }
+    catch (NotImplementedException) { stubPreserved = true; }
+    Check("todo2_still_incomplete", stubPreserved);
+}
+finally { listener.Stop(); }
+Console.WriteLine(JsonSerializer.Serialize(new { checks }));

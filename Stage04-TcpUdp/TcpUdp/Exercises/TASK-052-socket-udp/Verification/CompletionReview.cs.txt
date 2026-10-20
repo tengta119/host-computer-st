@@ -1,0 +1,272 @@
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using TcpUdp.Exercises.Task049;
+using TcpUdp.Exercises.Task051;
+using TcpUdp.Exercises.Task052;
+using TcpUdp.Wpf.Exercises.Task050;
+using TcpUdp.Wpf.Exercises.Task051;
+
+public static class CompletionReview
+{
+    private static readonly List<string> Checks = new List<string>();
+    private static readonly List<Task051Window> Windows = new List<Task051Window>();
+    private static void Check(string name, bool condition)
+    {
+        if (!condition) throw new Exception(name);
+        Checks.Add(name);
+    }
+    private static T Field<T>(object target, string name) => (T)target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(target)!;
+    private static object? Call(object target, string name, params object[] args) => target.GetType().GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(target, args);
+    private static string Text(Task051Window w, string name) => ((TextBlock)w.FindName(name)).Text;
+    private static async Task Command(Task051Window w, string command) => await (Task)Call(w, "RunCommandAsync", command, false)!;
+    private static void Click(Task051Window w, string name) => ((Button)w.FindName(name)).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+    private static async Task Until(Func<bool> condition, int milliseconds = 6000)
+    {
+        Stopwatch watch = Stopwatch.StartNew();
+        while (!condition())
+        {
+            if (watch.ElapsedMilliseconds > milliseconds) throw new Exception("Condition deadline exceeded.");
+            await Task.Delay(30);
+        }
+    }
+    private static int FreePort()
+    {
+        for (int i = 0; i < 40; i++)
+        {
+            TcpListener probe = new TcpListener(IPAddress.Loopback, 0);
+            probe.Start();
+            int port = ((IPEndPoint)probe.LocalEndpoint).Port;
+            try { using UdpClient udp = new UdpClient(new IPEndPoint(IPAddress.Loopback, port)); return port; }
+            catch (SocketException) { }
+            finally { probe.Stop(); }
+        }
+        throw new Exception("No free TCP/UDP port pair.");
+    }
+    private static Task051Window Window(int port)
+    {
+        Task051Window w = new Task051Window { Left = -20000, Top = -20000 };
+        Windows.Add(w);
+        w.Show();
+        ((TextBox)w.FindName("PortInput")).Text = port.ToString();
+        return w;
+    }
+    private static async Task Connect(Task051Window w)
+    {
+        Click(w, "ConnectButton");
+        await Until(() => !Field<bool>(w, "_busy"));
+        Check("wpf_connected_and_queried_state", Text(w, "ConnectionText").StartsWith("已连接") && Text(w, "DeviceStatusText") == "停止");
+    }
+
+    private static void VerifyFilter()
+    {
+        using Task052UdpExercise udp = new Task052UdpExercise();
+        IPEndPoint expected = new IPEndPoint(IPAddress.Loopback, 12345);
+        string id = new string('a', 32);
+        void Accept(string name, string text, bool accepted, IPEndPoint? source = null, string command = "GET_TEMP")
+        {
+            bool actual = udp.TryAcceptDatagram(new UdpReceiveResult(Encoding.ASCII.GetBytes(text), source ?? expected), expected, id, command, out string reply);
+            Check("filter_" + name, actual == accepted && (accepted ? reply == text.Split('|')[3] : reply == String.Empty));
+        }
+        string prefix = "R|" + id + "|GET_TEMP|";
+        Accept("temperature", prefix + "35.6", true);
+        Accept("lower_bound", prefix + "0", true);
+        Accept("upper_bound", prefix + "100", true);
+        foreach (string value in new[] { "-1", "100.1", "NaN", "Infinity", "35,6", "1e1", "", " 35.6", "35.6 " }) Accept("invalid_" + value, prefix + value, false);
+        Accept("address", prefix + "35.6", false, new IPEndPoint(IPAddress.Parse("127.0.0.2"), expected.Port));
+        Accept("port", prefix + "35.6", false, new IPEndPoint(IPAddress.Loopback, expected.Port + 1));
+        Accept("id", prefix.Replace(id, new string('b', 32)) + "35.6", false);
+        Accept("command", prefix.Replace("GET_TEMP", "GET_STATUS") + "35.6", false);
+        Accept("prefix", prefix.Replace("R|", "Q|") + "35.6", false);
+        Accept("extra_field", prefix + "35.6|extra", false);
+        Accept("missing_field", "R|" + id + "|GET_TEMP", false);
+        Accept("lf", prefix + "35.6\n", false);
+        Accept("empty", "", false);
+        Accept("overlength", new string('X', 129), false);
+        Accept("running", "R|" + id + "|GET_STATUS|RUNNING", true, command: "GET_STATUS");
+        Accept("stopped", "R|" + id + "|GET_STATUS|STOPPED", true, command: "GET_STATUS");
+        Accept("bad_state", "R|" + id + "|GET_STATUS|OK", false, command: "GET_STATUS");
+        byte[] nonAscii = Encoding.ASCII.GetBytes(prefix + "35.6");
+        nonAscii[0] = 255;
+        Check("filter_non_ascii", !udp.TryAcceptDatagram(new UdpReceiveResult(nonAscii, expected), expected, id, "GET_TEMP", out _));
+        Task049LineBuffer buffer = new Task049LineBuffer();
+        buffer.Append(Encoding.ASCII.GetBytes("35."), 3);
+        Check("tcp_half_preserved", !buffer.TryTakeMessage(out _) && buffer.Count == 3);
+        byte[] tail = Encoding.ASCII.GetBytes("6\nOK\nST");
+        buffer.Append(tail, tail.Length);
+        Check("tcp_continuous_and_tail", buffer.TryTakeMessage(out string a) && a == "35.6" && buffer.TryTakeMessage(out string b) && b == "OK" && !buffer.TryTakeMessage(out _) && buffer.Count == 2);
+    }
+
+    private static async Task VerifyModes()
+    {
+        Task052SocketExercise tcp = new Task052SocketExercise();
+        foreach (string mode in Task052Simulator.Modes)
+        {
+            int port = FreePort();
+            using CancellationTokenSource stop = new CancellationTokenSource();
+            Task server = new Task052Simulator().RunAsync(port, mode, stop.Token);
+            try
+            {
+                if (mode == "close-tcp")
+                {
+                    bool ended = false;
+                    try { await tcp.QueryAsync(port, "GET_TEMP", CancellationToken.None); }
+                    catch (IOException) { ended = true; }
+                    Check("socket_eof", ended);
+                    continue;
+                }
+                Check(mode + "_socket_split_reply", await tcp.QueryAsync(port, "GET_TEMP", CancellationToken.None) == "35.6");
+                Check(mode + "_socket_start", await tcp.QueryAsync(port, "START_DEVICE", CancellationToken.None) == "OK");
+                Check(mode + "_socket_state", await tcp.QueryAsync(port, "GET_STATUS", CancellationToken.None) == "RUNNING");
+                using Task052UdpExercise udp = new Task052UdpExercise();
+                for (int round = 1; round <= 2; round++)
+                {
+                    Stopwatch watch = Stopwatch.StartNew();
+                    bool expectedTimeout = mode == "silent" || (mode == "stale-first" && round == 1);
+                    bool timedOut = false;
+                    try { Check(mode + "_udp_round_" + round, await udp.QueryAsync(port, "GET_STATUS", CancellationToken.None) == "RUNNING" && !expectedTimeout); }
+                    catch (TimeoutException) { timedOut = true; }
+                    if (expectedTimeout) Check(mode + "_bounded_timeout_" + round, timedOut && watch.ElapsedMilliseconds >= 1800 && watch.ElapsedMilliseconds < 4500);
+                    else Check(mode + "_no_false_timeout_" + round, !timedOut);
+                }
+                Check(mode + "_socket_stop", await tcp.QueryAsync(port, "STOP_DEVICE", CancellationToken.None) == "OK");
+                using CancellationTokenSource cancel = new CancellationTokenSource();
+                cancel.Cancel();
+                bool cancelled = false;
+                try { await udp.QueryAsync(port, "GET_TEMP", cancel.Token); }
+                catch (OperationCanceledException) { cancelled = true; }
+                Check(mode + "_external_cancel", cancelled);
+            }
+            finally { stop.Cancel(); await server; }
+        }
+        // A silent connected peer checks the Socket total deadline and cleanup.
+        TcpListener listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        try
+        {
+            Task<TcpClient> accepting = listener.AcceptTcpClientAsync();
+            Task<string> query = tcp.QueryAsync(((IPEndPoint)listener.LocalEndpoint).Port, "GET_TEMP", CancellationToken.None);
+            using TcpClient peer = await accepting;
+            bool timedOut = false;
+            try { await query; } catch (TimeoutException) { timedOut = true; }
+            Check("socket_total_timeout", timedOut);
+            byte[] data = new byte[64];
+            using CancellationTokenSource guard = new CancellationTokenSource(1000);
+            int count;
+            do { count = await peer.GetStream().ReadAsync(data, guard.Token); } while (count > 0);
+            Check("socket_timeout_disposes_connection", count == 0);
+        }
+        finally { listener.Stop(); }
+    }
+
+    private static async Task VerifyWpf()
+    {
+        int port = FreePort();
+        using CancellationTokenSource stop = new CancellationTokenSource();
+        Task server = new Task052Simulator().RunAsync(port, "normal", stop.Token);
+        Task051Window w = Window(port);
+        try
+        {
+            await Connect(w);
+            using Task052UdpExercise udp = new Task052UdpExercise();
+            await Command(w, "START_DEVICE");
+            Check("wpf_tcp_udp_running_consistent", Text(w, "DeviceStatusText") == "运行" && await udp.QueryAsync(port, "GET_STATUS", CancellationToken.None) == "RUNNING");
+            await Command(w, "GET_TEMP");
+            ObservableCollection<Task050Reading> history = Field<ObservableCollection<Task050Reading>>(w, "_history");
+            Check("wpf_history_temperature_alarm_chart", history.Count == 1 && history[0].Temperature == 35.6 && Text(w, "AlarmText").Contains("超过") && ((Canvas)w.FindName("ChartCanvas")).ActualWidth > 0);
+            Click(w, "StartCollectionButton");
+            Check("wpf_no_heartbeat_while_collecting", !(bool)Call(w, "CanSendHeartbeat")!);
+            await Until(() => history.Count >= 3);
+            Click(w, "StopCollectionButton");
+            int saved = history.Count;
+            await Task.Delay(1200);
+            Check("wpf_sampling_stops", history.Count == saved && !Field<bool>(w, "_collecting"));
+            await Command(w, "STOP_DEVICE");
+            Check("wpf_tcp_udp_stopped_consistent", Text(w, "DeviceStatusText") == "停止" && await udp.QueryAsync(port, "GET_STATUS", CancellationToken.None) == "STOPPED");
+            await Until(() => Text(w, "HeartbeatText").Contains("正常"), 4500);
+            Check("wpf_actual_idle_heartbeat", Field<ObservableCollection<Task050LogEntry>>(w, "_logs").Any(log => log.Details.Contains("PING → PONG")));
+            ((CheckBox)w.FindName("AutoReconnectCheckBox")).IsChecked = true;
+            stop.Cancel();
+            await server;
+            await Command(w, "GET_TEMP");
+            await Until(() => !Field<Task051TcpConnection>(w, "_connection").IsConnected);
+            Check("wpf_failure_schedules_recovery", Field<DispatcherTimer>(w, "_reconnectTimer").IsEnabled && !Field<bool>(w, "_collecting"));
+            using CancellationTokenSource restartStop = new CancellationTokenSource();
+            Task restarted = new Task052Simulator().RunAsync(port, "normal", restartStop.Token);
+            try
+            {
+                await Until(() => Field<Task051TcpConnection>(w, "_connection").IsConnected && !Field<bool>(w, "_busy"), 6500);
+                Check("wpf_actual_reconnect_queries_state_without_replay", Text(w, "DeviceStatusText") == "停止" && !Field<bool>(w, "_collecting") && Field<int>(w, "_reconnectAttempts") == 0 && history.Count == saved);
+                Click(w, "DisconnectButton");
+                Check("wpf_manual_disconnect_stops_timers", !Field<DispatcherTimer>(w, "_reconnectTimer").IsEnabled && !Field<DispatcherTimer>(w, "_heartbeatTimer").IsEnabled && !Field<DispatcherTimer>(w, "_pollingTimer").IsEnabled && !Field<bool>(w, "_wantConnected"));
+            }
+            finally { restartStop.Cancel(); await restarted; }
+        }
+        finally { w.Close(); stop.Cancel(); await server; }
+
+        foreach (string mode in new[] { "silent-temp", "silent-ping", "close-temp", "delay-temp" })
+        {
+            int faultPort = FreePort();
+            using CancellationTokenSource faultStop = new CancellationTokenSource();
+            Task faultServer = new Task051Simulator().RunAsync(faultPort, mode, faultStop.Token);
+            Task051Window faultWindow = Window(faultPort);
+            try
+            {
+                await Connect(faultWindow);
+                if (mode == "silent-ping")
+                {
+                    await Until(() => !Field<Task051TcpConnection>(faultWindow, "_connection").IsConnected, 7000);
+                    Check("wpf_heartbeat_timeout_cleans_connection", Text(faultWindow, "OperationText").Contains("心跳"));
+                }
+                else
+                {
+                    await Command(faultWindow, "GET_TEMP");
+                    Check(mode + "_wpf_cleanup", !Field<Task051TcpConnection>(faultWindow, "_connection").IsConnected && Field<ObservableCollection<Task050Reading>>(faultWindow, "_history").Count == 0);
+                    if (mode == "delay-temp")
+                    {
+                        Click(faultWindow, "ConnectButton");
+                        await Until(() => !Field<bool>(faultWindow, "_busy"));
+                        Check("wpf_old_delayed_reply_not_new_state", Text(faultWindow, "DeviceStatusText") == "停止" && Field<ObservableCollection<Task050Reading>>(faultWindow, "_history").Count == 0);
+                    }
+                }
+                if (Field<Task051TcpConnection>(faultWindow, "_connection").IsConnected && mode == "delay-temp")
+                {
+                    Task pending = Command(faultWindow, "GET_TEMP");
+                    await Task.Delay(40);
+                    faultWindow.Close();
+                    await pending;
+                    Check("wpf_close_cancels_pending_read", !Field<Task051TcpConnection>(faultWindow, "_connection").IsConnected && Field<bool>(faultWindow, "_closing"));
+                }
+            }
+            finally { if (faultWindow.IsVisible) faultWindow.Close(); faultStop.Cancel(); await faultServer; }
+        }
+    }
+
+    [STAThread]
+    public static void Main()
+    {
+        Application app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        app.Dispatcher.BeginInvoke(new Action(async () =>
+        {
+            string? failure = null;
+            try { VerifyFilter(); await VerifyModes(); await VerifyWpf(); }
+            catch (Exception ex) { failure = ex.ToString(); }
+            finally
+            {
+                foreach (Task051Window w in Windows) if (w.IsVisible) w.Close();
+                Console.WriteLine("COMPLETION_RESULT=" + JsonSerializer.Serialize(new { checks = Checks, failure }));
+                Environment.ExitCode = failure == null ? 0 : 1;
+                app.Shutdown();
+            }
+        }));
+        app.Run();
+    }
+}

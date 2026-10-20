@@ -1,71 +1,119 @@
 # TASK-052：完成Socket收发对照与UDP设备查询
 
-- 阶段：第四阶段：TCP/UDP（Socket对照与UDP查询）。
-- 状态：🟡 进行中
-- 创建日期：2026-10-20。
-- 开启日期：2026-10-20，用户明确要求“开启task52”。
-- 计划来源：[第四阶段计划](../plan.md)的Socket收发对照、UDP独立查询及综合核对目标。
-- 选择依据：[TASK-051](./TASK-051.md)已按静态源码口径通关，TCP控制、WPF监控和恢复路径已有实现，下一步覆盖计划尚余的Socket对象与收发数量、UDP来源和查询编号匹配，不重复拆已完成的按钮或历史小题。
+## [模块 1] 核心任务目标
 
-## 要完成的一个完整功能
+修改Task052SocketExercise.cs和Task052UdpExercise.cs，完成Socket按实际字节数收发，以及UDP按来源、编号和内容匹配查询回复。
+使用Task052Simulator.cs核对TCP控制与UDP查询得到的设备状态。
 
-在同一设备模拟场景下，用最小Socket客户端对照已有TCP命令往返，再增加UDP单播温度或状态查询，并核对客户端记录与模拟端实际状态。
-Socket部分只做最小连接、完整发送、按实际数量接收和关闭对照，不要求将既有WPF系统整体改写；复用已有TCP消息边界规则，发送不足时继续发送剩余字节，接收为零时识别连接结束。
-UDP查询使用独立数据报，约定请求编号、回复格式、长度上限与截止时间，只接受指定来源且编号匹配的回复，同一查询最多完成一次，不把旧回复当作新结果。
-模拟端提供正常、不回复、重复及迟到旧回复等可控场景，TCP继续承担既有控制命令，不增加UDP启动/停止控制或可靠传输框架。
 
-## 开启时准备与讲解
+**本题知识点**
 
-仅在用户明确要求开始TASK-052后准备骨架，先核对现有阶段项目、入口和模拟器，任务专属文件放独立目录，保留TASK-049至051和旧阶段作品，届时记录真实路径。
-先从现有TcpClient所代表的连接，说明.NET Socket对象怎样负责连接和字节收发，再逐处解释发送返回数量与剩余字节；不能把已有TCP辅助当作已自主掌握Socket接口。
-UDP从一次查询发送给哪个地址/端口、收到的数据报来自哪里展开，解释UdpClient、查询编号及接收结果的用途后，再要求连接实现；不把TCP连续缓冲规则直接套给UDP数据报。
-教练准备必要模拟端、故障输入与运行入口，学员完成关键发送数量处理、来源/编号/长度校验和完成/超时连接，不引入新网络框架。
-开始时明确协议细节、取消与等待规则、可执行步骤和每个TODO对应的DoD；首次只完成一个能观察到回复的Socket往返，再推进UDP，避免一次堆叠所有新API。
+| 知识点 | 当前代码中的含义与作用 |
+| --- | --- |
+| Socket与TcpClient | Socket是.NET提供的网络类，socket变量指向本次创建的TCP通信对象；本题直接调用它连接、发送和接收，替代此前TcpClient配合NetworkStream的调用方式。 |
+| 实际发送数量 | SendAsync返回本次实际发出的字节数sent；offset保存累计已发数量，下次从offset继续，避免漏发或重复发送。 |
+| AsMemory | request.AsMemory(offset, count)把数组中指定的一段交给发送方法；received.AsMemory()把接收数组交给接收方法写入，不另外复制数组。 |
+| 有效接收与LF | ReceiveAsync返回本次写入数组的有效字节数，0表示对端已结束发送；TCP接收结果可能只有半条消息，因此外层继续用Task049LineBuffer累计到LF再取完整回复。 |
+| UDP与UdpClient | UdpClient是.NET提供的UDP通信类，_udp指向本题用于查询的对象；一次SendAsync发送一条完整数据报，接收后直接检查这一条，不拼接TCP式LF缓冲。 |
+| 接收来源 | UdpReceiveResult是.NET的UDP接收结果，Buffer是本条内容，RemoteEndPoint是发送者地址和端口；两者共同用于判断回复是否可信且符合约定。 |
+| 查询编号 | requestId是本题生成的GUID字符串，随请求发出并要求回复带回；旧编号或其他编号被拒绝，每轮只接受一次匹配回复。 |
+| 截止与取消 | deadline是教练创建的CancellationTokenSource对象，token把停止信号传给网络等待；到期结束本轮，Ctrl+C结束当前运行，收到错误报文不会重新计时。 |
+| async与返回值 | async Task方法可在内部await网络操作；async Task<int>仍返回int数量，调用者通过await取得它，原Task.FromException占位已移除。 |
 
-## 验收标准（DoD）
 
-- [ ] 最小Socket TCP客户端将连接、发送、接收和关闭对应到具体对象，按返回数量推进完整发送及有效接收，正确处理LF分段与对端关闭，并与已有TcpClient流程对照。
-- [ ] UDP单播查询按约定编码/长度/来源/查询编号接受有效回复，一条查询只完成一次，无回复能按期限结束，重复、错误来源或编号及迟到旧回复不污染后续查询，取消后不继续等待或显示旧结果。
-- [ ] 综合核对既有TCP控制/WPF状态、恢复路径与新增查询的记录和设备状态，分别注明静态源码、实际运行和教练辅助证据，说明TCP字节流与UDP数据报在本题代码中的边界处理区别，未验证部分如实保留。
+- 状态：✅ 已通关；创建/开启/完成日期：2026-10-20。
+- 专属目录：`Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/`。
+- TCP：命令末尾加LF，完整消息最多256字节，单次连接至完整回复共用3秒截止。
+- TCP发送：每次最多提供3字节，按SendAsync实际返回数量推进。
+- UDP请求：`Q|32位GUID编号|GET_TEMP`或`Q|32位GUID编号|GET_STATUS`。
+- UDP回复：`R|同编号|同命令|值`，恰好四段，不加LF。
+- UDP长度：1～128字节；每字节范围`[32, 126]`。
+- UDP来源：地址和端口均须匹配目标。
+- UDP值：GET_TEMP为0～100有限小数，按InvariantCulture解析；GET_STATUS为RUNNING或STOPPED。
+- UDP等待：每轮2秒，忽略无效报文不重置截止；各轮编号不同，每轮只完成一次。
+- UDP运行：同一个UdpClient连续查询两轮，外部取消后结束等待。
 
-## 当前证据
+## [模块 2] 执行清单（按 TODO 拆分）
 
-当前已实际开启并准备独立源码、双协议模拟端、命令行入口和运行说明，五组核心TODO保留学员实现，三个DoD均未勾选；初次仅建卡的说明保留为历史依据。
-TASK-051的静态通关和教练历史支持检查不直接计作本题能力或阶段综合运行证据，第四阶段仍🟡 进行中，阶段完成时还需按计划核对全部目标与证据范围。
+### TODO 1：连接Socket（学员已完成）
 
-## 2026-10-20 实际开启与文件范围
+1. **文件与签名**：`Task052SocketExercise.cs`，`ConnectCoreAsync(Socket socket, IPEndPoint endpoint, CancellationToken token)`，返回声明由`Task`改为`async Task`。
+2. **关键调用**：删除占位，执行`await socket.ConnectAsync(endpoint, token);`。
+3. **推进现象**：连接成功，继续执行发送流程。
 
-本题专属目录为Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/，复用现有控制台项目，不新建框架依赖或搬移旧作品。
-已创建[Socket练习](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/Task052SocketExercise.cs)、[UDP练习](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/Task052UdpExercise.cs)、[双协议模拟器](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/Task052Simulator.cs)、[任务入口](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/Task052Entry.cs)和[运行说明](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/RUN-GUIDE.md)。
-共享Program.cs仅增量接入--task052及帮助，TcpUdp.csproj仅排除本题Verification下可能的.cs诊断源码；WPF入口和TASK-049至051代码未改，复用既有Task049LineBuffer。
-教练提供Socket对象创建/释放、3秒总截止、有效接收数量传入既有LF缓冲、UDP2秒总截止、单请求互斥、每轮GUID编号、一次完成与取消/释放入口，不能把这些骨架算作学员自主掌握。
-模拟器同时监听同一个数字端口的TCP与UDP，二者读取同一个设备运行状态，TCP回复故意分两次写出；UDP提供不回复、重复、暂存旧回复、错误来源、错误编号、非法内容等可控模式，另有TCP主动关闭模式。
+### TODO 2：完整发送命令（教练协助完成）
 
-## TODO与具体实践对应
+1. **文件与签名**：`Task052SocketExercise.cs`，`SendAllAsync(Socket socket, byte[] request, CancellationToken token)`，返回声明由`Task`改为`async Task`。
+2. **核心伪代码**：`offset=0 → 循环至offset达到request.Length → count=Math.Min(3, request.Length-offset) → sent=await socket.SendAsync(request.AsMemory(offset,count), SocketFlags.None, token) → sent<=0则抛IOException → offset+=sent`。
+3. **推进现象**：模拟器收到完整GET_TEMP，客户端进入回复接收流程。
 
-| TODO | 实际文件与方法 | 核心动作 | 对应DoD |
-| --- | --- | --- | --- |
-| 1 | Task052SocketExercise.ConnectCoreAsync | 等待socket.ConnectAsync，移除未完成异常。 | 1 |
-| 2 | Task052SocketExercise.SendAllAsync | 每次最多提供3字节，按SendAsync实际返回量推进offset，发完才结束，零/负数量作为失败。 | 1 |
-| 3 | Task052SocketExercise.ReceiveCoreAsync | 返回ReceiveAsync实际读取数量，外层复用已有有效数量追加、EOF检查和LF提取。 | 1 |
-| 4 | Task052UdpExercise.SendQueryAsync | 用UdpClient把完整查询发送为一条数据报，保留当前编号与取消token。 | 2 |
-| 5 | Task052UdpExercise.TryAcceptDatagram | 校验来源地址/端口、字节范围和长度、四段格式、当前编号/命令与合法值，成功才赋reply并返回true。 | 2 |
+### TODO 3：返回实际接收数量（教练协助完成）
 
-DoD3在这两条链路完成后综合核对已有TCP控制、WPF显示、恢复路径和新增UDP查询，源码和实际观察分别记录，不额外要求重复抄录已有日志。
-TCP沿用ASCII命令加LF、UTF-8兼容回复及256字节消息上限，Socket练习每次命令使用独立连接，一次连接/发送/完整接收共用3秒总截止；本题每次最多提供3字节是人为分块，不当作内核发生部分发送的证据。
-UDP请求为Q|32位GUID编号|GET_TEMP或GET_STATUS，回复为R|同编号|同命令|值，不加LF，每条1至128可打印ASCII字节，来源地址和端口必须匹配；温度只接受0至100有限小数、状态只接受RUNNING或STOPPED。
-UDP每轮共用2秒截止，忽略无效报文不重置截止，同一UdpClient连续查询两轮但编号不复用；stale-first第一轮暂存回复使其超时，第二轮先发旧编号再发当前编号，教练用确定性暂存验证旧回复过滤，不宣称覆盖全部真实网络故障。
+1. **文件与签名**：`Task052SocketExercise.cs`，`ReceiveCoreAsync(Socket socket, byte[] received, CancellationToken token)`，返回声明由`Task<int>`改为`async Task<int>`。
+2. **关键调用**：删除占位，执行`return await socket.ReceiveAsync(received.AsMemory(), SocketFlags.None, token);`。
+3. **推进现象**：Socket客户端取得完整`35.6`，对端提前关闭时报告EOF。
 
-## 首个动作与运行方式
+### TODO 4：发送UDP查询（教练协助完成）
 
-现在只修改Task052SocketExercise.cs的ConnectCoreAsync：签名改为async Task，等待socket.ConnectAsync(endpoint, token)，移除Task.FromException占位；实际代码、对象身份、token和预期现象已在运行说明逐处讲解。
-从根目录执行dotnet build .\Stage04-TcpUdp\TcpUdp\TcpUdp.csproj --nologo，终端一运行dotnet run --no-build --project .\Stage04-TcpUdp\TcpUdp\TcpUdp.csproj -- --task052 server 5000 normal，终端二运行同一项目前缀并传--task052 socket 5000 GET_TEMP。
-仅完成TODO 1后应从连接未完成提示推进到TODO 2发送未完成提示；TODO 1至3完成后才应看到35.6，不把第一步推进等同完整往返成功。
-UDP阶段命令为--task052 udp 5000 GET_STATUS，待TODO 4/5完成后再按运行说明切换对端故障模式；Ctrl+C停止自己这轮程序，不终止用户原有进程。
+1. **文件与签名**：`Task052UdpExercise.cs`，`SendQueryAsync(UdpClient udp, byte[] request, IPEndPoint expected, CancellationToken token)`，返回声明由`Task`改为`async Task`。
+2. **关键调用**：删除占位，执行`await udp.SendAsync(request.AsMemory(), expected, token);`，完整request只发一个数据报。
+3. **推进现象**：模拟器收到完整UDP查询，客户端进入筛选与匹配流程。
 
-## 教练准备验证与边界
+### TODO 5：筛选当前查询的回复（教练协助完成）
 
-实际执行python .\Stage04-TcpUdp\TcpUdp\Exercises\TASK-052-socket-udp\Verification\verify_preparation.py，最终退出0，临时输出构建0警告/0错误，38项准备检查及6项骨架占位/预取消检查通过，193个受保护旧源码哈希不变，详细命令和构建输出见[preparation-2026-10-20.json](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/Verification/preparation-2026-10-20.json)。
-检查直接使用教练测试端验证新模拟器TCP分段命令/连续命令、TCP控制后UDP读到同一RUNNING状态、各故障模式的预定报文、TCP EOF、八个临时服务的取消退出、命令行帮助/非法参数/占位错误以及旧作品保护，不验证学员尚未实现的筛选和收发逻辑。
-首次准备脚本误把有意增量修改的共享csproj纳入不变基线，源保护检查失败，修正为明确排除Program.cs及csproj；随后一次临时服务连接就绪检查失败，修正测试端口选择为同时预检TCP与UDP可绑定后复跑通过，未把失败尝试记作验收通过或学员问题。
-本轮只运行自己创建的临时服务和测试进程，没有启动/替换WPF窗口或杀用户程序；完整学员Socket/UDP链路与WPF综合运行均未验证，三个DoD未勾选，不创建TASK-053，问答状态/统计与已掌握范围保持。
+1. **文件与签名**：`Task052UdpExercise.cs`，`TryAcceptDatagram(UdpReceiveResult datagram, IPEndPoint expected, string requestId, string command, out string reply)`，签名保持。
+2. **核心伪代码**：`检查RemoteEndPoint地址/端口 → 检查Buffer长度/字节范围 → ASCII解码并Split('|') → 检查四段及R/编号/命令/值 → reply=第四段，返回true`；任一不符返回false。
+3. **推进现象**：正常模式每轮输出一次接受结果，其他模式按下表过滤或超时。
+
+## [模块 3] 调试与验证命令
+
+从工作区根目录执行构建，每次修改源码后重新构建。
+
+```powershell
+dotnet build .\Stage04-TcpUdp\TcpUdp\TcpUdp.csproj --nologo
+```
+
+终端一启动服务端，切换模式前用Ctrl+C停止自己这份服务端。
+
+```powershell
+dotnet run --no-build --project .\Stage04-TcpUdp\TcpUdp\TcpUdp.csproj -- --task052 server 5000 normal
+```
+
+终端二依次运行客户端命令。
+
+```powershell
+dotnet run --no-build --project .\Stage04-TcpUdp\TcpUdp\TcpUdp.csproj -- --task052 socket 5000 GET_TEMP
+dotnet run --no-build --project .\Stage04-TcpUdp\TcpUdp\TcpUdp.csproj -- --task052 socket 5000 START_DEVICE
+dotnet run --no-build --project .\Stage04-TcpUdp\TcpUdp\TcpUdp.csproj -- --task052 socket 5000 GET_STATUS
+dotnet run --no-build --project .\Stage04-TcpUdp\TcpUdp\TcpUdp.csproj -- --task052 udp 5000 GET_STATUS
+```
+
+- 5000已占用时，两端统一改用5001。
+- 切换故障模式：替换服务端命令末尾的normal。
+- 综合核对：既有WPF连接同一TCP端口，启停设备后对比窗口状态、UDP状态和模拟器日志。
+
+## [模块 4] 故障模式速查表
+
+| 模式名 | 触发机制 | 客户端预期行为 |
+| --- | --- | --- |
+| normal | TCP回复分两次写出，UDP正常回复。 | Socket取得完整回复，UDP每轮接受一次。 |
+| silent | UDP不回复。 | 两轮查询分别在约2秒后超时。 |
+| duplicate | 同一UDP回复发送两遍。 | 每轮只完成一次，下轮忽略上轮副本。 |
+| stale-first | 暂存首轮回复，下一轮先发旧回复再发当前回复。 | 首轮超时，次轮忽略旧编号并接受当前编号。 |
+| foreign-first | 另一个UDP端口先发内容正确的回复。 | 忽略错误来源，接受目标端口回复。 |
+| wrong-id-first | 先发错误编号，再发当前编号。 | 只接受当前查询编号。 |
+| malformed-first | 先发129字节和非法值，再发合法回复。 | 忽略超长内容和非法值，接受合法回复。 |
+| close-tcp | TCP收到命令后关闭连接。 | 报告完整回复前对端关闭，释放连接。 |
+
+- [x] DoD1：Socket连接、完整发送、有效接收、LF处理及关闭符合规则。
+- [x] DoD2：UDP匹配来源/编号/格式/值，正确处理超时、重复、旧回复与取消。
+- [x] DoD3：核对TCP控制、WPF显示、恢复路径和UDP查询的设备状态与记录。
+
+- 准备证据：构建0警告/0错误，38项准备检查及6项骨架检查通过，详见[准备记录](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/Verification/preparation-2026-10-20.json)。
+- 教练范围：模拟器、入口、截止/取消、单请求保护和已有LF缓冲连接；TODO 2/3/4/5按用户要求由教练补齐，学员连接实现保留。
+- 历史记录：[开启与验证记录](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/Verification/task-description-before-rewrite-2026-10-20.md)；计划来源：[第四阶段](../plan.md)。
+
+- 2026-10-20 TODO 3协助：仅改ReceiveCoreAsync签名与接收返回，临时构建0警告/0错误、8项局部检查通过，详见[协助验证](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/Verification/todo3-assisted-2026-10-20.json)；任务仍🟡 进行中，DoD未勾选。
+
+- 2026-10-20完成验证：控制台/WPF构建均0警告/0错误，111项实际Socket/UDP与WPF综合检查通过，195个受保护旧源码保持；详见[完成记录](../../Stage04-TcpUdp/TcpUdp/Exercises/TASK-052-socket-udp/Verification/completion-review-2026-10-20.md)。
+- 第四阶段：✅ 已通关；后续任务等待用户补充计划后确定。

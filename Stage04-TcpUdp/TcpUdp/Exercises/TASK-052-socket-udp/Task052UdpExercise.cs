@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Globalization;
 
 namespace TcpUdp.Exercises.Task052
 {
@@ -49,10 +50,11 @@ namespace TcpUdp.Exercises.Task052
             finally { _gate.Release(); }
         }
 
-        public Task SendQueryAsync(UdpClient udp, byte[] request, IPEndPoint expected, CancellationToken token)
+        public async Task SendQueryAsync(UdpClient udp, byte[] request, IPEndPoint expected, CancellationToken token)
         {
             // TODO 4：改成async Task方法，await udp.SendAsync(request.AsMemory(), expected, token)，一条request只发一个数据报。
-            return Task.FromException(new NotImplementedException("TODO 4：尚未发送UDP查询。"));
+            int sent = await udp.SendAsync(request.AsMemory(), expected, token);
+            if (sent != request.Length) throw new IOException("UDP查询未完整发送。");
         }
 
         public bool TryAcceptDatagram(UdpReceiveResult datagram, IPEndPoint expected, string requestId, string command, out string reply)
@@ -60,7 +62,28 @@ namespace TcpUdp.Exercises.Task052
             reply = String.Empty;
             // TODO 5：检查来源地址和端口、1至128字节、可打印ASCII及R|编号|命令|值四段，编号/命令必须匹配。
             // TODO 5：GET_TEMP只接受InvariantCulture可解析的0至100有限小数，GET_STATUS只接受RUNNING或STOPPED，成功将第四段赋给reply并返回true。
-            return false;
+            if (!datagram.RemoteEndPoint.Address.Equals(expected.Address) || datagram.RemoteEndPoint.Port != expected.Port) return false;
+            byte[] bytes = datagram.Buffer;
+            if (bytes.Length < 1 || bytes.Length > MaximumDatagramBytes) return false;
+            for (int index = 0; index < bytes.Length; index++)
+            {
+                if (bytes[index] < 32 || bytes[index] > 126) return false;
+            }
+            string[] parts = Encoding.ASCII.GetString(bytes).Split('|');
+            if (parts.Length != 4 || parts[0] != "R" || parts[1] != requestId || parts[2] != command) return false;
+            if (command == "GET_TEMP")
+            {
+                double temperature;
+                if (!Double.TryParse(parts[3], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out temperature) ||
+                    !Double.IsFinite(temperature) || temperature < 0 || temperature > 100) return false;
+            }
+            else if (command == "GET_STATUS")
+            {
+                if (parts[3] != "RUNNING" && parts[3] != "STOPPED") return false;
+            }
+            else return false;
+            reply = parts[3];
+            return true;
         }
 
         // 只在本轮查询已结束后释放；运行入口在所有await完成后调用，不与接收同时Dispose。
